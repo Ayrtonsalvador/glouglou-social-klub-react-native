@@ -1,117 +1,117 @@
-import React, {useState} from 'react';
-import { AppRegistry, StyleSheet, View, Text, Image} from 'react-native';
+import React, { useState } from 'react';
+import { AppRegistry, StyleSheet, View, Text, Image } from 'react-native';
 
-import {Button, Input} from 'react-native-elements'
+import { Button, Input } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Carousel from "react-native-carousel-control";
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function FirstScreen({ navigation}) {
-    
-    return (
+function FirstScreen({ navigation }) {
 
-  <View style={{flex : 1, backgroundColor:'#FBDF4C'}}>
+  return (
 
-    <View style= {{flex : 1}}>
+    <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
 
-      <Carousel>
+      <View style={{ flex: 1 }}>
+
+        <Carousel>
 
           <View style={styles.container}>
-            <Image source={require('../assets/GGSC.png')} style={{width:200, height:200, justifyContent: 'center', alignItems:'center'}}></Image>
-            
+            <Image source={require('../assets/GGSC.png')} style={{ width: 200, height: 200, justifyContent: 'center', alignItems: 'center' }}></Image>
+
             <View style={styles.box2}>
               <Text style={styles.text}>QUI SOMMES-NOUS ?</Text>
-              <Text style={{width:200, justifyContent:"center"}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's. Lorem Ipsum has been the industry's.</Text>
+              <Text style={{ width: 200, justifyContent: "center" }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's. Lorem Ipsum has been the industry's.</Text>
             </View>
-          </View> 
+          </View>
 
           <View style={styles.container}>
 
             <View style={styles.box}>
               <Text style={styles.text}>REJOINDRE LE CLUB</Text>
               <Button
-                  containerStyle = {{marginBottom: 25, width: '70%', borderRadius: 15,}}
-                  title="Je suis vigneron"
-                  type="solid"
-                  buttonStyle = {{backgroundColor: '#FF9900'}}
-                  onPress={() => {
-                    navigation.navigate('Profile'); 
-                  }}
+                containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, }}
+                title="Je suis vigneron"
+                type="solid"
+                buttonStyle={{ backgroundColor: '#FF9900' }}
+                onPress={() => {
+                  navigation.navigate('Profile');
+                }}
               />
 
               <Button
-                  containerStyle = {{marginBottom: 25, width: '70%', borderRadius: 15,}}
-                  title="Je suis caviste"
-                  type="solid"
-                  buttonStyle = {{backgroundColor: '#FF9900'}}
-                  onPress={() => {
-                    navigation.navigate('Profile'); 
-                  }}
+                containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, }}
+                title="Je suis caviste"
+                type="solid"
+                buttonStyle={{ backgroundColor: '#FF9900' }}
+                onPress={() => {
+                  navigation.navigate('Profile');
+                }}
               />
 
               <Input
-                  containerStyle = {{marginBottom: 25, width: '70%'}}
-                  inputStyle={{marginLeft: 10}}
-                  placeholder='Nom'
-                  leftIcon={
-                      <Icon
-                      name='user'
-                      size={20}
-                      color="#FFD15C"
-                      />
-                  }
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Nom'
+                leftIcon={
+                  <Icon
+                    name='user'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
               />
-                <Input
-                  containerStyle = {{marginBottom: 25, width: '70%'}}
-                  inputStyle={{marginLeft: 10}}
-                  placeholder='Email'
-                  leftIcon={
-                      <Icon
-                      name='inbox'
-                      size={20}
-                      color="#FFD15C"
-                      />
-                  }
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Email'
+                leftIcon={
+                  <Icon
+                    name='inbox'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
               />
-                <Input
-                  containerStyle = {{marginBottom: 25, width: '70%'}}
-                  inputStyle={{marginLeft: 10}}
-                  placeholder='Téléphone'
-                  leftIcon={
-                      <Icon
-                      name='phone'
-                      size={20}
-                      color="#FFD15C"
-                      />
-                  }
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Téléphone'
+                leftIcon={
+                  <Icon
+                    name='phone'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
               />
-              <Image source={require('../assets/ContactGlouGlou.png')} style={{width:100, height:100, justifyContent: 'center', alignItems:'center'}}></Image>
+              <Image source={require('../assets/ContactGlouGlou.png')} style={{ width: 100, height: 100, justifyContent: 'center', alignItems: 'center' }}></Image>
             </View>
-          </View> 
+          </View>
 
-       </Carousel>
+        </Carousel>
 
-    </View>
+      </View>
 
       <View style={styles.buttons}>
-        <View style={{borderColor:'#FFD15C'}}>
+        <View style={{ borderColor: '#FFD15C' }}>
           <Text style={styles.txt}
-                onPress={() => {
-                navigation.navigate('SignUp'); 
-              }}>S'INSCRIRE</Text>
+            onPress={() => {
+              navigation.navigate('SignUp');
+            }}>S'INSCRIRE</Text>
         </View>
 
-        <View style={{borderColor:'#FFD15C'}}>
+        <View style={{ borderColor: '#FFD15C' }}>
           <Text style={styles.txt}
-                onPress={() => {
-                navigation.navigate('SignIn'); 
-                }}>S'IDENTIFIER</Text>
+            onPress={() => {
+              navigation.navigate('SignIn');
+            }}>S'IDENTIFIER</Text>
         </View>
       </View>
 
-  </View>
+    </View>
   );
 }
 
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 10,
     // fontFamily: "Gothic A1",
-  }, 
+  },
   buttons: {
     flexDirection: "row",
     alignItems: 'center',
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
-  box2:{
+  box2: {
     width: 300,
     height: 200,
     backgroundColor: '#FFFFFF',
@@ -163,5 +163,5 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   }
 });
-  
-  export default FirstScreen;
+
+export default FirstScreen;

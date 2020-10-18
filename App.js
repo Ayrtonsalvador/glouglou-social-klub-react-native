@@ -11,17 +11,17 @@ import ProfileScreen from './screens/ProfileScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 
-import {createAppContainer } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import {createStore, combineReducers} from 'redux';
-import {Provider} from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import pseudo from './reducers/pseudo';
 
-const store = createStore(combineReducers({pseudo}));
+const store = createStore(combineReducers({ pseudo }));
 
 var BottomNavigator = createBottomTabNavigator({
   Home: HomeScreen,
@@ -56,18 +56,18 @@ var BottomNavigator = createBottomTabNavigator({
         backgroundColor: '#FBDF4C',
       }
     }
-   
+
 
   });
 
-StackNavigator = createStackNavigator({ 
+StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   BottomNavigator: BottomNavigator,
-}, 
-{headerMode: 'none'}
-);   
+},
+  { headerMode: 'none' }
+);
 
 const Navigation = createAppContainer(StackNavigator);
 
@@ -77,4 +77,4 @@ export default function App() {
       <Navigation />
     </Provider>
   );
- }
+}
