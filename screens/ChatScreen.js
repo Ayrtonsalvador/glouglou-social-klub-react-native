@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -50,9 +50,11 @@ function ChatScreen({ pseudo }) {
     <View style={{ flex: 1 }}>
 
       <Header
-        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FBDF4C' }}
-        centerComponent={{ text: 'MES CONTACTS', marginTop: 30 }}
-      />
+        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23'}}
+        centerComponent={{ text: 'MES CONTACTS GLOUGLOU', marginTop: 30 }}
+      >
+      <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
+      </Header>
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
         <ListItem

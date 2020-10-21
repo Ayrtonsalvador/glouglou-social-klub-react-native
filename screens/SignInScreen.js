@@ -12,7 +12,7 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
 
   return (
 
-    <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
+    <View style={{ flex: 1, backgroundColor: '#FCDF23' }}>
       <View style={styles.container}>
 
         <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FBDF4C',
+    backgroundColor: '#FCDF23',
     // fontFamily: "Gothic A1",
   },
   box: {

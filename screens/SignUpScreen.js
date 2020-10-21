@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input } from 'react-native-elements'
+import { Button, Input, Overlay } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
@@ -9,79 +9,136 @@ import { color } from 'react-native-reanimated';
 
 function SignUpScreen({ navigation, onSubmitPseudo }) {
   const [pseudo, setPseudo] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
 
-  return (
+  if (isVisible) {
 
-    <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
-      <View style={styles.container}>
+    return(
 
-        <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
+    <View style={styles.container}>
+      <View style={styles.popup}>
+      {/* <Overlay
+        containerStyle={styles.popup}
+        isVisible={isVisible}
+        onBackdropPress={() => { setIsVisible(false) }}
+      > */}
+        <Text style={styles.text}>A BIENTÔT DANS LE :</Text>
+        <Image source={require('../assets/ContacterGlouGlou.png')}
+          style={styles.img}
+        ></Image>
+        <Button
+          containerStyle={{ marginBottom: 15, width: '50%', borderRadius: 15, }}
+          title="Compris"
+          type="solid"
+          buttonStyle={{ backgroundColor: '#FFAE34' }}
+          onPress={() => {
+            setIsVisible(false)
+            navigation.navigate('SignIn');
+          }}
+        />
+      {/* </Overlay> */}
+    </View>
+  </View>
+    )} else {
 
-        <View style={styles.box}>
-          <Text style={styles.text}>INSCRIPTION</Text>
+    return (
 
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Code'
-            leftIcon={
-              <Icon
-                name='lock'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-          />
+      <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
 
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Pseudo'
-            leftIcon={
-              <Icon
-                name='user'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-          />
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Email'
-            leftIcon={
-              <Icon
-                name='inbox'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-          />
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Mot de passe'
-            leftIcon={
-              <Icon
-                name='key'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-          />
+        {/* <Overlay
+        containerStyle={styles.popup}
+        isVisible={isVisible}
+        onBackdropPress={() => { setIsVisible(false) }}
+      >
+          <Text style={styles.text}>A BIENTÔT DANS LE CLUB !</Text>
+          <Image source={require('../assets/ContactGlouGlou.png')}
+            style={styles.img}
+          ></Image>
           <Button
-            containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, }}
-            title="Rejoindre le club"
+            containerStyle={{ marginBottom: 15, width: '50%', borderRadius: 15, }}
+            title="Compris"
             type="solid"
-            buttonStyle={{ backgroundColor: '#FF9900' }}
+            buttonStyle={{ backgroundColor: '#FFAE34' }}
             onPress={() => {
+              setIsVisible(false)
               navigation.navigate('Profile');
             }}
           />
+      </Overlay> */}
+
+        <View style={styles.container}>
+
+          <View style={styles.box}>
+
+            <View>
+              <Image source={require('../assets/ContactGlouGlou.png')}
+                style={styles.img}
+              ></Image>
+            </View>
+
+
+            <Input
+              containerStyle={{ marginBottom: 25, width: '70%' }}
+              inputStyle={{ marginLeft: 10 }}
+              placeholder='Nom'
+              leftIcon={
+                <Icon
+                  name='user'
+                  size={20}
+                  color="#FFD15C"
+                />
+              }
+            />
+            <Input
+              containerStyle={{ marginBottom: 25, width: '70%' }}
+              inputStyle={{ marginLeft: 10 }}
+              placeholder='Email'
+              leftIcon={
+                <Icon
+                  name='inbox'
+                  size={20}
+                  color="#FFD15C"
+                />
+              }
+            />
+            <Input
+              containerStyle={{ marginBottom: 25, width: '70%' }}
+              inputStyle={{ marginLeft: 10 }}
+              placeholder='Mot de passe'
+              leftIcon={
+                <Icon
+                  name='key'
+                  size={20}
+                  color="#FFD15C"
+                />
+              }
+            />
+
+            <Button
+              containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
+              title="Je suis vigneron"
+              type="solid"
+              buttonStyle={{ backgroundColor: '#FFAE34' }}
+              onPress={() => {
+                setIsVisible(true);
+              }}
+            />
+
+            <Button
+              containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
+              title="Je suis caviste"
+              type="solid"
+              buttonStyle={{ backgroundColor: '#FFAE34' }}
+              onPress={() => {
+                setIsVisible(true);
+              }}
+            />
+
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -89,12 +146,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FBDF4C',
+    backgroundColor: '#FCDF23',
     // fontFamily: "Gothic A1",
   },
   box: {
     width: 300,
-    height: 400,
+    height: 550,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,16 +160,28 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#FFD15C',
-    // fontFamily: "Gothic A1",
-    fontSize: 18,
-    padding: 10,
-  },
-  img: {
-    width: 200,
-    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+    fontSize: 22,
+    padding: 10,
+    // fontFamily: "Gothic A1",
+  },
+  img: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  popup: {
+    width: 250,
+    height: 300,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    // fontFamily: "Gothic A1",
+  },
 });
 
 
