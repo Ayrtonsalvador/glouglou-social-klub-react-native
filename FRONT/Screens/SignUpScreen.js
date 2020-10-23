@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input, Overlay } from 'react-native-elements'
+import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
@@ -17,11 +17,6 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
 
     <View style={styles.container}>
       <View style={styles.popup}>
-      {/* <Overlay
-        containerStyle={styles.popup}
-        isVisible={isVisible}
-        onBackdropPress={() => { setIsVisible(false) }}
-      > */}
         <Text style={styles.text}>A BIENTÔT DANS LE :</Text>
         <Image source={require('../assets/ContacterGlouGlou.png')}
           style={styles.img}
@@ -45,27 +40,6 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
 
       <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
 
-        {/* <Overlay
-        containerStyle={styles.popup}
-        isVisible={isVisible}
-        onBackdropPress={() => { setIsVisible(false) }}
-      >
-          <Text style={styles.text}>A BIENTÔT DANS LE CLUB !</Text>
-          <Image source={require('../assets/ContactGlouGlou.png')}
-            style={styles.img}
-          ></Image>
-          <Button
-            containerStyle={{ marginBottom: 15, width: '50%', borderRadius: 15, }}
-            title="Compris"
-            type="solid"
-            buttonStyle={{ backgroundColor: '#FFAE34' }}
-            onPress={() => {
-              setIsVisible(false)
-              navigation.navigate('Profile');
-            }}
-          />
-      </Overlay> */}
-
         <View style={styles.container}>
 
           <View style={styles.box}>
@@ -81,6 +55,8 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
               containerStyle={{ marginBottom: 25, width: '70%' }}
               inputStyle={{ marginLeft: 10 }}
               placeholder='Nom'
+              errorStyle={{ color: 'red' }}
+              errorMessage=''
               leftIcon={
                 <Icon
                   name='user'
@@ -93,6 +69,8 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
               containerStyle={{ marginBottom: 25, width: '70%' }}
               inputStyle={{ marginLeft: 10 }}
               placeholder='Email'
+              errorStyle={{ color: 'red' }}
+              errorMessage=''
               leftIcon={
                 <Icon
                   name='inbox'
@@ -104,10 +82,12 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
             <Input
               containerStyle={{ marginBottom: 25, width: '70%' }}
               inputStyle={{ marginLeft: 10 }}
-              placeholder='Mot de passe'
+              placeholder='Téléphone'
+              errorStyle={{ color: 'red' }}
+              errorMessage=''
               leftIcon={
                 <Icon
-                  name='key'
+                  name='phone'
                   size={20}
                   color="#FFD15C"
                 />

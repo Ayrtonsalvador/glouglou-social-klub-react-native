@@ -4,21 +4,24 @@ import React, { useState } from 'react';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { StyleSheet, Text, View, Button, Image, SafeAreaView, StatusBar, FlatList } from "react-native";
+import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList } from "react-native";
+import { Button, ListItem, Input, Header } from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-export default function HomeScreen() {
+export default function CatalogueCaviste() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
-      <View>
-        <Text>Home Screen</Text>
-        <Icon name={microscope} ></Icon>
-      </View>
-    </View>
-  );
-}
+        <View style={{ flex: 1 }}>
+          <Header
+            containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
+            centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
+            >
+            <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
+          </Header>
+        </View>
+      );
+    }
 
 // Carousel fiche produit
 

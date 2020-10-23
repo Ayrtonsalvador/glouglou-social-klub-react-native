@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 var socket = socketIOClient("http://172.17.1.151:3000");
 
-function ChatScreen({ pseudo }) {
+function ChatCaviste({ navigation, pseudo }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -70,6 +70,15 @@ function ChatScreen({ pseudo }) {
             </Avatar>
           }
         />
+              <Button
+            title="Go to message Jean pierre"
+            type="solid"
+            buttonStyle={{ backgroundColor: '#FF9900' }}
+            onPress={() => {
+              navigation.navigate('MessageCaviste');
+            }}>
+            </Button>
+
         <ListItem
           title="La GlouGlou Team"
           subtitle="Bienvenue au Club !"
@@ -145,4 +154,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null
-)(ChatScreen);
+)(ChatCaviste);

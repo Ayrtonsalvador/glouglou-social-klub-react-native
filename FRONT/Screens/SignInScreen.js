@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input } from 'react-native-elements'
+import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
@@ -23,7 +23,9 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
           <Input
             containerStyle={{ marginBottom: 25, width: '70%' }}
             inputStyle={{ marginLeft: 10 }}
-            placeholder='Pseudo'
+            placeholder='Nom'
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
             leftIcon={
               <Icon
                 name='user'
@@ -37,6 +39,9 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             containerStyle={{ marginBottom: 25, width: '70%' }}
             inputStyle={{ marginLeft: 10 }}
             placeholder='Mot de passe'
+            secureTextEntry={true}
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
             leftIcon={
               <Icon
                 name='key'
@@ -51,7 +56,7 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
             onPress={() => {
-              navigation.navigate('Profile');
+              navigation.navigate('ProfileCaviste');
             }}
           />
         </View>
