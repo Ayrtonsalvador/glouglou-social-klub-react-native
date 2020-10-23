@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { AppRegistry, StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input } from 'react-native-elements'
+import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Carousel from "react-native-carousel-control";
 
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function FirstScreen({ navigation }) {
+function FirstScreenOliv({ navigation }) {
 
   const pagination = () => {
     const [activeSlide, setActiveSlide] = useState(0);
+
     return (
         <Pagination
           dotsLength={3}
@@ -57,22 +58,25 @@ function FirstScreen({ navigation }) {
 
           
             <View style={styles.box2}>
-              <Text style={styles.text}>QUI SOMMES-NOUS ?</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:10  }}>Le GlouGlou Social Club réunit les amateurs de vins et facilite la mise en relation entre les vignerons et professionnels de la restauration.</Text>
+              <Text style={styles.text}>BOIRE BIEN, BOIRE MIEUX</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:10  }}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et professionnels de la restauration.</Text>
+              {pagination}
             </View>
 
             <View style={styles.box2}>
-              <Text style={styles.text}>POUR LES VIGNERONS</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:5  }}>Vous êtes vigneron et cherchez à donner plus de visibilité à vos bouteilles, et développer votre présence digitale ? Alors contactez notre team pour nous expliquer votre savoir-faire !</Text>
+              <Text style={styles.text}>CÔTÉS VIGNERONS</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5  }}>Nous participons au dévellopement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.</Text>
+              {pagination}
             </View>
 
             <View style={styles.box2}>
-              <Text style={styles.text}>POUR LES CAVISTES</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:5 }}>Vous êtes restaurateur ou  caviste et vous désirez dénicher de nouveaux producteurs de qualité et étoffer votre carte ? Alors contactez notre team pour nous expliquer vos objectifs !</Text>
+              <Text style={styles.text}>CÔTÉS CAVISTES</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5 }}>Nous aidons les restaurateurs à étoffer leur carte grâce à une préselection de références de petits producteurs.</Text>
+              {pagination}
             </View>
 
         </Carousel>
-            {pagination}
+            
 
       </View>
 
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FCDF23',
-    // fontFamily: "Gothic A1",
+
   },
   box: {
     width: 300,
@@ -112,14 +116,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    // fontFamily: "Gothic A1",
+
   },
   text: {
-    color: '#FFD15C',
+    fontWeight : 'bold',
+    color : "#FFAE34",
     fontSize: 18,
     padding: 5,
-    // fontFamily: "Gothic A1",
+
   },
+
   buttons: {
     flexDirection: "row",
     alignItems: 'center',
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#FCDF23'
-    // fontFamily: "Gothic A1",
+ 
   },
   box2: {
     // flex: 1,
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    // fontFamily: "Gothic A1",
+   
   },
   glou: {
     alignItems: 'center',
@@ -153,4 +159,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FirstScreen;
+export default FirstScreenOliv;

@@ -22,7 +22,7 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
         isVisible={isVisible}
         onBackdropPress={() => { setIsVisible(false) }}
       > */}
-        <Text style={styles.text}>A BIENTÔT DANS LE :</Text>
+        <Text style={styles.text}>A BIENTÔT DANS LE </Text>
         <Image source={require('../assets/ContacterGlouGlou.png')}
           style={styles.img}
         ></Image>
