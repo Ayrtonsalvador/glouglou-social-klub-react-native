@@ -99,11 +99,11 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 }
                 onChangeText={(val) => {
                   setSignUpEmail(val);
-                  if(val == null){
-                    errorStyle={{ color: 'red' }}
-                    errorMessage='Veuillez remplir ce champ'
-                  }
-                 }
+                  // if(val == null){
+                  //   errorStyle={{ color: 'red' }}
+                  //   errorMessage='Veuillez remplir ce champ'
+                  // }
+                 }}
               />
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
