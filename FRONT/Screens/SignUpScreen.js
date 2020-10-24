@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
 
-import { Button, Input, Header, KeyboardAvoidingView} from 'react-native-elements'
+import { Button, Input, Header} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
@@ -25,6 +25,7 @@ const [listErrorsSignup, setErrorsSignup] = useState([])
   var tabErrorsSignup = listErrorsSignup.map((error,i) => {
     return(
     <View>
+    <Text>Erreur</Text>
      {/* <Text>{error}</Text> */}
     </View>
     )
@@ -62,7 +63,7 @@ const [listErrorsSignup, setErrorsSignup] = useState([])
 
         <View style={styles.container}>
 
-        {/* <KeyboardAvoidingView behavior="position" enabled> */}
+        <KeyboardAvoidingView behavior="position" enabled>
 
           <View style={styles.box}>
 
@@ -132,23 +133,23 @@ const [listErrorsSignup, setErrorsSignup] = useState([])
 
                   setSignUpStatus('Vigneron')
 
-            //       const data = await fetch('/sign-up', {
-            //         method: 'POST',
-            //         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            //         body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
-            //       })
+                  const data = await fetch('/sign-up', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                  })
               
-            //       const body = await data.json()
+                  const body = await data.json()
               
-            //       if(body.result == true){
-            //         setUserExists(true);
-            //         setIsVisible(true);
-            //         console.log("SUCESS", body)
+                  if(body.result == true){
+                    setUserExists(true);
+                    setIsVisible(true);
+                    console.log("SUCCESS", body)
                     
-            //       } else {
-            //         setErrorsSignup(body.error)
-            //         console.log("ERROR", body.error)
-            //       }
+                  } else {
+                    setErrorsSignup(body.error)
+                    console.log("ERROR", body.error)
+                  }
                }}
 
               containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -160,7 +161,7 @@ const [listErrorsSignup, setErrorsSignup] = useState([])
             {tabErrorsSignup}       
 
           </View>
-          {/* </KeyboardAvoidingView> */}
+          </KeyboardAvoidingView>
         </View>
       </View>
     );
