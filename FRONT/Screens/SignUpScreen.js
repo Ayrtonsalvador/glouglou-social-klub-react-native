@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input, Header } from 'react-native-elements'
+import { Button, Input, Header, KeyboardAvoidingView} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
 function SignUpScreen({ navigation, onSubmitPseudo }) {
-  const [pseudo, setPseudo] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
 
-  if (isVisible) {
+const [signUpUsername, setSignUpUsername] = useState('')
+const [signUpEmail, setSignUpEmail] = useState('')
+const [signUpTel, setSignUpTel] = useState('')
+const [signUpStatus, setSignUpStatus] = useState('')
 
+const [userExists, setUserExists] = useState(false)
+const [isVisible, setIsVisible] = useState(false);
+
+const [listErrorsSignup, setErrorsSignup] = useState([])
+
+// var handleSubmitSignup = async () => {  
+//   }
+
+  var tabErrorsSignup = listErrorsSignup.map((error,i) => {
+    return(
+    <View>
+     {/* <Text>{error}</Text> */}
+    </View>
+    )
+  })
+
+//   POPUP CONFIRMATION INSCRIPTION
+  if (userExists) {
     return(
 
     <View style={styles.container}>
@@ -31,23 +50,24 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
             navigation.navigate('SignIn');
           }}
         />
-      {/* </Overlay> */}
     </View>
   </View>
-    )} else {
+//   POPUP CONFIRMATION INSCRIPTION
 
+//   FORMULAIRE INSCRIPTION
+    )} else {
     return (
 
       <View style={{ flex: 1, backgroundColor: '#FBDF4C' }}>
 
         <View style={styles.container}>
 
+        {/* <KeyboardAvoidingView behavior="position" enabled> */}
+
           <View style={styles.box}>
 
             <View>
-              <Image source={require('../assets/ContactGlouGlou.png')}
-                style={styles.img}
-              ></Image>
+              <Image source={require('../assets/ContactGlouGlou.png')} style={styles.img}></Image>
             </View>
 
 
@@ -64,6 +84,7 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
                   color="#FFD15C"
                 />
               }
+              onChangeText={(val) => setSignUpUsername(val)}
             />
             <Input
               containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -78,6 +99,7 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
                   color="#FFD15C"
                 />
               }
+              onChangeText={(val) => setSignUpEmail(val)}
             />
             <Input
               containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -92,6 +114,7 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
                   color="#FFD15C"
                 />
               }
+              onChangeText={(val) => setSignUpTel(val)}
             />
 
             <Button
@@ -100,26 +123,50 @@ function SignUpScreen({ navigation, onSubmitPseudo }) {
               type="solid"
               buttonStyle={{ backgroundColor: '#FFAE34' }}
               onPress={() => {
-                setIsVisible(true);
+                // setIsVisible(true);
               }}
             />
 
             <Button
+            onPress={async () => {
+
+                  setSignUpStatus('Vigneron')
+
+            //       const data = await fetch('/sign-up', {
+            //         method: 'POST',
+            //         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            //         body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+            //       })
+              
+            //       const body = await data.json()
+              
+            //       if(body.result == true){
+            //         setUserExists(true);
+            //         setIsVisible(true);
+            //         console.log("SUCESS", body)
+                    
+            //       } else {
+            //         setErrorsSignup(body.error)
+            //         console.log("ERROR", body.error)
+            //       }
+               }}
+
               containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
               title="Je suis caviste"
               type="solid"
               buttonStyle={{ backgroundColor: '#FFAE34' }}
-              onPress={() => {
-                setIsVisible(true);
-              }}
             />
 
+            {tabErrorsSignup}       
+
           </View>
+          {/* </KeyboardAvoidingView> */}
         </View>
       </View>
     );
   }
 }
+//   FORMULAIRE INSCRIPTION
 
 const styles = StyleSheet.create({
   container: {
@@ -165,13 +212,13 @@ const styles = StyleSheet.create({
 });
 
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSubmitPseudo: function (pseudo) {
-      dispatch({ type: 'savePseudo', pseudo: pseudo })
+function mapDispatchToProps(dispatch){
+    return {
+      addToken: function(token){
+        dispatch({type: 'addToken', token: token})
+      }
     }
   }
-}
 
 export default connect(
   null,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,22 +8,23 @@ import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
 function SignInScreen({ navigation, onSubmitPseudo }) {
-  const [pseudo, setPseudo] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('')
 
   return (
 
     <View style={{ flex: 1, backgroundColor: '#FCDF23' }}>
       <View style={styles.container}>
+     
+      <KeyboardAvoidingView behavior="position" enabled>
 
         <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
         <View style={styles.box}>
           <Text style={styles.text}>IDENTIFICATION</Text>
-
           <Input
             containerStyle={{ marginBottom: 25, width: '70%' }}
             inputStyle={{ marginLeft: 10 }}
-            placeholder='Nom'
+            placeholder='Email'
             errorStyle={{ color: 'red' }}
             errorMessage=''
             leftIcon={
@@ -60,6 +61,7 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             }}
           />
         </View>
+        </KeyboardAvoidingView>
       </View>
     </View>
   );
@@ -97,10 +99,10 @@ const styles = StyleSheet.create({
 });
 
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch){
   return {
-    onSubmitPseudo: function (pseudo) {
-      dispatch({ type: 'savePseudo', pseudo: pseudo })
+    addToken: function(token){
+      dispatch({type: 'addToken', token: token})
     }
   }
 }
