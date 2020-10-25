@@ -99,10 +99,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 }
                 onChangeText={(val) => {
                   setSignUpEmail(val);
-                  // if(val == null){
-                  //   errorStyle={{ color: 'red' }}
-                  //   errorMessage='Veuillez remplir ce champ'
-                  // }
                  }}
               />
               <Input
@@ -149,7 +145,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                     setIsVisible(true);
                     console.log("SUCCESS", body)
 
-                  } else {
+                  } else if(signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null){
                     setErrorsSignup(body.error)
                     console.log("ERROR", body.error)
                   }
