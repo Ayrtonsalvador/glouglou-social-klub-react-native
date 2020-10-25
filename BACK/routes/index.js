@@ -1,7 +1,6 @@
 
 var express = require('express');
 var router = express.Router();
-
 var mongoose = require('mongoose');
 
 var uid2 = require('uid2')
@@ -46,7 +45,7 @@ router.post('/sign-up', async function(req, res, next) {
       email: req.body.emailFromFront,
       telephone: req.body.telFromFront,
       status: req.body.statusFromFront,
-
+      
     })
   }
     saveCaviste = await newCaviste.save()
