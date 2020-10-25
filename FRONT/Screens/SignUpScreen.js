@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
@@ -20,10 +20,15 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   const [listErrorsSignup, setErrorsSignup] = useState([])
 
 
+  // useEffect(() => {
+  //   async function fetchData() {
+
+  //   fetchData();
+  // }, [])
+
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
       <View>
-        <Text>Erreur</Text>
         <Text>{error}</Text>
       </View>
     )
@@ -51,10 +56,10 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
           />
         </View>
       </View>
+    )
     //   POPUP CONFIRMATION INSCRIPTION
 
     //   FORMULAIRE INSCRIPTION
-    )
   } else {
     return (
 
@@ -99,7 +104,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 }
                 onChangeText={(val) => {
                   setSignUpEmail(val);
-                 }}
+                }}
               />
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -118,34 +123,51 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
               />
 
               <Button
-                containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
-                title="Je suis vigneron"
-                type="solid"
-                buttonStyle={{ backgroundColor: '#FFAE34' }}
-                onPress={() => {
-                  // setIsVisible(true);
-                }}
-              />
-
-              <Button
                 onPress={async () => {
-
                   setSignUpStatus('Vigneron')
 
-                  const data = await fetch('/sign-up', {
+                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
                   })
-
-                  const body = await data.json()
-
+                  var body = await data.json()
+                  
                   if (body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
                     console.log("SUCCESS", body)
 
-                  } else if(signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null){
+                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
+                    setErrorsSignup(body.error)
+                    console.log("ERROR", body.error)
+                  }
+                }}
+
+                containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
+                title="Je suis vigneron"
+                type="solid"
+                buttonStyle={{ backgroundColor: '#FFAE34' }}
+              />
+
+              <Button
+                onPress={async () => {
+
+                  setSignUpStatus('Caviste')
+
+                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                  })
+                  var body = await data.json()
+                  
+                  if (body.result == true) {
+                    setUserExists(true);
+                    setIsVisible(true);
+                    console.log("SUCCESS", body)
+
+                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
                     setErrorsSignup(body.error)
                     console.log("ERROR", body.error)
                   }
@@ -177,6 +199,8 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   },
   box: {
+    // width: '80%',
+    // height: '70%',
     width: 300,
     height: 550,
     backgroundColor: '#FFFFFF',
@@ -194,6 +218,8 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   },
   img: {
+    // width: '20%',
+    // height: '20%',
     width: 150,
     height: 150,
     margin: 10,
@@ -201,6 +227,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   popup: {
+    // width: '70%',
+    // height: '50%',
     width: 250,
     height: 300,
     backgroundColor: '#FFFFFF',
@@ -214,8 +242,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUsername: function(username) { 
-      dispatch( {type: 'saveUsername', username: username }) 
+    onSubmitUsername: function (username) {
+      dispatch({ type: 'saveUsername', username: username })
     }
   }
 }
