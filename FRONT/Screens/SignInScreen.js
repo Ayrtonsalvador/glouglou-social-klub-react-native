@@ -59,7 +59,7 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
               })
               var body = await data.json()
             }}
-            
+
             containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
             title="Rejoindre le club"
             type="solid"

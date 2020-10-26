@@ -35,11 +35,6 @@ import userinfo from './reducers/userinfo';
 
 const store = createStore(combineReducers({ userinfo }));
 
-// useEffect(async () => {
-//   const response = await fetch('/sign-up')
-//   const jsonResponse = await response.json()
-//   console.log(jsonResponse)
-// })
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -151,6 +146,7 @@ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 export default function App() {
 
+  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
   useEffect(() => { 
     (async () => {
       var rawData = await fetch("http://172.17.1.151:3000/sign-up");

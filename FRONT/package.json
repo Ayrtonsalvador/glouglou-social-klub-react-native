@@ -7,7 +7,7 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
- "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@ant-design/react-native": "^4.0.5",
     "@react-native-community/masked-view": "^0.1.10",

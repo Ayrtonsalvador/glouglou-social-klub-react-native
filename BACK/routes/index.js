@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var router = express.Router();
 
 var uid2 = require('uid2')
 var SHA256 = require('crypto-js/sha256')
@@ -83,6 +84,8 @@ router.post('/sign-up', async function (req, res, next) {
 
   res.json({ result, saveCaviste, saveVigneron, error })
 });
+
+// ----------------------WORK IN PROGRESS --------------------\\
 
 router.post('/sign-in', async function (req, res, next) {
 
