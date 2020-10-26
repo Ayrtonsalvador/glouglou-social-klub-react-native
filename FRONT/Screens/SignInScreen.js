@@ -57,8 +57,8 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
             onPress={() => {
-              navigation.navigate('ProfileCaviste');
-              // navigation.navigate('ProfileVigneron');
+             // navigation.navigate('ProfileCaviste');
+              navigation.navigate('ProfileVigneron');
             }}
           />
         </View>

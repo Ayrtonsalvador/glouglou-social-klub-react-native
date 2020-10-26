@@ -152,7 +152,7 @@ export default function App() {
   //if()
   return (
     <Provider store={store}>
-      <NavigationCaviste />
+      <NavigationVigneron />
     </Provider>
   );
 }
