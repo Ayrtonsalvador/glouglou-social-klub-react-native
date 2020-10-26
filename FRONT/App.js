@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React from 'react';
 
 // Screens Communs
