@@ -22,67 +22,66 @@ router.post('/sign-up', async function(req, res, next) {
   var saveCaviste = null
   var saveVigneron = null
 
-  // SIGNUP CAVISTES
-  const dataCaviste = await CavisteModel.findOne({
-    email: req.body.emailFromFront
-  })
-
-  if(dataCaviste != null){
-    error.push('utilisateur déjà présent')
-  }
-
+  // CHAMPS VIDES
   if(req.body.usernameFromFront == ''
   || req.body.emailFromFront == ''
   || req.body.telFromFront == ''
   ){
-    error.push('champs vides')
+    error.push('veuillez compléter les champs vides !')
   }
 
-  if(error.length == 0){
+  // SIGNUP CAVISTES
+  const dataCaviste = await CavisteModel.findOne({
+    Email: req.body.emailFromFront
+  })
+
+  console.log("DATA CAVISTE", dataCaviste)
+
+  if(dataCaviste != null){
+    error.push('Utilisateur déjà présent')
+  }
+
+  if(error.length == 0 && req.body.statusFromFront === 'Caviste'){
 
     var newCaviste = new CavisteModel({
-      username: req.body.usernameFromFront,
-      email: req.body.emailFromFront,
-      telephone: req.body.telFromFront,
-      status: req.body.statusFromFront,
+      Nom: req.body.usernameFromFront,
+      Email: req.body.emailFromFront,
+      Tel: req.body.telFromFront,
+      Status: req.body.statusFromFront,
       
     })
-  }
     saveCaviste = await newCaviste.save()
+  }
+  
+  // console.log("CAVISTE", saveCaviste)
 
   // SIGNUP VIGNERONS
   const dataVigneron = await VigneronModel.findOne({
-    email: req.body.emailFromFront
+    Email: req.body.emailFromFront
   })
 
   if(dataVigneron != null){
-    error.push('utilisateur déjà présent')
+    error.push('Utilisateur déjà présent')
   }
 
-  if(req.body.usernameFromFront == ''
-  || req.body.emailFromFront == ''
-  || req.body.telFromFront == ''
-  ){
-    error.push('champs vides')
-  }
-
-  if(error.length == 0){
+  if(error.length == 0 && req.body.statusFromFront === 'Vigneron'){
 
     var newVigneron = new VigneronModel({
-      username: req.body.usernameFromFront,
-      email: req.body.emailFromFront,
-      telephone: req.body.telFromFront,
-      status: req.body.statusFromFront,
+      Nom: req.body.usernameFromFront,
+      Email: req.body.emailFromFront,
+      Tel: req.body.telFromFront,
+      Status: req.body.statusFromFront,
 
     })
-  }
+    console.log("VIGNERON", newVigneron)
     saveVigneron = await newVigneron.save()
+  }
 
     res.json({result, saveCaviste, saveVigneron, error})
 });
 
 router.post('/sign-in', async function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.json('index', { title: 'Express' });
 });
 
 module.exports = router;

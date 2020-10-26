@@ -14,6 +14,6 @@ var VigneronSchema = mongoose.Schema ({
     Photo: String
 })
 
-var VigneronModel = mongoose.model('Vigneron', VigneronSchema);
+var VigneronModel = mongoose.model('vignerons', VigneronSchema);
 
 module.exports = VigneronModel;

@@ -1,4 +1,4 @@
-require('./models/connect')
+require('./models/Connect')
 
 var createError = require('http-errors');
 var express = require('express');
