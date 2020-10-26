@@ -14,3 +14,5 @@ var VigneronSchema = mongoose.Schema ({
 })
 
 const VigneronModel = mongoose.model('Vigneron', VigneronSchema);
+
+module.exports = VigneronModel

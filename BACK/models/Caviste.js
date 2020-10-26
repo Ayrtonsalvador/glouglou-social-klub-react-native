@@ -14,3 +14,5 @@ var CavisteSchema = mongoose.Schema ({
 })
 
 const CavisteModel = mongoose.model('cavistes', CavisteSchema);
+
+module.exports = CavisteModel

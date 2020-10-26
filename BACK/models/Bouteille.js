@@ -13,3 +13,5 @@ var BouteilleSchema = mongoose.Schema ({
 })
 
 const BouteilleModel = mongoose.model('bouteilles', BouteilleSchema);
+
+module.exports = BouteilleModel

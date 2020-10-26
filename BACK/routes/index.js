@@ -3,9 +3,9 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 
-var BouteilleModel = require('./models/Bouteille');
-var CavisteModel = require('./models/Caviste');
-var VigneronModel = require('./models/Vigneron');
+var BouteilleModel = require('../models/Bouteille');
+var CavisteModel = require('../models/Caviste');
+var VigneronModel = require('../models/Vigneron');
 
 
 /* GET home page. */
