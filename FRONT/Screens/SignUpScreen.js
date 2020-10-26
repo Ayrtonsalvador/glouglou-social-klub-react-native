@@ -29,7 +29,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   })
 
   //   POPUP CONFIRMATION INSCRIPTION
-  if (userExists) {
+  if (isVisible) {
     return (
 
       <View style={styles.container}>
@@ -126,6 +126,8 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
+
+                  console.log("RESPONSE", response);
                   
                   if (response.result == true) {
                     setUserExists(true);
@@ -226,8 +228,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUsername: function (username) {
-      dispatch({ type: 'saveUsername', username: username })
+    onSubmitUsername: function (userinfo) {
+      dispatch({ type: 'saveUserInfo', username: username, signUpStatus: status })
     }
   }
 }

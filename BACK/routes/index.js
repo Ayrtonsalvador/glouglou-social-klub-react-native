@@ -12,21 +12,21 @@ var CavisteModel = require('../models/Caviste');
 var VigneronModel = require('../models/Vigneron');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'GlouGlou Social Club' });
 });
 
-router.post('/sign-up', async function(req, res, next) {
+router.post('/sign-up', async function (req, res, next) {
   var error = []
   var result = false
   var saveCaviste = null
   var saveVigneron = null
 
   // CHAMPS VIDES
-  if(req.body.usernameFromFront == ''
-  || req.body.emailFromFront == ''
-  || req.body.telFromFront == ''
-  ){
+  if (req.body.usernameFromFront == ''
+    || req.body.emailFromFront == ''
+    || req.body.telFromFront == ''
+  ) {
     error.push('veuillez compléter les champs vides !')
   }
 
@@ -35,24 +35,25 @@ router.post('/sign-up', async function(req, res, next) {
     Email: req.body.emailFromFront
   })
 
-  console.log("DATA CAVISTE", dataCaviste)
-
-  if(dataCaviste != null){
+  if (dataCaviste != null) {
+    result = false;
     error.push('Utilisateur déjà présent')
   }
 
-  if(error.length == 0 && req.body.statusFromFront === 'Caviste'){
+  if (error.length == 0 && req.body.statusFromFront === 'Caviste') {
+
+    result = true;
 
     var newCaviste = new CavisteModel({
       Nom: req.body.usernameFromFront,
       Email: req.body.emailFromFront,
       Tel: req.body.telFromFront,
       Status: req.body.statusFromFront,
-      
+
     })
     saveCaviste = await newCaviste.save()
   }
-  
+
   // console.log("CAVISTE", saveCaviste)
 
   // SIGNUP VIGNERONS
@@ -60,11 +61,14 @@ router.post('/sign-up', async function(req, res, next) {
     Email: req.body.emailFromFront
   })
 
-  if(dataVigneron != null){
+  if (dataVigneron != null) {
+    result = false;
     error.push('Utilisateur déjà présent')
   }
 
-  if(error.length == 0 && req.body.statusFromFront === 'Vigneron'){
+  if (error.length == 0 && req.body.statusFromFront === 'Vigneron') {
+
+    result = true;
 
     var newVigneron = new VigneronModel({
       Nom: req.body.usernameFromFront,
@@ -77,11 +81,60 @@ router.post('/sign-up', async function(req, res, next) {
     saveVigneron = await newVigneron.save()
   }
 
-    res.json({result, saveCaviste, saveVigneron, error})
+  res.json({ result, saveCaviste, saveVigneron, error })
 });
 
-router.post('/sign-in', async function(req, res, next) {
-  res.json('index', { title: 'Express' });
+router.post('/sign-in', async function (req, res, next) {
+
+  var result = false
+  var user = null
+  var error = []
+  var token = null
+
+  if (req.body.emailFromFront == ''
+    || req.body.passwordFromFront == ''
+  ) {
+    error.push('veuillez compléter les champs vides !')
+  }
+
+  if (error.length == 0) {
+    result = true;
+
+    // SIGN-IN CAVISTES - 1ERE ID
+    const userCaviste = await CavisteModel.findOne({
+      Email: req.body.emailFromFront,
+    })
+    console.log("SIGN IN CAVISTE", userCaviste)
+  }
+
+  if (userCaviste) {
+    saveCaviste.push({
+      MDP: SHA256(req.body.passwordFromFront + user.salt).toString(encBase64),
+      token: uid2(32),
+      salt: salt
+    })
+  }
+
+  // SIGN-IN VIGNERONS - 1ERE ID
+//   const userVigneron = await VigneronModel.findOne({
+//     Email: req.body.emailFromFront,
+//   })
+//   console.log("SIGN IN VIGNERON", userCaviste)
+// }
+
+// 2EME ID
+//   if(passwordEncrypt == user.password){
+//     result = true
+//     token = user.token
+//   } else {
+//     result = false
+//     error.push('mot de passe incorrect')
+//   }
+
+// } else {
+//   error.push('email incorrect')
+// }
+res.json({ result, user, error, token })
 });
 
 module.exports = router;

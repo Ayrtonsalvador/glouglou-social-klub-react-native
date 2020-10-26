@@ -1,6 +1,6 @@
 console.disableYellowBox = true;
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -31,9 +31,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import username from './reducers/username';
+import userinfo from './reducers/userinfo';
 
-const store = createStore(combineReducers({ username }));
+const store = createStore(combineReducers({ userinfo }));
 
 // useEffect(async () => {
 //   const response = await fetch('/sign-up')
@@ -149,8 +149,15 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 
-
 export default function App() {
+
+  useEffect(() => { 
+    (async () => {
+      var rawData = await fetch("http://172.17.1.151:3000/sign-up");
+      var data = await rawResponse.json()
+    })();
+  }, []);
+
   //if()
   return (
     <Provider store={store}>
@@ -161,7 +168,7 @@ export default function App() {
 // else {
 //   return(
 //     <Provider store={store}>
-        <NavigationVigneron />      
+        // <NavigationVigneron />      
 //   </Provider>
 //   )
 // }

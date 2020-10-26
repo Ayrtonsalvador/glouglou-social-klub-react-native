@@ -7,6 +7,8 @@ var VigneronSchema = mongoose.Schema ({
     Email: String,
     MDP: String,
     Status: String,
+    token: String,
+    salt: String, 
 
     Etablissement: String,
     Ville: String,
