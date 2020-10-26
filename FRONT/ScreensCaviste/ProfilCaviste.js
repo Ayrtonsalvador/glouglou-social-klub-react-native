@@ -7,22 +7,18 @@ export default function ProfileScreen({ navigation }) {
     <View style={{ flex: 1 }}>
       <Header
         containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-        centerComponent={{ text: 'MON PROFIL GLOUGLOU', marginTop: 30 }}
+        centerComponent={{ text: 'MON PROFIL Caviste', marginTop: 30 }}
         >
         <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
       </Header>
-
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
-        <Button
-          containerStyle={{ borderRadius: 15, }}
-          title="Logout"
-          type="solid"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('First');
-          }}>
-        </Button>
-      </View>
+      <Button
+        title="Logout"
+        type="solid"
+        buttonStyle={{ backgroundColor: '#FF9900' }}
+        onPress={() => {
+          navigation.navigate('First');
+        }}>
+      </Button>
     </View>
   );
 }

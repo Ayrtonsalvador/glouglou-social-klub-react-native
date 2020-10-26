@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
@@ -8,9 +9,9 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
 
-var socket = socketIOClient("http://172.17.1.151:3000");
+//  var socket = socketIOClient("http://IP_LOCALE:3000");
 
-function ChatCaviste({ navigation, pseudo }) {
+function ChatVigneron({ navigation, pseudo }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -75,7 +76,7 @@ function ChatCaviste({ navigation, pseudo }) {
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
             onPress={() => {
-              navigation.navigate('MessageCaviste');
+              navigation.navigate('MessageVigneron');
             }}>
             </Button>
 
@@ -154,4 +155,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null
-)(ChatCaviste);
+)(ChatVigneron);

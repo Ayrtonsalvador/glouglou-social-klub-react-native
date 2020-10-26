@@ -6,6 +6,7 @@ var VigneronSchema = mongoose.Schema ({
     Tel: String,
     Email: String,
     MDP: String,
+    Status: String,
 
     Etablissement: String,
     Ville: String,

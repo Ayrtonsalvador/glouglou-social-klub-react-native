@@ -2,18 +2,22 @@ console.disableYellowBox = true;
 
 import React from 'react';
 
+// Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
 import SignInScreen from './Screens/SignInScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 
+// Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
 import ChatCaviste from './ScreensCaviste/ChatCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
 import MessageCaviste from './ScreensCaviste/MessageCaviste';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
+// Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
+import ChatVigneron from './ScreensVigneron/ChatVigneron';
 import MessageVigneron from './ScreensVigneron/MessageVigneron';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
@@ -27,31 +31,37 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import pseudo from './reducers/pseudo';
+import username from './reducers/username';
 
-const store = createStore(combineReducers({ pseudo }));
+const store = createStore(combineReducers({ username }));
+
+// useEffect(async () => {
+//   const response = await fetch('/sign-up')
+//   const jsonResponse = await response.json()
+//   console.log(jsonResponse)
+// })
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
-  Profile: ProfileScreen,
-  Catalogue: CatalogueCaviste,
-  Chat: ChatScreenVi,
-  Cave: CaveScreen,
+  ProfileCaviste: ProfilCaviste,
+  FavorisCaviste: FavoriteCaviste,
+  ChatCaviste: ChatCaviste,
+  CatalogueCaviste: CatalogueCaviste,
 
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'heart';
-        } else if (navigation.state.routeName == 'Chat') {
-          iconName = 'comment-dots';
-        } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'search';
-          // si vigneron
-        } else if (navigation.state.routeName == 'Profile') {
+        if (navigation.state.routeName == 'ProfileCaviste') {
           iconName = 'user';
+        } else if (navigation.state.routeName == 'FavorisCaviste') {
+          iconName = 'heart';
+        } else if (navigation.state.routeName == 'ChatCaviste') {
+          iconName = 'comments-o';
+          // si vigneron
+        } else if (navigation.state.routeName == 'CatalogueCaviste') {
+          iconName = 'search';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -77,6 +87,7 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
+  MessageCaviste: MessageCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
@@ -86,25 +97,25 @@ const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // STACK-NAVIGATION VIGNERON
 var BottomNavigatorVigneron = createBottomTabNavigator({
-  Profile: ProfileScreen,
-  Catalogue: CatalogueCaviste,
-  Chat: ChatScreenVi,
-  Cave: CaveScreen,
+  ProfileVigneron: ProfilVigneron,
+  Cave: CaveVigneron,
+  Vin: AddVigneron,
+  ChatVigneron: ChatVigneron,
 
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'heart';
-        } else if (navigation.state.routeName == 'Chat') {
-          iconName = 'comment-dots';
-        } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'search';
-          // si vigneron
-        } else if (navigation.state.routeName == 'Profile') {
+        if (navigation.state.routeName == 'ProfileVigneron') {
           iconName = 'user';
+        } else if (navigation.state.routeName == 'ChatVigneron') {
+          iconName = 'comments-o';
+        } else if (navigation.state.routeName == 'Cave') {
+          iconName = 'home';
+          // si vigneron
+        } else if (navigation.state.routeName == 'Vin') {
+          iconName = 'glass';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -114,7 +125,6 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
      
-  
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
@@ -130,6 +140,7 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
+  MessageVigneron: MessageVigneron,
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
@@ -140,11 +151,17 @@ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 
 export default function App() {
-  //if .. else
+  //if()
   return (
     <Provider store={store}>
-      <NavigationCaviste />
       <NavigationVigneron />
     </Provider>
   );
 }
+// else {
+//   return(
+//     <Provider store={store}>
+        // <NavigationCaviste />
+//   </Provider>
+//   )
+// }

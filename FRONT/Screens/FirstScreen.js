@@ -64,13 +64,13 @@ function FirstScreenOliv({ navigation }) {
             </View>
 
             <View style={styles.box2}>
-              <Text style={styles.text}>CÔTÉS VIGNERONS</Text>
+              <Text style={styles.text}>CÔTÉ VIGNERONS</Text>
               <Text style={{ width: 200, justifyContent: "center", padding:5  }}>Nous participons au dévellopement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.</Text>
               {pagination}
             </View>
 
             <View style={styles.box2}>
-              <Text style={styles.text}>CÔTÉS CAVISTES</Text>
+              <Text style={styles.text}>CÔTÉ CAVISTES</Text>
               <Text style={{ width: 200, justifyContent: "center", padding:5 }}>Nous aidons les restaurateurs à étoffer leur carte grâce à une préselection de références de petits producteurs.</Text>
               {pagination}
             </View>
