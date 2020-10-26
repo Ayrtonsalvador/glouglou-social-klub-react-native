@@ -8,6 +8,8 @@ export default function AddVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus');
 
+  // Demander accès à la bibliothèque photo
+
   return (
 
     <View style={{ flex: 1 }}>
@@ -80,7 +82,7 @@ export default function AddVigneron({ navigation }) {
               />
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView> 
       </View>
     </View>
   );
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     // width: '80%',
     // height: '70%',
     width: 350,
-    height: 380,
+    height: 400,
     alignItems: 'center',
     justifyContent: 'center',
   }
