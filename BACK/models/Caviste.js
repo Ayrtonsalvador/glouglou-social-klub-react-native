@@ -6,6 +6,7 @@ var CavisteSchema = mongoose.Schema ({
     Tel: String,
     Email: String,
     MDP: String,
+    Status: String,
 
     Domaine: String,
     Region : String,

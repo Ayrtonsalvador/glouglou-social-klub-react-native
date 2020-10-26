@@ -6,6 +6,7 @@ var VigneronSchema = mongoose.Schema ({
     Tel: String,
     Email: String,
     MDP: String,
+    Status: String,
 
     Etablissement: String,
     Ville: String,
@@ -13,6 +14,6 @@ var VigneronSchema = mongoose.Schema ({
     Photo: String
 })
 
-const VigneronModel = mongoose.model('Vigneron', VigneronSchema);
+var VigneronModel = mongoose.model('Vigneron', VigneronSchema);
 
-module.exports = VigneronModel
+module.exports = VigneronModel;

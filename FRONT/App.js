@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React from 'react';
 
 // Screens Communs
@@ -15,11 +13,11 @@ import MessageCaviste from './ScreensCaviste/MessageCaviste';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
-// import AddVigneron from './ScreensVigneron/AddVigneron';
-// import CaveVigneron from './ScreensVigneron/CaveVigneron';
-// import ChatVigneron from './ScreensVigneron/ChatVigneron';
-// import MessageVigneron from './ScreensVigneron/MessageVigneron';
-// import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
+import AddVigneron from './ScreensVigneron/AddVigneron';
+import CaveVigneron from './ScreensVigneron/CaveVigneron';
+import ChatVigneron from './ScreensVigneron/ChatVigneron';
+import MessageVigneron from './ScreensVigneron/MessageVigneron';
+import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -31,9 +29,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import pseudo from './reducers/pseudo';
+import username from './reducers/username';
 
-const store = createStore(combineReducers({ pseudo }));
+const store = createStore(combineReducers({ username }));
+
+// useEffect(async () => {
+//   const response = await fetch('/sign-up')
+//   const jsonResponse = await response.json()
+//   console.log(jsonResponse)
+// })
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -90,67 +94,72 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
 const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // STACK-NAVIGATION VIGNERON
-// var BottomNavigatorVigneron = createBottomTabNavigator({
-//   ProfileVigneron: ProfilVigneron,
-//   Cave: CaveVigneron,
-//   Vin: AddVigneron,
-//   MessageVigneron: MessageVigneron,
+var BottomNavigatorVigneron = createBottomTabNavigator({
+  ProfileVigneron: ProfilVigneron,
+  Cave: CaveVigneron,
+  Vin: AddVigneron,
+  ChatVigneron: ChatVigneron,
 
-// },
-//   {
-//     defaultNavigationOptions: ({ navigation }) => ({
-//       tabBarIcon: ({ tintColor }) => {
-//         var iconName;
-//         if (navigation.state.routeName == 'ProfileVigneron') {
-//           iconName = 'user';
-//         } else if (navigation.state.routeName == 'ChatVigneron') {
-//           iconName = 'comments-o';
-//         } else if (navigation.state.routeName == 'Cave') {
-//           iconName = 'home';
-//           // si vigneron
-//         } else if (navigation.state.routeName == 'Vin') {
-//           iconName = 'glass';
-//         }
+},
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ tintColor }) => {
+        var iconName;
+        if (navigation.state.routeName == 'ProfileVigneron') {
+          iconName = 'user';
+        } else if (navigation.state.routeName == 'ChatVigneron') {
+          iconName = 'comments-o';
+        } else if (navigation.state.routeName == 'Cave') {
+          iconName = 'home';
+          // si vigneron
+        } else if (navigation.state.routeName == 'Vin') {
+          iconName = 'glass';
+        }
 
-//         return <Icon name={iconName} size={25} color={tintColor} />;
-//       },
-//     }),
-//     tabBarOptions: {
-//       activeTintColor: '#130f40',
-//       inactiveTintColor: '#FFFFFF',
+        return <Icon name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#130f40',
+      inactiveTintColor: '#FFFFFF',
      
-  
-//       style: {
-//         backgroundColor: '#FCDF23',
-//         height: 40,
-//         shadowColor: 'transparent',
-//         borderColor : '#FCDF23',
+      style: {
+        backgroundColor: '#FCDF23',
+        height: 40,
+        shadowColor: 'transparent',
+        borderColor : '#FCDF23',
         
-//       }
-//     }
+      }
+    }
 
-//   });
+  });
 
-//   StackNavigatorVigneron = createStackNavigator({
-//   First: FirstScreen,
-//   SignIn: SignInScreen,
-//   SignUp: SignUpScreen,
-//   ChatVigneron: ChatVigneron,
-//   BottomNavigatorVigneron: BottomNavigatorVigneron,
-// },
-//   { headerMode: 'none' }
-// );
+  StackNavigatorVigneron = createStackNavigator({
+  First: FirstScreen,
+  SignIn: SignInScreen,
+  SignUp: SignUpScreen,
+  MessageVigneron: MessageVigneron,
+  BottomNavigatorVigneron: BottomNavigatorVigneron,
+},
+  { headerMode: 'none' }
+);
 
-// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 
 
 export default function App() {
-  //if .. else
+  //if()
   return (
     <Provider store={store}>
       <NavigationCaviste />
-      {/* <NavigationVigneron /> */}
     </Provider>
   );
 }
+// else {
+//   return(
+//     <Provider store={store}>
+        // <NavigationCaviste />
+//   </Provider>
+//   )
+// }
