@@ -52,7 +52,11 @@ export default function CatalogueCaviste() {
       </View>
     );
   }
+<<<<<<< HEAD
 
+=======
+//}
+>>>>>>> d1efbfbc8eb59ba74b7e02d68124826024abd1e7
 
 // Carousel fiche produit
 

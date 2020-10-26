@@ -25,8 +25,6 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             containerStyle={{ marginBottom: 25, width: '70%' }}
             inputStyle={{ marginLeft: 10 }}
             placeholder='Email'
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
             leftIcon={
               <Icon
                 name='user'
@@ -41,8 +39,6 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             inputStyle={{ marginLeft: 10 }}
             placeholder='Mot de passe'
             secureTextEntry={true}
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
             leftIcon={
               <Icon
                 name='key'
@@ -52,14 +48,22 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
             }
           />
           <Button
+            onPress={async () => {
+               navigation.navigate('ProfileCaviste');
+              // navigation.navigate('ProfileVigneron');
+
+              var data = await fetch("http://172.17.1.151:3000/sign-in", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `emailFromFront=${signUpEmail}&passwordFromFront=${signUpPassword}`
+              })
+              var body = await data.json()
+            }}
+
             containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
             title="Rejoindre le club"
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
-            onPress={() => {
-              // navigation.navigate('ProfileCaviste');
-              navigation.navigate('ProfileVigneron');
-            }}
           />
         </View>
         </KeyboardAvoidingView>
@@ -94,6 +98,7 @@ const styles = StyleSheet.create({
   img: {
     width: 200,
     height: 200,
+    marginLeft: 20,
     justifyContent: 'center',
     alignItems: 'center',
   }

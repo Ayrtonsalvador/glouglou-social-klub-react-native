@@ -20,12 +20,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   const [listErrorsSignup, setErrorsSignup] = useState([])
 
 
-  // useEffect(() => {
-  //   async function fetchData() {
-
-  //   fetchData();
-  // }, [])
-
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
       <View>
@@ -35,7 +29,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   })
 
   //   POPUP CONFIRMATION INSCRIPTION
-  if (userExists) {
+  if (isVisible) {
     return (
 
       <View style={styles.container}>
@@ -126,22 +120,19 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 onPress={async () => {
                   setSignUpStatus('Vigneron')
 
-                  var data = await fetch("http://adress-ip", {
+                  var rawResponse = await fetch("http://adress-ip:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Vigneron`
                   })
-                  var body = await data.json()
+                  var response = await rawResponse.json()
+
+                  console.log("RESPONSE", response);
                   
-                  if (body.result == true) {
+                  if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                    console.log("SUCCESS", body)
-
-                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
-                    setErrorsSignup(body.error)
-                    console.log("ERROR", body.error)
-                  }
+                  } 
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -155,22 +146,17 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
 
                   setSignUpStatus('Caviste')
 
-                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
+                  var data = await fetch("http://IP_ADRESS:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Caviste`
                   })
                   var body = await data.json()
                   
                   if (body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                    console.log("SUCCESS", body)
-
-                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
-                    setErrorsSignup(body.error)
-                    console.log("ERROR", body.error)
-                  }
+                  } 
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -242,8 +228,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUsername: function (username) {
-      dispatch({ type: 'saveUsername', username: username })
+    onSubmitUsername: function (userinfo) {
+      dispatch({ type: 'saveUserInfo', username: username, signUpStatus: status })
     }
   }
 }

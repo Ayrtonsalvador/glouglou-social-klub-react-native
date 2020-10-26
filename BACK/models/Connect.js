@@ -12,5 +12,3 @@ function(err){
    console.log(err);
 }
 )
-
-// 'mongodb+srv://Juliettefontaine:94Mongo.@cluster0.g9yct.mongodb.net/GlouBDD?retryWrites=true&w=majority'

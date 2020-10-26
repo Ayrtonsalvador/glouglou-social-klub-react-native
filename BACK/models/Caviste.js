@@ -7,6 +7,8 @@ var CavisteSchema = mongoose.Schema ({
     Email: String,
     MDP: String,
     Status: String,
+    token: String,
+    salt: String, 
 
     Domaine: String,
     Region : String,
@@ -14,6 +16,6 @@ var CavisteSchema = mongoose.Schema ({
     Desc: String
 })
 
-var CavisteModel = mongoose.model('cavistes', CavisteSchema);
+const CavisteModel = mongoose.model('cavistes', CavisteSchema);
 
-module.exports = CavisteModel;
+module.exports = CavisteModel
