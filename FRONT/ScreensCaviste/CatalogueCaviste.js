@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React, { useState } from 'react';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -54,7 +52,7 @@ export default function CatalogueCaviste() {
       </View>
     );
   }
-}
+
 
 // Carousel fiche produit
 

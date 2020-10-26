@@ -126,7 +126,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 onPress={async () => {
                   setSignUpStatus('Vigneron')
 
-                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
+                  var data = await fetch("http://adress-ip", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
