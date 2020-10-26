@@ -13,4 +13,6 @@ var CavisteSchema = mongoose.Schema ({
     Desc: String
 })
 
-const CavisteModel = mongoose.model('cavistes', CavisteSchema);
+var CavisteModel = mongoose.model('Caviste', CavisteSchema);
+
+module.exports = CavisteModel;
