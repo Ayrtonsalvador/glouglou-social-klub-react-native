@@ -154,14 +154,14 @@ export default function App() {
   //if()
   return (
     <Provider store={store}>
-      <NavigationVigneron />
+      <NavigationCaviste />
     </Provider>
   );
 }
 // else {
 //   return(
 //     <Provider store={store}>
-        // <NavigationCaviste />
+        <NavigationVigneron />      
 //   </Provider>
 //   )
 // }

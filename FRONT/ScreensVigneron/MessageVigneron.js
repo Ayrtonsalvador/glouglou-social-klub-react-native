@@ -9,7 +9,7 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
 
-var socket = socketIOClient("http://172.17.1.151:3000");
+var socket = socketIOClient("http://IP_ADRESS:3000");
 
 export default function MessageVigneron({ navigation }) {
   return (

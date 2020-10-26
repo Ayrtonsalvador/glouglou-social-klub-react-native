@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View, Image, KeyboardAvoidingView, Text } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +26,7 @@ export default function AddVigneron({ navigation }) {
         <KeyboardAvoidingView behavior="position" enabled>
 
           <View style={styles.box1}>
-
+            <Text>Ajouter vos photos</Text>
             <Avatar
               rounded
               icon={{ name: 'plus', type: 'font-awesome' }}
@@ -53,14 +53,14 @@ export default function AddVigneron({ navigation }) {
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
-                placeholder='Milésime'
+                placeholder='Millésime'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
               />
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
-                placeholder='Appelation'
+                placeholder='Appellation'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
               />
