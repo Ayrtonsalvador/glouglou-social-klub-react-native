@@ -11,17 +11,50 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
 export default function CatalogueCaviste() {
-  return (
-        <View style={{ flex: 1 }}>
-          <Header
-            containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-            centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
-            >
-            <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
-          </Header>
-        </View>
-      );
-    }
+
+  var Catalogue = [{
+    Vigneron: "Mathieu Vieules",
+    Domaine: "Domaine Philémon",
+    Region: "Sud Ouest",
+    Ville: "Villeuneuve-sur-Ver",
+    Nom: "Duras",
+    Couleur: "Rouge",
+    AOC: "AOC Gaillac",
+    Desc: "Les notes d'épices et de poivre s'associent aux tanins souples offrant un bon compromis en bouche. A boire sur les viandes en sauce, les fromages affinés.",
+    Cepage: "Gaillacois",
+    Millesime: "2018",
+    Photo: "../assets/imgdefault.png",
+  }];
+
+  // if (Catalogue > 0) {
+  //   CatalaogueItems = Catalogue.map((url, i) => {   return () });
+     <Card>
+       <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
+        <Badge status="success" value="homme" />
+        <Badge status="success" value="70 ans" />
+        <Badge status="success" value="barbe" />
+        <Badge status="success" value="joyeux !" />
+        <Badge status="success" value="cheveux gris" />
+      </Card>
+  
+
+    return (
+      <View style={{ flex: 1 }}>
+        <Header
+          containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}
+          centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
+        >
+          <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
+        </Header>
+
+        <ScrollView style={{ marginTop: 25 }}>
+          <Text h4 style={{ textAlign: 'center' }}>John's Gallery</Text>
+          {UrlGallery}
+        </ScrollView>
+      </View>
+    );
+  }
+}
 
 // Carousel fiche produit
 
@@ -98,7 +131,7 @@ export default function CatalogueCaviste() {
 // //                     onPress={() => {
 // //                         navigation.navigate('SignIn');
 // //                     }}>S'IDENTIFIER</Text>
-                    
+
 
 // //                     <Text style={{backgroundColor: '#FFAE34', margin:10}}
 // //                     onPress={() => {
