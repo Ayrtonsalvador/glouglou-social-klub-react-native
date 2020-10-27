@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -23,16 +23,22 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import { Ionicons } from '@expo/vector-icons';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 
-// ATTENTION ADRESS IP 
+// FONTS
+import * as Font from 'expo-font';
+import {AppLoading} from 'expo';
 
+const getFonts = () => Font.loadAsync({
+  // 'GothicA1-Bold': require('../assets/fonts/Gothic/GothicA1-Bold.ttf'), 
+  // 'GothicA1-Thin': require('../assets/fonts/Gothic_A1/GothicA1-Light.ttf'), 
+})
+
+// ATTENTION ADRESS IP 
 const store = createStore(combineReducers({ userstatus }));
 
 
@@ -48,15 +54,14 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        var type;
         if (navigation.state.routeName == 'ProfileCaviste') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'FavorisCaviste') {
-          iconName = 'heart';
+          iconName = 'ios-heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
-          iconName = 'commenting-o';
+          iconName = 'ios-chatboxes';
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
-          iconName = 'search';
+          iconName = 'ios-search';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -103,16 +108,16 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'commenting-o';
+          iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'home';
+          iconName = 'ios-home';
         } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'glass';
+          iconName = 'ios-wine';
         }
 
-        return <Icon name={iconName} size={25} color={tintColor} />;
+        return <Icon name={iconName} size={30} color={tintColor} />;
       },
     }),
     tabBarOptions: {
@@ -146,20 +151,21 @@ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 export default function App(userstatus) {
 
-  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
+  const [ fontsLoaded, setFontsLoaded ] = useState(false);
 
-  // if (userstatus == 'Caviste') {
+  if(fontsLoaded){
     return (
       <Provider store={store}>
         {/* <NavigationCaviste /> */}
         <NavigationVigneron />
       </Provider>
-     )} 
-// else {
-  //   return (
-  //     <Provider store={store}>
-  //       <NavigationVigneron />
-  //     </Provider>
-  //   )
-  // }
-  // }
+     )
+    } else {
+       return(
+        <AppLoading
+          startAsync={getFonts}
+          onFinish={()=> setFontsLoaded(true)}
+        />
+       )
+     }
+    }
