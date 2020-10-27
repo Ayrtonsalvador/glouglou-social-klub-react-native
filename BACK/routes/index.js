@@ -42,7 +42,7 @@ router.post('/sign-up', async function (req, res, next) {
     result = false;
     error.push('Utilisateur déjà présent')
   }
-  
+
   if (error.length == 0 && req.body.statusFromFront === 'Caviste') {
 
     var salt = uid2(32)
@@ -51,14 +51,14 @@ router.post('/sign-up', async function (req, res, next) {
       Email: req.body.emailFromFront,
       Tel: req.body.telFromFront,
       Status: req.body.statusFromFront,
-      MDP: SHA256(req.body.passwordFromFront+salt).toString(encBase64),
+      MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
       salt: salt
 
     })
     saveCaviste = await newCaviste.save()
 
-    if(saveCaviste) {
+    if (saveCaviste) {
       result = true
       token = saveCaviste.token
     }
@@ -73,8 +73,8 @@ router.post('/sign-up', async function (req, res, next) {
   if (dataVigneron != null) {
     result = false;
     error.push('Utilisateur déjà présent')
-  } 
-  
+  }
+
   if (error.length == 0 && req.body.statusFromFront === 'Vigneron') {
 
     var salt = uid2(32)
@@ -83,7 +83,7 @@ router.post('/sign-up', async function (req, res, next) {
       Email: req.body.emailFromFront,
       Tel: req.body.telFromFront,
       Status: req.body.statusFromFront,
-      MDP: SHA256(req.body.passwordFromFront+salt).toString(encBase64),
+      MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
       salt: salt
 
@@ -107,6 +107,7 @@ router.post('/sign-in', async function (req, res, next) {
   var result = false
   var error = []
   var token = null
+  var status = null
 
   // CHAMPS VIDES
   if (req.body.emailFromFront == ''
@@ -118,6 +119,7 @@ router.post('/sign-in', async function (req, res, next) {
   if (error.length == 0) {
 
     // SIGN-IN CAVISTES 
+<<<<<<< HEAD
       const userCaviste = await CavisteModel.findOne({
         Email: req.body.emailFromFront,
       })
@@ -150,8 +152,47 @@ router.post('/sign-in', async function (req, res, next) {
           token = userVigneron.token
         } 
       }
+=======
+    const userCaviste = await CavisteModel.findOne({
+      Email: req.body.emailFromFront,
+    })
+    // console.log("SIGN IN CAVISTE", userCaviste)
 
-res.json({ result, error, token })
+    if (userCaviste) {
+      const passwordEncrypt = SHA256(req.body.passwordFromFront + userCaviste.salt).toString(encBase64)
+
+      if (passwordEncrypt == userCaviste.MDP) {
+        result = true
+        token = userCaviste.token
+        status = userCaviste.Status
+      } else {
+        result = false
+        error.push('mot de passe ou email incorrect')
+      }
+    }
+
+    // SIGN-IN VIGNERONS
+    const userVigneron = await VigneronModel.findOne({
+      Email: req.body.emailFromFront,
+    })
+       // console.log("SIGN IN VIGNERON", userVigneron)
+
+    if (userVigneron) {
+      const passwordEncrypt = SHA256(req.body.passwordFromFront + userVigneron.salt).toString(encBase64)
+
+      if (passwordEncrypt == userVigneron.MDP) {
+        result = true
+        token = userVigneron.token
+        status = userVigneron.Status
+      } else {
+        result = false
+        error.push('mot de passe ou email incorrect')
+      }
+    }
+  }
+>>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
+
+  res.json({ result, error, token, status })
 });
 
 // ---------------------- AJOUTER UNE REF --------------------\\
@@ -169,28 +210,6 @@ router.post('/AddVin', async function (req, res, next) {
   saveBouteille = await newBouteille.save()
 
   res.json({ saveBouteille })
-
-});
-
-router.get('/get-status', async function(req, res, next) {
-
-  const Vigneron = await VigneronModel.findOne({
-    Email: req.body.emailFromFront
-  } && {MDP : req.body.passwordFromFront})
-
-  const Caviste = await CavisteModel.findOne({
-      Email: req.body.emailFromFront 
-    } && {MDP : req.body.passwordFromFront})
-
-      var status = null
-
-      if (Caviste) {
-        status = Caviste.status
-      } else if (Vigneron) {
-        status = Vigneron.status
-      }
-
-  res.json({status})
 
 });
 

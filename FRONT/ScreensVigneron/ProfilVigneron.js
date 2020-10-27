@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
+<<<<<<< HEAD
 function ProfilVigneron({ navigation }) {
+=======
+export default function ProfilVigneron({ navigation }) {
+>>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
 
   const [uploaded, setUploaded] = useState('plus');
 

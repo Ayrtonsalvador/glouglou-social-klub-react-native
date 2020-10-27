@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -34,7 +34,6 @@ import userstatus from './reducers/userstatus';
 // ATTENTION ADRESS IP 
 
 const store = createStore(combineReducers({ userstatus }));
-
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -82,13 +81,15 @@ StackNavigatorCaviste = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
+<<<<<<< HEAD
   ProfilCav: ProfilCaviste,
+=======
+  Profil: ProfilCaviste,
+>>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
 );
-
-const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // STACK-NAVIGATION VIGNERON
 var BottomNavigatorVigneron = createBottomTabNavigator({
@@ -136,18 +137,40 @@ StackNavigatorVigneron = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
+<<<<<<< HEAD
   ProfilVi: ProfilVigneron,
+=======
+  Profil: ProfilVigneron,
+>>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
 );
 
-const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
-export default function App(userstatus) {
+function App() {
+
+  // const [navbarstatus, setnavbarstatus] = useState("")
+  // console.log(userstatus);
+  var userstatus = 'Vigneron';
+  // var userstatus = 'Caviste';
+
+  const Navigation = createAppContainer(userstatus == "Vigneron" ? StackNavigatorVigneron : StackNavigatorCaviste);
+  // const Navigation = createAppContainer(userstatus == "Caviste" ? StackNavigatorCaviste : StackNavigatorVigneron);
+  
+  // if (userstatus == "Vigneron") {
+  //   setnavbarsatus(StackNavigatorVigneron)
+  // }
+  
+  // if (userstatus == "Caviste") {
+  //   setnavbarsatus(StackNavigatorCaviste)
+  // }
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
+<<<<<<< HEAD
   // if (userstatus == 'Caviste') {
     return (
       <Provider store={store}>
@@ -163,3 +186,14 @@ export default function App(userstatus) {
   //   )
   // }
   // }
+=======
+    return (
+      <Provider store={store}>
+        <Navigation/>
+      </Provider>
+    ) 
+
+  }
+
+  export default App;
+>>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
