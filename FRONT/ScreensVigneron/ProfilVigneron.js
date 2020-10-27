@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+//import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function AddVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus');
+  const [photo, setPhoto] = useState('')
+  const [name, setName] = useState('')
+  const [domaine, setDomaine] = useState('')
+  const [city, setCity] = useState('')
+  const [region, setRegion] = useState('')
+  const [desc, setDesc] = useState('')
+  const [infoList, setInfoList] = useState([])
 
   // Demander accès à la bibliothèque photo
+
 
   return (
 
@@ -49,6 +57,7 @@ export default function AddVigneron({ navigation }) {
             placeholder='Nom'
             errorStyle={{ color: 'red' }}
             errorMessage=''
+            onChangeText={(val) => setName(val)}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -56,6 +65,7 @@ export default function AddVigneron({ navigation }) {
             placeholder='Nom de domaine'
             errorStyle={{ color: 'red' }}
             errorMessage=''
+            onChangeText={(val) => setDomaine(val)}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -63,13 +73,15 @@ export default function AddVigneron({ navigation }) {
             placeholder='Ville'
             errorStyle={{ color: 'red' }}
             errorMessage=''
+            onChangeText={(val) => setCity(val)}
           />
-               <Input
+          <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
             inputStyle={{ marginLeft: 10 }}
             placeholder='Région'
             errorStyle={{ color: 'red' }}
             errorMessage=''
+            onChangeText={(val) => setRegion(val)}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -78,6 +90,7 @@ export default function AddVigneron({ navigation }) {
             inputStyle={{ marginLeft: 10 }}
             errorStyle={{ color: 'red' }}
             errorMessage=''
+            onChangeText={(val) => setDesc(val)}
              
           />
          
@@ -85,10 +98,21 @@ export default function AddVigneron({ navigation }) {
             
          <TouchableOpacity >
             <Button  
-              icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+              Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
               type='font-awesome'
               title="Changer mes paramètres"
-              onPress={() => {setUploaded("check-circle") }}/> 
+
+              onPress={async() => { 
+                const data = await fetch("http://172.17.1.159:3000/info-update", {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                  body: `photo=${photo}&name=${name}&domaine=${domaine}&city=${city}&region=${region}&desc=${desc}`
+                  })
+                const body = await data.json()
+                setUploaded("check-circle") 
+                
+              }}/> 
+
          </TouchableOpacity>
             
          
@@ -127,3 +151,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+

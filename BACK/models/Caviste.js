@@ -8,10 +8,11 @@ var CavisteSchema = mongoose.Schema ({
     MDP: String,
     Status: String,
 
-    Domaine: String,
-    Region : String,
-    Photo: String,
-    Desc: String
+    Etablissement: String,
+    Ville: String,
+    Desc: String,
+    Photo: String
+
 })
 
 const CavisteModel = mongoose.model('cavistes', CavisteSchema);

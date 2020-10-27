@@ -8,10 +8,12 @@ var VigneronSchema = mongoose.Schema ({
     MDP: String,
     Status: String,
 
-    Etablissement: String,
+    Domaine: String,
     Ville: String,
-    Desc: String,
-    Photo: String
+    Region : String,
+    Photo: String,
+    Desc: String
+
 })
 
 var VigneronModel = mongoose.model('Vigneron', VigneronSchema);

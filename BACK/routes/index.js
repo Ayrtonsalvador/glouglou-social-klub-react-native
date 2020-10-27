@@ -45,10 +45,16 @@ router.post('/sign-up', async function(req, res, next) {
       email: req.body.emailFromFront,
       telephone: req.body.telFromFront,
       status: req.body.statusFromFront,
+      Etablissement:'',
+      Ville:'',
+      Desc:'',
+      photo:''
       
     })
   }
     saveCaviste = await newCaviste.save()
+
+
 
   // SIGNUP VIGNERONS
   const dataVigneron = await VigneronModel.findOne({
@@ -73,6 +79,11 @@ router.post('/sign-up', async function(req, res, next) {
       email: req.body.emailFromFront,
       telephone: req.body.telFromFront,
       status: req.body.statusFromFront,
+      Domaine: '',
+      Ville: '',
+      Region: '',
+      Photo: '',
+      Desc: '',
 
     })
   }
@@ -81,8 +92,35 @@ router.post('/sign-up', async function(req, res, next) {
     res.json({result, saveCaviste, saveVigneron, error})
 });
 
-router.post('/sign-in', async function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+
+// IMPORTER infos vigneron
+router.post('/info-update', async function(req, res, next) {
+//console.log(req.body);
+  var error = []
+  var result = false
+  var saveVigneron = null
+
+const dataVigneron = await VigneronModel.findOne({
+    email: req.body.emailFromFront
+  })
+
+if(error.length == 0){
+
+  var newVigneron = VigneronModel({
+    photo: req.body.photo,
+    name: req.body.name,
+    domaine: req.body.domaine,
+    region: req.body.region,
+    city: req.body.city,
+    desc: req.body.desc,
+  })
+}
+  saveVigneron = await newVigneron.save()
+
+//console.log(saveVigneron)
+
+  res.json({saveVigneron})
 });
 
 module.exports = router;
