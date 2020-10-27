@@ -116,7 +116,6 @@ router.post('/sign-in', async function (req, res, next) {
   }
 
   if (error.length == 0) {
-    result = true;
 
     // SIGN-IN CAVISTES 
       const userCaviste = await CavisteModel.findOne({
@@ -134,7 +133,8 @@ router.post('/sign-in', async function (req, res, next) {
           result = false
           error.push('mot de passe ou email incorrect')
         }
-      }
+      } 
+    }
 
     // SIGN-IN VIGNERONS
       const userVigneron = await VigneronModel.findOne({
@@ -148,12 +148,8 @@ router.post('/sign-in', async function (req, res, next) {
         if (passwordEncrypt == userVigneron.MDP) {
           result = true
           token = userVigneron.token
-        } else {
-          result = false
-          error.push('mot de passe ou email incorrect')
-        }
+        } 
       }
-   }
 
 res.json({ result, error, token })
 });
