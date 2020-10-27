@@ -5,9 +5,10 @@ import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList } from
 import { Button, ListItem, Input, Header } from 'react-native-elements';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { connect } from 'react-redux';
 
 
-function FavoriteCaviste() {
+function FavoriteCaviste({navigation}) {
 
     return (
         <View style={{ flex: 1 }}>
@@ -132,4 +133,12 @@ function FavoriteCaviste() {
 //     }
 // });
 
-export default FavoriteCaviste;
+
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(FavoriteCaviste);

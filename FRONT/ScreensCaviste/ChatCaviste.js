@@ -147,8 +147,8 @@ function ChatCaviste({ navigation, pseudo }) {
   );
 }
 
-function mapStateToProps(state) {
-  return { pseudo: state.pseudo }
+function mapStateToProps(state){
+  return {token: state.token}
 }
 
 export default connect(

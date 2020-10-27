@@ -27,12 +27,12 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
       <View>
-        <Text>{error}</Text>
+        <Text style={{ color: '#9D2A29' }}>{error}</Text>
       </View>
     )
   })
 
-  //   POPUP CONFIRMATION INSCRIPTION
+  // POPUP CONFIRMATION INSCRIPTION
   if (isVisible) {
     return (
 
@@ -70,8 +70,8 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
 
             <View style={styles.box}>
 
-              <View>
-                <Image source={require('../assets/ContactGlouGlou.png')} style={styles.img}></Image>
+              <View style={styles.img}>
+                <Image source={require('../assets/ContactGlouGlou.png')}></Image>
               </View>
 
               <Input
@@ -129,26 +129,28 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                 }
                 onChangeText={(val) => setSignUpPassword(val)}
               />
+              
+              {tabErrorsSignup}
 
               <Button
                 onPress={async () => {                 
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://IP_ADRESS:3000/sign-up", {
+                  var rawResponse = await fetch("http://172.17.1.151:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
 
-                  console.log("RESPONSE", response);
+                  console.log("RESPONSE UP", response);
                   
                   if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
                   } else {
-                    {tabErrorsSignup}
+                    setErrorsSignin(response.error);
                   }
                 }}
 
@@ -164,7 +166,7 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://172.17.1.153:3000/sign-up", {
+                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -175,7 +177,9 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                  } 
+                  } else {
+                    setErrorsSignin(body.error);
+                  }
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -224,6 +228,7 @@ const styles = StyleSheet.create({
   img: {
     // width: '20%',
     // height: '20%',
+    marginLeft: 30,
     width: 150,
     height: 150,
     margin: 10,

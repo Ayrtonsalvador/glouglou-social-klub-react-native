@@ -3,17 +3,31 @@ import { StyleSheet, Text, View, Button, Image, SafeAreaView } from "react-nativ
 import { ListItem, Input, Header } from 'react-native-elements';
 // import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-export default function CaveVigneron() {
+function CaveVigneron() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
-      <View>
-      <Image source={require('../assets/macave.png')} style={{width:20, height: 30}}></Image>
+    <View style={{ flex: 1}}>
+      <Header containerStyle={{backgroundColor: '#FCDF23', alignItems: 'center', justifyContent: 'center'}}>
+        <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80}}></Image>
+      </Header>
+
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text>Cave Vigneron</Text>
       </View>
     </View>
   );
 }
+
+
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(CaveVigneron);
 
 //POP-UP CAVE VIDE
 // export default function CaveScreen() {

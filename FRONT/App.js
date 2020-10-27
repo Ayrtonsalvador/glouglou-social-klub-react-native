@@ -48,12 +48,13 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
+        var type;
         if (navigation.state.routeName == 'ProfileCaviste') {
           iconName = 'user';
         } else if (navigation.state.routeName == 'FavorisCaviste') {
           iconName = 'heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
-          iconName = 'comments-o';
+          iconName = 'commenting-o';
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
           iconName = 'search';
         }
@@ -64,14 +65,13 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-
-
+      showLabel: false,
+      adaptive: true,
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
         borderColor: '#FCDF23',
-
       }
     }
 
@@ -82,6 +82,7 @@ StackNavigatorCaviste = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
+  ProfilCav: ProfilCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
@@ -104,7 +105,7 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
         if (navigation.state.routeName == 'ProfileVigneron') {
           iconName = 'user';
         } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'comments-o';
+          iconName = 'commenting-o';
         } else if (navigation.state.routeName == 'Cave') {
           iconName = 'home';
         } else if (navigation.state.routeName == 'Vin') {
@@ -117,7 +118,8 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-
+      showLabel: false,
+      adaptive: true,
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
@@ -134,6 +136,7 @@ StackNavigatorVigneron = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
+  ProfilVi: ProfilVigneron,
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
@@ -145,16 +148,18 @@ export default function App(userstatus) {
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
-  if (userstatus == 'Caviste') {
+  // if (userstatus == 'Caviste') {
     return (
       <Provider store={store}>
-        <NavigationCaviste />
+        {/* <NavigationCaviste /> */}
+        <NavigationVigneron />
       </Provider>
-    ) } else {
-    return (
-      <Provider store={store}>
-        <NavigationCaviste />
-      </Provider>
-    )
-  }
-  }
+     )} 
+// else {
+  //   return (
+  //     <Provider store={store}>
+  //       <NavigationVigneron />
+  //     </Provider>
+  //   )
+  // }
+  // }

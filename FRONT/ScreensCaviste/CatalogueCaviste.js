@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList } from "react-native";
-import { Button, ListItem, Input, Header } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList, ScrollView } from "react-native";
+import { Button, ListItem, Input, Header, Card, Badge } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-export default function CatalogueCaviste() {
+function CatalogueCaviste() {
 
   var Catalogue = [{
     Vigneron: "Mathieu Vieules",
@@ -46,11 +47,20 @@ export default function CatalogueCaviste() {
 
         <ScrollView style={{ marginTop: 25 }}>
           <Text h4 style={{ textAlign: 'center' }}>John's Gallery</Text>
-          {UrlGallery}
+          {/* {UrlGallery} */}
         </ScrollView>
       </View>
     );
   }
+
+  function mapStateToProps(state) {
+    return { token: state.token }
+  }
+  
+  export default connect(
+    mapStateToProps,
+    null
+  )(CatalogueCaviste);
 //}
 
 // Carousel fiche produit

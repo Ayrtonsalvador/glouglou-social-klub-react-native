@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView } from "react-native";
+import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, TouchableOpacity, Text } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function AddVigneron({ navigation }) {
+function AddVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus');
 
@@ -50,34 +51,41 @@ export default function AddVigneron({ navigation }) {
 
     <View style={{ flex: 1 }}>
 
-<Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
-
       <View style={styles.container}>
+
 
         <KeyboardAvoidingView behavior="position" enabled>
 
           <View style={styles.box1}>
 
-          <ScrollView >
+            <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
 
-          <Button
-                  icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                  rounded
-                  type='font-awesome'
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                  onPress={pickImage} />
-                  {image && (
-                    <View style={{ width: 100, height: 100, flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 15}}>
-                    <Image source={{ uri: image }}  />
-                    </View>
-                  )}
+      <ScrollView >
+              <View style={styles.box2}>
 
-             <View style={styles.box2}>
+              <TouchableOpacity>
+                <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Ajouter une photo</Text>
+              </TouchableOpacity>
+
+              <Button
+                icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                rounded
+                type='font-awesome'
+                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
+                onPress={pickImage} />
+              {image && (
+                <View style={{
+                  width: 100, height: 100, flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 15
+                }}>
+                  <Image source={{ uri: image }} />
+                </View>
+              )}
+
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginTop:20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Nom de la référence'
                   errorStyle={{ color: 'red' }}
@@ -87,7 +95,7 @@ export default function AddVigneron({ navigation }) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Couleur'
                   errorStyle={{ color: 'red' }}
@@ -97,7 +105,7 @@ export default function AddVigneron({ navigation }) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Cépage'
                   errorStyle={{ color: 'red' }}
@@ -107,7 +115,7 @@ export default function AddVigneron({ navigation }) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Millésime'
                   errorStyle={{ color: 'red' }}
@@ -116,7 +124,7 @@ export default function AddVigneron({ navigation }) {
                   value={Millesime}
                 />
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='A.O.C / I.G.C'
                   errorStyle={{ color: 'red' }}
@@ -126,7 +134,7 @@ export default function AddVigneron({ navigation }) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 25, width: '70%' }}
+                  containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Description'
                   errorStyle={{ color: 'red' }}
@@ -158,13 +166,12 @@ export default function AddVigneron({ navigation }) {
 
                   }}
                 />
+
               </View>
 
             </ScrollView>
           </View>
-
         </KeyboardAvoidingView>
-
       </View>
     </View>
   );
@@ -186,6 +193,7 @@ const styles = StyleSheet.create({
   box2: {
     // width: '80%',
     // height: '70%',
+    marginTop: 60,
     width: 350,
     height: 400,
     alignItems: 'center',
@@ -198,11 +206,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around'
   },
-  avatar : {
+  avatar: {
     height: 40,
     width: 40,
     backgroundColor: '#FFAE34',
     borderRadius: 100,
   }
-
 });
+
+function mapStateToProps(state) {
+  return { token: state.token }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(AddVigneron);

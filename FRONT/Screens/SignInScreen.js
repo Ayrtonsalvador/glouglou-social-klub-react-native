@@ -18,7 +18,7 @@ function SignInScreen({ navigation}) {
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
     return (
       <View>
-        <Text>{error}</Text>
+        <Text style={{ color: '#9D2A29' }}>{error}</Text>
       </View>
     )
   })
@@ -29,6 +29,8 @@ function SignInScreen({ navigation}) {
       <View style={styles.container}>
 
         <KeyboardAvoidingView behavior="position" enabled>
+
+          <View style={styles.box1}>
 
           <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
@@ -64,37 +66,40 @@ function SignInScreen({ navigation}) {
             />
 
             {tabErrorsSignin}
-
+            
+            <Button
+            onPress={() => {
+              navigation.navigate('ProfileVigneron'); 
+              // navigation.navigate('ProfileCaviste'); 
+             }}
+              ></Button>
+            
             <Button
               onPress={async () => {
-
-                var rawResponse = await fetch("http://IP_ADRESS:3000/sign-in", {
+                var rawResponse = await fetch("http://172.17.1.151:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                 })
                 var response = await rawResponse.json()
                 console.log("RESPONSE", response);
+                console.log("RESULT", response.result)
 
-                 if (response.result = true) {
-                  // props.addToken(body.token)
+                 if (response.result == true) {
+                    navigation.navigate('ProfilVi'); 
+                    // navigation.navigate('ProfilCav'); 
+                    props.addToken(body.token);
+                    console.log("ICI")
+                 } else {
+                  setErrorsSignin(response.error);
                  }
-                 var getstatus = await fetch("http://172.17.1.153:3000/get-status");
-                 var response = await getstatus.json();
-                 console.log(response);
-   
-                // Récuperer le statut du back et le mettre dans le REDUUUUUUUUUUUUXXXXXXXXX !!!!!!!!!
-                 if ( userstatus == 'Caviste' ) {
-                   navigation.navigate('ProfileCaviste'); 
-                  } else {
-                   navigation.navigate('ProfileVigneron'); }
                }}
-
               containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
               title="Rejoindre le club"
               type="solid"
               buttonStyle={{ backgroundColor: '#FF9900' }}
             />
+          </View>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -118,6 +123,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 15,
     // fontFamily: "Gothic A1",
+  },
+  box1: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     color: '#FFD15C',

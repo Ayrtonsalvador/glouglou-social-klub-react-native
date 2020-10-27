@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
   var socket = socketIOClient("http://IP_LOCALE:3000");
 
-export default function MessageCavistes({ navigation }) {
+function MessageCavistes({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -42,3 +42,12 @@ export default function MessageCavistes({ navigation }) {
     </View>
   );
 }
+
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(MessageCavistes);

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function AddVigneron({ navigation }) {
+function ProfilVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus');
 
@@ -132,3 +133,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfilVigneron);
