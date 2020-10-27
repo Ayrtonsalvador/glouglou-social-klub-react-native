@@ -12,68 +12,83 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
 
+  const [listErrorsSignin, setErrorsSignin] = useState([])
+
+
+  var tabErrorsSignin = listErrorsSignin.map((error, i) => {
+    return (
+      <View>
+        <Text>{error}</Text>
+      </View>
+    )
+  })
+
   return (
 
     <View style={{ flex: 1, backgroundColor: '#FCDF23' }}>
       <View style={styles.container}>
-     
-      <KeyboardAvoidingView behavior="position" enabled>
 
-        <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
+        <KeyboardAvoidingView behavior="position" enabled>
 
-        <View style={styles.box}>
-          <Text style={styles.text}>IDENTIFICATION</Text>
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Email'
-            leftIcon={
-              <Icon
-                name='user'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-            onChangeText={(val) => setSignInEmail(val)}
-          />
+          <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
-          <Input
-            containerStyle={{ marginBottom: 25, width: '70%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Mot de passe'
-            secureTextEntry={true}
-            leftIcon={
-              <Icon
-                name='key'
-                size={20}
-                color="#FFD15C"
-              />
-            }
-            onChangeText={(val) => setSignInPassword(val)}
-          />
-          <Button
-            onPress={async () => {
+          <View style={styles.box}>
+            <Text style={styles.text}>IDENTIFICATION</Text>
+            <Input
+              containerStyle={{ marginBottom: 25, width: '70%' }}
+              inputStyle={{ marginLeft: 10 }}
+              placeholder='Email'
+              leftIcon={
+                <Icon
+                  name='user'
+                  size={20}
+                  color="#FFD15C"
+                />
+              }
+              onChangeText={(val) => setSignInEmail(val)}
+            />
 
-              var rawResponse = await fetch("http://172.17.1.151:3000/sign-in", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
-              })
-              var response = await rawResponse.json()
-              console.log("RESPONSE", response);
+            <Input
+              containerStyle={{ marginBottom: 25, width: '70%' }}
+              inputStyle={{ marginLeft: 10 }}
+              placeholder='Mot de passe'
+              secureTextEntry={true}
+              leftIcon={
+                <Icon
+                  name='key'
+                  size={20}
+                  color="#FFD15C"
+                />
+              }
+              onChangeText={(val) => setSignInPassword(val)}
+            />
 
-              if (response.result == true) {
-                navigation.navigate('ProfileCaviste');
-                // navigation.navigate('ProfileVigneron');
-              } 
-            }}
+            {tabErrorsSignin}
 
-            containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
-            title="Rejoindre le club"
-            type="solid"
-            buttonStyle={{ backgroundColor: '#FF9900' }}
-          />
-        </View>
+            <Button
+              onPress={async () => {
+
+                var rawResponse = await fetch("http://IP_ADRESS:3000/sign-in", {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
+                })
+                var response = await rawResponse.json()
+                console.log("RESPONSE", response);
+
+                 if (response.result = true) {
+                  // props.addToken(body.token)
+                  // navigation.navigate('ProfileCaviste');
+                   navigation.navigate('ProfileVigneron');
+                 }
+              }}
+
+              containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
+              title="Rejoindre le club"
+              type="solid"
+              buttonStyle={{ backgroundColor: '#FF9900' }}
+            />
+          </View>
         </KeyboardAvoidingView>
       </View>
     </View>
@@ -113,11 +128,15 @@ const styles = StyleSheet.create({
 });
 
 
-function mapStateToProps(state){
-  return {userinfo: state.userinfo}
+function mapDispatchToProps(dispatch){
+  return {
+    addToken: function(token){
+      dispatch({type: 'addToken', token: token})
+    }
+  }
 }
 
 export default connect(
-  mapStateToProps,
-  null
+  null,
+  mapDispatchToProps,
 )(SignInScreen);

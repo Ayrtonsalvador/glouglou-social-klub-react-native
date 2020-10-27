@@ -12,6 +12,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpTel, setSignUpTel] = useState('')
+  const [signUpPassword, setSignUpPassword] = useState('')
   const [signUpStatus, setSignUpStatus] = useState('')
 
   const [userExists, setUserExists] = useState(false)
@@ -74,8 +75,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
                 placeholder='Nom'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
                 leftIcon={
                   <Icon
                     name='user'
@@ -104,8 +103,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
                 placeholder='Téléphone'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
                 leftIcon={
                   <Icon
                     name='phone'
@@ -115,15 +112,29 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 }
                 onChangeText={(val) => setSignUpTel(val)}
               />
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Mot de passe'
+                secureTextEntry={true}
+                leftIcon={
+                  <Icon
+                    name='key'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignUpPassword(val)}
+              />
 
               <Button
                 onPress={async () => {
                   setSignUpStatus('Vigneron')
 
-                  var rawResponse = await fetch("http://172.17.1.151:3000/sign-up", {
+                  var rawResponse = await fetch("http://IP_ADRESS:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Vigneron`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
 
@@ -146,14 +157,15 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
 
                   setSignUpStatus('Caviste')
 
-                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
+                  var data = await fetch("http://IP_ADRESS:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Caviste`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
                   })
                   var body = await data.json()
-                  
-                  if (body.result == true) {
+                  console.log("RESPONSE", body)
+
+                  if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
                   } 

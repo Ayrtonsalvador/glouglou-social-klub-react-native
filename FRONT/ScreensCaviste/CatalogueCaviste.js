@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React, { useState } from 'react';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';

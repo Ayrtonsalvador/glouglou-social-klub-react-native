@@ -144,18 +144,11 @@ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 export default function App() {
 
-  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
-  // useEffect(() => { 
-  //   (async () => {
-  //     var rawData = await fetch("http://172.17.1.151:3000/sign-up");
-  //     var data = await rawResponse.json()
-  //   })();
-  // }, []);
-
   //if()
   return (
-    <Provider store={store}>
-      <NavigationCaviste />
+    <Provider store={store}> 
+      <NavigationVigneron /> 
+      {/* <NavigationCaviste /> */}
     </Provider>
   );
 }
