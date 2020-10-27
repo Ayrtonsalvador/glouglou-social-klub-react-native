@@ -8,7 +8,9 @@ import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
 function SignInScreen({ navigation, onSubmitPseudo }) {
-  const [signUpPassword, setSignUpPassword] = useState('')
+
+  const [signInEmail, setSignInEmail] = useState('')
+  const [signInPassword, setSignInPassword] = useState('')
 
   return (
 
@@ -32,6 +34,7 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
                 color="#FFD15C"
               />
             }
+            onChangeText={(val) => setSignInEmail(val)}
           />
 
           <Input
@@ -46,18 +49,23 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
                 color="#FFD15C"
               />
             }
+            onChangeText={(val) => setSignInPassword(val)}
           />
           <Button
             onPress={async () => {
-               navigation.navigate('ProfileCaviste');
-              // navigation.navigate('ProfileVigneron');
 
-              var data = await fetch("http://172.17.1.151:3000/sign-in", {
+              var rawResponse = await fetch("http://172.17.1.151:3000/sign-in", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `emailFromFront=${signUpEmail}&passwordFromFront=${signUpPassword}`
+                body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
               })
-              var body = await data.json()
+              var response = await rawResponse.json()
+              console.log("RESPONSE", response);
+
+              if (response.result == true) {
+                navigation.navigate('ProfileCaviste');
+                // navigation.navigate('ProfileVigneron');
+              } 
             }}
 
             containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
@@ -105,15 +113,11 @@ const styles = StyleSheet.create({
 });
 
 
-function mapDispatchToProps(dispatch){
-  return {
-    addToken: function(token){
-      dispatch({type: 'addToken', token: token})
-    }
-  }
+function mapStateToProps(state){
+  return {userinfo: state.userinfo}
 }
 
 export default connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps,
+  null
 )(SignInScreen);

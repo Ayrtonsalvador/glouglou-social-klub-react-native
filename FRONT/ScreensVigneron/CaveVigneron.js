@@ -8,6 +8,7 @@ export default function CaveVigneron() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
       <View>
+      <Image source={require('../assets/macave.png')} style={{width:20, height: 30}}></Image>
         <Text>Cave Vigneron</Text>
       </View>
     </View>

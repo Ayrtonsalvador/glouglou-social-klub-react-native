@@ -54,7 +54,6 @@ router.post('/sign-up', async function (req, res, next) {
     })
     saveCaviste = await newCaviste.save()
   }
-
   // console.log("CAVISTE", saveCaviste)
 
   // SIGNUP VIGNERONS
@@ -78,7 +77,7 @@ router.post('/sign-up', async function (req, res, next) {
       Status: req.body.statusFromFront,
 
     })
-    console.log("VIGNERON", newVigneron)
+    // console.log("VIGNERON", newVigneron)
     saveVigneron = await newVigneron.save()
   }
 
@@ -104,40 +103,50 @@ router.post('/sign-in', async function (req, res, next) {
     result = true;
 
     // SIGN-IN CAVISTES - 1ERE ID
-    const userCaviste = await CavisteModel.findOne({
+    CavisteModel.updateOne(
+      { Email: req.body.emailFromFront },
+      {
+        MDP: SHA256(req.body.passwordFromFront + user.salt).toString(encBase64),
+        token: uid2(32),
+        salt: salt
+      })
+    saveSignInCaviste = await signinCaviste.save()
+    console.log("SIGN IN CAVISTE", saveSignInCaviste)
+
+    // SIGN-IN VIGNERONS - 1ERE ID
+    const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
     })
-    console.log("SIGN IN CAVISTE", userCaviste)
-  }
+    console.log("SIGN IN VIGNERON", userVigneron)
 
-  if (userCaviste) {
-    saveCaviste.push({
-      MDP: SHA256(req.body.passwordFromFront + user.salt).toString(encBase64),
-      token: uid2(32),
-      salt: salt
+    if (userVigneron) {
+      VigneronModel.updateOne({
+        MDP: SHA256(req.body.passwordFromFront + user.salt).toString(encBase64),
+        token: uid2(32),
+        salt: salt
+      })
+      saveSignInVigneron = await signinVigneron.save()
+      console.log("SIGN IN VIGNERON", saveSignInVigneron)
+    }
+  }
+  // 2EME ID
+    const userVigneron = await VigneronModel.findOne({
+      Email: req.body.emailFromFront,
     })
-  }
+    console.log("SIGN IN VIGNERON", userVigneron)
 
-  // SIGN-IN VIGNERONS - 1ERE ID
-//   const userVigneron = await VigneronModel.findOne({
-//     Email: req.body.emailFromFront,
-//   })
-//   console.log("SIGN IN VIGNERON", userCaviste)
-// }
+  //   if(passwordEncrypt == user.password){
+  //     result = true
+  //     token = user.token
+  //   } else {
+  //     result = false
+  //     error.push('mot de passe incorrect')
+  //   }
 
-// 2EME ID
-//   if(passwordEncrypt == user.password){
-//     result = true
-//     token = user.token
-//   } else {
-//     result = false
-//     error.push('mot de passe incorrect')
-//   }
-
-// } else {
-//   error.push('email incorrect')
-// }
-res.json({ result, user, error, token })
+  // } else {
+  //   error.push('email incorrect')
+  // }
+  res.json({ result, saveSignInCaviste, saveSignInVigneron, error, token })
 });
 
 module.exports = router;

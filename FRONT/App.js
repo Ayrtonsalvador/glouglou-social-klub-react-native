@@ -54,7 +54,6 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
           iconName = 'heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
           iconName = 'comments-o';
-          // si vigneron
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
           iconName = 'search';
         }
@@ -108,7 +107,6 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
           iconName = 'comments-o';
         } else if (navigation.state.routeName == 'Cave') {
           iconName = 'home';
-          // si vigneron
         } else if (navigation.state.routeName == 'Vin') {
           iconName = 'glass';
         }
@@ -147,12 +145,12 @@ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 export default function App() {
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
-  useEffect(() => { 
-    (async () => {
-      var rawData = await fetch("http://172.17.1.151:3000/sign-up");
-      var data = await rawResponse.json()
-    })();
-  }, []);
+  // useEffect(() => { 
+  //   (async () => {
+  //     var rawData = await fetch("http://172.17.1.151:3000/sign-up");
+  //     var data = await rawResponse.json()
+  //   })();
+  // }, []);
 
   //if()
   return (
