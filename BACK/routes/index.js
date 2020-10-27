@@ -176,4 +176,26 @@ router.post('/AddVin', async function (req, res, next) {
 
 });
 
+router.get('/get-status', async function(req, res, next) {
+
+  const Vigneron = await VigneronModel.findOne({
+    Email: req.body.emailFromFront
+  } && {MDP : req.body.passwordFromFront})
+
+  const Caviste = await CavisteModel.findOne({
+      Email: req.body.emailFromFront 
+    } && {MDP : req.body.passwordFromFront})
+
+      var status = null
+
+      if (Caviste) {
+        status = Caviste.status
+      } else if (Vigneron) {
+        status = Vigneron.status
+      }
+
+  res.json({status})
+
+});
+
 module.exports = router;

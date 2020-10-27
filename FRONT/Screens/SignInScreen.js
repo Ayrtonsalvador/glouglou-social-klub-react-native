@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitPseudo }) {
+function SignInScreen({ navigation}) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
@@ -78,10 +78,17 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
 
                  if (response.result = true) {
                   // props.addToken(body.token)
-                  // navigation.navigate('ProfileCaviste');
-                   navigation.navigate('ProfileVigneron');
                  }
-              }}
+                 var getstatus = await fetch("http://172.17.1.153:3000/get-status");
+                 var response = await getstatus.json();
+                 console.log(response);
+   
+                // Récuperer le statut du back et le mettre dans le REDUUUUUUUUUUUUXXXXXXXXX !!!!!!!!!
+                 if ( userstatus == 'Caviste' ) {
+                   navigation.navigate('ProfileCaviste'); 
+                  } else {
+                   navigation.navigate('ProfileVigneron'); }
+               }}
 
               containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
               title="Rejoindre le club"
