@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitPseudo }) {
+function SignInScreen({ navigation, onSubmitPseudo, onSubmitUserstatus }) {
   const [signUpPassword, setSignUpPassword] = useState('')
 
   return (
@@ -49,8 +49,10 @@ function SignInScreen({ navigation, onSubmitPseudo }) {
           />
           <Button
             onPress={async () => {
-               navigation.navigate('ProfileCaviste');
-              // navigation.navigate('ProfileVigneron');
+              if ( userstatus == 'caviste' ) {
+               navigation.navigate('ProfileCaviste'); 
+              } else {
+              navigation.navigate('ProfileVigneron'); }
 
               var data = await fetch("http://172.17.1.151:3000/sign-in", {
                 method: 'POST',

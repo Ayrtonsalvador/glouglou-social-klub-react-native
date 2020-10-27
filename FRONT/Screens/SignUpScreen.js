@@ -7,12 +7,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignUpScreen({ navigation, onSubmitUsername }) {
+function SignUpScreen(props) {
 
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpTel, setSignUpTel] = useState('')
-  const [signUpStatus, setSignUpStatus] = useState('')
+  const [signUpStatus, setSignUpStatus] = useState('null')
 
   const [userExists, setUserExists] = useState(false)
   const [isVisible, setIsVisible] = useState(false);
@@ -34,7 +34,7 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
 
       <View style={styles.container}>
         <View style={styles.popup}>
-          <Text style={styles.text}>A BIENTÔT DANS LE :</Text>
+          <Text style={styles.text}>A BIENTÔT DANS LE</Text>
           <Image source={require('../assets/ContacterGlouGlou.png')}
             style={styles.img}
           ></Image>
@@ -119,6 +119,8 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
               <Button
                 onPress={async () => {
                   setSignUpStatus('Vigneron')
+                  props.onSubmitUserstatus(signUpStatus)
+                  console.log(signUpStatus)
 
                   var rawResponse = await fetch("http://adress-ip:3000/sign-up", {
                     method: 'POST',
@@ -145,6 +147,8 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 onPress={async () => {
 
                   setSignUpStatus('Caviste')
+                  props.onSubmitUserstatus(signUpStatus)
+                  console.log(signUpStatus)
 
                   var data = await fetch("http://IP_ADRESS:3000/sign-up", {
                     method: 'POST',
@@ -228,8 +232,8 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUsername: function (userinfo) {
-      dispatch({ type: 'saveUserInfo', username: username, signUpStatus: status })
+    onSubmitUserstatus: function (signUpStatus) {
+      dispatch({ type: 'saveUserstatus', status: signUpStatus })
     }
   }
 }

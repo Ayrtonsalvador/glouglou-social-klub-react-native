@@ -50,12 +50,7 @@ export default function AddVigneron({ navigation }) {
 
     <View style={{ flex: 1 }}>
 
-      <Header
-        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-        centerComponent={{ text: 'AJOUTER UN NOUVEAU VIN', marginTop: 30 }}
-      >
-        <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-      </Header>
+<Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
 
       <View style={styles.container}>
 
@@ -71,12 +66,14 @@ export default function AddVigneron({ navigation }) {
                   type='font-awesome'
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
                   onPress={pickImage} />
-            {image && (
-              <Image source={{ uri: image }} style={{ width: 100, height: 100,    flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 15}} />
-            )}
+                  {image && (
+                    <View style={{ width: 100, height: 100, flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 15}}>
+                    <Image source={{ uri: image }}  />
+                    </View>
+                  )}
 
              <View style={styles.box2}>
                 <Input

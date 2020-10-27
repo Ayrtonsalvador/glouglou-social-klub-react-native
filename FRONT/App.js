@@ -31,9 +31,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import userinfo from './reducers/userinfo';
+import userstatus from './reducers/userstatus';
 
-const store = createStore(combineReducers({ userinfo }));
+const store = createStore(combineReducers({ userstatus }));
 
 
 // STACK-NAVIGATION CAVISTES
@@ -143,7 +143,6 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 
 const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
-
 export default function App() {
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
@@ -154,17 +153,18 @@ export default function App() {
     })();
   }, []);
 
-  //if()
+  if ( userstatus == 'caviste' ) {
   return (
     <Provider store={store}>
       <NavigationCaviste />
     </Provider>
-  );
+  )
+  }
+  else {
+    return (
+      <Provider store={store}>
+          <NavigationVigneron />      
+    </Provider>
+    );
+  }
 }
-// else {
-//   return(
-//     <Provider store={store}>
-        // <NavigationVigneron />      
-//   </Provider>
-//   )
-// }
