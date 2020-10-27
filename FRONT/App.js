@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -34,7 +34,6 @@ import userstatus from './reducers/userstatus';
 // ATTENTION ADRESS IP 
 
 const store = createStore(combineReducers({ userstatus }));
-
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -82,12 +81,11 @@ StackNavigatorCaviste = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
+  Profil: ProfilCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
 );
-
-const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // STACK-NAVIGATION VIGNERON
 var BottomNavigatorVigneron = createBottomTabNavigator({
@@ -134,27 +132,41 @@ StackNavigatorVigneron = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
+  Profil: ProfilVigneron,
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
 );
 
-const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
-export default function App(userstatus) {
+function App() {
+
+  // const [navbarstatus, setnavbarstatus] = useState("")
+  // console.log(userstatus);
+  var userstatus = 'Vigneron';
+  // var userstatus = 'Caviste';
+
+  const Navigation = createAppContainer(userstatus == "Vigneron" ? StackNavigatorVigneron : StackNavigatorCaviste);
+  // const Navigation = createAppContainer(userstatus == "Caviste" ? StackNavigatorCaviste : StackNavigatorVigneron);
+  
+  // if (userstatus == "Vigneron") {
+  //   setnavbarsatus(StackNavigatorVigneron)
+  // }
+  
+  // if (userstatus == "Caviste") {
+  //   setnavbarsatus(StackNavigatorCaviste)
+  // }
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
-  if (userstatus == 'Caviste') {
     return (
       <Provider store={store}>
-        <NavigationCaviste />
+        <Navigation/>
       </Provider>
-    ) } else {
-    return (
-      <Provider store={store}>
-        <NavigationCaviste />
-      </Provider>
-    )
+    ) 
+
   }
-  }
+
+  export default App;

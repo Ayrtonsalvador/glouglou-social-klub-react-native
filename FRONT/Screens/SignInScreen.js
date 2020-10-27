@@ -7,13 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation}) {
+function SignInScreen({ navigation, onSubmitUserstatus }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
 
   const [listErrorsSignin, setErrorsSignin] = useState([])
 
+  const [status, setstatus] = useState('')
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
     return (
@@ -68,27 +69,31 @@ function SignInScreen({ navigation}) {
             <Button
               onPress={async () => {
 
-                var rawResponse = await fetch("http://IP_ADRESS:3000/sign-in", {
+                var rawResponse = await fetch("http://172.17.1.153:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                 })
                 var response = await rawResponse.json()
-                console.log("RESPONSE", response);
+                // console.log("RESPONSE", response);
 
-                 if (response.result = true) {
-                  // props.addToken(body.token)
-                 }
-                 var getstatus = await fetch("http://172.17.1.153:3000/get-status");
-                 var response = await getstatus.json();
-                 console.log(response);
-   
-                // Récuperer le statut du back et le mettre dans le REDUUUUUUUUUUUUXXXXXXXXX !!!!!!!!!
-                 if ( userstatus == 'Caviste' ) {
-                   navigation.navigate('ProfileCaviste'); 
-                  } else {
-                   navigation.navigate('ProfileVigneron'); }
-               }}
+                // if (response.result = true) {
+                //   // props.addToken(body.token)
+                // }
+
+                if (response.status == "Vigneron") {
+                  setstatus('Vigneron');
+                  onSubmitUserstatus(status);
+                  navigation.navigate("Profil");
+                 
+                } else if (response.status == "Caviste") {
+                  setstatus('Caviste');
+                  onSubmitUserstatus(status);
+                  navigation.navigate("Profil");
+                  
+                }
+
+              }}
 
               containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
               title="Rejoindre le club"
@@ -135,15 +140,22 @@ const styles = StyleSheet.create({
 });
 
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    addToken: function(token){
-      dispatch({type: 'addToken', token: token})
+    addToken: function (token) {
+      dispatch({ type: 'addToken', token: token })
+    },
+    onSubmitUserstatus: function (status) {
+      dispatch({ type: 'saveUserstatus', status: status })
     }
   }
 }
 
+function mapStateToProps(state) {
+  return { status: state.userstatus }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(SignInScreen);

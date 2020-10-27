@@ -135,14 +135,14 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://IP_ADRESS:3000/sign-up", {
+                  var rawResponse = await fetch("http://172.17.1.153:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
 
-                  console.log("RESPONSE", response);
+                  // console.log("RESPONSE", response);
                   
                   if (response.result == true) {
                     setUserExists(true);
@@ -248,12 +248,16 @@ function mapDispatchToProps(dispatch) {
   return {
     onSubmitUserstatus: function (status) {
       dispatch({ type: 'saveUserstatus', status: status })
-      console.log("STATUS", status)
+      // console.log("STATUS", status)
     }
   }
 }
 
+function mapStateToProps(state){
+  return {status: state.userstatus}
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignUpScreen);

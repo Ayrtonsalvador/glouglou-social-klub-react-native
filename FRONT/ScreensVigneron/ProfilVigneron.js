@@ -4,7 +4,7 @@ import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function AddVigneron({ navigation }) {
+export default function ProfilVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus');
 
