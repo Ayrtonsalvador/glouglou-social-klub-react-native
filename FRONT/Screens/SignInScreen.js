@@ -7,8 +7,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitPseudo, onSubmitUserstatus }) {
-  const [signUpPassword, setSignUpPassword] = useState('')
+// ATTENTION ADRESS IP 
+
+function SignInScreen({ navigation }) {
+  const [signInPassword, setSignInPassword] = useState('')
+  const [signInEmail, setsignIEmail] = useState('')
 
   return (
 
@@ -25,6 +28,7 @@ function SignInScreen({ navigation, onSubmitPseudo, onSubmitUserstatus }) {
             containerStyle={{ marginBottom: 25, width: '70%' }}
             inputStyle={{ marginLeft: 10 }}
             placeholder='Email'
+            onChangeText={(val) => setSignInEmail(val)}
             leftIcon={
               <Icon
                 name='user'
@@ -39,6 +43,7 @@ function SignInScreen({ navigation, onSubmitPseudo, onSubmitUserstatus }) {
             inputStyle={{ marginLeft: 10 }}
             placeholder='Mot de passe'
             secureTextEntry={true}
+            onChangeText={(val) => setSignInPassword(val)}
             leftIcon={
               <Icon
                 name='key'
@@ -49,17 +54,23 @@ function SignInScreen({ navigation, onSubmitPseudo, onSubmitUserstatus }) {
           />
           <Button
             onPress={async () => {
-              if ( userstatus == 'caviste' ) {
-               navigation.navigate('ProfileCaviste'); 
-              } else {
-              navigation.navigate('ProfileVigneron'); }
-
-              var data = await fetch("http://172.17.1.151:3000/sign-in", {
+              
+              var data = await fetch("http://172.17.1.153:3000/sign-in", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `emailFromFront=${signUpEmail}&passwordFromFront=${signUpPassword}`
+                body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
               })
               var body = await data.json()
+
+              var getstatus = await fetch("http://172.17.1.153:3000/get-status");
+              var response = await getstatus.json();
+              console.log(response);
+
+      //voir si on redirige ac le REDUX ou avec le "status" qui vient du back
+              if ( userstatus == 'Caviste' ) {
+                navigation.navigate('ProfileCaviste'); 
+               } else {
+                navigation.navigate('ProfileVigneron'); }
             }}
 
             containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}

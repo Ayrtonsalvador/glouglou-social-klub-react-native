@@ -7,8 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignUpScreen(props) {
+// ATTENTION ADRESS IP 
 
+function SignUpScreen({navigation, onSubmitUserstatus}) {
+ 
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpTel, setSignUpTel] = useState('')
@@ -19,6 +21,7 @@ function SignUpScreen(props) {
 
   const [listErrorsSignup, setErrorsSignup] = useState([])
 
+  const [modalVisible, setModalVisible] = useState(false);
 
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
@@ -39,8 +42,9 @@ function SignUpScreen(props) {
             style={styles.img}
           ></Image>
           <Button
-            containerStyle={{ marginBottom: 15, width: '50%', borderRadius: 15, }}
-            title="Compris"
+            containerStyle={{ marginBottom: 15, width: '20%', borderRadius: 15, }}
+
+            title="OK"
             type="solid"
             buttonStyle={{ backgroundColor: '#FFAE34' }}
             onPress={() => {
@@ -68,7 +72,6 @@ function SignUpScreen(props) {
               <View>
                 <Image source={require('../assets/ContactGlouGlou.png')} style={styles.img}></Image>
               </View>
-
 
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -117,12 +120,11 @@ function SignUpScreen(props) {
               />
 
               <Button
-                onPress={async () => {
-                  setSignUpStatus('Vigneron')
-                  props.onSubmitUserstatus(signUpStatus)
-                  console.log(signUpStatus)
+                onPress={async () => {                 
+                  setSignUpStatus('Vigneron');
+                  onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://adress-ip:3000/sign-up", {
+                  var rawResponse = await fetch("http://172.17.1.153:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Vigneron`
@@ -134,7 +136,9 @@ function SignUpScreen(props) {
                   if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                  } 
+                  } else {
+                    {tabErrorsSignup}
+                  }
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -146,11 +150,10 @@ function SignUpScreen(props) {
               <Button
                 onPress={async () => {
 
-                  setSignUpStatus('Caviste')
-                  props.onSubmitUserstatus(signUpStatus)
-                  console.log(signUpStatus)
-
-                  var data = await fetch("http://IP_ADRESS:3000/sign-up", {
+                  setSignUpStatus('Caviste');
+                  onSubmitUserstatus(signUpStatus);
+              
+                  var data = await fetch("http://172.17.1.153:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=Caviste`
@@ -169,7 +172,6 @@ function SignUpScreen(props) {
                 buttonStyle={{ backgroundColor: '#FFAE34' }}
               />
 
-              {tabErrorsSignup}
 
             </View>
           </KeyboardAvoidingView>
@@ -232,8 +234,9 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUserstatus: function (signUpStatus) {
-      dispatch({ type: 'saveUserstatus', status: signUpStatus })
+    onSubmitUserstatus: function (status) {
+      dispatch({ type: 'saveUserstatus', status: status })
+      console.log("STATUS", status)
     }
   }
 }

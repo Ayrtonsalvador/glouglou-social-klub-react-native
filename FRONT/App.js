@@ -1,6 +1,4 @@
-console.disableYellowBox = true;
-
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -32,6 +30,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
+
+// ATTENTION ADRESS IP 
 
 const store = createStore(combineReducers({ userstatus }));
 
@@ -65,20 +65,20 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-     
-  
+
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
-        borderColor : '#FCDF23',
-        
+        borderColor: '#FCDF23',
+
       }
     }
 
   });
 
-  StackNavigatorCaviste = createStackNavigator({
+StackNavigatorCaviste = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
@@ -119,19 +119,19 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-     
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
-        borderColor : '#FCDF23',
-        
+        borderColor: '#FCDF23',
+
       }
     }
 
   });
 
-  StackNavigatorVigneron = createStackNavigator({
+StackNavigatorVigneron = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
@@ -143,28 +143,20 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 
 const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
-export default function App() {
+export default function App(userstatus) {
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
-  useEffect(() => { 
-    (async () => {
-      var rawData = await fetch("http://172.17.1.151:3000/sign-up");
-      var data = await rawResponse.json()
-    })();
-  }, []);
 
-  if ( userstatus == 'caviste' ) {
-  return (
-    <Provider store={store}>
-      <NavigationCaviste />
-    </Provider>
-  )
-  }
-  else {
+  if (userstatus == 'Caviste') {
     return (
       <Provider store={store}>
-          <NavigationVigneron />      
-    </Provider>
-    );
+        <NavigationCaviste />
+      </Provider>
+    ) } else {
+    return (
+      <Provider store={store}>
+        <NavigationCaviste />
+      </Provider>
+    )
   }
-}
+  }
