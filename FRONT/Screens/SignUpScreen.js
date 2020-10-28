@@ -137,22 +137,14 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-<<<<<<< HEAD
-                  var rawResponse = await fetch("http://172.17.1.151:3000/sign-up", {
-=======
                   var rawResponse = await fetch("http://172.17.1.153:3000/sign-up", {
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
 
-<<<<<<< HEAD
-                  console.log("RESPONSE UP", response);
-=======
                   // console.log("RESPONSE", response);
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
                   
                   if (response.result == true) {
                     setUserExists(true);

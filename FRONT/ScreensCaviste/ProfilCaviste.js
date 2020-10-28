@@ -5,11 +5,7 @@ import { connect } from 'react-redux';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-<<<<<<< HEAD
 function ProfilCaviste({ navigation }) {
-=======
-export default function ProfilCaviste({ navigation }) {
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
 
   const [uploaded, setUploaded] = useState('plus');
 

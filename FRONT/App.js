@@ -81,11 +81,7 @@ StackNavigatorCaviste = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
-<<<<<<< HEAD
-  ProfilCav: ProfilCaviste,
-=======
   Profil: ProfilCaviste,
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
@@ -137,11 +133,7 @@ StackNavigatorVigneron = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
-<<<<<<< HEAD
-  ProfilVi: ProfilVigneron,
-=======
   Profil: ProfilVigneron,
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
@@ -170,23 +162,6 @@ function App() {
 
   // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
-<<<<<<< HEAD
-  // if (userstatus == 'Caviste') {
-    return (
-      <Provider store={store}>
-        {/* <NavigationCaviste /> */}
-        <NavigationVigneron />
-      </Provider>
-     )} 
-// else {
-  //   return (
-  //     <Provider store={store}>
-  //       <NavigationVigneron />
-  //     </Provider>
-  //   )
-  // }
-  // }
-=======
     return (
       <Provider store={store}>
         <Navigation/>
@@ -196,4 +171,3 @@ function App() {
   }
 
   export default App;
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
