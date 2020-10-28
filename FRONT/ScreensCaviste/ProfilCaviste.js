@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function ProfileCaviste({ navigation }) {
+function ProfilCaviste({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus')
   const [nom, setNom] = useState('')
-  const [etat, setEtat] = useState('')
+  const [etablissement, setEtablissement] = useState('')
   const [ville, setVille] = useState('')
   const [desc, setDesc] = useState('')
 
@@ -61,7 +62,7 @@ export default function ProfileCaviste({ navigation }) {
                 placeholder='Nom de l"établissement'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
-                onChangeText={(val) => setEtat(val)}
+                onChangeText={(val) => setEtablissement(val)}
               />
               <Input
                 containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -84,22 +85,30 @@ export default function ProfileCaviste({ navigation }) {
 
 
 
-              <TouchableOpacity >
-                <Button
-                  icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  type='font-awesome'
-                  title="Changer mes paramètres"
-                  onPress={() => { setUploaded("check-circle") }} />
-              </TouchableOpacity>
+            <Button onPress={async() => { 
+              
+              const data = await fetch("http://172.17.1.159:3000/info-update-c", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `nom=${nom}&ville=${ville}&etablissement=${etablissement}&desc=${desc}`
+                })
+              var body = await data.json()
+              console.log("RESPONSE", body)
+              setUploaded("check-circle"); 
+              
+            }}
+              Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+              type='font-awesome'
+              title="Changer mes paramètres"
+             /> 
 
+         
+            
+         
+         <TouchableOpacity> 
+             <Text style={{color:'#9D2A29'}}>Déconnexion</Text>
+         </TouchableOpacity>
 
-              <TouchableOpacity>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                  style={{ color: '#9D2A29' }}>Déconnexion</Text>
-              </TouchableOpacity>
 
             </View>
           </View>
@@ -131,3 +140,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfilCaviste);

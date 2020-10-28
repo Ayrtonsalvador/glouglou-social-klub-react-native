@@ -149,7 +149,7 @@ function ChatVigneron({ navigation, pseudo }) {
 }
 
 function mapStateToProps(state) {
-  return { pseudo: state.pseudo }
+  return { pseudo: state.pseudo, token: state.token }
 }
 
 export default connect(

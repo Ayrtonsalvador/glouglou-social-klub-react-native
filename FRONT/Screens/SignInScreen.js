@@ -7,18 +7,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation}) {
+function SignInScreen({ navigation, onSubmitUserstatus }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
-
   const [listErrorsSignin, setErrorsSignin] = useState([])
-
+  const [status, setstatus] = useState('')
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
     return (
       <View>
-        <Text>{error}</Text>
+        <Text style={{ color: '#9D2A29' }}>{error}</Text>
       </View>
     )
   })
@@ -29,6 +28,8 @@ function SignInScreen({ navigation}) {
       <View style={styles.container}>
 
         <KeyboardAvoidingView behavior="position" enabled>
+
+          <View style={styles.box1}>
 
           <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
@@ -64,31 +65,46 @@ function SignInScreen({ navigation}) {
             />
 
             {tabErrorsSignin}
-
+            
             <Button
-              onPress={async () => { navigation.navigate('ProfileVigneron')
-
+            onPress={() => {
+              navigation.navigate('ProfileCaviste'); 
+              //navigation.navigate('ProfileVigneron'); 
+              
+             }}
+              ></Button>
+            
+            <Button
+              onPress={async () => {
                 var rawResponse = await fetch("http://172.17.1.159:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                 })
                 var response = await rawResponse.json()
-                //console.log("RESPONSE", response);
+                // console.log("RESPONSE", response);
 
-                 if (response.result = true) {
-                  // props.addToken(body.token)
+                // if (response.result = true) {
+                //   // props.addToken(body.token)
+                // }
+
+                if (response.result == true && response.status == "Vigneron") {
+                  setstatus('Vigneron');
+                  onSubmitUserstatus(status);
+                  navigation.navigate("Profil");
+                  props.addToken(body.token);
+                 
+                } else if (response.result == true && response.status == "Caviste") {
+                  setstatus('Caviste');
+                  onSubmitUserstatus(status);
+                  navigation.navigate("Profil");
+                  props.addToken(body.token);
+                  
+                } else {
+                  setErrorsSignin(response.error);
                  }
-                 var getstatus = await fetch("http://172.17.1.159:3000/get-status");
-                 var response = await getstatus.json();
-                 //console.log(response);
-   
-                // Récuperer le statut du back et le mettre dans le REDUUUUUUUUUUUUXXXXXXXXX !!!!!!!!!
-                 if ( userstatus == 'Caviste' ) {
-                   navigation.navigate('ProfileCaviste'); 
-                  } else {
-                   navigation.navigate('ProfileVigneron'); }
-               }}
+
+              }}
 
               containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
               title="Rejoindre le club"
@@ -96,14 +112,10 @@ function SignInScreen({ navigation}) {
               buttonStyle={{ backgroundColor: '#FF9900' }}
             />
 
-<Button
-        onPress={() => {
-          navigation.navigate('ProfileVigneron'); 
-          // navigation.navigate('ProfileCaviste'); 
-         }}
-          ></Button>
 
 
+
+          </View>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -128,6 +140,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     // fontFamily: "Gothic A1",
   },
+  box1: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   text: {
     color: '#FFD15C',
     // fontFamily: "Gothic A1",
@@ -144,15 +160,22 @@ const styles = StyleSheet.create({
 });
 
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    addToken: function(token){
-      dispatch({type: 'addToken', token: token})
+    addToken: function (token) {
+      dispatch({ type: 'addToken', token: token })
+    },
+    onSubmitUserstatus: function (status) {
+      dispatch({ type: 'saveUserstatus', status: status })
     }
   }
 }
 
+function mapStateToProps(state) {
+  return { status: state.userstatus }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(SignInScreen);

@@ -8,7 +8,7 @@ import Carousel from "react-native-carousel-control";
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function FirstScreenOliv({ navigation }) {
+function FirstScreen({ navigation }) {
 
   const pagination = () => {
     const [activeSlide, setActiveSlide] = useState(0);
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FCDF23',
-
   },
   box: {
     width: 300,
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
     color : "#FFAE34",
     fontSize: 18,
     padding: 5,
-
+    // fontFamily: "GothicA1-Bold",
   },
 
   buttons: {
@@ -138,11 +137,10 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     padding: 10,
     justifyContent: 'center',
-    backgroundColor: '#FCDF23'
- 
+    backgroundColor: '#FCDF23',
+    // fontFamily: "GothicA1-Bold",
   },
   box2: {
-    // flex: 1,
     width: 300,
     height: 200,
     backgroundColor: '#FFFFFF',
@@ -158,4 +156,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FirstScreenOliv;
+export default FirstScreen;

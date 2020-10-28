@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 //import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-export default function ProfileVigneron({ navigation }) {
+function ProfilVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus')
   const [photo, setPhoto] = useState('')
@@ -97,14 +98,14 @@ export default function ProfileVigneron({ navigation }) {
             
          
             <Button onPress={async() => { 
-              console.log('toto');
+              
               const data = await fetch("http://172.17.1.159:3000/info-update", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}`
                 })
               var body = await data.json()
-              setUploaded("check-circle") 
+              setUploaded("check-circle"); 
               
             }}
               Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
@@ -155,6 +156,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   }
-
 });
 
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfilVigneron);

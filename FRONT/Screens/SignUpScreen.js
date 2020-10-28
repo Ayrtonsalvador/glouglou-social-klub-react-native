@@ -27,12 +27,12 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
       <View>
-        <Text>{error}</Text>
+        <Text style={{ color: '#9D2A29' }}>{error}</Text>
       </View>
     )
   })
 
-  //   POPUP CONFIRMATION INSCRIPTION
+  // POPUP CONFIRMATION INSCRIPTION
   if (isVisible) {
     return (
 
@@ -70,8 +70,8 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
 
             <View style={styles.box}>
 
-              <View>
-                <Image source={require('../assets/ContactGlouGlou.png')} style={styles.img}></Image>
+              <View style={styles.img}>
+                <Image source={require('../assets/ContactGlouGlou.png')}></Image>
               </View>
 
               <Input
@@ -129,6 +129,8 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                 }
                 onChangeText={(val) => setSignUpPassword(val)}
               />
+              
+              {tabErrorsSignup}
 
               <Button
                 onPress={async () => {                 
@@ -142,13 +144,13 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   })
                   var response = await rawResponse.json()
 
-                  console.log("RESPONSE", response);
+                  console.log("RESPONSE UP", response);
                   
                   if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
                   } else {
-                    {tabErrorsSignup}
+                    setErrorsSignin(response.error);
                   }
                 }}
 
@@ -175,7 +177,9 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                  } 
+                  } else {
+                    setErrorsSignin(body.error);
+                  }
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -224,6 +228,7 @@ const styles = StyleSheet.create({
   img: {
     // width: '20%',
     // height: '20%',
+    marginLeft: 30,
     width: 150,
     height: 150,
     margin: 10,
@@ -248,12 +253,16 @@ function mapDispatchToProps(dispatch) {
   return {
     onSubmitUserstatus: function (status) {
       dispatch({ type: 'saveUserstatus', status: status })
-      console.log("STATUS", status)
+      // console.log("STATUS", status)
     }
   }
 }
 
+function mapStateToProps(state){
+  return {status: state.userstatus}
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignUpScreen);

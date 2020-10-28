@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 var socket = socketIOClient("http://172.17.1.159:3000");
 
-export default function MessageVigneron({ navigation }) {
+function MessageVigneron({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -44,3 +44,12 @@ export default function MessageVigneron({ navigation }) {
     </View>
   );
 }
+
+function mapStateToProps(state) {
+  return { pseudo: state.pseudo, token: state.token }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(MessageVigneron);
