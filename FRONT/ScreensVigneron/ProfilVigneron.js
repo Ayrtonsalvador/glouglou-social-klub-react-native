@@ -1,108 +1,139 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
+//import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function ProfilVigneron({ navigation }) {
 
-  const [uploaded, setUploaded] = useState('plus');
+  const [uploaded, setUploaded] = useState('plus')
+  const [photo, setPhoto] = useState('')
+  const [nom, setNom] = useState('')
+  const [domaine, setDomaine] = useState('')
+  const [ville, setVille] = useState('')
+  const [region, setRegion] = useState('')
+  const [desc, setDesc] = useState('')
 
   // Demander accès à la bibliothèque photo
 
+
   return (
 
-    <View style={{ flex: 1 }}>
+  <View style={{ flex: 1 }}>
 
-      <View style={styles.container}>
+      {/* <Header
+    containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
+    centerComponent={{ text: 'AJOUTER UN NOUVEAU VIN', marginTop: 30 }}
+   >
+    <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
+   </Header> */}
 
-        <KeyboardAvoidingView behavior="position" enabled>
+    <View style={styles.container}>
 
-          <View style={styles.box1}>
+      <KeyboardAvoidingView behavior="position" enabled>
 
-            <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
+      <View style={styles.box1}>
 
-            <Avatar
-              rounded
-              icon={{ name: 'plus', type: 'font-awesome' }}
-              size="large"
-              overlayContainerStyle={{ backgroundColor: '#FFAE34' }}
-              containerStyle={{ marginTop: 15 }}
-            >
-            </Avatar>
+        <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
 
-            <TouchableOpacity>
-              <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Changer ma photo</Text>
-            </TouchableOpacity>
+        <Avatar
+          rounded
 
-            <View style={styles.box2}>
-              <Input
-                containerStyle={{ marginBottom: 20, width: '80%' }}
-                inputStyle={{ marginLeft: 10 }}
-                placeholder='Nom'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
-              />
-              <Input
-                containerStyle={{ marginBottom: 20, width: '80%' }}
-                inputStyle={{ marginLeft: 10 }}
-                placeholder='Nom de domaine'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
-              />
-              <Input
-                containerStyle={{ marginBottom: 20, width: '80%' }}
-                inputStyle={{ marginLeft: 10 }}
-                placeholder='Ville'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
-              />
-              <Input
-                containerStyle={{ marginBottom: 20, width: '80%' }}
-                inputStyle={{ marginLeft: 10 }}
-                placeholder='Région'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
-              />
-              <Input
-                containerStyle={{ marginBottom: 20, width: '80%' }}
-                placeholder={"Description \n"}
-                multiline={true}
-                inputStyle={{ marginLeft: 10 }}
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
+          icon={{ name: 'plus', type: 'font-awesome' }}
+          size="large"
+          overlayContainerStyle={{ backgroundColor: '#FFAE34' }}
+          containerStyle={{ marginTop: 15}}
+        >
+        </Avatar>
 
-              />
+        <TouchableOpacity> 
+             <Text style={{color:'#AAAAAA', marginTop: 20}}>Changer ma photo</Text>
+         </TouchableOpacity>
+
+        <View style={styles.box2}>
+          <Input
+            containerStyle={{ marginBottom: 20, width: '80%' }}
+            inputStyle={{ marginLeft: 10 }}
+            placeholder='Nom'
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
+            onChangeText={(val) => setNom(val)}
+          />
+          <Input
+            containerStyle={{ marginBottom: 20, width: '80%' }}
+            inputStyle={{ marginLeft: 10 }}
+            placeholder='Nom de domaine'
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
+            onChangeText={(val) => setDomaine(val)}
+          />
+          <Input
+            containerStyle={{ marginBottom: 20, width: '80%' }}
+            inputStyle={{ marginLeft: 10 }}
+            placeholder='Ville'
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
+            onChangeText={(val) => setVille(val)}
+          />
+          <Input
+            containerStyle={{ marginBottom: 20, width: '80%' }}
+            inputStyle={{ marginLeft: 10 }}
+            placeholder='Région'
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
+            onChangeText={(val) => setRegion(val)}
+          />
+          <Input
+            containerStyle={{ marginBottom: 20, width: '80%' }}
+            placeholder={"Description \n"}
+            multiline={true}
+            inputStyle={{ marginLeft: 10 }}
+            errorStyle={{ color: 'red' }}
+            errorMessage=''
+            onChangeText={(val) => setDesc(val)}
+             
+          />
+         
+              
+            
+         
+            <Button onPress={async() => { 
+              
+              const data = await fetch("http://172.17.1.159:3000/info-update", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}`
+                })
+              var body = await data.json()
+              setUploaded("check-circle"); 
+              
+            }}
+              Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+              type='font-awesome'
+              title="Changer mes paramètres"
+             /> 
+
+         
+            
+         
+         <TouchableOpacity> 
+             <Text style={{color:'#9D2A29'}}>Déconnexion</Text>
+         </TouchableOpacity>
 
 
+        </View>
 
-              <TouchableOpacity >
-                <Button
-                  icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  type='font-awesome'
-                  title="Changer mes paramètres"
-                  onPress={() => { setUploaded("check-circle") }} />
-              </TouchableOpacity>
-
-
-              <TouchableOpacity>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                  style={{ color: '#9D2A29' }}
-                >Déconnexion</Text>
-              </TouchableOpacity>
-
-
-            </View>
-          </View>
-        </KeyboardAvoidingView>
       </View>
+
+      </KeyboardAvoidingView>
+
     </View>
-  );
-}
+
+</View>
+
+  )}
+
+
 
 const styles = StyleSheet.create({
   container: {

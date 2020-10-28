@@ -159,7 +159,7 @@ function AddVigneron({ navigation }) {
                     setAppellation("")
                     setDesc("")
 
-                    var data = await fetch("http://172.17.1.153:3000/AddVin", {
+                    var data = await fetch("http://172.17.1.159:3000/AddVin", {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}`

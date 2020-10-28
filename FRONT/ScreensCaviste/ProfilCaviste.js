@@ -7,7 +7,11 @@ import { connect } from 'react-redux';
 
 function ProfilCaviste({ navigation }) {
 
-  const [uploaded, setUploaded] = useState('plus');
+  const [uploaded, setUploaded] = useState('plus')
+  const [nom, setNom] = useState('')
+  const [etablissement, setEtablissement] = useState('')
+  const [ville, setVille] = useState('')
+  const [desc, setDesc] = useState('')
 
   // Demander accès à la bibliothèque photo
 
@@ -50,6 +54,7 @@ function ProfilCaviste({ navigation }) {
                 placeholder='Nom'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                onChangeText={(val) => setNom(val)}
               />
               <Input
                 containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -57,6 +62,7 @@ function ProfilCaviste({ navigation }) {
                 placeholder='Nom de l"établissement'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                onChangeText={(val) => setEtablissement(val)}
               />
               <Input
                 containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -64,6 +70,7 @@ function ProfilCaviste({ navigation }) {
                 placeholder='Ville'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                onChangeText={(val) => setVille(val)}
               />
               <Input
                 containerStyle={{ marginBottom: 50, width: '80%' }}
@@ -72,27 +79,36 @@ function ProfilCaviste({ navigation }) {
                 inputStyle={{ marginLeft: 10 }}
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                onChangeText={(val) => setDesc(val)}
 
               />
 
 
 
-              <TouchableOpacity >
-                <Button
-                  icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  type='font-awesome'
-                  title="Changer mes paramètres"
-                  onPress={() => { setUploaded("check-circle") }} />
-              </TouchableOpacity>
+            <Button onPress={async() => { 
+              
+              const data = await fetch("http://172.17.1.159:3000/info-update-c", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `nom=${nom}&ville=${ville}&etablissement=${etablissement}&desc=${desc}`
+                })
+              var body = await data.json()
+              console.log("RESPONSE", body)
+              setUploaded("check-circle"); 
+              
+            }}
+              Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+              type='font-awesome'
+              title="Changer mes paramètres"
+             /> 
 
+         
+            
+         
+         <TouchableOpacity> 
+             <Text style={{color:'#9D2A29'}}>Déconnexion</Text>
+         </TouchableOpacity>
 
-              <TouchableOpacity>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                  style={{ color: '#9D2A29' }}>Déconnexion</Text>
-              </TouchableOpacity>
 
             </View>
           </View>

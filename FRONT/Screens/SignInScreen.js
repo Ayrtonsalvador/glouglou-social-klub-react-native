@@ -11,9 +11,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
-
   const [listErrorsSignin, setErrorsSignin] = useState([])
-
   const [status, setstatus] = useState('')
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
@@ -113,6 +111,10 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
               type="solid"
               buttonStyle={{ backgroundColor: '#FF9900' }}
             />
+
+
+
+
           </View>
           </View>
         </KeyboardAvoidingView>
