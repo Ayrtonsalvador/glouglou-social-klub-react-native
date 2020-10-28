@@ -39,7 +39,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // ATTENTION ADRESS IP 
 const store = createStore(combineReducers({ userstatus }));
 
-
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
   ProfileCaviste: ProfilCaviste,
@@ -85,13 +84,11 @@ StackNavigatorCaviste = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
-  ProfilCav: ProfilCaviste,
+  ProfilCaviste: ProfilCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
 );
-
-const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // STACK-NAVIGATION VIGNERON
 var BottomNavigatorVigneron = createBottomTabNavigator({
@@ -139,13 +136,14 @@ StackNavigatorVigneron = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
-  ProfilVi: ProfilVigneron,
+  ProfileVigneron: ProfilVigneron,
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
 );
 
-const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
 // const getFonts = () => Font.loadAsync({
 //   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
@@ -156,7 +154,10 @@ export default function App(userstatus) {
 
   // const [ fontsLoaded, setFontsLoaded ] = useState(false);
 
+
   // if(fontsLoaded){
+  // if (userstatus == 'Caviste') {
+
     return (
       <Provider store={store}>
         {/* <NavigationCaviste /> */}
