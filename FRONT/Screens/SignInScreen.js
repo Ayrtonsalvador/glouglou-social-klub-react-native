@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitUserstatus }) {
+function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
@@ -92,15 +92,14 @@ function SignInScreen({ navigation, onSubmitUserstatus }) {
                 if (response.result == true && response.status == "Vigneron") {
                   setstatus('Vigneron');
                   onSubmitUserstatus(status);
-                  navigation.navigate("Profil");
-                  props.addToken(body.token);
+                  navigation.navigate("ProfilVi");
+                  addToken(response.token);
                  
                 } else if (response.result == true && response.status == "Caviste") {
                   setstatus('Caviste');
                   onSubmitUserstatus(status);
-                  navigation.navigate("Profil");
-                  props.addToken(body.token);
-                  
+                  navigation.navigate("ProfilCav");
+                  addToken(response.token);
                 } else {
                   setErrorsSignin(response.error);
                  }

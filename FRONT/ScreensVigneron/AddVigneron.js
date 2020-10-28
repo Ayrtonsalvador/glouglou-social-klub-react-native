@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, TouchableOpacity, Text, SafeAreaView } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
@@ -39,11 +39,9 @@ function AddVigneron({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
+      // console.log("URI", result.uri)
     }
   };
 
@@ -59,33 +57,23 @@ function AddVigneron({ navigation }) {
           <View style={styles.box1}>
 
             <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
+            <ScrollView >
 
-      <ScrollView >
               <View style={styles.box2}>
 
-              <TouchableOpacity>
                 <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Ajouter une photo</Text>
-              </TouchableOpacity>
 
-              <Button
-                icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                rounded
-                type='font-awesome'
-                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                onPress={pickImage} />
-              {image && (
-                <View style={{
-                  width: 100, height: 100, flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 15
-                }}>
-                  <Image source={{ uri: image }} />
+                <View style={{alignItems: 'center', justifyContent: 'center' }}>
+                  <Button
+                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                    rounded
+                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
+                    onPress={pickImage} />
+                  {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
                 </View>
-              )}
 
                 <Input
-                  containerStyle={{ marginTop:20, marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Nom de la référence'
                   errorStyle={{ color: 'red' }}
@@ -157,18 +145,18 @@ function AddVigneron({ navigation }) {
                     setAppellation("")
                     setDesc("")
 
-                    var data = await fetch("http://172.17.1.153:3000/AddVin", {
+                    var data = await fetch("http://172.17.1.151:3000/AddVin", {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}`
+                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`
                     })
                     var body = await data.json()
-
+                    console.log("RESPONSE", body)
+                    console.log("IMAGEFF", image);
                   }}
                 />
 
               </View>
-
             </ScrollView>
           </View>
         </KeyboardAvoidingView>

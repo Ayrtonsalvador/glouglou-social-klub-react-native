@@ -9,7 +9,7 @@ import { color } from 'react-native-reanimated';
 
 // ATTENTION ADRESS IP 
 
-function SignUpScreen({navigation, onSubmitUserstatus}) {
+function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
  
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
@@ -149,6 +149,7 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
+                    addToken(response.token);
                   } else {
                     setErrorsSignin(response.error);
                   }
@@ -177,6 +178,7 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
+                    addToken(body.token);
                   } else {
                     setErrorsSignin(body.error);
                   }
@@ -251,15 +253,17 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
+    addToken: function (token) {
+      dispatch({ type: 'addToken', token: token })
+    },
     onSubmitUserstatus: function (status) {
       dispatch({ type: 'saveUserstatus', status: status })
-      // console.log("STATUS", status)
     }
   }
 }
 
-function mapStateToProps(state){
-  return {status: state.userstatus}
+function mapStateToProps(state) {
+  return { status: state.userstatus }
 }
 
 export default connect(

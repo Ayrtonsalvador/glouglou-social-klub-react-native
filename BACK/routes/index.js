@@ -170,6 +170,7 @@ router.post('/AddVin', async function (req, res, next) {
     Desc: req.body.DescFF,
     Cepage: req.body.CepageFF,
     Millesime: req.body.MillesimeFF,
+    Photo: req.body.ImageFF,
   })
 
   saveBouteille = await newBouteille.save()
