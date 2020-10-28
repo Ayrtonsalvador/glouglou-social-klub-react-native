@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 function AddVigneron({ navigation }) {
 
-  const [uploaded, setUploaded] = useState('plus');
+  // const [uploaded, setUploaded] = useState('plus');
 
   const [NomRef, setNomRef] = useState("");
   const [Couleur, setCouleur] = useState("");
@@ -51,12 +51,12 @@ function AddVigneron({ navigation }) {
 
       <View style={styles.container}>
 
-
         <KeyboardAvoidingView behavior="position" enabled>
 
           <View style={styles.box1}>
 
             <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
+
             <ScrollView >
 
               <View style={styles.box2}>
@@ -137,7 +137,7 @@ function AddVigneron({ navigation }) {
                   type='font-awesome'
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
                   onPress={async () => {
-                    setUploaded("check-circle")
+                    // setUploaded("check-circle")
                     setNomRef("")
                     setCouleur("")
                     setCepage("")
@@ -145,7 +145,7 @@ function AddVigneron({ navigation }) {
                     setAppellation("")
                     setDesc("")
 
-                    var data = await fetch("http://172.17.1.151:3000/AddVin", {
+                    var data = await fetch("http://172.17.1.46:3000/AddVin", {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`

@@ -10,10 +10,12 @@ var VigneronSchema = mongoose.Schema ({
     token: String,
     salt: String, 
 
-    Etablissement: String,
+    Domaine: String,
     Ville: String,
-    Desc: String,
-    Photo: String
+    Region : String,
+    Photo: String,
+    Desc: String
+
 })
 
 var VigneronModel = mongoose.model('vignerons', VigneronSchema);

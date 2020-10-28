@@ -17,6 +17,7 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'GlouGlou Social Club' });
 });
 
+
 // ---------------------- SIGN-UP --------------------\\
 router.post('/sign-up', async function (req, res, next) {
   var error = []
@@ -53,7 +54,11 @@ router.post('/sign-up', async function (req, res, next) {
       Status: req.body.statusFromFront,
       MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
-      salt: salt
+      salt: salt,
+      Etablissement:'',
+      Ville:'',
+      Desc:'',
+      Photo:''
 
     })
     saveCaviste = await newCaviste.save()
@@ -63,6 +68,7 @@ router.post('/sign-up', async function (req, res, next) {
       token = saveCaviste.token
     }
   }
+
 
   // SIGNUP VIGNERONS
   const dataVigneron = await VigneronModel.findOne({
@@ -85,7 +91,11 @@ router.post('/sign-up', async function (req, res, next) {
       Status: req.body.statusFromFront,
       MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
-      salt: salt
+      salt: salt,
+      Region:'',
+      Ville:'',
+      Desc:'',
+      Photo:''
 
     })
     console.log("VIGNERON", newVigneron)
@@ -100,6 +110,7 @@ router.post('/sign-up', async function (req, res, next) {
   res.json({ result, saveCaviste, saveVigneron, error })
 });
 
+  
 
 // ---------------------- SIGN-IN --------------------\\
 router.post('/sign-in', async function (req, res, next) {
@@ -178,5 +189,84 @@ router.post('/AddVin', async function (req, res, next) {
   res.json({ saveBouteille })
 
 });
+
+
+
+// ---------------- IMPORTER infos vigneron  ---------------- \\
+router.post('/info-update', async function(req, res, next) {
+
+//VIGNERON
+  const nomVigneron = await VigneronModel.findOne({
+    Nom: req.body.nom})
+    console.log("NOM", nomVigneron)
+
+  var updateVigneron = await VigneronModel.updateOne(
+    {Nom: req.body.nom},{
+    Photo: req.body.img,
+    Nom: req.body.nom,
+    Domaine: req.body.domaine,
+    Region: req.body.region,
+    Ville: req.body.ville,
+    Desc: req.body.desc})
+
+res.json({updateVigneron }) 
+
+})
+
+
+// ---------------- IMPORTER infos caviste ---------------- \\
+router.post('/info-update-c', async function(req, res, next) {
+  
+    //CAVISTE
+    const nomCaviste = await CavisteModel.findOne({
+      Nom: req.body.nom})
+    console.log("NOM", nomCaviste)
+  
+    var updateCaviste = await CavisteModel.updateOne(
+      {Nom: req.body.nom},{
+      Photo: req.body.img,
+      Nom: req.body.nom,
+      Etablissement: req.body.etablissement,
+      Ville: req.body.ville,
+      Desc: req.body.desc})
+    
+  res.json({updateCaviste}) 
+  
+  })
+
+
+
+router.get('/get-status', async function(req, res, next) {
+
+  const Vigneron = await VigneronModel.findOne({
+    Email: req.body.emailFromFront
+  } && {MDP : req.body.passwordFromFront})
+
+  const Caviste = await CavisteModel.findOne({
+      Email: req.body.emailFromFront 
+  } && {MDP : req.body.passwordFromFront})
+
+      var status = null
+
+      if (Caviste) {
+        status = Caviste.status
+      } else if (Vigneron) {
+        status = Vigneron.status
+      }
+
+  res.json({status})
+
+});
+
+// router.get('/user-vi', async function(req,res,next){
+//   var photo = null
+//   var user = await userModel.findOne({token: req.query.token})
+
+//   if(user != null){
+//     lang = user.lang
+//   }
+
+//   res.json({lang})
+// })
 
 module.exports = router;

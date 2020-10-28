@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,9 +11,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
-
   const [listErrorsSignin, setErrorsSignin] = useState([])
-
   const [status, setstatus] = useState('')
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
@@ -68,16 +66,27 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
             {tabErrorsSignin}
             
-            <Button
-            onPress={() => {
-              navigation.navigate('ProfileVigneron'); 
-              // navigation.navigate('ProfileCaviste'); 
-             }}
-              ></Button>
+            <TouchableOpacity>
+                  <Text
+                    onPress={() => {
+                      navigation.navigate('ProfileVigneron');
+                    }}
+                    style={{ color: '#9D2A29' }}>Vigneron</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <Text
+                    onPress={() => {
+                      navigation.navigate('ProfileCaviste');
+                    }}
+                    style={{ color: '#9D2A29' }}>Caviste</Text>
+                </TouchableOpacity>
             
             <Button
               onPress={async () => {
-                var rawResponse = await fetch("http://172.17.1.151:3000/sign-in", {
+                navigation.navigate("ProfileVigneron");
+
+                var rawResponse = await fetch("http://172.17.1.46:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -92,7 +101,6 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                 if (response.result == true && response.status == "Vigneron") {
                   setstatus('Vigneron');
                   onSubmitUserstatus(status);
-                  navigation.navigate("ProfilVi");
                   addToken(response.token);
                  
                 } else if (response.result == true && response.status == "Caviste") {

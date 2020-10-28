@@ -10,10 +10,11 @@ var CavisteSchema = mongoose.Schema ({
     token: String,
     salt: String, 
 
-    Domaine: String,
-    Region : String,
-    Photo: String,
-    Desc: String
+    Etablissement: String,
+    Ville: String,
+    Desc: String,
+    Photo: String
+
 })
 
 const CavisteModel = mongoose.model('cavistes', CavisteSchema);

@@ -28,6 +28,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
+import token from './reducers/token';
 
 // FONTS
 import * as Font from 'expo-font';
@@ -37,7 +38,7 @@ import {AppLoading} from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // ATTENTION ADRESS IP 
-const store = createStore(combineReducers({ userstatus }));
+const store = createStore(combineReducers({ userstatus, token }));
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -142,8 +143,9 @@ StackNavigatorVigneron = createStackNavigator({
   { headerMode: 'none' }
 );
 
- const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
-// const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
+ const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
+// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+
 
 // const getFonts = () => Font.loadAsync({
 //   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
@@ -160,8 +162,8 @@ export default function App(userstatus) {
 
     return (
       <Provider store={store}>
-        {/* <NavigationCaviste /> */}
-        <NavigationVigneron />
+        {/* <NavigationVigneron /> */}
+        <NavigationCaviste />
       </Provider>
      )
     // } else {
