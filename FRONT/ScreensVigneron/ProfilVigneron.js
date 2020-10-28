@@ -13,8 +13,8 @@ function ProfilVigneron({ navigation }) {
   const [ville, setVille] = useState('')
   const [region, setRegion] = useState('')
   const [desc, setDesc] = useState('')
-
   // Demander accès à la bibliothèque photo
+  const [disabled, setDisabled] = useState(false);
 
 
   return (
@@ -58,6 +58,8 @@ function ProfilVigneron({ navigation }) {
             errorStyle={{ color: 'red' }}
             errorMessage=''
             onChangeText={(val) => setNom(val)}
+            disabled={disabled}
+            disabledInputStyle={{opacity: 0.5}}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -66,6 +68,8 @@ function ProfilVigneron({ navigation }) {
             errorStyle={{ color: 'red' }}
             errorMessage=''
             onChangeText={(val) => setDomaine(val)}
+            disabled={disabled}
+            disabledInputStyle={{opacity: 0.5}}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -74,6 +78,8 @@ function ProfilVigneron({ navigation }) {
             errorStyle={{ color: 'red' }}
             errorMessage=''
             onChangeText={(val) => setVille(val)}
+            disabled={disabled}
+            disabledInputStyle={{opacity: 0.5}}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -82,6 +88,8 @@ function ProfilVigneron({ navigation }) {
             errorStyle={{ color: 'red' }}
             errorMessage=''
             onChangeText={(val) => setRegion(val)}
+            disabled={disabled}
+            disabledInputStyle={{opacity: 0.5}}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -91,6 +99,8 @@ function ProfilVigneron({ navigation }) {
             errorStyle={{ color: 'red' }}
             errorMessage=''
             onChangeText={(val) => setDesc(val)}
+            disabled={disabled}
+            disabledInputStyle={{opacity: 0.5}}
              
           />
          
@@ -98,7 +108,7 @@ function ProfilVigneron({ navigation }) {
             
          
             <Button onPress={async() => { 
-              
+                setDisabled(true)
               const data = await fetch("http://172.17.1.159:3000/info-update", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -113,7 +123,11 @@ function ProfilVigneron({ navigation }) {
               title="Changer mes paramètres"
              /> 
 
-         
+              <Button // activer l'édition de données //
+                onPress={ () => setDisabled(false)} 
+                Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                title="Modifier mes paramètres"
+              />
             
          
          <TouchableOpacity> 

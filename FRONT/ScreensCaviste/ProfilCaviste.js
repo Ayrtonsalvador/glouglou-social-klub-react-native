@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} 
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-// import Icon from 'react-native-vector-icons/FontAwesome';
+//import Icon from 'react-native-vector-icons/FontAwesome';
 
 function ProfilCaviste({ navigation }) {
 
@@ -12,8 +12,9 @@ function ProfilCaviste({ navigation }) {
   const [etablissement, setEtablissement] = useState('')
   const [ville, setVille] = useState('')
   const [desc, setDesc] = useState('')
-
   // Demander accès à la bibliothèque photo
+  const [disabled, setDisabled] = useState(false);
+  
 
   return (
 
@@ -55,6 +56,8 @@ function ProfilCaviste({ navigation }) {
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
                 onChangeText={(val) => setNom(val)}
+                disabled={disabled}
+                disabledInputStyle={{opacity: 0.5}}
               />
               <Input
                 containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -62,6 +65,7 @@ function ProfilCaviste({ navigation }) {
                 placeholder='Nom de l"établissement'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                disabled={disabled}
                 onChangeText={(val) => setEtablissement(val)}
               />
               <Input
@@ -70,6 +74,7 @@ function ProfilCaviste({ navigation }) {
                 placeholder='Ville'
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                disabled={disabled}
                 onChangeText={(val) => setVille(val)}
               />
               <Input
@@ -79,14 +84,14 @@ function ProfilCaviste({ navigation }) {
                 inputStyle={{ marginLeft: 10 }}
                 errorStyle={{ color: 'red' }}
                 errorMessage=''
+                disabled={disabled}
                 onChangeText={(val) => setDesc(val)}
-
               />
 
 
 
             <Button onPress={async() => { 
-              
+              setDisabled(true)
               const data = await fetch("http://172.17.1.159:3000/info-update-c", {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -94,15 +99,21 @@ function ProfilCaviste({ navigation }) {
                 })
               var body = await data.json()
               console.log("RESPONSE", body)
-              setUploaded("check-circle"); 
-              
+              setUploaded("check-circle");        
             }}
               Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
               type='font-awesome'
-              title="Changer mes paramètres"
+              title="Enregistrer"
              /> 
 
-         
+              <Button // activer l'édition de données //
+                onPress={ () => setDisabled(false)} 
+                Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                title="Modifier mes paramètres"
+              />
+
+
+              
             
          
          <TouchableOpacity> 
