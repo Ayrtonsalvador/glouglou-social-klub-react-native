@@ -1,27 +1,44 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Image, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { ListItem, Input, Header } from 'react-native-elements';
-// import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 function CaveVigneron() {
   return (
-    <View style={{ flex: 1}}>
-      <Header containerStyle={{backgroundColor: '#FCDF23', alignItems: 'center', justifyContent: 'center'}}>
-        <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80}}></Image>
-      </Header>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80}}></Image>
 
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Cave Vigneron</Text>
+      <View style={styles.container}>
+
+        <KeyboardAvoidingView behavior="position" enabled>
+
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Cave Vigneron</Text>
+          </View>
+
+        </KeyboardAvoidingView>
+
       </View>
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box1: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
-function mapStateToProps(state){
-  return {token: state.token}
+function mapStateToProps(state) {
+  return { token: state.token }
 }
 
 export default connect(

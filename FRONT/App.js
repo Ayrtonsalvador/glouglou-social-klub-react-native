@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -19,20 +19,24 @@ import ChatVigneron from './ScreensVigneron/ChatVigneron';
 import MessageVigneron from './ScreensVigneron/MessageVigneron';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
+// Navigation
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import { Ionicons } from '@expo/vector-icons';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+// Reduce Store
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 
-// ATTENTION ADRESS IP 
+// FONTS
+import * as Font from 'expo-font';
+import {AppLoading} from 'expo';
 
+// Icones
+import Icon from 'react-native-vector-icons/Ionicons';
+
+// ATTENTION ADRESS IP 
 const store = createStore(combineReducers({ userstatus }));
 
 // STACK-NAVIGATION CAVISTES
@@ -47,15 +51,14 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        var type;
         if (navigation.state.routeName == 'ProfileCaviste') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'FavorisCaviste') {
-          iconName = 'heart';
+          iconName = 'ios-heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
-          iconName = 'commenting-o';
+          iconName = 'ios-chatboxes';
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
-          iconName = 'search';
+          iconName = 'ios-search';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -100,16 +103,16 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'commenting-o';
+          iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'home';
+          iconName = 'ios-home';
         } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'glass';
+          iconName = 'ios-wine';
         }
 
-        return <Icon name={iconName} size={25} color={tintColor} />;
+        return <Icon name={iconName} size={30} color={tintColor} />;
       },
     }),
     tabBarOptions: {
@@ -139,28 +142,18 @@ StackNavigatorVigneron = createStackNavigator({
   { headerMode: 'none' }
 );
 
-// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+ const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 // const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
-function App() {
+// const getFonts = () => Font.loadAsync({
+//   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
+//   'GothicA1-Thin': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;700&display=swap', 
+// })
 
-  // const [navbarstatus, setnavbarstatus] = useState("")
-  // console.log(userstatus);
-  var userstatus = 'Vigneron';
-  // var userstatus = 'Caviste';
+export default function App(userstatus) {
 
-  const Navigation = createAppContainer(userstatus == "Vigneron" ? StackNavigatorVigneron : StackNavigatorCaviste);
-  // const Navigation = createAppContainer(userstatus == "Caviste" ? StackNavigatorCaviste : StackNavigatorVigneron);
-  
-  // if (userstatus == "Vigneron") {
-  //   setnavbarsatus(StackNavigatorVigneron)
-  // }
-  
-  // if (userstatus == "Caviste") {
-  //   setnavbarsatus(StackNavigatorCaviste)
-  // }
+  // const [ fontsLoaded, setFontsLoaded ] = useState(false);
 
-  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
     return (
       <Provider store={store}>

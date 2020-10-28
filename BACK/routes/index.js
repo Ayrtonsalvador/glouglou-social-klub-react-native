@@ -119,40 +119,6 @@ router.post('/sign-in', async function (req, res, next) {
   if (error.length == 0) {
 
     // SIGN-IN CAVISTES 
-<<<<<<< HEAD
-      const userCaviste = await CavisteModel.findOne({
-        Email: req.body.emailFromFront,
-      })
-      console.log("SIGN IN CAVISTE", userCaviste)
-
-      if (userCaviste) {
-        const passwordEncrypt = SHA256(req.body.passwordFromFront + userCaviste.salt).toString(encBase64)
-
-        if (passwordEncrypt == userCaviste.MDP) {
-          result = true
-          token = userCaviste.token
-        } else {
-          result = false
-          error.push('mot de passe ou email incorrect')
-        }
-      } 
-    }
-
-    // SIGN-IN VIGNERONS
-      const userVigneron = await VigneronModel.findOne({
-        Email: req.body.emailFromFront,
-      })
-      console.log("SIGN IN VIGNERON", userVigneron)
-  
-      if (userVigneron) {
-        const passwordEncrypt = SHA256(req.body.passwordFromFront + userVigneron.salt).toString(encBase64)
-  
-        if (passwordEncrypt == userVigneron.MDP) {
-          result = true
-          token = userVigneron.token
-        } 
-      }
-=======
     const userCaviste = await CavisteModel.findOne({
       Email: req.body.emailFromFront,
     })
@@ -190,7 +156,6 @@ router.post('/sign-in', async function (req, res, next) {
       }
     }
   }
->>>>>>> 2614629b4eb7000d92d43ffc6e3aacd9b9fff798
 
   res.json({ result, error, token, status })
 });
