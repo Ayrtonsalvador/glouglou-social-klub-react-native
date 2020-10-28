@@ -9,7 +9,7 @@ import { color } from 'react-native-reanimated';
 
 // ATTENTION ADRESS IP 
 
-function SignUpScreen({navigation, onSubmitUserstatus}) {
+function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
  
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
@@ -137,26 +137,19 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-<<<<<<< HEAD
                   var rawResponse = await fetch("http://172.17.1.153:3000/sign-up", {
-=======
-                  var rawResponse = await fetch("http://172.17.1.151:3000/sign-up", {
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
                   var response = await rawResponse.json()
 
-<<<<<<< HEAD
                   // console.log("RESPONSE", response);
-=======
-                  console.log("RESPONSE UP", response);
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
                   
                   if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
+                    addToken(response.token);
                   } else {
                     setErrorsSignin(response.error);
                   }
@@ -174,7 +167,7 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://172.17.1.151:3000/sign-up", {
+                  var data = await fetch("http://172.17.1.153:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -185,6 +178,7 @@ function SignUpScreen({navigation, onSubmitUserstatus}) {
                   if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
+                    addToken(body.token);
                   } else {
                     setErrorsSignin(body.error);
                   }
@@ -259,18 +253,20 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
+    addToken: function (token) {
+      dispatch({ type: 'addToken', token: token })
+    },
     onSubmitUserstatus: function (status) {
       dispatch({ type: 'saveUserstatus', status: status })
-      // console.log("STATUS", status)
     }
   }
 }
 
-function mapStateToProps(state){
-  return {status: state.userstatus}
+function mapStateToProps(state) {
+  return { status: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignUpScreen);

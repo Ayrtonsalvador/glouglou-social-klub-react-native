@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
+// ATTENTION ADRESS IP
+
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 function AddVigneron({ navigation }) {

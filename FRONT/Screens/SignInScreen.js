@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitUserstatus }) {
+function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
@@ -70,7 +70,8 @@ function SignInScreen({ navigation, onSubmitUserstatus }) {
             
             <Button
             onPress={() => {
-              navigation.navigate('ProfileVigneron'); 
+              navigation.navigate('BottomNavigatorVigneron', { screen: 'ProfileVigneron' });
+ 
               // navigation.navigate('ProfileCaviste'); 
              }}
               ></Button>
@@ -87,20 +88,19 @@ function SignInScreen({ navigation, onSubmitUserstatus }) {
                 console.log("RESPONSE", response);
                 console.log("RESULT", response.result)              
   
-
-                if (response.result == true && response.status == "Vigneron") {
+                if (response.status == "Vigneron") {
                   setstatus('Vigneron');
-                  onSubmitUserstatus(status);
-                  props.addToken(body.token);
-                  navigation.navigate("Profil");
-
-                 
-                } else if (response.result == true && response.status == "Caviste") {
+                  onSubmitUserstatus(status); 
+                  addToken(response.token);              
+                  navigation.navigate("ProfileVigneron");
+                  console.log("token", response.token)
+                  
+                } else if (response.status == "Caviste") {
                   setstatus('Caviste');
                   onSubmitUserstatus(status);
-                  props.addToken(body.token);
+                  
                   navigation.navigate("Profil");
-
+                  props.addToken(body.token);
                   
                 } else {
                   setErrorsSignin(response.error);

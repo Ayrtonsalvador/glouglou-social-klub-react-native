@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -19,24 +20,20 @@ import ChatVigneron from './ScreensVigneron/ChatVigneron';
 import MessageVigneron from './ScreensVigneron/MessageVigneron';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
-// Navigation
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-// Reduce Store
+import { Ionicons } from '@expo/vector-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 
-// FONTS
-import * as Font from 'expo-font';
-import {AppLoading} from 'expo';
-
-// Icones
-import Icon from 'react-native-vector-icons/Ionicons';
-
 // ATTENTION ADRESS IP 
+
 const store = createStore(combineReducers({ userstatus }));
 
 // STACK-NAVIGATION CAVISTES
@@ -52,13 +49,13 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'ProfileCaviste') {
-          iconName = 'ios-person';
+          iconName = 'user';
         } else if (navigation.state.routeName == 'FavorisCaviste') {
-          iconName = 'ios-heart';
+          iconName = 'heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
-          iconName = 'ios-chatboxes';
+          iconName = 'comments-o';
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
-          iconName = 'ios-search';
+          iconName = 'search';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -67,59 +64,57 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-      showLabel: false,
-      adaptive: true,
+
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
         borderColor: '#FCDF23',
+
       }
     }
 
   });
 
-StackNavigatorCaviste = createStackNavigator({
+  var StackNavigatorCaviste = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageCaviste: MessageCaviste,
-  Profil: ProfilCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
   { headerMode: 'none' }
 );
 
 // STACK-NAVIGATION VIGNERON
-var BottomNavigatorVigneron = createBottomTabNavigator({
+const BottomNavigatorVigneron = createBottomTabNavigator({
   ProfileVigneron: ProfilVigneron,
   Cave: CaveVigneron,
   Vin: AddVigneron,
   ChatVigneron: ChatVigneron,
-
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'ios-person';
+          iconName = 'user';
         } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'md-chatboxes';
+          iconName = 'comments-o';
         } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'ios-home';
+          iconName = 'home';
         } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'ios-wine';
+          iconName = 'glass';
         }
 
-        return <Icon name={iconName} size={30} color={tintColor} />;
+        return <Icon name={iconName} size={25} color={tintColor} />;
       },
     }),
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-      showLabel: false,
-      adaptive: true,
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
@@ -131,36 +126,55 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 
   });
 
-StackNavigatorVigneron = createStackNavigator({
+var StackNavigatorVigneron = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
-  Profil: ProfilVigneron,
-  BottomNavigatorVigneron: BottomNavigatorVigneron,
+  BottomNavigatorVigneron : BottomNavigatorVigneron
 },
   { headerMode: 'none' }
 );
-
- const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 // const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
-// const getFonts = () => Font.loadAsync({
-//   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
-//   'GothicA1-Thin': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;700&display=swap', 
-// })
+const Navigation = createAppContainer(StackNavigatorVigneron);
 
-export default function App(userstatus) {
+function App(userstatus) {
 
-  // const [ fontsLoaded, setFontsLoaded ] = useState(false);
+  // const [navbarstatus, setnavbarstatus] = useState("")
+  // console.log(userstatus);
+  // var userstatus = 'Vigneron';
+  // var userstatus = 'Caviste';
 
+  const Navigation = createAppContainer(userstatus == "Vigneron" ? StackNavigatorVigneron : StackNavigatorCaviste);
+  // const Navigation = createAppContainer(userstatus == "Caviste" ? StackNavigatorCaviste : StackNavigatorVigneron);
+  
+  // if (userstatus == "Vigneron") {
+  //   setnavbarsatus(StackNavigatorVigneron)
+  // }
+  
+  // if (userstatus == "Caviste") {
+  //   setnavbarsatus(StackNavigatorCaviste)
+  // }
+
+  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
     return (
       <Provider store={store}>
+
         <Navigation/>
+       
       </Provider>
     ) 
 
   }
 
-  export default App;
+  function mapStateToProps(state) {
+    return { status: state.userstatus }
+  }
+  
+  export default connect(
+    mapStateToProps,
+    null,
+  )(App);
