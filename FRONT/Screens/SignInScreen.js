@@ -77,55 +77,34 @@ function SignInScreen({ navigation, onSubmitUserstatus }) {
             
             <Button
               onPress={async () => {
-<<<<<<< HEAD
 
                 var rawResponse = await fetch("http://172.17.1.153:3000/sign-in", {
-=======
-                var rawResponse = await fetch("http://172.17.1.151:3000/sign-in", {
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                 })
                 var response = await rawResponse.json()
-<<<<<<< HEAD
                 console.log("RESPONSE", response);
                 console.log("RESULT", response.result)              
   
-=======
-                // console.log("RESPONSE", response);
-
-                // if (response.result = true) {
-                //   // props.addToken(body.token)
-                // }
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
 
                 if (response.result == true && response.status == "Vigneron") {
                   setstatus('Vigneron');
                   onSubmitUserstatus(status);
                   props.addToken(body.token);
                   navigation.navigate("Profil");
-<<<<<<< HEAD
-                  
-=======
-                  props.addToken(body.token);
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
+
                  
                 } else if (response.result == true && response.status == "Caviste") {
                   setstatus('Caviste');
                   onSubmitUserstatus(status);
                   props.addToken(body.token);
                   navigation.navigate("Profil");
-<<<<<<< HEAD
-                } else { setErrorsSignin(response.error);
-                }
-=======
-                  props.addToken(body.token);
+
                   
                 } else {
                   setErrorsSignin(response.error);
                  }
->>>>>>> 4fc1ea4618220f91d29eccc859a99a83c8661e5f
 
               }}
 
