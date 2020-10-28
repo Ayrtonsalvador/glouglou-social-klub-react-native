@@ -15,6 +15,7 @@
     "@react-native-community/slider": "^3.0.3",
     "@react-native-community/viewpager": "^4.1.6",
     "expo": "^39.0.0",
+    "expo-font": "~8.3.0",
     "expo-image-picker": "^9.1.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -29,6 +30,7 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-toggle-element": "^1.0.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.13.7",
     "react-navigation": "^4.1.1",
@@ -37,8 +39,7 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.1",
-    "expo-font": "~8.3.0"
+    "socket.io-client": "^2.3.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.3.0",

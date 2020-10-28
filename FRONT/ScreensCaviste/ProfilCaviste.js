@@ -41,6 +41,9 @@ function ProfilCaviste({ navigation }) {
       // console.log("URI", result.uri)
     }
   };
+ 
+  const [disabled, setDisabled] = useState(false);
+  
 
   return (
 
@@ -107,6 +110,8 @@ function ProfilCaviste({ navigation }) {
                 />
 
                 <Button onPress={async () => {
+                  
+                  setDisabled(true)
 
                   const data = await fetch("http://172.17.1.46:3000/info-update-c", {
                     method: 'POST',
@@ -123,6 +128,12 @@ function ProfilCaviste({ navigation }) {
                   type='font-awesome'
                   title="Changer mes paramètres"
                 />
+
+              <Button // activer l'édition de données //
+                onPress={ () => setDisabled(false)} 
+                Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                title="Modifier mes paramètres"
+              />
 
                 <TouchableOpacity>
                   <Text

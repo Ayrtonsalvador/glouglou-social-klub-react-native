@@ -48,6 +48,8 @@ function ProfilVigneron({ navigation }) {
     }
   };
 
+  const [disabled, setDisabled] = useState(false);
+
 
   return (
 
@@ -125,6 +127,8 @@ function ProfilVigneron({ navigation }) {
 
                 <Button onPress={async () => {
 
+                  setDisabled(true)
+
                   const data = await fetch("http://172.17.1.46:3000/info-update", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -138,6 +142,12 @@ function ProfilVigneron({ navigation }) {
                   type='font-awesome'
                   title="Changer mes paramètres"
                 />
+
+              <Button // activer l'édition de données //
+                onPress={ () => setDisabled(false)} 
+                Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                title="Modifier mes paramètres"
+              />
 
                 <TouchableOpacity>
                   <Text
