@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React, { useState } from 'react';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -8,7 +6,6 @@ import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList } from
 import { Button, ListItem, Input, Header } from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 
 export default function CatalogueCaviste() {
 

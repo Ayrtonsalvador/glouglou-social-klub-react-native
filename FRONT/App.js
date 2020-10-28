@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen.js';
@@ -29,15 +29,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import username from './reducers/username';
+import userstatus from './reducers/userstatus';
 
-const store = createStore(combineReducers({ username }));
+// ATTENTION ADRESS IP 
 
-// useEffect(async () => {
-//   const response = await fetch('/sign-up')
-//   const jsonResponse = await response.json()
-//   console.log(jsonResponse)
-// })
+const store = createStore(combineReducers({ userstatus }));
+
 
 // STACK-NAVIGATION CAVISTES
 var BottomNavigatorCaviste = createBottomTabNavigator({
@@ -57,7 +54,6 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
           iconName = 'heart';
         } else if (navigation.state.routeName == 'ChatCaviste') {
           iconName = 'comments-o';
-          // si vigneron
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
           iconName = 'search';
         }
@@ -68,20 +64,20 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-     
-  
+
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
-        borderColor : '#FCDF23',
-        
+        borderColor: '#FCDF23',
+
       }
     }
 
   });
 
-  StackNavigatorCaviste = createStackNavigator({
+StackNavigatorCaviste = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
@@ -111,7 +107,6 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
           iconName = 'comments-o';
         } else if (navigation.state.routeName == 'Cave') {
           iconName = 'home';
-          // si vigneron
         } else if (navigation.state.routeName == 'Vin') {
           iconName = 'glass';
         }
@@ -122,19 +117,19 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
     tabBarOptions: {
       activeTintColor: '#130f40',
       inactiveTintColor: '#FFFFFF',
-     
+
       style: {
         backgroundColor: '#FCDF23',
         height: 40,
         shadowColor: 'transparent',
-        borderColor : '#FCDF23',
-        
+        borderColor: '#FCDF23',
+
       }
     }
 
   });
 
-  StackNavigatorVigneron = createStackNavigator({
+StackNavigatorVigneron = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
@@ -146,20 +141,20 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 
 const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
+export default function App(userstatus) {
 
+  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
 
-export default function App() {
-  //if()
-  return (
-    <Provider store={store}>
-      <NavigationVigneron />
-    </Provider>
-  );
-}
-// else {
-//   return(
-//     <Provider store={store}>
-        // <NavigationCaviste />
-//   </Provider>
-//   )
-// }
+  if (userstatus == 'Caviste') {
+    return (
+      <Provider store={store}>
+        <NavigationCaviste />
+      </Provider>
+    ) } else {
+    return (
+      <Provider store={store}>
+        <NavigationCaviste />
+      </Provider>
+    )
+  }
+  }

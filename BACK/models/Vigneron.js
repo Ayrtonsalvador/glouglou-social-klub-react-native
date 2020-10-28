@@ -7,6 +7,8 @@ var VigneronSchema = mongoose.Schema ({
     Email: String,
     MDP: String,
     Status: String,
+    token: String,
+    salt: String, 
 
     Domaine: String,
     Ville: String,
@@ -16,6 +18,6 @@ var VigneronSchema = mongoose.Schema ({
 
 })
 
-var VigneronModel = mongoose.model('Vigneron', VigneronSchema);
+var VigneronModel = mongoose.model('vignerons', VigneronSchema);
 
 module.exports = VigneronModel;

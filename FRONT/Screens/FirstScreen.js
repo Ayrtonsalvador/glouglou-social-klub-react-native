@@ -82,12 +82,11 @@ function FirstScreenOliv({ navigation }) {
 
       <View style={styles.buttons}>
 
-        <View style={{ borderColor: '#FFD15C', margin:10}}>
-          <Text style={styles.txt}
-            onPress={() => {
-              navigation.navigate('SignIn');
-            }}>S'IDENTIFIER</Text>
-        </View>
+      <Button buttonStyle={{backgroundColor: '#FCDF23', margin:10}}
+          title="S'IDENTIFIER"
+          onPress={() => {
+          navigation.navigate('SignIn');
+          }}>S'INSCRIRE</Button>
 
         <Button buttonStyle={{backgroundColor: '#FFAE34', margin:10}}
           title="S'INSCRIRE"

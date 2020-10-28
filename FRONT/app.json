@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "part3",
-    "slug": "part3",
+    "name": "GlouGlou Social Club",
+    "slug": "GGSC",
     "privacy": "public",
     "platforms": [
       "ios",
@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Plantravail.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/MainGlouGlou.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

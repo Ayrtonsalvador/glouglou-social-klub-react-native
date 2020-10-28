@@ -1,44 +1,43 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
-import { connect } from 'react-redux';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function AddVigneron({ navigation }) {
+export default function ProfileVigneron({ navigation }) {
 
-  const [uploaded, setUploaded] = useState('plus');
+  const [uploaded, setUploaded] = useState('plus')
   const [photo, setPhoto] = useState('')
-  const [name, setName] = useState('')
+  const [nom, setNom] = useState('')
   const [domaine, setDomaine] = useState('')
-  const [city, setCity] = useState('')
+  const [ville, setVille] = useState('')
   const [region, setRegion] = useState('')
   const [desc, setDesc] = useState('')
-  const [infoList, setInfoList] = useState([])
 
   // Demander accès à la bibliothèque photo
 
 
   return (
 
-<View style={{ flex: 1 }}>
+  <View style={{ flex: 1 }}>
 
-  {/* <Header
+      {/* <Header
     containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
     centerComponent={{ text: 'AJOUTER UN NOUVEAU VIN', marginTop: 30 }}
-  >
+   >
     <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-  </Header> */}
+   </Header> */}
 
-  <View style={styles.container}>
+    <View style={styles.container}>
 
-    <KeyboardAvoidingView behavior="position" enabled>
+      <KeyboardAvoidingView behavior="position" enabled>
 
       <View style={styles.box1}>
 
-      <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
+        <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
 
         <Avatar
           rounded
+
           icon={{ name: 'plus', type: 'font-awesome' }}
           size="large"
           overlayContainerStyle={{ backgroundColor: '#FFAE34' }}
@@ -57,7 +56,7 @@ export default function AddVigneron({ navigation }) {
             placeholder='Nom'
             errorStyle={{ color: 'red' }}
             errorMessage=''
-            onChangeText={(val) => setName(val)}
+            onChangeText={(val) => setNom(val)}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -73,7 +72,7 @@ export default function AddVigneron({ navigation }) {
             placeholder='Ville'
             errorStyle={{ color: 'red' }}
             errorMessage=''
-            onChangeText={(val) => setCity(val)}
+            onChangeText={(val) => setVille(val)}
           />
           <Input
             containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -96,24 +95,24 @@ export default function AddVigneron({ navigation }) {
          
               
             
-         <TouchableOpacity >
-            <Button  
+         
+            <Button onPress={async() => { 
+              console.log('toto');
+              const data = await fetch("http://172.17.1.159:3000/info-update", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}`
+                })
+              var body = await data.json()
+              setUploaded("check-circle") 
+              
+            }}
               Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
               type='font-awesome'
               title="Changer mes paramètres"
+             /> 
 
-              onPress={async() => { 
-                const data = await fetch("http://172.17.1.159:3000/info-update", {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                  body: `photo=${photo}&name=${name}&domaine=${domaine}&city=${city}&region=${region}&desc=${desc}`
-                  })
-                const body = await data.json()
-                setUploaded("check-circle") 
-                
-              }}/> 
-
-         </TouchableOpacity>
+         
             
          
          <TouchableOpacity> 
@@ -122,12 +121,18 @@ export default function AddVigneron({ navigation }) {
 
 
         </View>
+
       </View>
-    </KeyboardAvoidingView> 
-  </View>
+
+      </KeyboardAvoidingView>
+
+    </View>
+
 </View>
-  );
-}
+
+  )}
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -150,5 +155,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   }
+
 });
 

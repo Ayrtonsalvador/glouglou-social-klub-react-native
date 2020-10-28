@@ -8,7 +8,7 @@ import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
 
-var socket = socketIOClient("http://adress-IP");
+var socket = socketIOClient("http://172.17.1.159:3000/");
 
 function ChatCaviste({ navigation, pseudo }) {
 

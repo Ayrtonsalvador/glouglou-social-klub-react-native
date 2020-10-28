@@ -7,24 +7,22 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignUpScreen({ navigation, onSubmitUsername }) {
+// ATTENTION ADRESS IP 
 
+function SignUpScreen({navigation, onSubmitUserstatus}) {
+ 
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpTel, setSignUpTel] = useState('')
-  const [signUpStatus, setSignUpStatus] = useState('')
+  const [signUpPassword, setSignUpPassword] = useState('')
+  const [signUpStatus, setSignUpStatus] = useState('null')
 
   const [userExists, setUserExists] = useState(false)
   const [isVisible, setIsVisible] = useState(false);
 
   const [listErrorsSignup, setErrorsSignup] = useState([])
 
-
-  // useEffect(() => {
-  //   async function fetchData() {
-
-  //   fetchData();
-  // }, [])
+  const [modalVisible, setModalVisible] = useState(false);
 
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
@@ -35,18 +33,19 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
   })
 
   //   POPUP CONFIRMATION INSCRIPTION
-  if (userExists) {
+  if (isVisible) {
     return (
 
       <View style={styles.container}>
         <View style={styles.popup}>
-          <Text style={styles.text}>A BIENTÔT DANS LE :</Text>
+          <Text style={styles.text}>A BIENTÔT DANS LE</Text>
           <Image source={require('../assets/ContacterGlouGlou.png')}
             style={styles.img}
           ></Image>
           <Button
-            containerStyle={{ marginBottom: 15, width: '50%', borderRadius: 15, }}
-            title="Compris"
+            containerStyle={{ marginBottom: 15, width: '20%', borderRadius: 15, }}
+
+            title="OK"
             type="solid"
             buttonStyle={{ backgroundColor: '#FFAE34' }}
             onPress={() => {
@@ -75,13 +74,10 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 <Image source={require('../assets/ContactGlouGlou.png')} style={styles.img}></Image>
               </View>
 
-
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
                 placeholder='Nom'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
                 leftIcon={
                   <Icon
                     name='user'
@@ -110,8 +106,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 containerStyle={{ marginBottom: 25, width: '70%' }}
                 inputStyle={{ marginLeft: 10 }}
                 placeholder='Téléphone'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
                 leftIcon={
                   <Icon
                     name='phone'
@@ -121,26 +115,40 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 }
                 onChangeText={(val) => setSignUpTel(val)}
               />
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Mot de passe'
+                secureTextEntry={true}
+                leftIcon={
+                  <Icon
+                    name='key'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignUpPassword(val)}
+              />
 
               <Button
-                onPress={async () => {
-                  setSignUpStatus('Vigneron')
+                onPress={async () => {                 
+                  setSignUpStatus('Vigneron');
+                  onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch("http://172.17.1.159:3000/sign-up", {
+                  var rawResponse = await fetch("http://172.17.1.159:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
-                  var body = await data.json()
+                  var response = await rawResponse.json()
+
+                  console.log("RESPONSE", response);
                   
-                  if (body.result == true) {
+                  if (response.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                    console.log("SUCCESS", body)
-
-                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
-                    setErrorsSignup(body.error)
-                    console.log("ERROR", body.error)
+                  } else {
+                    {tabErrorsSignup}
                   }
                 }}
 
@@ -153,24 +161,21 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
               <Button
                 onPress={async () => {
 
-                  setSignUpStatus('Caviste')
-
+                  setSignUpStatus('Caviste');
+                  onSubmitUserstatus(signUpStatus);
+              
                   var data = await fetch("http://172.17.1.159:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&statusFromFront=${signUpStatus}`
+                    body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
                   })
                   var body = await data.json()
-                  
-                  if (body.result == true) {
+                  console.log("RESPONSE", body)
+
+                  if(body.result == true) {
                     setUserExists(true);
                     setIsVisible(true);
-                    console.log("SUCCESS", body)
-
-                  } else if (signUpUsername == '' || signUpEmail == '' || signUpTel == '' || signUpStatus == null) {
-                    setErrorsSignup(body.error)
-                    console.log("ERROR", body.error)
-                  }
+                  } 
                 }}
 
                 containerStyle={{ marginBottom: 15, width: '70%', borderRadius: 15, }}
@@ -179,7 +184,6 @@ function SignUpScreen({ navigation, onSubmitUsername }) {
                 buttonStyle={{ backgroundColor: '#FFAE34' }}
               />
 
-              {tabErrorsSignup}
 
             </View>
           </KeyboardAvoidingView>
@@ -242,8 +246,9 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitUsername: function (username) {
-      dispatch({ type: 'saveUsername', username: username })
+    onSubmitUserstatus: function (status) {
+      dispatch({ type: 'saveUserstatus', status: status })
+      console.log("STATUS", status)
     }
   }
 }
