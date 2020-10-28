@@ -29,13 +29,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
 });
 

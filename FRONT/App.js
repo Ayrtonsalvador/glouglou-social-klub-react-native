@@ -19,12 +19,12 @@ import ChatVigneron from './ScreensVigneron/ChatVigneron';
 import MessageVigneron from './ScreensVigneron/MessageVigneron';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
+// Navigation
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import Icon from 'react-native-vector-icons/Ionicons';
-
+// Reduce Store
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
@@ -33,10 +33,8 @@ import userstatus from './reducers/userstatus';
 import * as Font from 'expo-font';
 import {AppLoading} from 'expo';
 
-const getFonts = () => Font.loadAsync({
-  // 'GothicA1-Bold': require('../assets/fonts/Gothic/GothicA1-Bold.ttf'), 
-  // 'GothicA1-Thin': require('../assets/fonts/Gothic_A1/GothicA1-Light.ttf'), 
-})
+// Icones
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // ATTENTION ADRESS IP 
 const store = createStore(combineReducers({ userstatus }));
@@ -149,23 +147,28 @@ StackNavigatorVigneron = createStackNavigator({
 
 const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
+// const getFonts = () => Font.loadAsync({
+//   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
+//   'GothicA1-Thin': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;700&display=swap', 
+// })
+
 export default function App(userstatus) {
 
-  const [ fontsLoaded, setFontsLoaded ] = useState(false);
+  // const [ fontsLoaded, setFontsLoaded ] = useState(false);
 
-  if(fontsLoaded){
+  // if(fontsLoaded){
     return (
       <Provider store={store}>
         {/* <NavigationCaviste /> */}
         <NavigationVigneron />
       </Provider>
      )
-    } else {
-       return(
-        <AppLoading
-          startAsync={getFonts}
-          onFinish={()=> setFontsLoaded(true)}
-        />
-       )
-     }
+    // } else {
+    //    return(
+    //     <AppLoading
+    //       startAsync={getFonts}
+    //       onFinish={()=> setFontsLoaded(true)}
+    //     />
+    //    )
+    //  }
     }
