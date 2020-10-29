@@ -8,6 +8,7 @@ var BouteilleSchema = mongoose.Schema ({
     Desc: String,
     Cepage: String,
     Millesime: String,
+    Annee: Number,
     Photo: String,
 
 })

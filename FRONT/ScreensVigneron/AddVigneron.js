@@ -10,14 +10,13 @@ import * as ImagePicker from 'expo-image-picker';
 
 function AddVigneron({ navigation }) {
 
-  // const [uploaded, setUploaded] = useState('plus');
-
-  const [NomRef, setNomRef] = useState("");
-  const [Couleur, setCouleur] = useState("");
-  const [Cepage, setCepage] = useState("");
-  const [Millesime, setMillesime] = useState("");
-  const [Appellation, setAppellation] = useState("");
-  const [Desc, setDesc] = useState("");
+  const [NomRef, setNomRef] = useState("Référence");
+  const [Couleur, setCouleur] = useState("Couleur");
+  const [Cepage, setCepage] = useState("Cépage");
+  const [Millesime, setMillesime] = useState("Millesime");
+  const [Appellation, setAppellation] = useState("Appelation");
+  const [Desc, setDesc] = useState("Description");
+  const [annee, setAnne] = useState("Année");
 
   const [image, setImage] = useState(null);
 
@@ -137,7 +136,6 @@ function AddVigneron({ navigation }) {
                   type='font-awesome'
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
                   onPress={async () => {
-                    // setUploaded("check-circle")
                     setNomRef("")
                     setCouleur("")
                     setCepage("")
@@ -145,10 +143,10 @@ function AddVigneron({ navigation }) {
                     setAppellation("")
                     setDesc("")
 
-                    var data = await fetch("http://172.17.1.46:3000/AddVin", {
+                    var data = await fetch("http://192.168.1.22:3000/AddVin", {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`
+                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&AnneeFF=${annee}&ImageFF=${image}`
                     })
                     var body = await data.json()
                     navigation.navigate('CaveVigneron');
@@ -171,7 +169,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
@@ -180,8 +177,6 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   },
   box2: {
-    // width: '80%',
-    // height: '70%',
     marginTop: 60,
     width: 350,
     height: 400,

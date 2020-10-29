@@ -31,75 +31,75 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
           <View style={styles.box1}>
 
-          <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
+            <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
-          <View style={styles.box}>
-            <Text style={styles.text}>IDENTIFICATION</Text>
-            <Input
-              containerStyle={{ marginBottom: 25, width: '70%' }}
-              inputStyle={{ marginLeft: 10 }}
-              placeholder='Email'
-              leftIcon={
-                <Icon
-                  name='user'
-                  size={20}
-                  color="#FFD15C"
-                />
-              }
-              onChangeText={(val) => setSignInEmail(val)}
-            />
+            <View style={styles.box}>
+              <Text style={styles.text}>IDENTIFICATION</Text>
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Email'
+                leftIcon={
+                  <Icon
+                    name='user'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignInEmail(val)}
+              />
 
-            <Input
-              containerStyle={{ marginBottom: 25, width: '70%' }}
-              inputStyle={{ marginLeft: 10 }}
-              placeholder='Mot de passe'
-              secureTextEntry={true}
-              leftIcon={
-                <Icon
-                  name='key'
-                  size={20}
-                  color="#FFD15C"
-                />
-              }
-              onChangeText={(val) => setSignInPassword(val)}
-            />
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Mot de passe'
+                secureTextEntry={true}
+                leftIcon={
+                  <Icon
+                    name='key'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignInPassword(val)}
+              />
 
-            {tabErrorsSignin}
-            
-            <TouchableOpacity>
-                  <Text
-                    onPress={() => {
-                      navigation.navigate('ProfileVigneron');
-                    }}
-                    style={{ color: '#9D2A29' }}>Vigneron</Text>
-                </TouchableOpacity>
+              {tabErrorsSignin}
 
-                <TouchableOpacity>
-                  <Text
-                    onPress={() => {
-                      navigation.navigate('ProfileCaviste');
-                    }}
-                    style={{ color: '#9D2A29' }}>Caviste</Text>
-                </TouchableOpacity>
-            
-            <Button
-              onPress={async () => {
-                navigation.navigate("ProfileVigneron");
+              <TouchableOpacity>
+                <Text
+                  onPress={() => {
+                    navigation.navigate('ProfileVigneron');
+                  }}
+                  style={{ color: '#9D2A29' }}>Vigneron</Text>
+              </TouchableOpacity>
 
-                var rawResponse = await fetch("http://172.17.1.46:3000/sign-in", {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                  body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
-                })
-                var response = await rawResponse.json()
-                console.log("RESPONSE SIGNIN", response)
+              <TouchableOpacity>
+                <Text
+                  onPress={() => {
+                    navigation.navigate('ProfileCaviste');
+                  }}
+                  style={{ color: '#9D2A29' }}>Caviste</Text>
+              </TouchableOpacity>
+
+              <Button
+                onPress={async () => {
+                  navigation.navigate("ProfileVigneron");
+
+                  var rawResponse = await fetch("http://192.168.1.22:3000/sign-in", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
+                  })
+                  var response = await rawResponse.json()
+                  console.log("RESPONSE SIGNIN", response)
 
                   if (response.result == true && response.status == "Vigneron") {
                     setstatus('Vigneron');
                     onSubmitUserstatus(status);
                     addToken(response.token);
                     console.log("TOKEN SIGNIN", response.token)
-                  
+
                   } else if (response.result == true && response.status == "Caviste") {
                     setstatus('Caviste');
                     onSubmitUserstatus(status);
@@ -110,14 +110,22 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                     setErrorsSignin(response.error);
                   }
 
-              }}
+                }}
 
-              containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
-              title="Rejoindre le club"
-              type="solid"
-              buttonStyle={{ backgroundColor: '#FF9900' }}
-            />
-          </View>
+                containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
+                title="Rejoindre le club"
+                type="solid"
+                buttonStyle={{ backgroundColor: '#FF9900' }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('FirstScreen');
+                }}
+              >
+                <Text
+                  style={{ color: '#DDDDDD' }}>Je n'ai pas encore de compte</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </View>

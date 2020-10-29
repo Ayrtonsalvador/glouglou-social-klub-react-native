@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
 import { Button, Input, Header, Avatar, Icon } from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -16,20 +15,15 @@ function ProfilVigneron({ navigation, token }) {
   const [desc, setDesc] = useState("Description")
 
   const [image, setImage] = useState(null);
-  const [dataStatus, setDataStatus] = useState([]);
-  const [selectedImg, setSelectedImg] = useState("vide")
-
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://172.17.1.46:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://192.168.1.22:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
-      // setDataStatus(response.infos);
       // console.log("GET INFOS VIGNERON", response)
       // console.log("Vigneron", response.user)
-       console.log("Desc", response.user.Photo)
 
       if(response.result == true){
         setImage(response.user.Photo)
@@ -61,20 +55,6 @@ function ProfilVigneron({ navigation, token }) {
       setImage(result.uri);
     } 
   };
-
-  // useEffect(() => {
-  //   const findPhoto = async () => {
-
-  //     const reqFind = await fetch(`http://172.17.1.46:3000/user-vi`)
-  //     const resultFind = await reqFind.json()
-
-  //     setSelectedImg(resultFind.photo)
-  //     console.log("RESULT FIND", resultFind)
-  //   }
-  //   // console.log("FIND PHOTO", selectedImg)
-  //   findPhoto()
-  // }, [selectedImg])
-
 
   return (
 
@@ -112,28 +92,48 @@ function ProfilVigneron({ navigation, token }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={nom}
                   disabled={disabled}
-                  onChangeText={(val) => setNom(val)}
+                  onChangeText={(val) => {
+                    setNom(val)
+                    if(nom != null){
+                      setNom("Nom")
+                    }
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={domaine}
                   disabled={disabled}
-                  onChangeText={(val) => setDomaine(val)}
+                  onChangeText={(val) => {
+                    setDomaine(val)
+                    if(domaine != null){
+                      setDomaine("Domaine")
+                    }
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={ville}
                   disabled={disabled}
-                  onChangeText={(val) => setVille(val)}
+                  onChangeText={(val) => {
+                    setVille(val)
+                    if(ville != null){
+                      setVille("Ville")
+                    }
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={region}
                   disabled={disabled}
-                  onChangeText={(val) => setRegion(val)}
+                  onChangeText={(val) => {
+                    setRegion(val)
+                    if(region != null){
+                      setRegion("Région")
+                    }
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -151,14 +151,13 @@ function ProfilVigneron({ navigation, token }) {
 
                 <Button onPress={async () => {
                   setDisabled(true)
-                  const data = await fetch("http://172.17.1.46:3000/info-update-v", {
+                  const data = await fetch("http://192.168.1.22:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${props.token}`
                   })
                   var body = await data.json()
                   console.log("RESPONSE", body)
-                  // props.changeImg(selectedImg)
                   if(response.result == true) {
                   }
                 }}
@@ -167,11 +166,14 @@ function ProfilVigneron({ navigation, token }) {
                   title="OK"
                 />
 
-             <Button 
-               onPress={() => setDisabled(false)}              
-               iconLeft={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-               title="Changer mes paramètres"
-             />
+                <TouchableOpacity>
+                  <Icon
+                  style={{name:'cog', type: 'font-awesome', color: '#AAAAAA'}}
+                  ></Icon>
+                  <Text
+                    onPress={() => setDisabled(false)}  
+                    style={{ color: '#AAAAAA' }}>Changer mes paramètres</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity>
                   <Text
@@ -203,7 +205,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
@@ -212,8 +213,6 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   },
   box2: {
-    // width: '80%',
-    // height: '70%',
     width: 350,
     height: 400,
     alignItems: 'center',
@@ -223,7 +222,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("STATE TOKEN", state.token)
-  return { token: state.token, selectedImg: state.selectedImg }
+  return { token: state.token }
 }
 
 function mapDispatchToProps(dispatch) {

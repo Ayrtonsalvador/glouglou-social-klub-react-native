@@ -161,7 +161,6 @@ router.post('/sign-in', async function (req, res, next) {
         result = true
         token = userVigneron.token
         status = userVigneron.Status
-        // console.log("TOKEN", token)
       } else {
         result = false
         error.push('mot de passe ou email incorrect')
@@ -205,16 +204,29 @@ router.post('/AddVin', async function (req, res, next) {
     Desc: req.body.DescFF,
     Cepage: req.body.CepageFF,
     Millesime: req.body.MillesimeFF,
+    Annee: req.body.AnneeFF,
     Photo: req.body.ImageFF,
   })
-
   saveBouteille = await newBouteille.save()
 
   res.json({ saveBouteille })
 
 });
 
+router.get('/macave', async function (req, res, next) {
+  var cave = []
+  var vigneron = null
+  var bouteille = await BouteilleModel.findOne({ vigneron: req.query.IdVigneron })
 
+  console.log("BOUTEILLE", bouteille)
+  console.log("VIGNERON FOUND", req.query.IdVigneron)
+
+  if (vigneron != null) {
+    res.json({ result: true, bouteille })
+  } else {
+    res.json({ result: false })
+  }
+})
 
 // ---------------- INFOS VIGNERON  ---------------- \\
 router.post('/info-update-v', async function (req, res, next) {
@@ -231,7 +243,7 @@ router.post('/info-update-v', async function (req, res, next) {
     Domaine: req.body.domaine,
     Region: req.body.region,
     Ville: req.body.ville,
-    Desc: req.body.desc
+    Desc: req.body.desc,
   })
 
   res.json({ updateVigneron })
@@ -245,18 +257,7 @@ router.get('/info-v', async function (req, res, next) {
 
   console.log("USER", user)
 
-   console.log("TOKEN FOUND", req.query.token)
-
-
-  //     infos = await VigneronModel.find({
-  //         Nom: req.query.nom,
-  //         Photo: req.query.img,
-  //         Domaine: req.query.domaine,
-  //         Region: req.query.region,
-  //         Ville: req.query.ville,
-  //         Desc: req.query.desc
-  //     })
-  //  }
+  console.log("TOKEN FOUND", req.query.token)
 
   if (user != null) {
     res.json({ result: true, user })
@@ -264,19 +265,6 @@ router.get('/info-v', async function (req, res, next) {
     res.json({ result: false })
   }
 })
-
-
-// router.get('/user-vi', async function(req,res,next){
-//   var photo = null
-//   var user = await VigneronModel.findOne({token: req.query.token})
-
-//   if(user != null){
-//     photo = user.photo
-//   }
-
-//   res.json({photo})
-// })
-
 
 // ---------------- INFOS CAVISTE ---------------- \\
 router.post('/info-update-c', async function (req, res, next) {
@@ -297,6 +285,22 @@ router.post('/info-update-c', async function (req, res, next) {
 
   res.json({ updateCaviste })
 
+})
+
+router.get('/info-c', async function (req, res, next) {
+  var infos = []
+  var token = null
+  var user = await VigneronModel.findOne({ token: req.query.token })
+
+  console.log("USER", user)
+
+  console.log("TOKEN FOUND", req.query.token)
+
+  if (user != null) {
+    res.json({ result: true, user })
+  } else {
+    res.json({ result: false })
+  }
 })
 
 module.exports = router;
