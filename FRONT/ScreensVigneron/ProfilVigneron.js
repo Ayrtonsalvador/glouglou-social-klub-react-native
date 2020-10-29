@@ -6,32 +6,47 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
-function ProfilVigneron({ navigation }) {
+function ProfilVigneron({ navigation, token }) {
 
-  const [uploaded, setUploaded] = useState('plus')
   const [photo, setPhoto] = useState('')
-  const [nom, setNom] = useState('')
-  const [domaine, setDomaine] = useState('')
-  const [ville, setVille] = useState('')
-  const [region, setRegion] = useState('')
-  const [desc, setDesc] = useState('')
+  const [nom, setNom] = useState("Nom")
+  const [domaine, setDomaine] = useState("Nom de domaine")
+  const [ville, setVille] = useState("Ville")
+  const [region, setRegion] = useState("Région")
+  const [desc, setDesc] = useState("Description")
 
   const [image, setImage] = useState(null);
-  const [dataStatus, setDataStatus] = useState("loading...");
+  const [dataStatus, setDataStatus] = useState([]);
+  const [selectedImg, setSelectedImg] = useState("vide")
 
-  // Demander accès à la bibliothèque photo
+  const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch("http://172.17.1.46:3000/info-update");
+      console.log("PROFIL")
+      var rawResponse = await fetch(`http://172.17.1.46:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
-      setDataStatus(response);
-      // console.log("BDD", response.Photo)
+      // setDataStatus(response.infos);
+      // console.log("GET INFOS VIGNERON", response)
+      // console.log("Vigneron", response.user)
+       console.log("Desc", response.user.Photo)
+
+      if(response.result == true){
+        setImage(response.user.Photo)
+        setNom(response.user.Nom)
+        setDomaine(response.user.Domaine)
+        setVille(response.user.Ville)
+        setRegion(response.user.Region)
+        setDesc(response.user.Desc)
+      } 
+    }
+
+    (async () => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');
       }
-    }
-    console.log("USEEFFECT", dataStatus)
+    })();
     loadData()
   }, []);
 
@@ -44,11 +59,21 @@ function ProfilVigneron({ navigation }) {
     });
     if (!result.cancelled) {
       setImage(result.uri);
-      // console.log("URI", result.uri)
-    }
+    } 
   };
 
-  const [disabled, setDisabled] = useState(false);
+  // useEffect(() => {
+  //   const findPhoto = async () => {
+
+  //     const reqFind = await fetch(`http://172.17.1.46:3000/user-vi`)
+  //     const resultFind = await reqFind.json()
+
+  //     setSelectedImg(resultFind.photo)
+  //     console.log("RESULT FIND", resultFind)
+  //   }
+  //   // console.log("FIND PHOTO", selectedImg)
+  //   findPhoto()
+  // }, [selectedImg])
 
 
   return (
@@ -85,69 +110,68 @@ function ProfilVigneron({ navigation }) {
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Nom'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
+                  placeholder={nom}
+                  disabled={disabled}
                   onChangeText={(val) => setNom(val)}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Nom de domaine'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
+                  placeholder={domaine}
+                  disabled={disabled}
                   onChangeText={(val) => setDomaine(val)}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Ville'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
+                  placeholder={ville}
+                  disabled={disabled}
                   onChangeText={(val) => setVille(val)}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Région'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
+                  placeholder={region}
+                  disabled={disabled}
                   onChangeText={(val) => setRegion(val)}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
-                  placeholder={"Description \n"}
+                  placeholder={desc}
                   multiline={true}
+                  disabled={disabled}
                   inputStyle={{ marginLeft: 10 }}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
-                  onChangeText={(val) => setDesc(val)}
-
+                  onChangeText={(val) => {
+                    setDesc(val)
+                    if(desc != null){
+                      setDesc("Description \n")
+                    }
+                  }}
                 />
 
                 <Button onPress={async () => {
-
                   setDisabled(true)
-
-                  const data = await fetch("http://172.17.1.46:3000/info-update", {
+                  const data = await fetch("http://172.17.1.46:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}`
+                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${props.token}`
                   })
                   var body = await data.json()
                   console.log("RESPONSE", body)
-                  console.log("IMAGE FF", image);
+                  // props.changeImg(selectedImg)
+                  if(response.result == true) {
+                  }
                 }}
-                  Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  type='font-awesome'
-                  title="Changer mes paramètres"
+                  disabled={disabled}
+                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
+                  title="OK"
                 />
 
-              <Button // activer l'édition de données //
-                onPress={ () => setDisabled(false)} 
-                Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                title="Modifier mes paramètres"
-              />
+             <Button 
+               onPress={() => setDisabled(false)}              
+               iconLeft={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+               title="Changer mes paramètres"
+             />
 
                 <TouchableOpacity>
                   <Text
@@ -198,10 +222,19 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return { token: state.token }
+  console.log("STATE TOKEN", state.token)
+  return { token: state.token, selectedImg: state.selectedImg }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeImg: function (selectedImg) {
+      dispatch({ type: 'addImg', selectedImg: selectedImg })
+    }
+  }
 }
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps,
 )(ProfilVigneron);

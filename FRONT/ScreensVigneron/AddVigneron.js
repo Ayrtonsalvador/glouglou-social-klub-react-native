@@ -151,6 +151,7 @@ function AddVigneron({ navigation }) {
                       body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`
                     })
                     var body = await data.json()
+                    navigation.navigate('CaveVigneron');
                     console.log("RESPONSE", body)
                     console.log("IMAGEFF", image);
                   }}

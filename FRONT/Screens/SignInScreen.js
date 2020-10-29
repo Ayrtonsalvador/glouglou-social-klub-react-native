@@ -92,25 +92,23 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                 })
                 var response = await rawResponse.json()
-                // console.log("RESPONSE", response);
+                console.log("RESPONSE SIGNIN", response)
 
-                // if (response.result = true) {
-                //   // props.addToken(body.token)
-                // }
-
-                if (response.result == true && response.status == "Vigneron") {
-                  setstatus('Vigneron');
-                  onSubmitUserstatus(status);
-                  addToken(response.token);
-                 
-                } else if (response.result == true && response.status == "Caviste") {
-                  setstatus('Caviste');
-                  onSubmitUserstatus(status);
-                  navigation.navigate("ProfilCav");
-                  addToken(response.token);
-                } else {
-                  setErrorsSignin(response.error);
-                 }
+                  if (response.result == true && response.status == "Vigneron") {
+                    setstatus('Vigneron');
+                    onSubmitUserstatus(status);
+                    addToken(response.token);
+                    console.log("TOKEN SIGNIN", response.token)
+                  
+                  } else if (response.result == true && response.status == "Caviste") {
+                    setstatus('Caviste');
+                    onSubmitUserstatus(status);
+                    navigation.navigate("ProfilCav");
+                    addToken(response.token);
+                    console.log("TOKEN", token)
+                  } else {
+                    setErrorsSignin(response.error);
+                  }
 
               }}
 
