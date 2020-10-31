@@ -43,23 +43,23 @@ var StackNavigator = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
 
-  AddVigneron: AddVigneron,
-  CaveVigneron: CaveVigneron,
-  ChatVigneron: ChatVigneron,
-  MessageVigneron: MessageVigneron,
-  Profil: ProfilVigneron,
+  // ProfilVigneron: ProfilVigneron,
+  // AddVigneron: AddVigneron,
+  // CaveVigneron: CaveVigneron,
+  // ChatVigneron: ChatVigneron,
+  // MessageVigneron: MessageVigneron,
 
-  CatalogueCaviste: CatalogueCaviste,
-  ChatCaviste: ChatCaviste,
-  FavoriteCaviste: FavoriteCaviste,
-  MessageVigneron : MessageCaviste,
-  ProfilCaviste: ProfilCaviste,
+  // ProfilCaviste: ProfilCaviste,
+  // CatalogueCaviste: CatalogueCaviste,
+  // FavoriteCaviste: FavoriteCaviste,
+  // MessageCaviste : MessageCaviste,
+  // ChatCaviste: ChatCaviste,
 
 },
   { headerMode: 'none' }
 );
 
-const Navigation = createAppContainer(StackNavigator);
+const AppContainer = createAppContainer(StackNavigator);
 
 function App() {
    
@@ -72,7 +72,7 @@ function App() {
     return (
 
       <Provider store={store}>
-        <Navigation/>    
+        <AppContainer/>    
       </Provider>
     ) 
   }

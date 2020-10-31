@@ -68,7 +68,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
             <Button
               onPress={async () => {
 
-                var rawResponse = await fetch("http://192.168.0.24:3000/sign-in", {
+                var rawResponse = await fetch("http://192.168.0.26:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`

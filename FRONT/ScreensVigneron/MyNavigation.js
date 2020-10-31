@@ -17,7 +17,7 @@ function MyNavigation({ navigation }) {
       <View style={styles.boutton}>
 
       <TouchableOpacity onPress={() => {
-          navigation.navigate("Profil")}}>
+          navigation.navigate("ProfilVigneron")}}>
           <IconIonic
             name="ios-person"
             size={30}
