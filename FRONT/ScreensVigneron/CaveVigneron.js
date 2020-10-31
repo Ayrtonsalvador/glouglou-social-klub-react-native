@@ -4,6 +4,8 @@ import { ListItem, Input, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
+import MyNavigation from './MyNavigation'
+
 function CaveVigneron() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -19,7 +21,8 @@ function CaveVigneron() {
 
         </KeyboardAvoidingView>
 
-      </View>
+             </View>
+             <MyNavigation/>
     </View>
   );
 }

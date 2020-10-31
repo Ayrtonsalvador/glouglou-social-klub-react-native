@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} 
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+import NavigationC from './NavigationC'
+
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 function ProfilCaviste({ navigation }) {
@@ -114,6 +116,8 @@ function ProfilCaviste({ navigation }) {
           </View>
         </KeyboardAvoidingView>
       </View>
+      <NavigationC/>
+
     </View>
   );
 }

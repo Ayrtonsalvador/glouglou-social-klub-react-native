@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
+import NavigationC from './NavigationC'
 
 var socket = socketIOClient("http://172.17.1.159:3000/");
 
@@ -142,6 +143,8 @@ function ChatCaviste({ navigation, pseudo }) {
           }
         />
       </KeyboardAvoidingView>
+      
+      <NavigationC/>
 
     </View>
   );

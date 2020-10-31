@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList } from 'react-native';
 import { Button, ListItem, Input, Header } from 'react-native-elements';
@@ -7,6 +5,7 @@ import { Button, ListItem, Input, Header } from 'react-native-elements';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 
+import NavigationC from './NavigationC'
 
 function FavoriteCaviste({navigation}) {
 
@@ -18,6 +17,9 @@ function FavoriteCaviste({navigation}) {
             >
             <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
           </Header>
+
+        <NavigationC/>
+
         </View>
       );
     }

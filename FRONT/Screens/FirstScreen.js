@@ -8,6 +8,9 @@ import Carousel from "react-native-carousel-control";
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
+import MyNavigation from '../ScreensVigneron/MyNavigation'
+
+
 function FirstScreen({ navigation }) {
 
   const pagination = () => {
@@ -95,6 +98,8 @@ function FirstScreen({ navigation }) {
           }}>S'INSCRIRE</Button>
 
       </View>
+
+      <MyNavigation/>
 
     </View>
   );

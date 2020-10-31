@@ -7,12 +7,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
-function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
+function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
   const [listErrorsSignin, setErrorsSignin] = useState([])
-  const [status, setstatus] = useState('')
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
     return (
@@ -67,17 +66,9 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
             {tabErrorsSignin}
             
             <Button
-            onPress={() => {
-              navigation.navigate('BottomNavigatorVigneron', { screen: 'ProfileVigneron' });
- 
-              // navigation.navigate('ProfileCaviste'); 
-             }}
-              ></Button>
-            
-            <Button
               onPress={async () => {
 
-                var rawResponse = await fetch("http://172.17.1.153:3000/sign-in", {
+                var rawResponse = await fetch("http://192.168.0.24:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -87,17 +78,14 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                 console.log("RESULT", response.result)              
   
                 if (response.status == "Vigneron") {
-                  setstatus('Vigneron');
-                  onSubmitUserstatus(status); 
+                  onSubmitUserstatus(response.status); 
                   addToken(response.token);              
-                  navigation.navigate("ProfileVigneron");
+                  navigation.navigate("ProfilVigneron");
                   console.log("token", response.token)
                   
                 } else if (response.status == "Caviste") {
-                  setstatus('Caviste');
-                  onSubmitUserstatus(status);
-                  
-                  navigation.navigate("Profil");
+                  onSubmitUserstatus(response.status);
+                  navigation.navigate("ProfilCaviste");
                   props.addToken(body.token);
                   
                 } else {

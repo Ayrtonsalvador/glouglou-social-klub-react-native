@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 // Screens Communs
-import FirstScreen from './Screens/FirstScreen.js';
+import FirstScreen from './Screens/FirstScreen';
 import SignInScreen from './Screens/SignInScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 
@@ -22,7 +22,6 @@ import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -31,150 +30,51 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
+import token from './reducers/token';
 
-// ATTENTION ADRESS IP 
+// ATTENTION ADRESS IP
 
-const store = createStore(combineReducers({ userstatus }));
+const store = createStore(combineReducers({ userstatus, token }));
 
-// STACK-NAVIGATION CAVISTES
-var BottomNavigatorCaviste = createBottomTabNavigator({
-  ProfileCaviste: ProfilCaviste,
-  FavorisCaviste: FavoriteCaviste,
-  ChatCaviste: ChatCaviste,
-  CatalogueCaviste: CatalogueCaviste,
+// STACK-NAVIGATION
 
-},
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ tintColor }) => {
-        var iconName;
-        if (navigation.state.routeName == 'ProfileCaviste') {
-          iconName = 'user';
-        } else if (navigation.state.routeName == 'FavorisCaviste') {
-          iconName = 'heart';
-        } else if (navigation.state.routeName == 'ChatCaviste') {
-          iconName = 'comments-o';
-        } else if (navigation.state.routeName == 'CatalogueCaviste') {
-          iconName = 'search';
-        }
-
-        return <Icon name={iconName} size={25} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: '#130f40',
-      inactiveTintColor: '#FFFFFF',
-
-
-      style: {
-        backgroundColor: '#FCDF23',
-        height: 40,
-        shadowColor: 'transparent',
-        borderColor: '#FCDF23',
-
-      }
-    }
-
-  });
-
-  var StackNavigatorCaviste = createStackNavigator({
+var StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  MessageCaviste: MessageCaviste,
-  BottomNavigatorCaviste: BottomNavigatorCaviste,
-},
-  { headerMode: 'none' }
-);
 
-// STACK-NAVIGATION VIGNERON
-const BottomNavigatorVigneron = createBottomTabNavigator({
-  ProfileVigneron: ProfilVigneron,
-  Cave: CaveVigneron,
-  Vin: AddVigneron,
+  AddVigneron: AddVigneron,
+  CaveVigneron: CaveVigneron,
   ChatVigneron: ChatVigneron,
-},
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ tintColor }) => {
-        var iconName;
-        if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'user';
-        } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'comments-o';
-        } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'home';
-        } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'glass';
-        }
-
-        return <Icon name={iconName} size={25} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: '#130f40',
-      inactiveTintColor: '#FFFFFF',
-
-      style: {
-        backgroundColor: '#FCDF23',
-        height: 40,
-        shadowColor: 'transparent',
-        borderColor: '#FCDF23',
-
-      }
-    }
-
-  });
-
-var StackNavigatorVigneron = createStackNavigator({
-  First: FirstScreen,
-  SignIn: SignInScreen,
-  SignUp: SignUpScreen,
   MessageVigneron: MessageVigneron,
-  BottomNavigatorVigneron : BottomNavigatorVigneron
+  Profil: ProfilVigneron,
+
+  CatalogueCaviste: CatalogueCaviste,
+  ChatCaviste: ChatCaviste,
+  FavoriteCaviste: FavoriteCaviste,
+  MessageVigneron : MessageCaviste,
+  ProfilCaviste: ProfilCaviste,
+
 },
   { headerMode: 'none' }
 );
-// const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
-// const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
 
-const Navigation = createAppContainer(StackNavigatorVigneron);
+const Navigation = createAppContainer(StackNavigator);
 
-function App(userstatus) {
+function App() {
+   
+// console.log("Store", store.getState())
 
-  // const [navbarstatus, setnavbarstatus] = useState("")
-  // console.log(userstatus);
-  // var userstatus = 'Vigneron';
-  // var userstatus = 'Caviste';
+// const storeitems = store.getState()
 
-  const Navigation = createAppContainer(userstatus == "Vigneron" ? StackNavigatorVigneron : StackNavigatorCaviste);
-  // const Navigation = createAppContainer(userstatus == "Caviste" ? StackNavigatorCaviste : StackNavigatorVigneron);
-  
-  // if (userstatus == "Vigneron") {
-  //   setnavbarsatus(StackNavigatorVigneron)
-  // }
-  
-  // if (userstatus == "Caviste") {
-  //   setnavbarsatus(StackNavigatorCaviste)
-  // }
-
-  // Faire passer les userInfo : nom, statut et token depuis les pages Sign-up/Sign-in à App.js
-
+// console.log ("status", storeitems.userstatus)
+ 
     return (
-      <Provider store={store}>
 
-        <Navigation/>
-       
+      <Provider store={store}>
+        <Navigation/>    
       </Provider>
     ) 
-
   }
 
-  function mapStateToProps(state) {
-    return { status: state.userstatus }
-  }
-  
-  export default connect(
-    mapStateToProps,
-    null,
-  )(App);
+export default App;

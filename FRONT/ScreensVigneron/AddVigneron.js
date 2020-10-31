@@ -4,6 +4,8 @@ import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
+import MyNavigation from './MyNavigation'
+
 import * as ImagePicker from 'expo-image-picker';
 
 // ATTENTION ADRESS IP
@@ -174,6 +176,8 @@ function AddVigneron({ navigation }) {
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
+
+        <MyNavigation/>
       </View>
     </View>
   );

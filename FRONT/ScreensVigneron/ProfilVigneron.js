@@ -4,6 +4,8 @@ import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
+import MyNavigation from './MyNavigation'
+
 function ProfilVigneron({ navigation }) {
 
   const [uploaded, setUploaded] = useState('plus')
@@ -20,13 +22,6 @@ function ProfilVigneron({ navigation }) {
   return (
 
   <View style={{ flex: 1 }}>
-
-      {/* <Header
-    containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-    centerComponent={{ text: 'AJOUTER UN NOUVEAU VIN', marginTop: 30 }}
-   >
-    <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-   </Header> */}
 
     <View style={styles.container}>
 
@@ -114,20 +109,21 @@ function ProfilVigneron({ navigation }) {
              /> 
 
          
-            
-         
          <TouchableOpacity> 
              <Text style={{color:'#9D2A29'}}>Déconnexion</Text>
          </TouchableOpacity>
 
-
+     
         </View>
 
       </View>
 
       </KeyboardAvoidingView>
+    
 
     </View>
+
+    <MyNavigation/>
 
 </View>
 

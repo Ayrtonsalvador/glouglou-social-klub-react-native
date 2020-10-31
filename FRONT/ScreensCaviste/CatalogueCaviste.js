@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList, Scrol
 import { Button, ListItem, Input, Header, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+import NavigationC from './NavigationC'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function CatalogueCaviste() {
@@ -49,6 +50,8 @@ function CatalogueCaviste() {
           <Text h4 style={{ textAlign: 'center' }}>John's Gallery</Text>
           {/* {UrlGallery} */}
         </ScrollView>
+
+        <NavigationC/>
       </View>
     );
   }
