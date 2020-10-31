@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -30,80 +30,99 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
 
           <View style={styles.box1}>
 
-          <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
+            <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
 
-          <View style={styles.box}>
-            <Text style={styles.text}>IDENTIFICATION</Text>
-            <Input
-              containerStyle={{ marginBottom: 25, width: '70%' }}
-              inputStyle={{ marginLeft: 10 }}
-              placeholder='Email'
-              leftIcon={
-                <Icon
-                  name='user'
-                  size={20}
-                  color="#FFD15C"
-                />
-              }
-              onChangeText={(val) => setSignInEmail(val)}
-            />
+            <View style={styles.box}>
+              <Text style={styles.text}>IDENTIFICATION</Text>
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Email'
+                leftIcon={
+                  <Icon
+                    name='user'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignInEmail(val)}
+              />
 
-            <Input
-              containerStyle={{ marginBottom: 25, width: '70%' }}
-              inputStyle={{ marginLeft: 10 }}
-              placeholder='Mot de passe'
-              secureTextEntry={true}
-              leftIcon={
-                <Icon
-                  name='key'
-                  size={20}
-                  color="#FFD15C"
-                />
-              }
-              onChangeText={(val) => setSignInPassword(val)}
-            />
+              <Input
+                containerStyle={{ marginBottom: 25, width: '70%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder='Mot de passe'
+                secureTextEntry={true}
+                leftIcon={
+                  <Icon
+                    name='key'
+                    size={20}
+                    color="#FFD15C"
+                  />
+                }
+                onChangeText={(val) => setSignInPassword(val)}
+              />
 
-            {tabErrorsSignin}
-            
-            <Button
-              onPress={async () => {
+              {tabErrorsSignin}
 
-                var rawResponse = await fetch("http://192.168.0.26:3000/sign-in", {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                  body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
-                })
-                var response = await rawResponse.json()
-                console.log("RESPONSE", response);
-                console.log("RESULT", response.result)              
-  
-                if (response.status == "Vigneron") {
-                  onSubmitUserstatus(response.status); 
-                  addToken(response.token);              
-                  navigation.navigate("ProfilVigneron");
-                  console.log("token", response.token)
-                  
-                } else if (response.status == "Caviste") {
-                  onSubmitUserstatus(response.status);
-                  navigation.navigate("ProfilCaviste");
-                  props.addToken(body.token);
-                  
-                } else {
-                  setErrorsSignin(response.error);
-                 }
+              <TouchableOpacity>
+                <Text
+                  onPress={() => {
+                    navigation.navigate('ProfileVigneron');
+                  }}
+                  style={{ color: '#9D2A29' }}>Vigneron</Text>
+              </TouchableOpacity>
 
-              }}
+              <TouchableOpacity>
+                <Text
+                  onPress={() => {
+                    navigation.navigate('ProfileCaviste');
+                  }}
+                  style={{ color: '#9D2A29' }}>Caviste</Text>
+              </TouchableOpacity>
 
-              containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
-              title="Rejoindre le club"
-              type="solid"
-              buttonStyle={{ backgroundColor: '#FF9900' }}
-            />
+              <Button
+                onPress={async () => {
 
+                  var rawResponse = await fetch("http://192.168.0.26:3000/sign-in", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
+                  })
+                  var response = await rawResponse.json()
+                  console.log("RESPONSE SIGNIN", response)
 
+                  if (response.result == true && response.status == "Vigneron") {
+                    setstatus('Vigneron');
+                    onSubmitUserstatus(status);
+                    addToken(response.token);
+                    console.log("TOKEN SIGNIN", response.token)
 
+                  } else if (response.result == true && response.status == "Caviste") {
+                    setstatus('Caviste');
+                    onSubmitUserstatus(status);
+                    addToken(response.token);
+                    console.log("TOKEN SIGNIN", token)
+                  } else {
+                    setErrorsSignin(response.error);
+                  }
 
-          </View>
+                }}
+
+                containerStyle={{ marginBottom: 20, width: '70%', borderRadius: 15, padding: 10, }}
+                title="Rejoindre le club"
+                type="solid"
+                buttonStyle={{ backgroundColor: '#FF9900' }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('First');
+                }}
+              >
+                <Text
+                  style={{ color: '#DDDDDD' }}>Je n'ai pas encore de compte</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -121,7 +140,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: 300,
-    height: 300,
+    height: 350,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -135,7 +154,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#FFD15C',
     // fontFamily: "Gothic A1",
-    fontSize: 18,
+    fontSize: 20,
     padding: 15,
   },
   img: {

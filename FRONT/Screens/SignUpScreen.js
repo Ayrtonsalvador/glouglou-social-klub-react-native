@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // ATTENTION ADRESS IP 
 
@@ -70,9 +71,9 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
 
             <View style={styles.box}>
 
-              <View style={styles.img}>
+              {/* <View style={styles.img}>
                 <Image source={require('../assets/ContactGlouGlou.png')}></Image>
-              </View>
+              </View> */}
 
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -167,7 +168,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://192.168.0.24:3000/sign-up", {
+                  var data = await fetch("http://192.168.0.26:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -189,6 +190,15 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                 type="solid"
                 buttonStyle={{ backgroundColor: '#FFAE34' }}
               />
+
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('SignIn');
+                  }}
+                  >
+                  <Text
+                    style={{ color: '#DDDDDD' }}>J'ai déjà un compte</Text>
+                </TouchableOpacity>
 
 
             </View>
@@ -231,8 +241,8 @@ const styles = StyleSheet.create({
     // width: '20%',
     // height: '20%',
     marginLeft: 30,
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
