@@ -1,6 +1,8 @@
+
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
-import { Button, Input, Header, Avatar, Icon } from 'react-native-elements';
+import { Button, Input, Header, Avatar, Icon, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -22,11 +24,11 @@ function ProfilVigneron({ navigation, token }) {
       console.log("PROFIL")
       var rawResponse = await fetch(`http://192.168.1.22:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("GET INFOS VIGNERON", response)
-      // console.log("Vigneron", response.user)
+      console.log("GET INFOS VIGNERON", response)
 
       if(response.result == true){
-        setImage(response.user.Photo)
+        setDisabled(true)
+        // setImage(response.user.Photo)
         setNom(response.user.Nom)
         setDomaine(response.user.Domaine)
         setVille(response.user.Ville)
@@ -94,9 +96,6 @@ function ProfilVigneron({ navigation, token }) {
                   disabled={disabled}
                   onChangeText={(val) => {
                     setNom(val)
-                    if(nom != null){
-                      setNom("Nom")
-                    }
                   }}
                 />
                 <Input
@@ -106,9 +105,6 @@ function ProfilVigneron({ navigation, token }) {
                   disabled={disabled}
                   onChangeText={(val) => {
                     setDomaine(val)
-                    if(domaine != null){
-                      setDomaine("Domaine")
-                    }
                   }}
                 />
                 <Input
@@ -118,9 +114,6 @@ function ProfilVigneron({ navigation, token }) {
                   disabled={disabled}
                   onChangeText={(val) => {
                     setVille(val)
-                    if(ville != null){
-                      setVille("Ville")
-                    }
                   }}
                 />
                 <Input
@@ -130,9 +123,6 @@ function ProfilVigneron({ navigation, token }) {
                   disabled={disabled}
                   onChangeText={(val) => {
                     setRegion(val)
-                    if(region != null){
-                      setRegion("Région")
-                    }
                   }}
                 />
                 <Input
@@ -143,9 +133,6 @@ function ProfilVigneron({ navigation, token }) {
                   inputStyle={{ marginLeft: 10 }}
                   onChangeText={(val) => {
                     setDesc(val)
-                    if(desc != null){
-                      setDesc("Description \n")
-                    }
                   }}
                 />
 
@@ -154,12 +141,10 @@ function ProfilVigneron({ navigation, token }) {
                   const data = await fetch("http://192.168.1.22:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${props.token}`
+                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`
                   })
                   var body = await data.json()
                   console.log("RESPONSE", body)
-                  if(response.result == true) {
-                  }
                 }}
                   disabled={disabled}
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
@@ -182,7 +167,7 @@ function ProfilVigneron({ navigation, token }) {
                     }}
                     style={{ color: '#9D2A29' }}>Déconnexion</Text>
                 </TouchableOpacity>
-
+                
               </View>
 
             </ScrollView>

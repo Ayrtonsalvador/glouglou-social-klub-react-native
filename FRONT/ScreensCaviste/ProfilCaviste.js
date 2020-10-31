@@ -103,7 +103,7 @@ function ProfilCaviste({ navigation, token }) {
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={domaine}
+                  placeholder={etablissement}
                   disabled={disabled}
                   onChangeText={(val) => {
                     setEtablissement(val)

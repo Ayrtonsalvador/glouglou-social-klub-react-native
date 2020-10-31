@@ -11,6 +11,7 @@ var encBase64 = require('crypto-js/enc-base64')
 var BouteilleModel = require('../models/Bouteille');
 var CavisteModel = require('../models/Caviste');
 var VigneronModel = require('../models/Vigneron');
+const { populate } = require('../models/Bouteille');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -197,6 +198,13 @@ router.get('/get-status', async function (req, res, next) {
 // ---------------------- AJOUTER UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
+  // console.log("ID", req.query.user._id)
+
+  // var user = await VigneronModel.findById(req.query.user._id)
+  // .populate('Bouteille')
+  // .exec();
+  // console.log("CAVE Vigneron", user)
+
   var newBouteille = new BouteilleModel({
     Nom: req.body.NomRefFF,
     Couleur: req.body.CouleurFF,
@@ -209,20 +217,22 @@ router.post('/AddVin', async function (req, res, next) {
   })
   saveBouteille = await newBouteille.save()
 
-  res.json({ saveBouteille })
+  res.json({ saveBouteille, user })
 
 });
 
 router.get('/macave', async function (req, res, next) {
-  var cave = []
-  var vigneron = null
-  var bouteille = await BouteilleModel.findOne({ vigneron: req.query.IdVigneron })
 
-  console.log("BOUTEILLE", bouteille)
-  console.log("VIGNERON FOUND", req.query.IdVigneron)
+  // Trouver les infos de la bouteille par vigneron
+  var cave = await BouteilleModel.findById('5f9c1dad856c11f1de8a55fc')
+    .populate('Vigneron')
+    .exec();
+    console.log("CAVE", cave)
 
-  if (vigneron != null) {
-    res.json({ result: true, bouteille })
+    // console.log("ID", req.query.cave.IdVigneron)
+
+  if (cave != null) {
+    res.json({ result: true, cave})
   } else {
     res.json({ result: false })
   }
@@ -290,7 +300,7 @@ router.post('/info-update-c', async function (req, res, next) {
 router.get('/info-c', async function (req, res, next) {
   var infos = []
   var token = null
-  var user = await VigneronModel.findOne({ token: req.query.token })
+  var user = await CavisteModel.findOne({ token: req.query.token })
 
   console.log("USER", user)
 

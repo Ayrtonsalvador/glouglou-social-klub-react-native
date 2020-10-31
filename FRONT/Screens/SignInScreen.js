@@ -84,7 +84,6 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
               <Button
                 onPress={async () => {
-                  navigation.navigate("ProfileVigneron");
 
                   var rawResponse = await fetch("http://192.168.1.22:3000/sign-in", {
                     method: 'POST',
@@ -103,23 +102,22 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                   } else if (response.result == true && response.status == "Caviste") {
                     setstatus('Caviste');
                     onSubmitUserstatus(status);
-                    navigation.navigate("ProfilCav");
                     addToken(response.token);
-                    console.log("TOKEN", token)
+                    console.log("TOKEN SIGNIN", token)
                   } else {
                     setErrorsSignin(response.error);
                   }
 
                 }}
 
-                containerStyle={{ marginBottom: 25, width: '70%', borderRadius: 15, padding: 10, }}
+                containerStyle={{ marginBottom: 20, width: '70%', borderRadius: 15, padding: 10, }}
                 title="Rejoindre le club"
                 type="solid"
                 buttonStyle={{ backgroundColor: '#FF9900' }}
               />
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('FirstScreen');
+                  navigation.navigate('First');
                 }}
               >
                 <Text
@@ -143,7 +141,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: 300,
-    height: 300,
+    height: 350,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
   text: {
     color: '#FFD15C',
     // fontFamily: "Gothic A1",
-    fontSize: 18,
+    fontSize: 20,
     padding: 15,
   },
   img: {

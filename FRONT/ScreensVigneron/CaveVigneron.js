@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView, Overlay } from "react-native";
-import { ListItem, Input, Header, Card } from 'react-native-elements';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { ListItem, Input, Header, Card, Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
-function CaveVigneron() {
+function CaveVigneron({navigation}) {
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -16,84 +17,263 @@ function CaveVigneron() {
   const [AOC, setAOC] = useState("AOC")
   const [cepage, setCepage] = useState("Cépage")
   const [millesime, setMillesime] = useState("Millesime")
-  const [annee, setAnne] = useState("Année")
 
+  const [popup, setPopup] = useState(false)
   const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      console.log("PROFIL")
-      var rawResponse = await fetch(`http://192.168.1.22:3000/macave?token=${token}`);
+      console.log("CAVE")
+      var rawResponse = await fetch(`http://192.168.1.22:3000/macave`);
       var response = await rawResponse.json();
-      // console.log("GET INFOS VIGNERON", response)
+      console.log("GET INFOS BOUTEILLE", response)
       // console.log("Vigneron", response.user)
 
-      if(response.result == true){
-        setImage(response.user.Photo)
-        setNom(response.user.Nom)
-        setAOC(response.user.AOC)
-        setCepage(response.user.Cepage)
-        setMillesime(response.user.Millesime)
-        setDesc(response.user.Desc)
-      } 
+      if (response.result == true) {
+        setNom(response.cave.Nom)
+        setAOC(response.cave.AOC)
+        setCepage(response.cave.Cepage)
+        setMillesime(response.cave.Millesime)
+        setDesc(response.cave.Desc)
+        setCouleur(response.cave.Couleur)
+        // setDomaine(response.cave.)
+        // setVille()
+        // setRegion()
+        // setPhoto()
+      } else {
+        //POP-UP CAVE VIDE
+        setPopup(true)
+      }
     }
     loadData()
   }, []);
 
+  if (isVisible) {
+    return (
+      <View>
+        <Overlay
+          onBackdropPress={() => { setIsVisible(false) }}
+        >
+          <ScrollView>
+            <Card style={{ flex: 0.5, width: 100, height: 100}}>
 
+              <View style={{justifyContent: 'center'}}>
+              <View
+              style={{justifyContent: 'center', alignItems: 'center'}}
+              >
+              <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
+              </View>
+              
+              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                <Text style={{ marginBottom: 10 }}>
+                  {nom}
+                </Text>
+                <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                  {cepage}
+                </Text>
+              </View>
+              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                AOC
+              </Text>
+              <Text style={{ marginBottom: 10 }}>
+                {AOC}
+              </Text>
+              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                Millésime
+                  </Text>
+              <Text style={{ marginBottom: 10 }}>
+                {millesime}
+              </Text>
+              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                Cépage
+                  </Text>
+              <Text style={{ marginBottom: 10 }}>
+                {cepage}
+              </Text>
+
+              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                Couleur
+                  </Text>
+              <Text style={{ marginBottom: 10 }}>
+                {couleur}
+              </Text>
+              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                Description
+                  </Text>
+              <Text style={{ marginBottom: 10 }}>
+                {desc}
+              </Text>
+            </View>
+            </Card>
+          </ScrollView>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('FirstScreen');
+            }}
+            style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text
+              style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
+          </TouchableOpacity>
+
+        </Overlay>
+      </View>
+    )
+  }
+
+  if (popup) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
+        <View style={styles.popup}>
+          <Text>Votre cave est vide!</Text>
+          <View>
+            <Icon
+              style={{ marginTop: 40 }}
+              name="glass"
+              size={100}
+              color="#000000"
+            />
+          </View>
+
+          <TouchableOpacity>
+            <Text
+              onPress={() => {
+                navigation.navigate('Vin');
+              }}
+              style={{ color: '#9D2A29', marginTop:60 }}>Ajouter un vin à ma cave</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    );
+  }
+
+  // Cave vigneron
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
 
       <View style={styles.container}>
 
-        <Card>
-          <Card.Image source={require('../assets/imgdefault.png')} />
+        <View style={styles.box1}>
 
-          <Text style={{ marginBottom: 10 }}>
-            {nom}
-          </Text>
-          <Text style={{ marginBottom: 10}}>
-            {annee}
-          </Text>
-          <Text style={{ marginBottom: 10}}>
-            AOC {AOC}
-          </Text>
-          <Text style={{ marginBottom: 10}}>
-            {domaine}
-          </Text>
+          <ScrollView>
+            <TouchableOpacity
+              onPress={() => {
+                setIsVisible(true);
+              }}>
+              <View style={{ flexDirection: "row" }}>
 
-          <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-            Couleur
-          </Text>
-          <Text style={{ marginBottom: 10}}>
-            {couleur}
-          </Text>
-          <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-            Description
-          </Text>
-          <Text style={{ marginBottom: 10}}>
-            {desc}
-          </Text>
+                <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-          <Button
-            icon={<Icon name='code' color='#ffffff' />}
-            buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-            title='VIEW NOW' />
-        </Card>
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                    {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                    {cepage}
+                  </Text>
+                </Card>
 
-        <Overlay></Overlay>
+                <Card>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-        <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('FirstScreen');
-                }}
-              >
-                <Text
-                  style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
-              </TouchableOpacity>
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                  {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                    {cepage}
+                  </Text>
+                </Card>
+              </View>
 
+              <View style={{ flexDirection: "row" }}>
+                <Card>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                  {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                  {cepage}
+                  </Text>
+                </Card>
+
+                <Card>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                  {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                  {cepage}
+                  </Text>
+                </Card>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Card>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                  {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                  {cepage}
+                  </Text>
+                </Card>
+
+                <Card>
+                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+                  <Text>
+                    {nom}
+                  </Text>
+                  <Text>
+                  {millesime}
+                  </Text>
+                  <Text>
+                    {AOC}
+                  </Text>
+                  <Text>
+                  {cepage}
+                  </Text>
+                </Card>
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
       </View>
     </View>
   );
@@ -102,13 +282,30 @@ function CaveVigneron() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
+  box1: {
+    borderWidth: 0,
+    marginBottom: 10,
+    borderColor: '#808080',
+    marginTop: 50,
+    elevation: 10
+  },
+  img: {
+    width: 80,
+    height: 80,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box1: {
-    flex: 1,
+  popup: {
+    width: 300,
+    height: 400,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 15,
+    // fontFamily: "Gothic A1",
   },
 });
 
@@ -120,37 +317,3 @@ export default connect(
   mapStateToProps,
   null
 )(CaveVigneron);
-
-//POP-UP CAVE VIDE
-// export default function CaveScreen() {
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
-//       <View style={styles.box}>
-//         <Text>Votre cave est vide!</Text>
-//         <Icon
-//           name="glass"
-//           size={100}
-//           color="#000000"
-//         />
-//       </View>
-//     </View>
-//   );
-// }
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     backgroundColor: '#FBDF4C',
-//     // fontFamily: "Gothic A1",
-//   },
-//   box: {
-//     width: 300,
-//     height: 500,
-//     backgroundColor: '#FFFFFF',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     borderRadius: 15,
-//     // fontFamily: "Gothic A1",
-//   },
-// });

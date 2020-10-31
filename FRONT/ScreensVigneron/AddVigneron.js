@@ -16,9 +16,9 @@ function AddVigneron({ navigation }) {
   const [Millesime, setMillesime] = useState("Millesime");
   const [Appellation, setAppellation] = useState("Appelation");
   const [Desc, setDesc] = useState("Description");
-  const [annee, setAnne] = useState("Année");
 
   const [image, setImage] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
   // Demander accès à la bibliothèque photo
   useEffect(() => {
@@ -51,7 +51,6 @@ function AddVigneron({ navigation }) {
       <View style={styles.container}>
 
         <KeyboardAvoidingView behavior="position" enabled>
-
           <View style={styles.box1}>
 
             <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
@@ -75,8 +74,6 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Nom de la référence'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
                   onChangeText={(text) => setNomRef(text)}
                   value={NomRef}
                 />
@@ -85,8 +82,6 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Couleur'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
                   onChangeText={(text) => setCouleur(text)}
                   value={Couleur}
                 />
@@ -95,8 +90,7 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Cépage'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
+                  disabled={disabled}
                   onChangeText={(text) => setCepage(text)}
                   value={Cepage}
                 />
@@ -105,8 +99,6 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Millésime'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
                   onChangeText={(text) => setMillesime(text)}
                   value={Millesime}
                 />
@@ -114,8 +106,6 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='A.O.C / I.G.C'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
                   onChangeText={(text) => setAppellation(text)}
                   value={Appellation}
                 />
@@ -124,12 +114,13 @@ function AddVigneron({ navigation }) {
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder='Description'
-                  errorStyle={{ color: 'red' }}
-                  errorMessage=''
                   onChangeText={(text) => setDesc(text)}
                   value={Desc}
                 />
+                </View>
+            </ScrollView>
 
+            <View>
                 <Button
                   icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                   rounded
@@ -146,7 +137,7 @@ function AddVigneron({ navigation }) {
                     var data = await fetch("http://192.168.1.22:3000/AddVin", {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&AnneeFF=${annee}&ImageFF=${image}`
+                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`
                     })
                     var body = await data.json()
                     navigation.navigate('CaveVigneron');
@@ -154,9 +145,7 @@ function AddVigneron({ navigation }) {
                     console.log("IMAGEFF", image);
                   }}
                 />
-
               </View>
-            </ScrollView>
           </View>
         </KeyboardAvoidingView>
       </View>
