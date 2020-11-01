@@ -8,12 +8,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
-import MyNavigation from './MyNavigation'
-
-
 var socket = socketIOClient("http://172.17.1.159:3000/");
 
-function ChatVigneron({ navigation, pseudo }) {
+function ChatVigneron({ navigation, pseudo}) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -50,14 +47,12 @@ function ChatVigneron({ navigation, pseudo }) {
   });
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 , backgroundColor: "#FFFFFF"}}>
 
-      <Header
-        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23'}}
-        centerComponent={{ text: 'MES CONTACTS GLOUGLOU', marginTop: 30 }}
-      >
-      <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
-      </Header>
+      <View style={{ alignItems: "center" }}>
+        < Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+      </View>
+
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
         <ListItem
@@ -73,14 +68,14 @@ function ChatVigneron({ navigation, pseudo }) {
             </Avatar>
           }
         />
-              <Button
-            title="Go to message Jean pierre"
-            type="solid"
-            buttonStyle={{ backgroundColor: '#FF9900' }}
-            onPress={() => {
-              navigation.navigate('MessageVigneron');
-            }}>
-            </Button>
+        <Button
+          title="Go to message Jean pierre"
+          type="solid"
+          buttonStyle={{ backgroundColor: '#FF9900' }}
+          onPress={() => {
+            navigation.navigate('MessageVigneron');
+          }}>
+        </Button>
 
         <ListItem
           title="La GlouGlou Team"
@@ -145,8 +140,6 @@ function ChatVigneron({ navigation, pseudo }) {
           }
         />
       </KeyboardAvoidingView>
-
-      <MyNavigation/>
 
     </View>
   );

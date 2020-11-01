@@ -1,63 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { ListItem, Input, Header, Card, Overlay } from 'react-native-elements';
 
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-
-import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, FlatList, ScrollView } from "react-native";
-import { Button, ListItem, Input, Header, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import NavigationC from './NavigationC'
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
-function CatalogueCaviste() {
+function CatalogueCaviste({userstatus, navigation}) {
 
-  var Catalogue = [{
-    Vigneron: "Mathieu Vieules",
-    Domaine: "Domaine Philémon",
-    Region: "Sud Ouest",
-    Ville: "Villeuneuve-sur-Ver",
-    Nom: "Duras",
-    Couleur: "Rouge",
-    AOC: "AOC Gaillac",
-    Desc: "Les notes d'épices et de poivre s'associent aux tanins souples offrant un bon compromis en bouche. A boire sur les viandes en sauce, les fromages affinés.",
-    Cepage: "Gaillacois",
-    Millesime: "2018",
-    Photo: "../assets/imgdefault.png",
-  }];
+  useEffect(() => {
+    async function loadData() {
+      
+      var rawResponse = await fetch(`http://192.168.1.11:3000/catalogue`);
+      var response = await rawResponse.json();
+
+      console.log("GET INFOS BOUTEILLE", response)
+      // console.log("Vigneron", response.user)      
+        // setNom(response.cave.Nom)
+        // setAOC(response.cave.AOC)
+        // setCepage(response.cave.Cepage)
+        // setMillesime(response.cave.Millesime)
+        // setDesc(response.cave.Desc)
+        // setCouleur(response.cave.Couleur)
+        // setDomaine(response.cave.)
+        // setVille()
+        // setRegion()
+        // setPhoto()
+    }
+    loadData()
+  }, []);
 
   // if (Catalogue > 0) {
-  //   CatalaogueItems = Catalogue.map((url, i) => {   return () });
-     <Card>
-       <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-        <Badge status="success" value="homme" />
-        <Badge status="success" value="70 ans" />
-        <Badge status="success" value="barbe" />
-        <Badge status="success" value="joyeux !" />
-        <Badge status="success" value="cheveux gris" />
-      </Card>
+  //   CatalaogueItems = Catalogue.map((url, i) => { return (
+  //   <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
+  //   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+
+  //   <Text>
+  //     {nom}
+  //   </Text>
+  //   <Text>
+  //     {millesime}
+  //   </Text>
+  //   <Text>
+  //     {AOC}
+  //   </Text>
+  //   <Text>
+  //     {cepage}
+  //   </Text>
+  // </Card>
+
+  // <Card>
+  // ) });
   
+  if (userstatus == "Vigneron") {
+    return (<CaveVigneron navigation={navigation}/>)
+  } else {
 
     return (
-      <View style={{ flex: 1 }}>
-        <Header
-          containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}
-          centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
-        >
-          <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-        </Header>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
+{/*   
+        <View style={styles.container}>
+  
+          <View style={styles.box1}>
+  
+            <ScrollView>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsVisible(true);
+                }}>
+                <View style={{ flexDirection: "row" }}>
+  
+                  <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+  
+                    <Text>
+                      {nom}
+                    </Text>
+                    <Text>
+                      {millesime}
+                    </Text>
+                    <Text>
+                      {AOC}
+                    </Text>
+                    <Text>
+                      {cepage}
+                    </Text>
+                  </Card>
+  
+                  <Card>
+                    <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+  
+                    <Text>
+                      {nom}
+                    </Text>
+                    <Text>
+                    {millesime}
+                    </Text>
+                    <Text>
+                      {AOC}
+                    </Text>
+                    <Text>
+                      {cepage}
+                    </Text>
+                  </Card>
+                </View>
+  
+                <View style={{ flexDirection: "row" }}>
+                  <Card>
+                    <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+  
+                    <Text>
+                      {nom}
+                    </Text>
+                    <Text>
+                    {millesime}
+                    </Text>
+                    <Text>
+                      {AOC}
+                    </Text>
+                    <Text>
+                    {cepage}
+                    </Text>
+                  </Card>
 
-        <ScrollView style={{ marginTop: 25 }}>
-          <Text h4 style={{ textAlign: 'center' }}>John's Gallery</Text>
-          {/* {UrlGallery} */}
-        </ScrollView>
-
-        <NavigationC/>
+                  
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View> */}
       </View>
     );
-  }
+  }}
 
   function mapStateToProps(state) {
-    return { token: state.token }
+    return { token: state.token, userstatus: state.userstatus }
   }
   
   export default connect(
@@ -156,29 +235,34 @@ function CatalogueCaviste() {
 // }
 
 
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         marginTop: StatusBar.currentHeight || 0,
-//     },
-//     item: {
-//         marginHorizontal: 50,
-//         backgroundColor: '#FFFFFF',
-
-//     },
-//     title: {
-
-//         fontWeight : 'bold',
-//         color : "#FFAE34",
-//         fontSize: 20,
-//         marginTop: 20,
-//         marginHorizontal: 20,
-//     },
-//     text: {
-//         fontSize: 18,
-//         marginVertical: 20,
-//         marginHorizontal: 20,
-//     }
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
+  box1: {
+    borderWidth: 0,
+    marginBottom: 10,
+    borderColor: '#808080',
+    marginTop: 50,
+    elevation: 10
+  },
+  img: {
+    width: 80,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  popup: {
+    width: 300,
+    height: 400,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    // fontFamily: "Gothic A1",
+  },
+});
 
 // export default FirstScreen;

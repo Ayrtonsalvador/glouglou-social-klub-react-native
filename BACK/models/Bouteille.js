@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 var BouteilleSchema = mongoose.Schema ({
-    IdVigneron: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vigneron' }],
+
+    IdVigneron: { type: mongoose.Schema.Types.ObjectId, ref: 'Vigneron' },
+
     Nom: String,
     Couleur: String,
     AOC: String,

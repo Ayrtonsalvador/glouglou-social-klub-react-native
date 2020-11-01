@@ -19,7 +19,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const [listErrorsSignup, setErrorsSignup] = useState([])
+  const [listErrorsSignup, setlistErrorsSignup] = useState([])
 
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
@@ -132,7 +132,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://192.168.0.26:3000/sign-up", {
+                  var rawResponse = await fetch("http://192.168.1.11:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
@@ -145,8 +145,14 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     setUserExists(true);
                     setIsVisible(true);
                     addToken(response.token);
+                    navigation.navigate('Profil');
+
                   } else {
+<<<<<<< HEAD
                     setErrorsSignup(response.error);
+=======
+                    setlistErrorsSignup([... listErrorsSignup], body.error);
+>>>>>>> navbarsolo
                   }
                 }}
 
@@ -162,7 +168,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://192.168.0.26:3000/sign-up", {
+                  var data = await fetch("http://192.168.1.11:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -174,8 +180,13 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     setUserExists(true);
                     setIsVisible(true);
                     addToken(body.token);
+                    navigation.navigate('Profil');
                   } else {
+<<<<<<< HEAD
                     setErrorsSignUp(body.error);
+=======
+                    setlistErrorsSignup([... listErrorsSignup], body.error);
+>>>>>>> navbarsolo
                   }
                 }}
 

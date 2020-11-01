@@ -5,7 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
+<<<<<<< HEAD
 function CaveVigneron({ navigation, token }) {
+=======
+function CaveVigneron({navigation}) {
+>>>>>>> navbarsolo
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -27,11 +31,17 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
+<<<<<<< HEAD
       var rawResponse = await fetch(`http://192.168.1.22:3000/macave?token=${token}`);
+=======
+      console.log("CAVE")
+      var rawResponse = await fetch(`http://192.168.1.11:3000/macave`);
+>>>>>>> navbarsolo
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
 
       if (response.result == true) {
+        setPopup(true)
         setNom(response.cave.Nom)
         setAOC(response.cave.AOC)
         setCepage(response.cave.Cepage)
@@ -169,6 +179,7 @@ function CaveVigneron({ navigation, token }) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
+<<<<<<< HEAD
           <Text style={{ color: '#A9A8A8', marginTop: 60 }}>VOTRE CAVE EST VIDE !</Text>
           <View>
             <Icon
@@ -179,10 +190,15 @@ function CaveVigneron({ navigation, token }) {
             />
           </View>
 
+=======
+        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+          < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+        </View>
+>>>>>>> navbarsolo
           <TouchableOpacity>
             <Text
               onPress={() => {
-                navigation.navigate('Vin');
+                navigation.navigate('Favoris');
               }}
               style={{ color: '#9D2A29', marginTop: 60 }}>Ajouter un vin à ma cave</Text>
           </TouchableOpacity>
@@ -265,9 +281,8 @@ function CaveVigneron({ navigation, token }) {
                   </Text>
                 </Card>
 
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
+<<<<<<< HEAD
                   <Text>
                     {nom}
                   </Text>
@@ -315,6 +330,8 @@ function CaveVigneron({ navigation, token }) {
                     {cepage}
                   </Text>
                 </Card>
+=======
+>>>>>>> navbarsolo
               </View>
             </TouchableOpacity> */}
           </ScrollView>

@@ -1,11 +1,4 @@
 
-<<<<<<< HEAD
-import MyNavigation from './MyNavigation'
-
-function ProfilVigneron({ navigation }) {
-=======
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
 import { Button, Input, Header, Avatar, Icon, Card } from 'react-native-elements';
@@ -73,115 +66,6 @@ function ProfilVigneron({ navigation, token }) {
 
   return (
 
-<<<<<<< HEAD
-  <View style={{ flex: 1 }}>
-
-    <View style={styles.container}>
-
-      <KeyboardAvoidingView behavior="position" enabled>
-
-      <View style={styles.box1}>
-
-        <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
-
-        <Avatar
-          rounded
-
-          icon={{ name: 'plus', type: 'font-awesome' }}
-          size="large"
-          overlayContainerStyle={{ backgroundColor: '#FFAE34' }}
-          containerStyle={{ marginTop: 15}}
-        >
-        </Avatar>
-
-        <TouchableOpacity> 
-             <Text style={{color:'#AAAAAA', marginTop: 20}}>Changer ma photo</Text>
-         </TouchableOpacity>
-
-        <View style={styles.box2}>
-          <Input
-            containerStyle={{ marginBottom: 20, width: '80%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Nom'
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(val) => setNom(val)}
-          />
-          <Input
-            containerStyle={{ marginBottom: 20, width: '80%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Nom de domaine'
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(val) => setDomaine(val)}
-          />
-          <Input
-            containerStyle={{ marginBottom: 20, width: '80%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Ville'
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(val) => setVille(val)}
-          />
-          <Input
-            containerStyle={{ marginBottom: 20, width: '80%' }}
-            inputStyle={{ marginLeft: 10 }}
-            placeholder='Région'
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(val) => setRegion(val)}
-          />
-          <Input
-            containerStyle={{ marginBottom: 20, width: '80%' }}
-            placeholder={"Description \n"}
-            multiline={true}
-            inputStyle={{ marginLeft: 10 }}
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(val) => setDesc(val)}
-             
-          />
-         
-              
-            
-         
-            <Button onPress={async() => { 
-              
-              const data = await fetch("http://172.17.1.159:3000/info-update", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}`
-                })
-              var body = await data.json()
-              setUploaded("check-circle"); 
-              
-            }}
-              Icon={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-              type='font-awesome'
-              title="Changer mes paramètres"
-             /> 
-
-         
-         <TouchableOpacity> 
-             <Text style={{color:'#9D2A29'}}>Déconnexion</Text>
-         </TouchableOpacity>
-
-     
-        </View>
-
-      </View>
-
-      </KeyboardAvoidingView>
-    
-
-    </View>
-
-    <MyNavigation/>
-
-</View>
-
-  )}
-=======
     <View style={{ flex: 1 }}>
 
       <View style={styles.container}>
@@ -304,9 +188,6 @@ function ProfilVigneron({ navigation, token }) {
 
   )
 }
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
-
-
 
 const styles = StyleSheet.create({
   container: {

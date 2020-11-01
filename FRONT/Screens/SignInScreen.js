@@ -65,26 +65,10 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
 
               {tabErrorsSignin}
 
-              <TouchableOpacity>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('ProfileVigneron');
-                  }}
-                  style={{ color: '#9D2A29' }}>Vigneron</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-                <Text
-                  onPress={() => {
-                    navigation.navigate('ProfileCaviste');
-                  }}
-                  style={{ color: '#9D2A29' }}>Caviste</Text>
-              </TouchableOpacity>
-
               <Button
                 onPress={async () => {
 
-                  var rawResponse = await fetch("http://192.168.0.26:3000/sign-in", {
+                  var rawResponse = await fetch("http://192.168.1.11:3000/sign-in", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -93,15 +77,15 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
                   console.log("RESPONSE SIGNIN", response)
 
                   if (response.result == true && response.status == "Vigneron") {
-                    setstatus('Vigneron');
-                    onSubmitUserstatus(status);
+                    onSubmitUserstatus(response.status);
                     addToken(response.token);
+                    navigation.navigate('Profil');
                     console.log("TOKEN SIGNIN", response.token)
 
                   } else if (response.result == true && response.status == "Caviste") {
-                    setstatus('Caviste');
-                    onSubmitUserstatus(status);
+                    onSubmitUserstatus(response.status);
                     addToken(response.token);
+                    navigation.navigate('Profil');
                     console.log("TOKEN SIGNIN", token)
                   } else {
                     setErrorsSignin(response.error);
@@ -113,15 +97,17 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
                 title="Rejoindre le club"
                 type="solid"
                 buttonStyle={{ backgroundColor: '#FF9900' }}
-              />
-              <TouchableOpacity
+
                 onPress={() => {
-                  navigation.navigate('First');
+                  navigation.navigate('Profil');
                 }}
-              >
+                />
+              
+              <TouchableOpacity>
                 <Text
                   style={{ color: '#A9A8A8' }}>Je n'ai pas encore de compte</Text>
               </TouchableOpacity>
+              
             </View>
           </View>
         </KeyboardAvoidingView>

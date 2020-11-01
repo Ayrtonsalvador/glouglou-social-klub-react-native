@@ -206,9 +206,21 @@ router.get('/get-status', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
+<<<<<<< HEAD
   console.log("ADD VIN")
+=======
+// FAIRE TRANSITER COTER FRONT
+
+  const user = await VigneronModel.findOne({TokenFF : req.body.token})
+
+  if (user) {
+  
+  var ID = user._id;
+>>>>>>> navbarsolo
 
   var newBouteille = new BouteilleModel({
+
+    IdVigneron: ID,
     Nom: req.body.NomRefFF,
     Couleur: req.body.CouleurFF,
     AOC: req.body.AppellationFF,
@@ -218,21 +230,67 @@ router.post('/AddVin', async function (req, res, next) {
     token: req.body.tokenFF
     // Photo: req.body.ImageFF,
   })
+
   saveBouteille = await newBouteille.save()
   console.log("SAVE BOUTEILLE", saveBouteille)
 
+<<<<<<< HEAD
   res.json({ saveBouteille})
+=======
+  }
+
+  res.json({ saveBouteille, user })
+>>>>>>> navbarsolo
 
 });
 
 router.get('/macave', async function (req, res, next) {
 
+<<<<<<< HEAD
   var cave = await BouteilleModel.findOne({token: req.query.token})
   console.log("CAVE", cave)
   console.log("Token Cave", req.query.token)
+=======
+  // Trouver les infos de la bouteille par vigneron
+  const user = await VigneronModel.findOne({TokenFF : req.body.token})
+
+  if (user) {
+
+    var ID = user._id;
+    
+    const infosUser = {
+     NomV : user.Nom,
+     Domaine : user.Domaine,
+     Ville : user.Ville,
+     Region : user.Region,
+  }
+
+  const user = await VigneronModel.findbyID({TokenFF : req.body.token})
+
+    var cave = await VigneronModel.findById(ID)
+    .populate('Bouteille')
+    .exec();
+    console.log("CAVE", cave)
+
+>>>>>>> navbarsolo
 
   if (cave != null) {
-    res.json({ result: true, cave})
+    res.json({ result: true, cave, infosUser})
+  } else {
+    res.json({ result: false })
+  }
+}})
+
+
+// -------------- CATALGOUE DES VINS ------------\\
+router.get('/catalogue', async function (req, res, next) {
+
+  // Trouver les infos de la bouteille par vigneron
+  var catalogue = await BouteilleModel.find()
+    console.log("CATALOGUE", catalogue)
+
+ if (catalogue != null) {
+    res.json({ result: true, catalogue})
   } else {
     res.json({ result: false })
   }
