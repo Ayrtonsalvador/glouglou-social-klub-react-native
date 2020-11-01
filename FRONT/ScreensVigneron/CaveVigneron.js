@@ -104,7 +104,7 @@ function CaveVigneron({ navigation, token }) {
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ marginBottom: 10 }}>
+                  <Text style={{ marginBottom: 10, fontWeight: 'bold'}}>
                     {nom}
                   </Text>
                   <Text style={{ marginBottom: 10, marginLeft: 5 }}>
@@ -215,7 +215,7 @@ function CaveVigneron({ navigation, token }) {
                 <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
@@ -232,7 +232,7 @@ function CaveVigneron({ navigation, token }) {
                 <Card>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
@@ -251,7 +251,7 @@ function CaveVigneron({ navigation, token }) {
                 <Card>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
@@ -268,7 +268,7 @@ function CaveVigneron({ navigation, token }) {
                 <Card>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
@@ -286,7 +286,7 @@ function CaveVigneron({ navigation, token }) {
                 <Card>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
@@ -302,7 +302,7 @@ function CaveVigneron({ navigation, token }) {
 
                 <Card>
                   <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-                  <Text>
+                  <Text style={{ fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text>
