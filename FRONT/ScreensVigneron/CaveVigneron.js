@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { ListItem, Input, Header, Card, Overlay } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import MyNavigation from './MyNavigation'
-
-function CaveVigneron({navigation}) {
+function CaveVigneron({ navigation, token }) {
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -25,13 +23,13 @@ function CaveVigneron({navigation}) {
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
+  const [listeVin, setlisteVin] = useState([])
+
   useEffect(() => {
     async function loadData() {
-      console.log("CAVE")
-      var rawResponse = await fetch(`http://192.168.1.22:3000/macave`);
+      var rawResponse = await fetch(`http://192.168.1.22:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
-      // console.log("Vigneron", response.user)
 
       if (response.result == true) {
         setNom(response.cave.Nom)
@@ -40,18 +38,55 @@ function CaveVigneron({navigation}) {
         setMillesime(response.cave.Millesime)
         setDesc(response.cave.Desc)
         setCouleur(response.cave.Couleur)
-        // setDomaine(response.cave.)
-        // setVille()
-        // setRegion()
         // setPhoto()
+
+        // Map Vins
+        const cardVin = response.cave.map((i) => {
+          return (
+              <TouchableOpacity
+                onPress={() => { setIsVisible(true); }}>
+
+                <View style={{ flexDirection: "row" }}>
+                  <Card
+                    key={i}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                  // image={{ uri: '../assets/imagedefault-v.png' }}
+                  >
+                    <Text>
+                      {nom}
+                    </Text>
+                    <Text>
+                      {millesime}
+                    </Text>
+                    <Text>
+                      {AOC}
+                    </Text>
+                    <Text>
+                      {cepage}
+                    </Text>
+                  </Card>
+                </View>
+
+              </TouchableOpacity>
+          )
+        })
+
+        setlisteVin(cardVin)
+
       } else {
-        //POP-UP CAVE VIDE
+        //CAVE VIDE
         setPopup(true)
       }
     }
     loadData()
   }, []);
 
+  // SUPPRIMER UNE REF
+  var handleDeleteRef = async (nom) => {
+    setlisteVin(listeVin.filter(object => object.nom != nom))
+  }
+
+  // MODAL AFFICHAGE VIN
   if (isVisible) {
     return (
       <View>
@@ -59,61 +94,65 @@ function CaveVigneron({navigation}) {
           onBackdropPress={() => { setIsVisible(false) }}
         >
           <ScrollView>
-            <Card style={{ flex: 0.5, width: 100, height: 100}}>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
-              <View style={{justifyContent: 'center'}}>
-              <View
-              style={{justifyContent: 'center', alignItems: 'center'}}
-              >
-              <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
-              </View>
-              
-              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+              <View style={{ justifyContent: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
+                </View>
+
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ marginBottom: 10 }}>
+                    {nom}
+                  </Text>
+                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                    {cepage}
+                  </Text>
+                </View>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  AOC
+              </Text>
                 <Text style={{ marginBottom: 10 }}>
-                  {nom}
+                  {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Millésime
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {millesime}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Cépage
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
                   {cepage}
                 </Text>
-              </View>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                AOC
-              </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {AOC}
-              </Text>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Millésime
-                  </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {millesime}
-              </Text>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Cépage
-                  </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {cepage}
-              </Text>
 
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Couleur
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Couleur
                   </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {couleur}
-              </Text>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Description
+                <Text style={{ marginBottom: 10 }}>
+                  {couleur}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Description
                   </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {desc}
-              </Text>
-            </View>
+                <Text style={{ marginBottom: 10 }}>
+                  {desc}
+                </Text>
+              </View>
             </Card>
           </ScrollView>
 
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('FirstScreen');
+            onPress={async () => {
+              await fetch(`http://192.168.1.22:3000/delete-ref/${nom}`, {
+                method: 'DELETE'
+              });
+              handleDeleteRef(nom)
+              console.log("DELETED FRONT", nom)
             }}
             style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
           >
@@ -130,11 +169,11 @@ function CaveVigneron({navigation}) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
-          <Text>Votre cave est vide!</Text>
+          <Text style={{ color: '#A9A8A8', marginTop: 60 }}>VOTRE CAVE EST VIDE !</Text>
           <View>
             <Icon
               style={{ marginTop: 40 }}
-              name="glass"
+              name="ios-wine"
               size={100}
               color="#000000"
             />
@@ -145,7 +184,7 @@ function CaveVigneron({navigation}) {
               onPress={() => {
                 navigation.navigate('Vin');
               }}
-              style={{ color: '#9D2A29', marginTop:60 }}>Ajouter un vin à ma cave</Text>
+              style={{ color: '#9D2A29', marginTop: 60 }}>Ajouter un vin à ma cave</Text>
           </TouchableOpacity>
 
         </View>
@@ -163,7 +202,11 @@ function CaveVigneron({navigation}) {
         <View style={styles.box1}>
 
           <ScrollView>
-            <TouchableOpacity
+
+            {listeVin}
+
+
+            {/* <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
               }}>
@@ -193,7 +236,7 @@ function CaveVigneron({navigation}) {
                     {nom}
                   </Text>
                   <Text>
-                  {millesime}
+                    {millesime}
                   </Text>
                   <Text>
                     {AOC}
@@ -212,13 +255,13 @@ function CaveVigneron({navigation}) {
                     {nom}
                   </Text>
                   <Text>
-                  {millesime}
+                    {millesime}
                   </Text>
                   <Text>
                     {AOC}
                   </Text>
                   <Text>
-                  {cepage}
+                    {cepage}
                   </Text>
                 </Card>
 
@@ -229,13 +272,13 @@ function CaveVigneron({navigation}) {
                     {nom}
                   </Text>
                   <Text>
-                  {millesime}
+                    {millesime}
                   </Text>
                   <Text>
                     {AOC}
                   </Text>
                   <Text>
-                  {cepage}
+                    {cepage}
                   </Text>
                 </Card>
               </View>
@@ -247,13 +290,13 @@ function CaveVigneron({navigation}) {
                     {nom}
                   </Text>
                   <Text>
-                  {millesime}
+                    {millesime}
                   </Text>
                   <Text>
                     {AOC}
                   </Text>
                   <Text>
-                  {cepage}
+                    {cepage}
                   </Text>
                 </Card>
 
@@ -263,17 +306,17 @@ function CaveVigneron({navigation}) {
                     {nom}
                   </Text>
                   <Text>
-                  {millesime}
+                    {millesime}
                   </Text>
                   <Text>
                     {AOC}
                   </Text>
                   <Text>
-                  {cepage}
+                    {cepage}
                   </Text>
                 </Card>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         </View>
       </View>
@@ -312,6 +355,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log("TOKEN CAVE", state.token)
   return { token: state.token }
 }
 

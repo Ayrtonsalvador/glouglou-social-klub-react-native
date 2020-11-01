@@ -8,9 +8,8 @@ var BouteilleSchema = mongoose.Schema ({
     Desc: String,
     Cepage: String,
     Millesime: String,
-    Annee: Number,
     Photo: String,
-
+    token: String,
 })
 
 var BouteilleModel = mongoose.model('Bouteille', BouteilleSchema);
