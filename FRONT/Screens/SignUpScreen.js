@@ -21,7 +21,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
   const [userExists, setUserExists] = useState(false)
   const [isVisible, setIsVisible] = useState(false);
 
-  const [listErrorsSignup, setErrorsSignup] = useState([])
+  const [listErrorsSignup, setlistErrorsSignup] = useState([])
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -138,7 +138,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://192.168.0.26:3000/sign-up", {
+                  var rawResponse = await fetch("http://192.168.1.11:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
@@ -151,8 +151,10 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     setUserExists(true);
                     setIsVisible(true);
                     addToken(response.token);
+                    navigation.navigate('Profil');
+
                   } else {
-                    setErrorsSignin(response.error);
+                    setlistErrorsSignup([... listErrorsSignup], body.error);
                   }
                 }}
 
@@ -168,7 +170,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://192.168.0.26:3000/sign-up", {
+                  var data = await fetch("http://192.168.1.11:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -180,8 +182,9 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     setUserExists(true);
                     setIsVisible(true);
                     addToken(body.token);
+                    navigation.navigate('Profil');
                   } else {
-                    setErrorsSignin(body.error);
+                    setlistErrorsSignup([... listErrorsSignup], body.error);
                   }
                 }}
 

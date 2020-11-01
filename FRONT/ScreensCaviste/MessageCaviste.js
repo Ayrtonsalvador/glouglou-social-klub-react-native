@@ -4,21 +4,20 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import MessageVigneron from '../ScreensVigneron/MessageVigneron';
+
 import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
-import NavigationC from './NavigationC'
-
-  var socket = socketIOClient("http://IP_LOCALE:3000");
 
 function MessageCavistes({ navigation }) {
-  return (
+
+  if (userstatus == "Vigneron") {
+    return (<MessageVigneron navigation={navigation}/>)
+  } else {
+
+    return (
     <View style={{ flex: 1 }}>
-      <Header
-        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-        centerComponent={{ text: 'Message direct Caviste', marginTop: 30 }}
-        >
-        <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
-      </Header>
+
       <ListItem
           title="Jean Pierre"
           subtitle="Merci beaucoup"
@@ -41,11 +40,9 @@ function MessageCavistes({ navigation }) {
         }}>
       </Button>
 
-      <NavigationC/>
-
     </View>
   );
-}
+}}
 
 function mapStateToProps(state){
   return {token: state.token}

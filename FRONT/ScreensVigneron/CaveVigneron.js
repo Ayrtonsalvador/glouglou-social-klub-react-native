@@ -5,8 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import MyNavigation from './MyNavigation'
-
 function CaveVigneron({navigation}) {
 
   const [photo, setPhoto] = useState('')
@@ -28,12 +26,13 @@ function CaveVigneron({navigation}) {
   useEffect(() => {
     async function loadData() {
       console.log("CAVE")
-      var rawResponse = await fetch(`http://192.168.1.22:3000/macave`);
+      var rawResponse = await fetch(`http://192.168.1.11:3000/macave`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
       // console.log("Vigneron", response.user)
 
       if (response.result == true) {
+        setPopup(true)
         setNom(response.cave.Nom)
         setAOC(response.cave.AOC)
         setCepage(response.cave.Cepage)
@@ -130,20 +129,13 @@ function CaveVigneron({navigation}) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
-          <Text>Votre cave est vide!</Text>
-          <View>
-            <Icon
-              style={{ marginTop: 40 }}
-              name="glass"
-              size={100}
-              color="#000000"
-            />
-          </View>
-
+        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+          < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+        </View>
           <TouchableOpacity>
             <Text
               onPress={() => {
-                navigation.navigate('Vin');
+                navigation.navigate('Favoris');
               }}
               style={{ color: '#9D2A29', marginTop:60 }}>Ajouter un vin à ma cave</Text>
           </TouchableOpacity>
@@ -222,56 +214,7 @@ function CaveVigneron({navigation}) {
                   </Text>
                 </Card>
 
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
 
-                  <Text>
-                    {nom}
-                  </Text>
-                  <Text>
-                  {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                  {cepage}
-                  </Text>
-                </Card>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text>
-                    {nom}
-                  </Text>
-                  <Text>
-                  {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                  {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-                  <Text>
-                    {nom}
-                  </Text>
-                  <Text>
-                  {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                  {cepage}
-                  </Text>
-                </Card>
               </View>
             </TouchableOpacity>
           </ScrollView>

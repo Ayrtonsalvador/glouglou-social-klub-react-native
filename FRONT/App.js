@@ -20,10 +20,9 @@ import ChatVigneron from './ScreensVigneron/ChatVigneron';
 import MessageVigneron from './ScreensVigneron/MessageVigneron';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
-import { createAppContainer} from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
-import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -34,62 +33,35 @@ import token from './reducers/token';
 
 // ATTENTION ADRESS IP
 
-<<<<<<< HEAD
-=======
-// ATTENTION ADRESS IP 
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
 const store = createStore(combineReducers({ userstatus, token }));
 
 // STACK-NAVIGATION
 
-var StackNavigator = createStackNavigator({
-  First: FirstScreen,
-  SignIn: SignInScreen,
-  SignUp: SignUpScreen,
-<<<<<<< HEAD
-=======
-  MessageCaviste: MessageCaviste,
+var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
-  BottomNavigatorCaviste: BottomNavigatorCaviste,
-},
-  { headerMode: 'none' }
-);
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
-
-  // ProfilVigneron: ProfilVigneron,
-  // AddVigneron: AddVigneron,
-  // CaveVigneron: CaveVigneron,
-  // ChatVigneron: ChatVigneron,
-  // MessageVigneron: MessageVigneron,
-
-  // ProfilCaviste: ProfilCaviste,
-  // CatalogueCaviste: CatalogueCaviste,
-  // FavoriteCaviste: FavoriteCaviste,
-  // MessageCaviste : MessageCaviste,
-  // ChatCaviste: ChatCaviste,
-
-<<<<<<< HEAD
-=======
+  Catalogue: CatalogueCaviste,
+  Favoris: FavoriteCaviste,
+  Chat: ChatCaviste,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'ios-person';
-        } else if (navigation.state.routeName == 'ChatVigneron') {
-          iconName = 'md-chatboxes';
-        } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'ios-home';
-        } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'ios-wine';
+        if (navigation.state.routeName == 'Profil') {
+          iconName = 'user';
+        } else if (navigation.state.routeName == 'Catalogue') {
+          iconName = 'home';
+        } else if (navigation.state.routeName == 'Chat') {
+          iconName = 'envelope';
+        } else if (navigation.state.routeName == 'Favoris') {
+          iconName = 'glass-cheers';
         }
 
-        return <Icon name={iconName} size={30} color={tintColor} />;
+        return <Icon name={iconName} size={25} color={tintColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#130f40',
+      activeTintColor: '#FFAE34',
       inactiveTintColor: '#FFFFFF',
       showLabel: false,
       adaptive: true,
@@ -101,53 +73,29 @@ var StackNavigator = createStackNavigator({
 
       }
     }
-
   });
 
-StackNavigatorVigneron = createStackNavigator({
+var StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  MessageVigneron: MessageVigneron,
-  Profil: ProfilVigneron,
-  BottomNavigatorVigneron: BottomNavigatorVigneron,
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
+  Message: MessageCaviste,
+  Favoris: FavoriteCaviste,
+  BottomNavigator: BottomNavigator,
 },
   { headerMode: 'none' }
 );
 
-<<<<<<< HEAD
 const AppContainer = createAppContainer(StackNavigator);
-=======
-  // const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
-  const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
-
-
-// const getFonts = () => Font.loadAsync({
-//   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
-//   'GothicA1-Thin': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;700&display=swap', 
-// })
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
 
 function App() {
-   
-// console.log("Store", store.getState())
 
-// const storeitems = store.getState()
+  return (
 
-// console.log ("status", storeitems.userstatus)
- 
-    return (
-
-      <Provider store={store}>
-<<<<<<< HEAD
-        <AppContainer/>    
-=======
-        <NavigationVigneron />
-        {/* <NavigationCaviste /> */}
->>>>>>> 2d75cb924e25ea19879e870c3ec8ea7bf24ca372
-      </Provider>
-    ) 
-  }
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  )
+}
 
 export default App;

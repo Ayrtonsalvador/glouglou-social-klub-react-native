@@ -4,14 +4,14 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import ChatVigneron from '../ScreensVigneron/ChatVigneron';
+
 import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
 
-import NavigationC from './NavigationC'
-
 var socket = socketIOClient("http://172.17.1.159:3000/");
 
-function ChatCaviste({ navigation, pseudo }) {
+function ChatCaviste({ navigation, pseudo, userstatus }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -25,9 +25,15 @@ function ChatCaviste({ navigation, pseudo }) {
 
   }, [listMessage]);
 
+  if (userstatus == "Vigneron") {
+    return (<ChatVigneron navigation={navigation}/>)
+  } else {
+
   var listMessageItem = listMessage.map((msg, i) => {
+  
     return (
       <ListItem
+      
         title={msg.nom}
         subtitle="Parfait et toi ?"
         style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
@@ -48,15 +54,10 @@ function ChatCaviste({ navigation, pseudo }) {
   });
 
   return (
-    <View style={{ flex: 1 }}>
-
-      <Header
-        containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23'}}
-        centerComponent={{ text: 'MES CONTACTS GLOUGLOU', marginTop: 30 }}
-      >
-      <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
-      </Header>
-
+    <View style={{ flex: 1 , backgroundColor: "#FFFFFF"}}>
+<View style={{alignItems: "center"}}>
+< Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+</View>
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
         <ListItem
           title="Jean Pierre"
@@ -144,14 +145,13 @@ function ChatCaviste({ navigation, pseudo }) {
         />
       </KeyboardAvoidingView>
       
-      <NavigationC/>
-
     </View>
   );
-}
+}}
+
 
 function mapStateToProps(state){
-  return {token: state.token}
+  return {token: state.token, userstatus : state.userstatus}
 }
 
 export default connect(
