@@ -148,11 +148,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     navigation.navigate('Profil');
 
                   } else {
-<<<<<<< HEAD
-                    setErrorsSignup(response.error);
-=======
                     setlistErrorsSignup([... listErrorsSignup], body.error);
->>>>>>> navbarsolo
                   }
                 }}
 
@@ -182,11 +178,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                     addToken(body.token);
                     navigation.navigate('Profil');
                   } else {
-<<<<<<< HEAD
-                    setErrorsSignUp(body.error);
-=======
                     setlistErrorsSignup([... listErrorsSignup], body.error);
->>>>>>> navbarsolo
                   }
                 }}
 

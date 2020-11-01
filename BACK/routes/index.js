@@ -206,9 +206,6 @@ router.get('/get-status', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
-<<<<<<< HEAD
-  console.log("ADD VIN")
-=======
 // FAIRE TRANSITER COTER FRONT
 
   const user = await VigneronModel.findOne({TokenFF : req.body.token})
@@ -216,7 +213,6 @@ router.post('/AddVin', async function (req, res, next) {
   if (user) {
   
   var ID = user._id;
->>>>>>> navbarsolo
 
   var newBouteille = new BouteilleModel({
 
@@ -234,23 +230,14 @@ router.post('/AddVin', async function (req, res, next) {
   saveBouteille = await newBouteille.save()
   console.log("SAVE BOUTEILLE", saveBouteille)
 
-<<<<<<< HEAD
-  res.json({ saveBouteille})
-=======
   }
 
   res.json({ saveBouteille, user })
->>>>>>> navbarsolo
 
 });
 
 router.get('/macave', async function (req, res, next) {
 
-<<<<<<< HEAD
-  var cave = await BouteilleModel.findOne({token: req.query.token})
-  console.log("CAVE", cave)
-  console.log("Token Cave", req.query.token)
-=======
   // Trouver les infos de la bouteille par vigneron
   const user = await VigneronModel.findOne({TokenFF : req.body.token})
 
@@ -272,7 +259,6 @@ router.get('/macave', async function (req, res, next) {
     .exec();
     console.log("CAVE", cave)
 
->>>>>>> navbarsolo
 
   if (cave != null) {
     res.json({ result: true, cave, infosUser})

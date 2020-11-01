@@ -10,11 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-<<<<<<< HEAD
-function AddVigneron({ navigation, token }) {
-=======
 function AddVigneron({ navigation, token}) {
->>>>>>> navbarsolo
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -121,27 +117,6 @@ function AddVigneron({ navigation, token}) {
             </ScrollView>
 
             <View>
-<<<<<<< HEAD
-              <Button
-                icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                rounded
-                type='font-awesome'
-                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-
-                onPress={async () => {
-                  // navigation.navigate('CaveVigneron');
-
-                  var data = await fetch("http://192.168.1.22:3000/AddVin", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`
-                  })
-                  var body = await data.json()
-                  console.log("RESPONSE", body)
-
-                  if(body.result == true){
-                    console.log("OK")
-=======
                 <Button
                   icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                   rounded
@@ -161,10 +136,9 @@ function AddVigneron({ navigation, token}) {
                       body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}&TokenFF=${token}`
                     })
                     var body = await data.json()
->>>>>>> navbarsolo
                     navigation.navigate('CaveVigneron');
                   }
-                }}
+                }
               />
             </View>
           </View>

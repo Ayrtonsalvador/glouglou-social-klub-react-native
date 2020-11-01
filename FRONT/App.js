@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
@@ -101,4 +99,3 @@ function App() {
 }
 
 export default App;
->>>>>>> navbarsolo
