@@ -35,6 +35,13 @@ function ProfilVigneron({ navigation, token }) {
         setRegion(response.user.Region)
         setDesc(response.user.Desc)
       } 
+      
+      if(domaine == "" || ville == "" || region == "" || desc == "") {
+        setDomaine('Nom de domaine')
+        setVille("Ville")
+        setRegion("Région")
+        setDesc("Parlez-nous de vous!")
+      }
     }
 
     (async () => {

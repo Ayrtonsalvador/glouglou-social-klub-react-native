@@ -34,6 +34,13 @@ function ProfilCaviste({ navigation, token }) {
         setRegion(response.user.Region)
         setDesc(response.user.Desc)
       } 
+
+      if(etablissement == "" || ville == "" || region == "" || desc == "") {
+        setDomaine("Nom d'établissement")
+        setVille("Ville")
+        setRegion("Région")
+        setDesc("Parlez-nous de vous!")
+    }
     }
 
     (async () => {

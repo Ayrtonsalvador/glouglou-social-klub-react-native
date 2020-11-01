@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
-// import Icon from 'react-native-vector-icons/FontAwesome';
+var ipAdress = '192.168.1.22'
 
-function AddVigneron({ navigation }) {
+function AddVigneron({ navigation, token }) {
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -61,7 +61,7 @@ function AddVigneron({ navigation }) {
 
                 <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Ajouter une photo</Text>
 
-                <View style={{alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Button
                     icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                     rounded
@@ -73,79 +73,72 @@ function AddVigneron({ navigation }) {
                 <Input
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Nom de la référence'
+                  placeholder={NomRef}
                   onChangeText={(text) => setNomRef(text)}
-                  value={NomRef}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Couleur'
+                  placeholder={Couleur}
                   onChangeText={(text) => setCouleur(text)}
-                  value={Couleur}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Cépage'
+                  placeholder={Cepage}
                   disabled={disabled}
                   onChangeText={(text) => setCepage(text)}
-                  value={Cepage}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Millésime'
+                  placeholder={Millesime}
                   onChangeText={(text) => setMillesime(text)}
-                  value={Millesime}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='A.O.C / I.G.C'
+                  placeholder={Appellation}
                   onChangeText={(text) => setAppellation(text)}
-                  value={Appellation}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder='Description'
+                  placeholder={Desc}
                   onChangeText={(text) => setDesc(text)}
-                  value={Desc}
                 />
-                </View>
+              </View>
             </ScrollView>
 
             <View>
-                <Button
-                  icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                  rounded
-                  type='font-awesome'
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                  onPress={async () => {
-                    setNomRef("")
-                    setCouleur("")
-                    setCepage("")
-                    setMillesime("")
-                    setAppellation("")
-                    setDesc("")
+              <Button
+                icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                rounded
+                type='font-awesome'
+                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
 
-                    var data = await fetch("http://192.168.1.22:3000/AddVin", {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}`
-                    })
-                    var body = await data.json()
+                onPress={async () => {
+                  // navigation.navigate('CaveVigneron');
+
+                  var data = await fetch("http://192.168.1.22:3000/AddVin", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`
+                  })
+                  var body = await data.json()
+                  console.log("RESPONSE", body)
+
+                  if(body.result == true){
+                    console.log("OK")
                     navigation.navigate('CaveVigneron');
-                    console.log("RESPONSE", body)
-                    console.log("IMAGEFF", image);
-                  }}
-                />
-              </View>
+                  }
+                }}
+              />
+            </View>
           </View>
         </KeyboardAvoidingView>
       </View>

@@ -121,7 +121,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                 }}
               >
                 <Text
-                  style={{ color: '#DDDDDD' }}>Je n'ai pas encore de compte</Text>
+                  style={{ color: '#A9A8A8' }}>Je n'ai pas encore de compte</Text>
               </TouchableOpacity>
             </View>
           </View>

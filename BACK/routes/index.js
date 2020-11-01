@@ -2,11 +2,19 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var router = express.Router();
+var uniqid = require('uniqid');
+var fs = require('fs');
 
 var uid2 = require('uid2')
 var SHA256 = require('crypto-js/sha256')
 var encBase64 = require('crypto-js/enc-base64')
+
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+  cloud_name: 'dvqjak***', 
+  api_key: '767287626552***', 
+  api_secret: 'BRfbaQzy3xSWMq0dNqdLAS***' 
+});
 
 var BouteilleModel = require('../models/Bouteille');
 var CavisteModel = require('../models/Caviste');
@@ -195,15 +203,10 @@ router.get('/get-status', async function (req, res, next) {
 
 });
 
-// ---------------------- AJOUTER UNE REF --------------------\\
+// ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
-  // console.log("ID", req.query.user._id)
-
-  // var user = await VigneronModel.findById(req.query.user._id)
-  // .populate('Bouteille')
-  // .exec();
-  // console.log("CAVE Vigneron", user)
+  console.log("ADD VIN")
 
   var newBouteille = new BouteilleModel({
     Nom: req.body.NomRefFF,
@@ -212,24 +215,21 @@ router.post('/AddVin', async function (req, res, next) {
     Desc: req.body.DescFF,
     Cepage: req.body.CepageFF,
     Millesime: req.body.MillesimeFF,
-    Annee: req.body.AnneeFF,
-    Photo: req.body.ImageFF,
+    token: req.body.tokenFF
+    // Photo: req.body.ImageFF,
   })
   saveBouteille = await newBouteille.save()
+  console.log("SAVE BOUTEILLE", saveBouteille)
 
-  res.json({ saveBouteille, user })
+  res.json({ saveBouteille})
 
 });
 
 router.get('/macave', async function (req, res, next) {
 
-  // Trouver les infos de la bouteille par vigneron
-  var cave = await BouteilleModel.findById('5f9c1dad856c11f1de8a55fc')
-    .populate('Vigneron')
-    .exec();
-    console.log("CAVE", cave)
-
-    // console.log("ID", req.query.cave.IdVigneron)
+  var cave = await BouteilleModel.findOne({token: req.query.token})
+  console.log("CAVE", cave)
+  console.log("Token Cave", req.query.token)
 
   if (cave != null) {
     res.json({ result: true, cave})
@@ -237,6 +237,20 @@ router.get('/macave', async function (req, res, next) {
     res.json({ result: false })
   }
 })
+
+router.delete('/delete-ref/:Nom', async function(req, res, next) {
+
+  var result = false
+
+  var suppr = await BouteilleModel.deleteOne({ nomVin: req.params.nom})
+  console.log("SUPPR VIN", suppr)
+
+  if(suppr.deletedCount == 1){
+    result = true
+  }
+
+  res.json({result})
+});
 
 // ---------------- INFOS VIGNERON  ---------------- \\
 router.post('/info-update-v', async function (req, res, next) {
