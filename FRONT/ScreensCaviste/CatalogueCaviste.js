@@ -15,73 +15,82 @@ function CatalogueCaviste() {
   const [nom, setNom] = useState("Nom")
   const [millesime, setMillesime] = useState("Millesime")
   const [cepage, setCepage] = useState("Cépage")
-  const [domaine, setDomaine] = useState("Nom de domaine")
   const [AOC, setAOC] = useState("AOC")
-  // const [ville, setVille] = useState("Ville")
+  const [domaine, setDomaine] = useState("Nom de domaine")
+
   const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
   const [couleur, setCouleur] = useState("Couleur")
+
+  const [nomVi, setNomVi] = useState("Nom Vigneron")
+  const [regionVi, setRegionVi] = useState("Région Vigneron")
+  const [descVi, setDescVi] = useState("Description Vigneron")
+  const [photoVi, setPhotoVi] = useState("Photo Vigneron")
 
   const [selectedValue, setSelectedValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
 
-  // useEffect(() => {
-  //   async function loadData() {
-  //     var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
-  //     var response = await rawResponse.json();
-  //     console.log("GET INFOS BOUTEILLE", response)
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
+      var response = await rawResponse.json();
+      console.log("GET INFOS BOUTEILLE", response)
 
-  //     if (response.result == true) {
-  //       setNom(response.catalogue.Nom)
-  //       setAOC(response.catalogue.AOC)
-  //       setCepage(response.catalogue.Cepage)
-  //       setMillesime(response.catalogue.Millesime)
-  //       setDesc(response.catalogue.Desc)
-  //       setCouleur(response.catalogue.Couleur)
-  //       // setPhoto()
+      if (response.result == true) {
+        setNom(response.catalogue.Nom)
+        setMillesime(response.catalogue.Millesime)
+        setCepage(response.catalogue.Cepage)
+        setAOC(response.catalogue.AOC)
 
-  //       // Map Vins
-  //       // const cardVin = response.cave.map((i) => {
-  //       //   return (
-  //       //       <TouchableOpacity
-  //       //         onPress={() => { setIsVisible(true); }}>
+        setDesc(response.catalogue.Desc)
+        setCouleur(response.catalogue.Couleur)
+        setDomaine()
 
-  //       //         <View style={{ flexDirection: "row" }}>
-  //       //           <Card
-  //       //             key={i}
-  //       //             style={{ alignItems: 'center', justifyContent: 'center' }}
-  //       //           // image={{ uri: '../assets/imagedefault-v.png' }}
-  //       //           >
-  //       //             <Text>
-  //       //               {nom}
-  //       //             </Text>
-  //       //             <Text>
-  //       //               {millesime}
-  //       //             </Text>
-  //       //             <Text>
-  //       //               {AOC}
-  //       //             </Text>
-  //       //             <Text>
-  //       //               {cepage}
-  //       //             </Text>
-  //       //           </Card>
-  //       //         </View>
 
-  //       //       </TouchableOpacity>
-  //       //   )
-  //       // })
+        // setPhoto()
 
-  //       // setlisteVin(cardVin)
+        // Map Vins
+        // const cardVin = response.cave.map((i) => {
+        //   return (
+        //       <TouchableOpacity
+        //         onPress={() => { setIsVisible(true); }}>
 
-  //     } else {
-  //       //CAVE VIDE
-  //       setPopup(true)
-  //     }
-  //   }
-  //   loadData()
-  // }, []);
+        //         <View style={{ flexDirection: "row" }}>
+        //           <Card
+        //             key={i}
+        //             style={{ alignItems: 'center', justifyContent: 'center' }}
+        //           // image={{ uri: '../assets/imagedefault-v.png' }}
+        //           >
+        //             <Text>
+        //               {nom}
+        //             </Text>
+        //             <Text>
+        //               {millesime}
+        //             </Text>
+        //             <Text>
+        //               {AOC}
+        //             </Text>
+        //             <Text>
+        //               {cepage}
+        //             </Text>
+        //           </Card>
+        //         </View>
+
+        //       </TouchableOpacity>
+        //   )
+        // })
+
+        // setlisteVin(cardVin)
+
+      } else {
+        //CAVE VIDE
+        setPopup(true)
+      }
+    }
+    loadData()
+  }, []);
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
@@ -102,15 +111,12 @@ function CatalogueCaviste() {
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                   <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                    Nom
+                   {nom}
                   </Text>
                   <Text style={{ marginBottom: 10, marginLeft: 5 }}>
                     {millesime}
                   </Text>
                 </View>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  AOC
-              </Text>
                 <Text style={{ marginBottom: 10 }}>
                   {AOC}
                 </Text>
