@@ -5,24 +5,12 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
-
-var socket = socketIOClient("http://172.17.1.159:3000/");
 
 function ChatVigneron({ navigation, pseudo}) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
-
-  useEffect(() => {
-
-    socket.on('sendMessageToAll', (newMessage) => {
-      setListMessage([...listMessage, newMessage])
-      console.log(newMessage);
-    });
-
-  }, [listMessage]);
 
   var listMessageItem = listMessage.map((msg, i) => {
     return (

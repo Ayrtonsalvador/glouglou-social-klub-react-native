@@ -6,24 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ChatVigneron from '../ScreensVigneron/ChatVigneron';
 
-import socketIOClient from "socket.io-client";
 import { connect } from 'react-redux';
-
-var socket = socketIOClient("http://172.17.1.159:3000/");
 
 function ChatCaviste({ navigation, pseudo, userstatus }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
-
-  useEffect(() => {
-
-    socket.on('sendMessageToAll', (newMessage) => {
-      setListMessage([...listMessage, newMessage])
-      console.log(newMessage);
-    });
-
-  }, [listMessage]);
 
   if (userstatus == "Vigneron") {
     return (<ChatVigneron navigation={navigation}/>)

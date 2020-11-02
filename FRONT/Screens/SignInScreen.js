@@ -5,9 +5,10 @@ import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
-import { color } from 'react-native-reanimated';
+function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
-function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
+  var IPmaison = "";
+  var IPecole = "172.17.1.153";
 
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
@@ -68,7 +69,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
               <Button
                 onPress={async () => {
 
-                  var rawResponse = await fetch("http://192.168.1.11:3000/sign-in", {
+                  var rawResponse = await fetch(`http://${IPecole}:3000/sign-in`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -80,13 +81,12 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
                     onSubmitUserstatus(response.status);
                     addToken(response.token);
                     navigation.navigate('Profil');
-                    console.log("TOKEN SIGNIN", response.token)
-
+                   
                   } else if (response.result == true && response.status == "Caviste") {
                     onSubmitUserstatus(response.status);
                     addToken(response.token);
                     navigation.navigate('Profil');
-                    console.log("TOKEN SIGNIN", token)
+                  
                   } else {
                     setErrorsSignin(response.error);
                   }
@@ -98,16 +98,17 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken, status }) {
                 type="solid"
                 buttonStyle={{ backgroundColor: '#FF9900' }}
 
+              />
+
+              <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Profil');
+                  navigation.navigate('SignUp');
                 }}
-                />
-              
-              <TouchableOpacity>
+              >
                 <Text
                   style={{ color: '#A9A8A8' }}>Je n'ai pas encore de compte</Text>
               </TouchableOpacity>
-              
+
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -164,11 +165,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-function mapStateToProps(state) {
-  return { status: state.userstatus }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(SignInScreen);

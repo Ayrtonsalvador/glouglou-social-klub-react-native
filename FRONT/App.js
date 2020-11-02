@@ -54,7 +54,7 @@ var BottomNavigator = createBottomTabNavigator({
         } else if (navigation.state.routeName == 'Chat') {
           iconName = 'envelope';
         } else if (navigation.state.routeName == 'Favoris') {
-          iconName = 'glass-cheers';
+          iconName = 'glass';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;

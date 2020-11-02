@@ -9,10 +9,13 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({userstatus, navigation}) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.153";
+
   useEffect(() => {
     async function loadData() {
       
-      var rawResponse = await fetch(`http://192.168.1.11:3000/catalogue`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/catalogue`);
       var response = await rawResponse.json();
 
       console.log("GET INFOS BOUTEILLE", response)
