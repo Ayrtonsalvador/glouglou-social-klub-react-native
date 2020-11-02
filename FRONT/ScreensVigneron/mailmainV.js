@@ -3,24 +3,25 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import userstatus from '../reducers/userstatus';
 
-function MailboxCaviste({ navigation, pseudo, token, MessagesR }) {
+function mailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
-  const [nomCaviste, setNomCaviste] = useState();
+  const [nomVigneron, setNomVigneron] = useState();
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
+    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main-v?token=${token}&msgVigneron=${MessagesR}`);
     var response = await rawResponse.json();
 
     if(response.result == true){
-      setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)
+      setListMessages(response.msgVigneron)
+    setNomVigneron(response.Vigneron.Nom)
     
-    console.log("NOM", nomCaviste)
+    console.log("NOM", nomVigneron)
   }
     
   } 
@@ -31,7 +32,7 @@ useEffect(() => {
       
           return <ListItem
               title={msg.Texte}
-              subtitle={nomCaviste}
+              subtitle={nomVigneron}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -57,7 +58,7 @@ useEffect(() => {
   <Button icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
           rounded
           buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-          onPress={() => {navigation.navigate('mailwrite');}} />
+          onPress={() => {navigation.navigate('mailwritev');}} />
 </Header>
 <ScrollView style={{ flex: 1}}>
 {listMessagesItem}
@@ -68,14 +69,14 @@ useEffect(() => {
 
 function mapStateToProps(state) {
   // console.log("state", state.token)
-  return { token: state.token,}
+  return { token: state.token, userstatus: state.userstatus}
   
 }
 
 export default connect(
   mapStateToProps,
   null
-)(MailboxCaviste);
+)(mailmainV);
 
 
 

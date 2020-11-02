@@ -30,7 +30,7 @@ var VigneronSchema = mongoose.Schema ({
     Ville: String,
     Region : String,
     Photo: String,
-    Desc: String
+    Desc: String,
 
 })
 

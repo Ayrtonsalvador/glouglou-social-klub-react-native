@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 
-function ReadNewMessageCaviste({ navigation, pseudo, props }) {
+function mailreadC({ navigation, pseudo, props, userstatus, token, userstatus }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
@@ -18,7 +18,6 @@ function ReadNewMessageCaviste({ navigation, pseudo, props }) {
   var listMessageItem = listMessage.map((messageData, i) => {
 
     var msg = messageData.message
-
 
     return <ListItem
     title={msg}
@@ -52,6 +51,11 @@ function ReadNewMessageCaviste({ navigation, pseudo, props }) {
   //     />)
   });
 
+
+  if (userstatus == "Vigneron") {
+    return (<mailreadV navigation={navigation} token={token} userstatus={userstatus}/>)
+  } else {
+    
   return (
     <View style={{ flex: 1 }}>
 
@@ -66,7 +70,7 @@ function ReadNewMessageCaviste({ navigation, pseudo, props }) {
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
             onPress={() => {
-              navigation.navigate('MailboxCaviste');
+              navigation.navigate('Main');
             }}>
             </Button>
       {listMessageItem}
@@ -146,16 +150,17 @@ function ReadNewMessageCaviste({ navigation, pseudo, props }) {
           }
         />
       </KeyboardAvoidingView>
-
+      
     </View>
   );
-}
+}}
+
 
 function mapStateToProps(state){
-  return {token: state.token}
+  return {token: state.token, userstatus : state.userstatus}
 }
 
 export default connect(
   mapStateToProps,
   null
-)(ReadNewMessageCaviste);
+)(mailreadC);

@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
-import { Button, Input, Header, Avatar, Icon } from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} from "react-native";
+import { Button, Input, Header, Avatar, Icon, Card } from 'react-native-elements';
+import { ScrollView} from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -16,9 +17,6 @@ function ProfilVigneron({ navigation, token }) {
   const [desc, setDesc] = useState("Description")
 
   const [image, setImage] = useState(null);
-  const [dataStatus, setDataStatus] = useState([]);
-  const [selectedImg, setSelectedImg] = useState("vide")
-
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
@@ -26,19 +24,24 @@ function ProfilVigneron({ navigation, token }) {
       console.log("PROFIL")
       var rawResponse = await fetch(`http://172.17.1.159:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
-      // setDataStatus(response.infos);
-      // console.log("GET INFOS VIGNERON", response)
-      // console.log("Vigneron", response.user)
-       console.log("Desc", response.user.Photo)
+      console.log("GET INFOS VIGNERON", response)
 
       if(response.result == true){
-        setImage(response.user.Photo)
+        setDisabled(true)
+        // setImage(response.user.Photo)
         setNom(response.user.Nom)
         setDomaine(response.user.Domaine)
         setVille(response.user.Ville)
         setRegion(response.user.Region)
         setDesc(response.user.Desc)
       } 
+      
+      if(domaine == "" || ville == "" || region == "" || desc == "") {
+        setDomaine('Nom de domaine')
+        setVille("Ville")
+        setRegion("Région")
+        setDesc("Parlez-nous de vous!")
+      }
     }
 
     (async () => {
@@ -61,20 +64,6 @@ function ProfilVigneron({ navigation, token }) {
       setImage(result.uri);
     } 
   };
-
-  // useEffect(() => {
-  //   const findPhoto = async () => {
-
-  //     const reqFind = await fetch(`http://172.17.1.46:3000/user-vi`)
-  //     const resultFind = await reqFind.json()
-
-  //     setSelectedImg(resultFind.photo)
-  //     console.log("RESULT FIND", resultFind)
-  //   }
-  //   // console.log("FIND PHOTO", selectedImg)
-  //   findPhoto()
-  // }, [selectedImg])
-
 
   return (
 
@@ -112,28 +101,36 @@ function ProfilVigneron({ navigation, token }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={nom}
                   disabled={disabled}
-                  onChangeText={(val) => setNom(val)}
+                  onChangeText={(val) => {
+                    setNom(val)
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={domaine}
                   disabled={disabled}
-                  onChangeText={(val) => setDomaine(val)}
+                  onChangeText={(val) => {
+                    setDomaine(val)
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={ville}
                   disabled={disabled}
-                  onChangeText={(val) => setVille(val)}
+                  onChangeText={(val) => {
+                    setVille(val)
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder={region}
                   disabled={disabled}
-                  onChangeText={(val) => setRegion(val)}
+                  onChangeText={(val) => {
+                    setRegion(val)
+                  }}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -143,9 +140,6 @@ function ProfilVigneron({ navigation, token }) {
                   inputStyle={{ marginLeft: 10 }}
                   onChangeText={(val) => {
                     setDesc(val)
-                    if(desc != null){
-                      setDesc("Description \n")
-                    }
                   }}
                 />
 
@@ -154,24 +148,24 @@ function ProfilVigneron({ navigation, token }) {
                   const data = await fetch("http://172.17.1.159:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${props.token}`
+                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`
                   })
                   var body = await data.json()
                   console.log("RESPONSE", body)
-                  // props.changeImg(selectedImg)
-                  if(response.result == true) {
-                  }
                 }}
                   disabled={disabled}
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
                   title="OK"
                 />
 
-             <Button 
-               onPress={() => setDisabled(false)}              
-               iconLeft={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-               title="Changer mes paramètres"
-             />
+                <TouchableOpacity>
+                  <Icon
+                  style={{name:'cog', type: 'font-awesome', color: '#AAAAAA'}}
+                  ></Icon>
+                  <Text
+                    onPress={() => setDisabled(false)}  
+                    style={{ color: '#AAAAAA' }}>Changer mes paramètres</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity>
                   <Text
@@ -180,7 +174,7 @@ function ProfilVigneron({ navigation, token }) {
                     }}
                     style={{ color: '#9D2A29' }}>Déconnexion</Text>
                 </TouchableOpacity>
-
+                
               </View>
 
             </ScrollView>
@@ -196,14 +190,11 @@ function ProfilVigneron({ navigation, token }) {
   )
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
@@ -212,8 +203,6 @@ const styles = StyleSheet.create({
     // fontFamily: "Gothic A1",
   },
   box2: {
-    // width: '80%',
-    // height: '70%',
     width: 350,
     height: 400,
     alignItems: 'center',
@@ -223,7 +212,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("STATE TOKEN", state.token)
-  return { token: state.token, selectedImg: state.selectedImg }
+  return { token: state.token }
 }
 
 function mapDispatchToProps(dispatch) {

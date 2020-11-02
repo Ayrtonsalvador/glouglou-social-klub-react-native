@@ -5,10 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 
-function WriteNewMessageCaviste({ navigation, pseudo, token, Nom }) {
+function mailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
 
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();
+
+  if (userstatus == "Vigneron") {
+    return (<mailmainV navigation={navigation} token={token} userstatus={userstatus}/>)
+  } else {
 
   return (
     <View style={{ flex: 1 }}>
@@ -112,15 +116,15 @@ function WriteNewMessageCaviste({ navigation, pseudo, token, Nom }) {
 
     </View>
   );
-}
+}}
 
 function mapStateToProps(state) {
   console.log("state", state.token)
-  return { token: state.token }
+  return { token: state.token, userstatus : state.userstatus}
   
 }
 
 export default connect(
   mapStateToProps,
   null
-)(WriteNewMessageCaviste);
+)(mailwriteC);

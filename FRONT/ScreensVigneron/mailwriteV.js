@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 
-function WriteNewMessageVigneron({ navigation, pseudo, token, Nom }) {
+function mailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -116,11 +116,11 @@ function WriteNewMessageVigneron({ navigation, pseudo, token, Nom }) {
 
 function mapStateToProps(state) {
   console.log("state", state.token)
-  return { token: state.token }
+  return { token: state.token, userstatus : state.userstatus}
   
 }
 
 export default connect(
   mapStateToProps,
   null
-)(WriteNewMessageVigneron);
+)(mailwriteV);

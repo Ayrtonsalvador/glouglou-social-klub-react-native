@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 
-function ReadNewMessageVigneron({ navigation, pseudo, props }) {
+function mailreadV({ navigation, pseudo, props, userstatus }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
@@ -53,7 +53,11 @@ function ReadNewMessageVigneron({ navigation, pseudo, props }) {
   });
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 , backgroundColor: "#FFFFFF"}}>
+
+      <View style={{ alignItems: "center" }}>
+        < Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+      </View>
 
       <Header
         containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23'}}
@@ -66,7 +70,7 @@ function ReadNewMessageVigneron({ navigation, pseudo, props }) {
             type="solid"
             buttonStyle={{ backgroundColor: '#FF9900' }}
             onPress={() => {
-              navigation.navigate('MailboxVigneron');
+              navigation.navigate('Main');
             }}>
             </Button>
       {listMessageItem}
@@ -152,10 +156,10 @@ function ReadNewMessageVigneron({ navigation, pseudo, props }) {
 }
 
 function mapStateToProps(state){
-  return {token: state.token}
+  return {token: state.token, userstatus: state.userstatus}
 }
 
 export default connect(
   mapStateToProps,
   null
-)(ReadNewMessageVigneron);
+)(mailreadV);

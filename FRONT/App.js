@@ -1,125 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 // Screens Communs
-import FirstScreen from './Screens/FirstScreen.js';
+import FirstScreen from './Screens/FirstScreen';
 import SignInScreen from './Screens/SignInScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
-import MailboxCaviste from './ScreensCaviste/mailmain';
+import MailboxCaviste from './ScreensCaviste/mailmainC';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import ReadNewMessageCaviste from './ScreensCaviste/mailread';
-import mailwrite from './ScreensCaviste/mailwrite';
+import mailmainC from './ScreensCaviste/mailmainC';
+import mailwriteC from './ScreensCaviste/mailwriteC';
+import mailreadC from './ScreensCaviste/mailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
-import MailboxVigneron from './ScreensVigneron/mailmain';
+import MailboxVigneron from './ScreensVigneron/mailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import ReadNewMessageVigneron from './ScreensVigneron/mailread';
-import mailwritev from './ScreensVigneron/mailwrite.v';
+import mailmainV from './ScreensCaviste/mailmainV';
+import mailwriteV from './ScreensCaviste/mailwriteV';
+import mailreadV from './ScreensCaviste/mailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
-// Navigation
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-// Reduce Store
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 import token from './reducers/token';
 
-// FONTS
-import * as Font from 'expo-font';
-import {AppLoading} from 'expo';
+// ATTENTION ADRESS IP
 
-// Icones
-import Icon from 'react-native-vector-icons/Ionicons';
-
-// ATTENTION ADRESS IP 
 const store = createStore(combineReducers({ userstatus, token }));
 
-// STACK-NAVIGATION CAVISTES
-var BottomNavigatorCaviste = createBottomTabNavigator({
-  ProfileCaviste: ProfilCaviste,
-  FavorisCaviste: FavoriteCaviste,
-  MailboxCaviste: MailboxCaviste,
-  CatalogueCaviste: CatalogueCaviste,
+// STACK-NAVIGATION
 
+var BottomNavigator = createBottomTabNavigator({
+  Profil: ProfilCaviste,
+  Catalogue: CatalogueCaviste,
+  Favoris: FavoriteCaviste,
+  Chat: ChatCaviste,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
-        if (navigation.state.routeName == 'ProfileCaviste') {
-          iconName = 'ios-person';
-        } else if (navigation.state.routeName == 'FavorisCaviste') {
-          iconName = 'ios-heart';
-        } else if (navigation.state.routeName == 'MailboxCaviste') {
-          iconName = 'ios-chatboxes';
-        } else if (navigation.state.routeName == 'CatalogueCaviste') {
-          iconName = 'ios-search';
+        if (navigation.state.routeName == 'Profil') {
+          iconName = 'user';
+        } else if (navigation.state.routeName == 'Catalogue') {
+          iconName = 'home';
+        } else if (navigation.state.routeName == 'Chat') {
+          iconName = 'envelope';
+        } else if (navigation.state.routeName == 'Favoris') {
+          iconName = 'glass';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#130f40',
-      inactiveTintColor: '#FFFFFF',
-      showLabel: false,
-      adaptive: true,
-      style: {
-        backgroundColor: '#FCDF23',
-        height: 40,
-        shadowColor: 'transparent',
-        borderColor: '#FCDF23',
-      }
-    }
-
-  });
-
-StackNavigatorCaviste = createStackNavigator({
-  First: FirstScreen,
-  SignIn: SignInScreen,
-  SignUp: SignUpScreen,
-  mailwrite: mailwrite,
-  Profil: ProfilCaviste,
-  BottomNavigatorCaviste: BottomNavigatorCaviste,
-},
-  { headerMode: 'none' }
-);
-
-// STACK-NAVIGATION VIGNERON
-var BottomNavigatorVigneron = createBottomTabNavigator({
-  ProfileVigneron: ProfilVigneron,
-  Cave: CaveVigneron,
-  Vin: AddVigneron,
-  MailboxVigneron: MailboxVigneron,
-
-},
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ tintColor }) => {
-        var iconName;
-        if (navigation.state.routeName == 'ProfileVigneron') {
-          iconName = 'ios-person';
-        } else if (navigation.state.routeName == 'MailboxVigneron') {
-          iconName = 'md-chatboxes';
-        } else if (navigation.state.routeName == 'Cave') {
-          iconName = 'ios-home';
-        } else if (navigation.state.routeName == 'Vin') {
-          iconName = 'ios-wine';
-        }
-
-        return <Icon name={iconName} size={30} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: '#130f40',
+      activeTintColor: '#FFAE34',
       inactiveTintColor: '#FFFFFF',
       showLabel: false,
       adaptive: true,
@@ -131,49 +77,32 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
 
       }
     }
-
   });
 
-StackNavigatorVigneron = createStackNavigator({
+var StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  mailwritev: mailwritev,
-  Profil: ProfilVigneron,
-  BottomNavigatorVigneron: BottomNavigatorVigneron,
+  Favoris: FavoriteCaviste,
+  Main : mailmainC,
+  Read : mailreadC,
+  Write: mailwriteC,
+
+  BottomNavigator: BottomNavigator,
 },
   { headerMode: 'none' }
 );
 
-  const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
-//  const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+const AppContainer = createAppContainer(StackNavigator);
 
+function App() {
 
-// const getFonts = () => Font.loadAsync({
-//   'GothicA1-Bold': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100&display=swap', 
-//   'GothicA1-Thin': 'https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;700&display=swap', 
-// })
+  return (
 
-export default function App(userstatus) {
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  )
+}
 
-  // const [ fontsLoaded, setFontsLoaded ] = useState(false);
-
-
-  // if(fontsLoaded){
-  // if (userstatus == 'Caviste') {
-
-    return (
-      <Provider store={store}>
-        {/* <NavigationVigneron /> */}
-        <NavigationCaviste />
-      </Provider>
-     )
-    // } else {
-    //    return(
-    //     <AppLoading
-    //       startAsync={getFonts}
-    //       onFinish={()=> setFontsLoaded(true)}
-    //     />
-    //    )
-    //  }
-    }
+export default App;

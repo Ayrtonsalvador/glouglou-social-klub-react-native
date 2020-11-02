@@ -1,5 +1,3 @@
-console.disableYellowBox = true;
-
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList } from 'react-native';
 import { Button, ListItem, Input, Header } from 'react-native-elements';
@@ -7,20 +5,24 @@ import { Button, ListItem, Input, Header } from 'react-native-elements';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 
+import AddVigneron from '../ScreensVigneron/AddVigneron';
 
-function FavoriteCaviste({navigation}) {
+function FavoriteCaviste({ userstatus, navigation, token }) {
+
+  if (userstatus == "Vigneron") {
+    return (<AddVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
+  } else {
 
     return (
-        <View style={{ flex: 1 }}>
-          <Header
-            containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-            centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
-            >
-            <Image source={require('../assets/MainGlouGlou.png')} style={{width:20, height: 30}}></Image>
-          </Header>
+      <View style={{ flex: 1 , backgroundColor: "#FFFFFF" }}>
+        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+          < Image source={require('../assets/mesvins.png')} style={{ width: 120, height: 80 }}></Image>
         </View>
-      );
-    }
+
+      </View>
+    );
+  }
+}
 
 //     const [activeIndex, setactiveIndex] = useState(0);
 
@@ -93,7 +95,7 @@ function FavoriteCaviste({navigation}) {
 // //                     onPress={() => {
 // //                         navigation.navigate('SignIn');
 // //                     }}>S'IDENTIFIER</Text>
-                    
+
 
 // //                     <Text style={{backgroundColor: '#FFAE34', margin:10}}
 // //                     onPress={() => {
@@ -134,8 +136,8 @@ function FavoriteCaviste({navigation}) {
 // });
 
 
-function mapStateToProps(state){
-  return {token: state.token}
+function mapStateToProps(state) {
+  return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(

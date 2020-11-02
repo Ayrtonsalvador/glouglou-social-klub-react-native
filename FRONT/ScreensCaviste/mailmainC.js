@@ -4,23 +4,23 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
-function MailboxVigneron({ navigation, pseudo, token, MessagesR }) {
+function mailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
-  const [nomVigneron, setNomVigneron] = useState();
+  const [nomCaviste, setNomCaviste] = useState();
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main-v?token=${token}&msgVigneron=${MessagesR}`);
+    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
     var response = await rawResponse.json();
 
     if(response.result == true){
-      setListMessages(response.msgVigneron)
-    setNomVigneron(response.Vigneron.Nom)
+      setListMessages(response.msgCaviste)
+    setNomCaviste(response.Caviste.Nom)
     
-    console.log("NOM", nomVigneron)
+    console.log("NOM", nomCaviste)
   }
     
   } 
@@ -31,7 +31,7 @@ useEffect(() => {
       
           return <ListItem
               title={msg.Texte}
-              subtitle={nomVigneron}
+              subtitle={nomCaviste}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -45,7 +45,9 @@ useEffect(() => {
                  </ListItem>
     });
  
-
+    if (userstatus == "Vigneron") {
+      return (<mailmainV navigation={navigation} token={token} userstatus={userstatus}/>)
+    } else {
   return (
 <View style={{ flex: 1 }}>
 
@@ -57,25 +59,25 @@ useEffect(() => {
   <Button icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
           rounded
           buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-          onPress={() => {navigation.navigate('mailwritev');}} />
+          onPress={() => {navigation.navigate('mailwrite');}} />
 </Header>
 <ScrollView style={{ flex: 1}}>
 {listMessagesItem}
 </ScrollView>
 </View>
   )
- }
+ }}
 
 function mapStateToProps(state) {
   // console.log("state", state.token)
-  return { token: state.token,}
+  return { token: state.token, userstatus : state.userstatus}
   
 }
 
 export default connect(
   mapStateToProps,
   null
-)(MailboxVigneron);
+)(mailmainC);
 
 
 
