@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-
-// import Carousel, { Pagination } from 'react-native-snap-carousel';
+import React, { useState, useEffect } from 'react';
 
 import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from "react-native";
 import { Button, Card, Badge, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
-
-import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-function CatalogueCaviste() {
+import CaveVigneron from '../ScreensVigneron/CaveVigneron';
+
+function CatalogueCaviste({userstatus, navigation}) {
+
+  var IPmaison = "";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -154,6 +156,10 @@ function CatalogueCaviste() {
       </View>
     )
   }
+
+  if (userstatus == "Vigneron") {
+    return (<CaveVigneron navigation={navigation}/>)
+  } else {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -384,7 +390,7 @@ function CatalogueCaviste() {
       </View>
     </View>
   );
-}
+}}
 
 const styles = StyleSheet.create({
   container: {
@@ -596,28 +602,33 @@ export default connect(
 
 
 // const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         marginTop: StatusBar.currentHeight || 0,
-//     },
-//     item: {
-//         marginHorizontal: 50,
-//         backgroundColor: '#FFFFFF',
-
-//     },
-//     title: {
-
-//         fontWeight : 'bold',
-//         color : "#FFAE34",
-//         fontSize: 20,
-//         marginTop: 20,
-//         marginHorizontal: 20,
-//     },
-//     text: {
-//         fontSize: 18,
-//         marginVertical: 20,
-//         marginHorizontal: 20,
-//     }
+//   container: {
+//     flex: 1,
+//     flexWrap: 'wrap',
+//     flexDirection: 'row'
+//   },
+//   box1: {
+//     borderWidth: 0,
+//     marginBottom: 10,
+//     borderColor: '#808080',
+//     marginTop: 50,
+//     elevation: 10
+//   },
+//   img: {
+//     width: 80,
+//     height: 80,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   popup: {
+//     width: 300,
+//     height: 400,
+//     backgroundColor: '#FFFFFF',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     borderRadius: 15,
+//     // fontFamily: "Gothic A1",
+//   },
 // });
 
 // export default FirstScreen;

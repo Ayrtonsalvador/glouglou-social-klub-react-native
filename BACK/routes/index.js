@@ -83,7 +83,7 @@ router.post('/sign-up', async function (req, res, next) {
   const dataVigneron = await VigneronModel.findOne({
     Email: req.body.emailFromFront
   })
-  console.log("DATA VIGNERON", dataVigneron)
+  // console.log("DATA VIGNERON", dataVigneron)
 
   if (dataVigneron != null) {
     result = false;
@@ -107,7 +107,7 @@ router.post('/sign-up', async function (req, res, next) {
       Photo: ''
 
     })
-    console.log("VIGNERON", newVigneron)
+    // console.log("VIGNERON", newVigneron)
     saveVigneron = await newVigneron.save()
 
     if (saveVigneron) {
@@ -118,7 +118,6 @@ router.post('/sign-up', async function (req, res, next) {
 
   res.json({ result, saveCaviste, saveVigneron, error })
 });
-
 
 
 // ---------------------- SIGN-IN --------------------\\
@@ -142,7 +141,7 @@ router.post('/sign-in', async function (req, res, next) {
     const userCaviste = await CavisteModel.findOne({
       Email: req.body.emailFromFront,
     })
-    // console.log("SIGN IN CAVISTE", userCaviste)
+    console.log("SIGN IN CAVISTE", userCaviste)
 
     if (userCaviste) {
       const passwordEncrypt = SHA256(req.body.passwordFromFront + userCaviste.salt).toString(encBase64)
@@ -161,7 +160,7 @@ router.post('/sign-in', async function (req, res, next) {
     const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
     })
-    // console.log("SIGN IN VIGNERON", userVigneron)
+    console.log("SIGN IN VIGNERON", userVigneron)
 
     if (userVigneron) {
       const passwordEncrypt = SHA256(req.body.passwordFromFront + userVigneron.salt).toString(encBase64)
@@ -206,13 +205,15 @@ router.get('/get-status', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
-  console.log("ADD VIN")
+// FAIRE TRANSITER COTER FRONT
 
   const vigneronID = await VigneronModel.findOne({ token: req.body.tokenFF })
   console.log("TOKEN MA CAVE", vigneronID)
 
 
   var newBouteille = new BouteilleModel({
+
+    IdVigneron: ID,
     Nom: req.body.NomRefFF,
     Couleur: req.body.CouleurFF,
     AOC: req.body.AppellationFF,
@@ -223,12 +224,52 @@ router.post('/AddVin', async function (req, res, next) {
     // token: req.body.tokenFF
     // Photo: req.body.ImageFF,
   })
+
   saveBouteille = await newBouteille.save()
   console.log("SAVE BOUTEILLE", saveBouteille)
 
   res.json({ saveBouteille })
 
 });
+
+
+ // var infovin = JSON.parse(req.body.infoVin)
+ // console.log("infoVin", req.body.infoVin)
+ // console.log("infovin", infovin)
+ 
+   // Cloudinary
+   // var resultCloudinaryUrl = newBouteille.Photo
+ 
+   // if (req.files.image != undefined) {
+   //   var imagePath = './tmp/' + uniqid() + '.jpg';
+   //   var resultCopy = await req.files.image.mv(imagePath);
+   //   console.log("RESULT IMG", resultCopy)
+ 
+   //   if (!resultCopy) {
+   //     resultCloudinary = await cloudinary.uploader.upload(imagePath);
+   //     resultCloudinaryUrl = resultCloudinary.url
+   //     console.log("URL", resultCloudinaryUrl)
+   //   } else {
+   //     error.push("Problème d'upload de l'image")
+   //   }
+   //   fs.unlinkSync(imagePath);
+   // }
+ 
+ 
+ // var newBouteille = new BouteilleModel({
+ //   token: token,
+ //   Nom: Nom,
+ //   Couleur: Couleur,
+ //   AOC: Appellation,
+ //   Desc: Desc,
+ //   Cepage: Cepage,
+ //   Millesime: Millesime,
+ //   // Photo: resultCloudinaryUrl,
+ // })
+ // saveBouteille = await newBouteille.save()
+ // console.log("BOUTEILLE", saveBouteille)
+ 
+ // res.json({ saveBouteille, infovin })
 
 router.get('/macave', async function (req, res, next) {
 
@@ -301,9 +342,7 @@ router.get('/info-v', async function (req, res, next) {
   var token = null
   var user = await VigneronModel.findOne({ token: req.query.token })
 
-  console.log("USER", user)
-
-  console.log("TOKEN FOUND", req.query.token)
+  // console.log("TOKEN FOUND", req.query.token)
 
   if (user != null) {
     res.json({ result: true, user })
@@ -315,19 +354,27 @@ router.get('/info-v', async function (req, res, next) {
 // ---------------- INFOS CAVISTE ---------------- \\
 router.post('/info-update-c', async function (req, res, next) {
 
-  const nomCaviste = await CavisteModel.findOne({
-    Nom: req.body.nom
+  //update les infos
+  const Caviste = await CavisteModel.findOne({
+    token: req.body.token
   })
-  console.log("NOM", nomCaviste)
+
+  console.log("NOM", Caviste)
 
   var updateCaviste = await CavisteModel.updateOne(
-    { Nom: req.body.nom }, {
-    Photo: req.body.img,
+    { token: req.body.token }, {
     Nom: req.body.nom,
     Etablissement: req.body.etablissement,
     Ville: req.body.ville,
+    Region: req.body.region,
     Desc: req.body.desc
   })
+
+  // update la photo
+ 
+  console.log ("TOKEN")
+  console.log("PHOTO" ,req.files.avatar.uri);
+  console.log("AVATAR" ,req.files.userinfos);
 
   res.json({ updateCaviste })
 
@@ -338,9 +385,7 @@ router.get('/info-c', async function (req, res, next) {
   var token = null
   var user = await CavisteModel.findOne({ token: req.query.token })
 
-  console.log("USER", user)
-
-  console.log("TOKEN FOUND", req.query.token)
+   // console.log("TOKEN FOUND", req.query.token)
 
   if (user != null) {
     res.json({ result: true, user })

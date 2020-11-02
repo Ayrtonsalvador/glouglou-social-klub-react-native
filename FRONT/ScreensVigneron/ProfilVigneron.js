@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} from "react-native";
 import { Button, Input, Header, Avatar, Icon, Card } from 'react-native-elements';
@@ -23,7 +22,7 @@ function ProfilVigneron({ navigation, token }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://172.17.1.46:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.153:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS VIGNERON", response)
 
@@ -146,7 +145,7 @@ function ProfilVigneron({ navigation, token }) {
 
                 <Button onPress={async () => {
                   setDisabled(true)
-                  const data = await fetch("http://192.168.1.22:3000/info-update-v", {
+                  const data = await fetch("http://172.17.1.153:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`
@@ -190,8 +189,6 @@ function ProfilVigneron({ navigation, token }) {
 
   )
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

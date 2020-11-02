@@ -9,8 +9,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // ATTENTION ADRESS IP 
 
-function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
- 
+function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
+
+  var IPmaison = "";
+  var IPecole = "172.17.1.153";
+
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpTel, setSignUpTel] = useState('')
@@ -19,12 +22,12 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const [listErrorsSignup, setErrorsSignup] = useState([])
+  const [listErrorsSignup, setlistErrorsSignup] = useState([])
 
   var tabErrorsSignup = listErrorsSignup.map((error, i) => {
     return (
       <View>
-        <Text style={{ color: '#9D2A29', marginBottom:10 }}>{error}</Text>
+        <Text style={{ color: '#9D2A29', marginBottom: 10 }}>{error}</Text>
       </View>
     )
   })
@@ -36,12 +39,10 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
       <View style={styles.container}>
         <View style={styles.popup}>
           <Text style={styles.text}>A BIENTÔT DANS LE</Text>
-          <Image source={require('../assets/ContacterGlouGlou.png')}
-            style={styles.img}
-          ></Image>
+          <Image style={{ width: "20%", height: "20%" }} source={require('../assets/ContacterGlouGlou.png')}>
+          </Image>
           <Button
             containerStyle={{ marginBottom: 15, width: '20%', borderRadius: 15, }}
-
             title="OK"
             type="solid"
             buttonStyle={{ backgroundColor: '#FFAE34' }}
@@ -67,7 +68,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
 
             <View style={styles.box}>
 
-              <Image source={require('../assets/ContactGlouGlou.png')} style={{margin: 10, width: 120, height: 120}}></Image>
+              <Image source={require('../assets/ContactGlouGlou.png')} style={{ margin: 10, width: 120, height: 120 }}></Image>
 
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}
@@ -124,29 +125,28 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                 }
                 onChangeText={(val) => setSignUpPassword(val)}
               />
-              
+
               {tabErrorsSignup}
 
               <Button
-                onPress={async () => {                 
+                onPress={async () => {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://192.168.1.22:3000/sign-up", {
+                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                   })
-                  var response = await rawResponse.json()
+                  var response = await data.json()
+                  // console.log('Sign-up-vigneron', response)
 
-                  console.log("RESPONSE UP", response);
-                  
                   if (response.result == true) {
-                    setUserExists(true);
                     setIsVisible(true);
-                    addToken(response.token);
+                    addToken(response.saveVigneron.token);
+
                   } else {
-                    setErrorsSignup(response.error);
+                    setlistErrorsSignup([...listErrorsSignup], response.error);
                   }
                 }}
 
@@ -161,21 +161,20 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
 
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
-              
-                  var data = await fetch("http://192.168.1.22:3000/sign-up", {
+
+                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
                   })
-                  var body = await data.json()
-                  console.log("RESPONSE UP", body)
+                  var response = await data.json()
+                  // console.log('Sign-up-caviste', response)
 
-                  if(body.result == true) {
-                    setUserExists(true);
+                  if (response.result == true) {
                     setIsVisible(true);
-                    addToken(body.token);
+                    addToken(response.saveCaviste.token);
                   } else {
-                    setErrorsSignUp(body.error);
+                    setlistErrorsSignup([...listErrorsSignup], response.error);
                   }
                 }}
 
@@ -185,15 +184,15 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                 buttonStyle={{ backgroundColor: '#FFAE34' }}
               />
 
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                  >
-                  <Text
-                    style={{ color: '#A9A8A8' }}>J'ai déjà un compte</Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('SignIn');
+                }}
+              >
 
+              <Text
+                  style={{ color: '#A9A8A8' }}>J'ai déjà un compte</Text>
+              </TouchableOpacity>
 
             </View>
           </KeyboardAvoidingView>
@@ -249,6 +248,7 @@ function mapDispatchToProps(dispatch) {
   return {
     addToken: function (token) {
       dispatch({ type: 'addToken', token: token })
+
     },
     onSubmitUserstatus: function (status) {
       dispatch({ type: 'saveUserstatus', status: status })
@@ -262,5 +262,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignUpScreen);

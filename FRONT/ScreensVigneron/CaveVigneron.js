@@ -27,11 +27,12 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://192.168.1.11:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
 
       if (response.result == true) {
+        setPopup(true)
         setNom(response.cave.Nom)
         setAOC(response.cave.AOC)
         setCepage(response.cave.Cepage)
@@ -169,20 +170,13 @@ function CaveVigneron({ navigation, token }) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
-          <Text style={{ color: '#A9A8A8', marginTop: 60 }}>VOTRE CAVE EST VIDE !</Text>
-          <View>
-            <Icon
-              style={{ marginTop: 40 }}
-              name="ios-wine"
-              size={100}
-              color="#000000"
-            />
-          </View>
-
+        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+          < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+        </View>
           <TouchableOpacity>
             <Text
               onPress={() => {
-                navigation.navigate('Vin');
+                navigation.navigate('Favoris');
               }}
               style={{ color: '#9D2A29', marginTop: 60 }}>Ajouter un vin à ma cave</Text>
           </TouchableOpacity>
@@ -360,5 +354,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(CaveVigneron);
