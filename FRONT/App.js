@@ -7,16 +7,18 @@ import SignUpScreen from './Screens/SignUpScreen';
 
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
-import ChatCaviste from './ScreensCaviste/ChatCaviste';
+import MailboxCaviste from './ScreensCaviste/mailmain';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import MessageCaviste from './ScreensCaviste/MessageCaviste';
+import ReadNewMessageCaviste from './ScreensCaviste/mailread';
+import mailwrite from './ScreensCaviste/mailwrite';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
+import MailboxVigneron from './ScreensVigneron/mailmain';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import ChatVigneron from './ScreensVigneron/ChatVigneron';
-import MessageVigneron from './ScreensVigneron/MessageVigneron';
+import ReadNewMessageVigneron from './ScreensVigneron/mailread';
+import mailwritev from './ScreensVigneron/mailwrite.v';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 // Navigation
@@ -44,7 +46,7 @@ const store = createStore(combineReducers({ userstatus, token }));
 var BottomNavigatorCaviste = createBottomTabNavigator({
   ProfileCaviste: ProfilCaviste,
   FavorisCaviste: FavoriteCaviste,
-  ChatCaviste: ChatCaviste,
+  MailboxCaviste: MailboxCaviste,
   CatalogueCaviste: CatalogueCaviste,
 
 },
@@ -56,7 +58,7 @@ var BottomNavigatorCaviste = createBottomTabNavigator({
           iconName = 'ios-person';
         } else if (navigation.state.routeName == 'FavorisCaviste') {
           iconName = 'ios-heart';
-        } else if (navigation.state.routeName == 'ChatCaviste') {
+        } else if (navigation.state.routeName == 'MailboxCaviste') {
           iconName = 'ios-chatboxes';
         } else if (navigation.state.routeName == 'CatalogueCaviste') {
           iconName = 'ios-search';
@@ -84,7 +86,7 @@ StackNavigatorCaviste = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  MessageCaviste: MessageCaviste,
+  mailwrite: mailwrite,
   Profil: ProfilCaviste,
   BottomNavigatorCaviste: BottomNavigatorCaviste,
 },
@@ -96,7 +98,7 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
   ProfileVigneron: ProfilVigneron,
   Cave: CaveVigneron,
   Vin: AddVigneron,
-  ChatVigneron: ChatVigneron,
+  MailboxVigneron: MailboxVigneron,
 
 },
   {
@@ -105,7 +107,7 @@ var BottomNavigatorVigneron = createBottomTabNavigator({
         var iconName;
         if (navigation.state.routeName == 'ProfileVigneron') {
           iconName = 'ios-person';
-        } else if (navigation.state.routeName == 'ChatVigneron') {
+        } else if (navigation.state.routeName == 'MailboxVigneron') {
           iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Cave') {
           iconName = 'ios-home';
@@ -136,15 +138,15 @@ StackNavigatorVigneron = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  MessageVigneron: MessageVigneron,
+  mailwritev: mailwritev,
   Profil: ProfilVigneron,
   BottomNavigatorVigneron: BottomNavigatorVigneron,
 },
   { headerMode: 'none' }
 );
 
-  // const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
- const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+  const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
+//  const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 
 // const getFonts = () => Font.loadAsync({
@@ -162,8 +164,8 @@ export default function App(userstatus) {
 
     return (
       <Provider store={store}>
-        <NavigationVigneron />
-        {/* <NavigationCaviste /> */}
+        {/* <NavigationVigneron /> */}
+        <NavigationCaviste />
       </Provider>
      )
     // } else {

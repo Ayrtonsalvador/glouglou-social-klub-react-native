@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
@@ -52,7 +51,8 @@ function ProfilCaviste({ navigation }) {
         <KeyboardAvoidingView behavior="position" enabled>
 
           <View style={styles.box1}>
-
+          
+          
             <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
 
             <ScrollView>
@@ -109,7 +109,7 @@ function ProfilCaviste({ navigation }) {
 
                 <Button onPress={async () => {
 
-                  const data = await fetch("http://172.17.1.46:3000/info-update-c", {
+                  const data = await fetch("http://172.17.1.159:3000/info-update-c", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `nom=${nom}&ville=${ville}&etablissement=${etablissement}&desc=${desc}&img=${image}`
@@ -136,8 +136,9 @@ function ProfilCaviste({ navigation }) {
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </View> 
     </View>
+    
   );
 }
 
@@ -295,7 +296,7 @@ export default connect(
 //                       // setDisabled(true);
 //                       // setVisible(true);
 
-//                       const data = await fetch("http://172.17.1.46:3000/info-update-c", {
+//                       const data = await fetch("http://192.168.0.22:3000/info-update-c", {
 //                         method: 'POST',
 //                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 //                         body: `nom=${nom}&ville=${ville}&etablissement=${etablissement}&desc=${desc}&img=${image}`

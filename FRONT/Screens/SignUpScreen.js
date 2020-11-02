@@ -138,7 +138,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var rawResponse = await fetch("http://172.17.1.46:3000/sign-up", {
+                  var rawResponse = await fetch("http://172.17.1.159:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
@@ -168,7 +168,7 @@ function SignUpScreen({navigation, onSubmitUserstatus, addToken}) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
               
-                  var data = await fetch("http://172.17.1.46:3000/sign-up", {
+                  var data = await fetch("http://172.17.1.159:3000/sign-up", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`

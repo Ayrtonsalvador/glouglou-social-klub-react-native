@@ -84,9 +84,9 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
             
             <Button
               onPress={async () => {
-                navigation.navigate("ProfileVigneron");
+                navigation.navigate("ProfileCaviste");
 
-                var rawResponse = await fetch("http://172.17.1.46:3000/sign-in", {
+                var rawResponse = await fetch("http://172.17.1.159:3000/sign-in", {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -103,9 +103,9 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                   } else if (response.result == true && response.status == "Caviste") {
                     setstatus('Caviste');
                     onSubmitUserstatus(status);
-                    navigation.navigate("ProfilCav");
+                    // navigation.navigate("ProfilCaviste");
                     addToken(response.token);
-                    console.log("TOKEN", token)
+                    console.log("TOKEN SIGNIN 2", response.token)
                   } else {
                     setErrorsSignin(response.error);
                   }

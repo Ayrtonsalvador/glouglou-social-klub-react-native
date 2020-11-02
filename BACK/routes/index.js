@@ -14,6 +14,7 @@ var VigneronModel = require('../models/Vigneron');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  console.log('hello ?')
   res.render('index', { title: 'GlouGlou Social Club' });
 });
 
@@ -58,7 +59,9 @@ router.post('/sign-up', async function (req, res, next) {
       Etablissement: '',
       Ville: '',
       Desc: '',
-      Photo: ''
+      Photo: '',
+      MessagesS: [],
+      MessagesR: []
 
     })
     saveCaviste = await newCaviste.save()
@@ -95,7 +98,9 @@ router.post('/sign-up', async function (req, res, next) {
       Region: '',
       Ville: '',
       Desc: '',
-      Photo: ''
+      Photo: '',
+      MessagesS: [],
+      MessagesR: []
 
     })
     console.log("VIGNERON", newVigneron)
@@ -106,9 +111,9 @@ router.post('/sign-up', async function (req, res, next) {
       token = saveVigneron.token
     }
   }
-
   res.json({ result, saveCaviste, saveVigneron, error })
 });
+
 
 
 
@@ -168,7 +173,6 @@ router.post('/sign-in', async function (req, res, next) {
       }
     }
   }
-
   res.json({ result, error, token, status })
 });
 
@@ -194,6 +198,7 @@ router.get('/get-status', async function (req, res, next) {
   res.json({ status })
 
 });
+
 
 // ---------------------- AJOUTER UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
@@ -247,35 +252,112 @@ router.get('/info-v', async function (req, res, next) {
 
    console.log("TOKEN FOUND", req.query.token)
 
-
-  //     infos = await VigneronModel.find({
-  //         Nom: req.query.nom,
-  //         Photo: req.query.img,
-  //         Domaine: req.query.domaine,
-  //         Region: req.query.region,
-  //         Ville: req.query.ville,
-  //         Desc: req.query.desc
-  //     })
-  //  }
-
-  if (user != null) {
-    res.json({ result: true, user })
-  } else {
-    res.json({ result: false })
-  }
+if (user != null) {
+  res.json({ result: true, user })
+} else {
+  res.json({ result: false })
+}
 })
 
 
-// router.get('/user-vi', async function(req,res,next){
-//   var photo = null
-//   var user = await VigneronModel.findOne({token: req.query.token})
+//---------------Mailbox CAVISTE--------------//
 
-//   if(user != null){
-//     photo = user.photo
-//   }
+// BOITE DE RECEPTION
+router.get('/mailbox-main', async function(req, res, next) {
+  
+  var Caviste = await CavisteModel.findOne(
+    {token: req.query.token })
 
-//   res.json({photo})
-// })
+  var msgCaviste = Caviste.MessagesR
+
+  res.json({ Caviste, msgCaviste, result:true })
+});
+
+
+// LIRE UN MESSAGE
+router.get('/mailbox-read', async function(req, res, next) {
+
+  var msgCaviste = await CavisteModel.findOne(
+    {MessagesR: {Texte: req.body.Texte} } )
+
+  res.json({ msgCaviste })
+
+});
+
+
+//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+router.post('/mailbox-write', async function(req, res, next) {
+//  console.log(req.body.token);
+
+  var msg = await CavisteModel.updateOne(
+    {token: req.body.token}, {
+        $push: {MessagesS: {Texte: req.body.Texte} }   
+    });
+
+  var searchVigneron = await VigneronModel.findOne({
+        Nom: req.body.NomVigneron})
+
+  if(searchVigneron!= null) {
+  var msgVigneron = await VigneronModel.updateOne(
+        {Nom: req.body.NomVigneron}, {
+            $push: {MessagesR: {Texte: req.body.Texte} }   
+        });
+  }
+  
+  res.json({ msg, msgVigneron })
+
+});
+
+
+
+
+//---------------Mailbox VIGNERON--------------//
+
+// BOITE DE RECEPTION
+router.get('/mailbox-main-v', async function(req, res, next) {
+  
+  var Vigneron = await VigneronModel.findOne(
+    {token: req.query.token })
+
+  var msgVigneron = Vigneron.MessagesR
+
+  res.json({ Vigneron, msgVigneron, result:true })
+});
+
+
+// LIRE UN MESSAGE
+router.get('/mailbox-read-v', async function(req, res, next) {
+
+  var msgVigneron = await VigneronModel.findOne(
+    {MessagesR: {Texte: req.body.Texte} } )
+
+  res.json({ msgVigneron })
+
+});
+
+
+//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+router.post('/mailbox-write-v', async function(req, res, next) {
+//  console.log(req.body.token);
+
+  var msg = await VigneronModel.updateOne(
+    {token: req.body.token}, {
+        $push: {MessagesS: {Texte: req.body.Texte} }   
+    });
+
+  var searchCaviste = await CavisteModel.findOne({
+        Nom: req.body.NomCaviste})
+
+  if(searchCaviste!= null) {
+  var msgCaviste = await CavisteModel.updateOne(
+        {Nom: req.body.NomCaviste}, {
+            $push: {MessagesR: {Texte: req.body.Texte} }   
+        });
+  }
+  
+  res.json({ msg, msgCaviste })
+
+});
 
 
 // ---------------- INFOS CAVISTE ---------------- \\

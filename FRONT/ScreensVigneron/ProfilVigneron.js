@@ -24,7 +24,7 @@ function ProfilVigneron({ navigation, token }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://172.17.1.46:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.159:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       // setDataStatus(response.infos);
       // console.log("GET INFOS VIGNERON", response)
@@ -151,7 +151,7 @@ function ProfilVigneron({ navigation, token }) {
 
                 <Button onPress={async () => {
                   setDisabled(true)
-                  const data = await fetch("http://172.17.1.46:3000/info-update-v", {
+                  const data = await fetch("http://172.17.1.159:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${props.token}`
