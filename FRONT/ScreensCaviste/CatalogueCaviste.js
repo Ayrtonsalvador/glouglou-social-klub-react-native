@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from "react-native";
-import { Button, Card, Badge, Overlay, ListItem, Carousel } from 'react-native-elements';
+import { Button, Card, Badge, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,61 +11,128 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function CatalogueCaviste() {
 
+  const [photo, setPhoto] = useState('')
+  const [nom, setNom] = useState("Nom")
+  const [millesime, setMillesime] = useState("Millesime")
+  const [cepage, setCepage] = useState("Cépage")
+  const [domaine, setDomaine] = useState("Nom de domaine")
+  const [AOC, setAOC] = useState("AOC")
+  // const [ville, setVille] = useState("Ville")
+  const [region, setRegion] = useState("Région")
+  const [desc, setDesc] = useState("Description")
+  const [couleur, setCouleur] = useState("Couleur")
+
   const [selectedValue, setSelectedValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
 
+  // useEffect(() => {
+  //   async function loadData() {
+  //     var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
+  //     var response = await rawResponse.json();
+  //     console.log("GET INFOS BOUTEILLE", response)
+
+  //     if (response.result == true) {
+  //       setNom(response.catalogue.Nom)
+  //       setAOC(response.catalogue.AOC)
+  //       setCepage(response.catalogue.Cepage)
+  //       setMillesime(response.catalogue.Millesime)
+  //       setDesc(response.catalogue.Desc)
+  //       setCouleur(response.catalogue.Couleur)
+  //       // setPhoto()
+
+  //       // Map Vins
+  //       // const cardVin = response.cave.map((i) => {
+  //       //   return (
+  //       //       <TouchableOpacity
+  //       //         onPress={() => { setIsVisible(true); }}>
+
+  //       //         <View style={{ flexDirection: "row" }}>
+  //       //           <Card
+  //       //             key={i}
+  //       //             style={{ alignItems: 'center', justifyContent: 'center' }}
+  //       //           // image={{ uri: '../assets/imagedefault-v.png' }}
+  //       //           >
+  //       //             <Text>
+  //       //               {nom}
+  //       //             </Text>
+  //       //             <Text>
+  //       //               {millesime}
+  //       //             </Text>
+  //       //             <Text>
+  //       //               {AOC}
+  //       //             </Text>
+  //       //             <Text>
+  //       //               {cepage}
+  //       //             </Text>
+  //       //           </Card>
+  //       //         </View>
+
+  //       //       </TouchableOpacity>
+  //       //   )
+  //       // })
+
+  //       // setlisteVin(cardVin)
+
+  //     } else {
+  //       //CAVE VIDE
+  //       setPopup(true)
+  //     }
+  //   }
+  //   loadData()
+  // }, []);
+
   // MODAL AFFICHAGE VIN
   if (isVisible) {
     return (
       <View>
-        {/* <Overlay
+        <Overlay
           onBackdropPress={() => { setIsVisible(false) }}
-        > */}
-          <Carousel
-            onPress={(index) => setActiveSlide(index)}
-            inactiveSlideOpacity={0.4}
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-          >
-            <View>
-              <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+        >
+          <ScrollView>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
-                <View style={{ justifyContent: 'center' }}>
+              <View style={{ justifyContent: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <Image source={require('../assets/imagedefault-c.png')} style={{ margin: 10, width: 150, height: 150 }} />
+                </View>
 
-                  <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                      Nom
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                    Nom
                   </Text>
-                  </View>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    AOC
-              </Text>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Millésime
-                  </Text>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Cépage
-                  </Text>
-
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Couleur
-                  </Text>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Description
+                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                    {millesime}
                   </Text>
                 </View>
-              </Card>
-            </View>
-            <View>
-            <View
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    <Image source={require('../assets/imagedefault-c.png')} style={{ margin: 10, width: 150, height: 150 }} />
-                  </View>
-            </View>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  AOC
+              </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {AOC}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {cepage}
+                </Text>
 
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Couleur
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {couleur}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Description
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {desc}
+                </Text>
+              </View>
+            </Card>
+          </ScrollView>
 
           <TouchableOpacity
             onPress={async () => {
@@ -76,8 +143,8 @@ function CatalogueCaviste() {
             <Text
               style={{ color: '#DF2F2F' }}>OK</Text>
           </TouchableOpacity>
-          </Carousel>
-        {/* </Overlay> */}
+
+        </Overlay>
       </View>
     )
   }
@@ -85,7 +152,7 @@ function CatalogueCaviste() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      {/* <View style={styles.centeredView}>
+      <View>
         <Modal
           animationType="fade"
           transparent={true}
@@ -96,9 +163,39 @@ function CatalogueCaviste() {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <ListItem title='TYPE DE VIN' />
-              <ListItem title='TYPE DE VIN' />
-              <ListItem title='TYPE DE VIN' />
+              <View style={{ flex: 1, backgroundColor: '#AAAAAA' }}>
+                <Text>CHOISIR UN TYPE DE VIN</Text>
+                <Picker
+                  selectedValue={selectedValue}
+                  style={{ height: 10, width: 150 }}
+                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                >
+                  <Picker.Item label="BLANCS" value="blanc" />
+                  <Picker.Item label="ROUGES" value="rouge" />
+                  <Picker.Item label="BULLES" value="bulles" />
+                </Picker>
+                </View>
+
+                <View style={{ flex: 1, backgroundColor: '#AAAAAA'  }}>
+                <Text style={{ paddingTop: 20 }}>AUTRES</Text>
+                <Picker
+                  selectedValue={selectedValue}
+                  style={{ height: 10, width: 150 }}
+                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                >
+                  <Picker.Item label="DOMAINE" value="domaine" />
+                  <Picker.Item label="PRODUCTEUR" value="producteur" />
+                  <Picker.Item label="REGION" value="region" />
+                </Picker>
+                </View>
+              <Button
+                buttonStyle={{ ...styles.openButton }}
+                title='Rechercher'
+                onPress={() => {
+                  setPickerVisible(!pickerVisible);
+                }}
+              >
+              </Button>
             </View>
           </View>
         </Modal>
@@ -118,60 +215,7 @@ function CatalogueCaviste() {
           }
         >
         </Button>
-      </View> */}
-
-      {/* <View style={styles.centeredView}>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={pickerVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View style={{ flex: 1 }}>
-                <Text>TYPE DE VIN</Text>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={{ height: 20, width: 150 }}
-                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                  <Picker.Item label="BLANCS" value="blanc" />
-                  <Picker.Item label="ROUGES" value="rouge" />
-                  <Picker.Item label="BULLES" value="bulles" />
-                </Picker>
-              </View>
-
-              <Button
-                buttonStyle={{ ...styles.openButton }}
-                title='Rechercher'
-                onPress={() => {
-                  setPickerVisible(!pickerVisible);
-                }}
-              >
-              </Button>
-            </View>
-          </View>
-        </Modal> 
-
-        <Button
-          onPress={() => {
-            setPickerVisible(true);
-          }}
-          title='Filtres'
-          buttonStyle={styles.openButton}
-          icon={
-            <Icon
-              name='ios-arrow-down'
-              size={20}
-              color="#ffffff"
-            />
-          }
-        >
-        </Button>
-      </View>*/}
+      </View>
 
       {/* <View style={{ flex: 0.5, width: 100, height: 100 }}>
         <Modal visible={isVisibleModal} transparent={true}>
@@ -184,6 +228,32 @@ function CatalogueCaviste() {
             </TouchableHighlight>
           </View>
         </Modal>
+      </View> */}
+
+      {/* <View style={{ flex: 1}}>
+    <View style={{ flex: 1}}>
+    <Picker
+        selectedValue={selectedValue}
+        style={{ height: 20, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+      >
+        <Picker.Item label="BLANCS" value="blanc" />
+        <Picker.Item label="ROUGES" value="rouge" />
+        <Picker.Item label="BULLES" value="bulles" />
+      </Picker>
+      </View>
+
+      <View style={{ flex: 1}}>
+      <Picker
+        selectedValue={selectedValue}
+        style={{ height: 20, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+      >
+        <Picker.Item label="DOMAINE" value="domaine" />
+        <Picker.Item label="PRODUCTEUR" value="producteur" />
+        <Picker.Item label="REGION" value="region" />
+      </Picker>
+      </View>
       </View> */}
 
       <View style={styles.container}>
@@ -340,17 +410,18 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    marginTop: 20,
+    padding: 0,
+    // marginTop: 20,
     // justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
-    height: 300,
+    height: 500,
     width: 250,
     backgroundColor: "white",
     borderRadius: 15,
     // margin: 20,
-    padding: 35,
+    padding: 30,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

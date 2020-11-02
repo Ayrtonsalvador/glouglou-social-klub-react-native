@@ -143,8 +143,8 @@ StackNavigatorVigneron = createStackNavigator({
   { headerMode: 'none' }
 );
 
-  const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
-  // const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
+  // const NavigationCaviste = createAppContainer(StackNavigatorCaviste);
+  const NavigationVigneron = createAppContainer(StackNavigatorVigneron);
 
 
 // const getFonts = () => Font.loadAsync({
@@ -162,8 +162,8 @@ export default function App(userstatus) {
 
     return (
       <Provider store={store}>
-        {/* <NavigationVigneron /> */}
-        <NavigationCaviste />
+        <NavigationVigneron />
+        {/* <NavigationCaviste /> */}
       </Provider>
      )
     // } else {

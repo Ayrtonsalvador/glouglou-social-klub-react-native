@@ -27,7 +27,7 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://192.168.1.22:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
 
@@ -41,37 +41,37 @@ function CaveVigneron({ navigation, token }) {
         // setPhoto()
 
         // Map Vins
-        const cardVin = response.cave.map((i) => {
-          return (
-              <TouchableOpacity
-                onPress={() => { setIsVisible(true); }}>
+        // const cardVin = response.cave.map((i) => {
+        //   return (
+        //       <TouchableOpacity
+        //         onPress={() => { setIsVisible(true); }}>
 
-                <View style={{ flexDirection: "row" }}>
-                  <Card
-                    key={i}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}
-                  // image={{ uri: '../assets/imagedefault-v.png' }}
-                  >
-                    <Text>
-                      {nom}
-                    </Text>
-                    <Text>
-                      {millesime}
-                    </Text>
-                    <Text>
-                      {AOC}
-                    </Text>
-                    <Text>
-                      {cepage}
-                    </Text>
-                  </Card>
-                </View>
+        //         <View style={{ flexDirection: "row" }}>
+        //           <Card
+        //             key={i}
+        //             style={{ alignItems: 'center', justifyContent: 'center' }}
+        //           // image={{ uri: '../assets/imagedefault-v.png' }}
+        //           >
+        //             <Text>
+        //               {nom}
+        //             </Text>
+        //             <Text>
+        //               {millesime}
+        //             </Text>
+        //             <Text>
+        //               {AOC}
+        //             </Text>
+        //             <Text>
+        //               {cepage}
+        //             </Text>
+        //           </Card>
+        //         </View>
 
-              </TouchableOpacity>
-          )
-        })
+        //       </TouchableOpacity>
+        //   )
+        // })
 
-        setlisteVin(cardVin)
+        // setlisteVin(cardVin)
 
       } else {
         //CAVE VIDE
@@ -148,7 +148,7 @@ function CaveVigneron({ navigation, token }) {
 
           <TouchableOpacity
             onPress={async () => {
-              await fetch(`http://192.168.1.22:3000/delete-ref/${nom}`, {
+              await fetch(`http://172.17.1.46:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
@@ -203,10 +203,9 @@ function CaveVigneron({ navigation, token }) {
 
           <ScrollView>
 
-            {listeVin}
+            {/* {listeVin} */}
 
-
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
               }}>
@@ -316,7 +315,7 @@ function CaveVigneron({ navigation, token }) {
                   </Text>
                 </Card>
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </View>

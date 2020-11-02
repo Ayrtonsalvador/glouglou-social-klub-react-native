@@ -21,10 +21,9 @@ function ProfilCaviste({ navigation, token }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://192.168.1.22:3000/info-c?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.46:3000/info-c?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("GET INFOS CAVISTE", response)
-      // console.log("Caviste", response.user)
+      console.log("GET INFOS CAVISTE", response)
 
       if(response.result == true){
         setImage(response.user.Photo)

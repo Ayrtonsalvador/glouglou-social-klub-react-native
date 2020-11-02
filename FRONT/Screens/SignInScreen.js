@@ -85,7 +85,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
               <Button
                 onPress={async () => {
 
-                  var rawResponse = await fetch("http://192.168.1.22:3000/sign-in", {
+                  var rawResponse = await fetch("http://172.17.1.46:3000/sign-in", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -103,7 +103,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                     setstatus('Caviste');
                     onSubmitUserstatus(status);
                     addToken(response.token);
-                    console.log("TOKEN SIGNIN", token)
+                    console.log("TOKEN SIGNIN", response.token)
                   } else {
                     setErrorsSignin(response.error);
                   }
