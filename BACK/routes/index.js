@@ -10,10 +10,10 @@ var SHA256 = require('crypto-js/sha256')
 var encBase64 = require('crypto-js/enc-base64')
 
 var cloudinary = require('cloudinary').v2;
-cloudinary.config({ 
-  cloud_name: 'dvqjak***', 
-  api_key: '767287626552***', 
-  api_secret: 'BRfbaQzy3xSWMq0dNqdLAS***' 
+cloudinary.config({
+  cloud_name: 'dvqjak***',
+  api_key: '767287626552***',
+  api_secret: 'BRfbaQzy3xSWMq0dNqdLAS***'
 });
 
 var BouteilleModel = require('../models/Bouteille');
@@ -207,11 +207,9 @@ router.post('/AddVin', async function (req, res, next) {
 
 // FAIRE TRANSITER COTER FRONT
 
-  const user = await VigneronModel.findOne({TokenFF : req.body.token})
+  const vigneronID = await VigneronModel.findOne({ token: req.body.tokenFF })
+  console.log("TOKEN MA CAVE", vigneronID)
 
-  if (user) {
-  
-  var ID = user._id;
 
   var newBouteille = new BouteilleModel({
 
@@ -222,16 +220,15 @@ router.post('/AddVin', async function (req, res, next) {
     Desc: req.body.DescFF,
     Cepage: req.body.CepageFF,
     Millesime: req.body.MillesimeFF,
-    token: req.body.tokenFF
+    IdVigneron: vigneronID.id
+    // token: req.body.tokenFF
     // Photo: req.body.ImageFF,
   })
 
   saveBouteille = await newBouteille.save()
   console.log("SAVE BOUTEILLE", saveBouteille)
 
-  }
-
-  res.json({ saveBouteille, user })
+  res.json({ saveBouteille })
 
 });
 
@@ -277,59 +274,45 @@ router.post('/AddVin', async function (req, res, next) {
 router.get('/macave', async function (req, res, next) {
 
   // Trouver les infos de la bouteille par vigneron
-  const user = await VigneronModel.findOne({TokenFF : req.body.token})
+  const user = await VigneronModel.findOne({ token: req.query.token })
+  console.log("TOKEN MA CAVE", user)
 
   if (user) {
-
     var ID = user._id;
-    
-    const infosUser = {
-     NomV : user.Nom,
-     Domaine : user.Domaine,
-     Ville : user.Ville,
-     Region : user.Region,
-  }
 
-    var cave = await VigneronModel.findById(ID)
-    .populate('Bouteille')
+    const infosUser = {
+      NomV: user.Nom,
+      Domaine: user.Domaine,
+      Ville: user.Ville,
+      Region: user.Region,
+    }
+    console.log("")
+
+    var cave = await BouteilleModel.findOne({IdVigneron : ID })
+    .populate('IdVigneron')
     .exec();
     console.log("CAVE", cave)
 
-
-  if (cave != null) {
-    res.json({ result: true, cave, infosUser})
-  } else {
-    res.json({ result: false })
-  }
-}})
-
-
-// -------------- CATALGOUE DES VINS ------------\\
-router.get('/catalogue', async function (req, res, next) {
-
-  // Trouver les infos de la bouteille par vigneron
-  var catalogue = await BouteilleModel.find()
-    // console.log("CATALOGUE", catalogue)
-
- if (catalogue != null) {
-    res.json({ result: true, catalogue})
-  } else {
-    res.json({ result: false })
+    if (cave != null) {
+      res.json({ result: true, cave, infosUser })
+    } else {
+      res.json({ result: false })
+    }
   }
 })
 
-router.delete('/delete-ref/:Nom', async function(req, res, next) {
+router.delete('/delete-ref/:Nom', async function (req, res, next) {
 
   var result = false
 
-  var suppr = await BouteilleModel.deleteOne({ nomVin: req.params.nom})
+  var suppr = await BouteilleModel.deleteOne({ nomVin: req.params.nom })
   console.log("SUPPR VIN", suppr)
 
-  if(suppr.deletedCount == 1){
+  if (suppr.deletedCount == 1) {
     result = true
   }
 
-  res.json({result})
+  res.json({ result })
 });
 
 // ---------------- INFOS VIGNERON  ---------------- \\
@@ -406,6 +389,19 @@ router.get('/info-c', async function (req, res, next) {
 
   if (user != null) {
     res.json({ result: true, user })
+  } else {
+    res.json({ result: false })
+  }
+})
+
+// ---------------- CATALOGUE CAVISTE ---------------- \\
+
+router.get('/catalogue', async function (req, res, next) {
+
+  var catalogue = await BouteilleModel.find()
+
+  if (catalogue != null) {
+    res.json({ result: true, catalogue })
   } else {
     res.json({ result: false })
   }

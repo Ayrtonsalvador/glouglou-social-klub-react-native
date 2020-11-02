@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity} from "react-native";
 import { Button, Input, Header, Avatar, Icon, Card } from 'react-native-elements';
+import { ScrollView} from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';

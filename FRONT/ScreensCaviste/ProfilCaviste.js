@@ -26,8 +26,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
       console.log("PROFIL")
       var rawResponse = await fetch(`http:// 172.17.1.153:3000/info-c?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("GET INFOS CAVISTE", response)
-      // console.log("Caviste", response.user)
+      console.log("GET INFOS CAVISTE", response)
 
       if (response.result == true) {
         setImage(response.user.Photo)

@@ -117,28 +117,28 @@ function AddVigneron({ navigation, token}) {
             </ScrollView>
 
             <View>
-                <Button
-                  icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                  rounded
-                  type='font-awesome'
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                  onPress={async () => {
-                    setNomRef("")
-                    setCouleur("")
-                    setCepage("")
-                    setMillesime("")
-                    setAppellation("")
-                    setDesc("")
+              <Button
+                icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                rounded
+                type='font-awesome'
+                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
 
-                    var data = await fetch("http://192.168.1.22:3000/AddVin", {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&ImageFF=${image}&TokenFF=${token}`
-                    })
-                    var body = await data.json()
+                onPress={async () => {
+                  // navigation.navigate('CaveVigneron');
+
+                  var data = await fetch("http://172.17.1.153:3000/AddVin", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`
+                  })
+                  var body = await data.json()
+                  console.log("RESPONSE", body)
+
+                  if(body.result == true){
+                    console.log("OK")
                     navigation.navigate('CaveVigneron');
                   }
-                }
+                }}
               />
             </View>
           </View>
