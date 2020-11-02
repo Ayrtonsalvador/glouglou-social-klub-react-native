@@ -8,13 +8,13 @@ import ChatVigneron from '../ScreensVigneron/ChatVigneron';
 
 import { connect } from 'react-redux';
 
-function ChatCaviste({ navigation, pseudo, userstatus }) {
+function ChatCaviste({ navigation, pseudo, userstatus, token }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
 
   if (userstatus == "Vigneron") {
-    return (<ChatVigneron navigation={navigation}/>)
+    return (<ChatVigneron navigation={navigation, token={token}} userstatus={userstatus}/>)
   } else {
 
   var listMessageItem = listMessage.map((msg, i) => {

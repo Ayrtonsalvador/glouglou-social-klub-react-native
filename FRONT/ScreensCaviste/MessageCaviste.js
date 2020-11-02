@@ -6,10 +6,10 @@ import MessageVigneron from '../ScreensVigneron/MessageVigneron';
 
 import { connect } from 'react-redux';
 
-function MessageCavistes({ navigation }) {
+function MessageCavistes({ navigation, userstatus, token }) {
 
   if (userstatus == "Vigneron") {
-    return (<MessageVigneron navigation={navigation}/>)
+    return (<MessageVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
   } else {
 
     return (
@@ -42,7 +42,7 @@ function MessageCavistes({ navigation }) {
 }}
 
 function mapStateToProps(state){
-  return {token: state.token}
+  return {token: state.token, userstatus : state.userstatus}
 }
 
 export default connect(

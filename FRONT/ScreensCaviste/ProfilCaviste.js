@@ -67,7 +67,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   };
 
   if (userstatus == "Vigneron") {
-    return (<ProfilVigneron navigation={navigation} token={token}/>)
+    return (<ProfilVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
   } else {
     return (
 
