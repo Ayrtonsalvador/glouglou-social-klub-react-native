@@ -8,20 +8,19 @@ import SignUpScreen from './Screens/SignUpScreen';
 
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
-import MailboxCaviste from './ScreensCaviste/mailmainC';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import mailmainC from './ScreensCaviste/mailmainC';
-import mailwriteC from './ScreensCaviste/mailwriteC';
-import mailreadC from './ScreensCaviste/mailreadC';
+import mailmainC from './ScreensCaviste/MailmainC';
+import mailwriteC from './ScreensCaviste/MailwriteC';
+import mailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
-import MailboxVigneron from './ScreensVigneron/mailmainV';
+import MailboxVigneron from './ScreensVigneron/MailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import mailmainV from './ScreensCaviste/mailmainV';
-import mailwriteV from './ScreensCaviste/mailwriteV';
-import mailreadV from './ScreensCaviste/mailreadV';
+import mailmainV from './ScreensVigneron/MailmainV';
+import mailwriteV from './ScreensVigneron/MailwriteV';
+import mailreadV from './ScreensVigneron/MailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
@@ -45,7 +44,7 @@ var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,
   Favoris: FavoriteCaviste,
-  Chat: ChatCaviste,
+  Main : mailmainC,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -55,7 +54,7 @@ var BottomNavigator = createBottomTabNavigator({
           iconName = 'user';
         } else if (navigation.state.routeName == 'Catalogue') {
           iconName = 'home';
-        } else if (navigation.state.routeName == 'Chat') {
+        } else if (navigation.state.routeName == 'Main') {
           iconName = 'envelope';
         } else if (navigation.state.routeName == 'Favoris') {
           iconName = 'glass';
@@ -84,7 +83,6 @@ var StackNavigator = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   Favoris: FavoriteCaviste,
-  Main : mailmainC,
   Read : mailreadC,
   Write: mailwriteC,
 

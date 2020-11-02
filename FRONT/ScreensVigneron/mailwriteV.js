@@ -3,9 +3,9 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import userstatus from '../reducers/userstatus';
 
-
-function mailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
+function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -24,7 +24,7 @@ function mailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
         type="solid"
         buttonStyle={{ backgroundColor: '#FF9900' }}
         onPress={() => {
-          navigation.navigate('MailboxVigneron');
+          navigation.navigate('Main');
         }}>
 
       </Button>
@@ -123,4 +123,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null
-)(mailwriteV);
+)(MailwriteV);

@@ -3,9 +3,9 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import userstatus from '../reducers/userstatus';
 
-
-function mailreadV({ navigation, pseudo, props, userstatus }) {
+function MailreadV({ navigation, pseudo, props, userstatus }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
@@ -162,4 +162,4 @@ function mapStateToProps(state){
 export default connect(
   mapStateToProps,
   null
-)(mailreadV);
+)(MailreadV);

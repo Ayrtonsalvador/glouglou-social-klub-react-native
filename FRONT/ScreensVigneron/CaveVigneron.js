@@ -27,7 +27,7 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://192.168.1.11:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.159:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response)
 

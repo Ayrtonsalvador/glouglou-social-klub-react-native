@@ -164,6 +164,7 @@ router.post('/sign-in', async function (req, res, next) {
     const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
     })
+    console.log()
     console.log("SIGN IN VIGNERON", userVigneron)
 
     if (userVigneron) {
