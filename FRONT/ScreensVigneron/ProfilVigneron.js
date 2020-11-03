@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
-function ProfilVigneron({ navigation, token }) {
+function ProfilVigneron({ navigation, token, userstatus }) {
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("STATE TOKEN", state.token)
-  return { token: state.token }
+  return { token: state.token, userstatus: state.userstatus}
 }
 
 function mapDispatchToProps(dispatch) {

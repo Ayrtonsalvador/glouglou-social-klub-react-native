@@ -213,7 +213,7 @@ router.post('/AddVin', async function (req, res, next) {
 
   var newBouteille = new BouteilleModel({
 
-    IdVigneron: ID,
+    // IdVigneron: ID,
     Nom: req.body.NomRefFF,
     Couleur: req.body.CouleurFF,
     AOC: req.body.AppellationFF,
@@ -288,7 +288,7 @@ router.get('/macave', async function (req, res, next) {
     }
     console.log("")
 
-    var cave = await BouteilleModel.findOne({IdVigneron : ID })
+    var cave = await BouteilleModel.find({IdVigneron : ID })
     .populate('IdVigneron')
     .exec();
     console.log("CAVE", cave)
@@ -398,10 +398,14 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
+  var user = await CavisteModel.findOne({ token: req.query.token })
+  console.log("TOKEN FOUND", req.query.token)
+
   var catalogue = await BouteilleModel.find()
+  console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue })
+    res.json({ result: true, catalogue, user })
   } else {
     res.json({ result: false })
   }

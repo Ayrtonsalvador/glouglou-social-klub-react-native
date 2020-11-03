@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+console.disableYellowBox = true;
 import { connect } from 'react-redux';
 
 // Screens Communs
@@ -24,7 +26,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -48,13 +50,13 @@ var BottomNavigator = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'Profil') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'home';
+          iconName = 'ios-home';
         } else if (navigation.state.routeName == 'Chat') {
-          iconName = 'envelope';
+          iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Favoris') {
-          iconName = 'glass';
+          iconName = 'ios-wine';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-
 import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from "react-native";
-import { Button, Card, Badge, Overlay } from 'react-native-elements';
+import { Button, Card, Badge, Overlay, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
-function CatalogueCaviste({userstatus, navigation}) {
+function CatalogueCaviste({ userstatus, navigation, token }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -34,24 +33,31 @@ function CatalogueCaviste({userstatus, navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
 
+  const [colorText, setColorText] = useState('#FFFFFF');
+  const [colorIcon, setColorIcon] = useState('#FFFFFF');
+
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://172.17.1.46:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response)
+      // console.log("GET INFOS CATALOGUE", response)
 
       if (response.result == true) {
         setNom(response.catalogue.Nom)
         setMillesime(response.catalogue.Millesime)
         setCepage(response.catalogue.Cepage)
         setAOC(response.catalogue.AOC)
+        // setPhoto()
 
         setDesc(response.catalogue.Desc)
         setCouleur(response.catalogue.Couleur)
         setDomaine()
 
-
-        // setPhoto()
+        // setNomVi(response.catalogue.user.Nom)
+        // setRegionVi(response.catalogue.user.Region)
+        // setDescVi(response.catalogue.user.Desc)
+        // setDescVi(response.catalogue.user.Desc)
+        // setPhotoVi()
 
         // Map Vins
         // const cardVin = response.cave.map((i) => {
@@ -85,10 +91,6 @@ function CatalogueCaviste({userstatus, navigation}) {
         // })
 
         // setlisteVin(cardVin)
-
-      } else {
-        //CAVE VIDE
-        setPopup(true)
       }
     }
     loadData()
@@ -96,6 +98,7 @@ function CatalogueCaviste({userstatus, navigation}) {
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
+
     return (
       <View>
         <Overlay
@@ -113,19 +116,38 @@ function CatalogueCaviste({userstatus, navigation}) {
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                   <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                   {nom}
+                    Nom
+                    {nom}
                   </Text>
                   <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                    Millésime
                     {millesime}
                   </Text>
                 </View>
                 <Text style={{ marginBottom: 10 }}>
+                  AOC
                   {AOC}
                 </Text>
                 <Text style={{ marginBottom: 10 }}>
+                  Cepage
                   {cepage}
                 </Text>
-
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                <Icon
+                  name="ios-heart" size={30} 
+                  style={{alignItems:'center', justifyContent: 'center'}}
+                  // onPress={() => { 
+                  //   setColorIcon('#FFAE34');
+                  //   setColorText('#DF2F2F')
+                  // color = {colorIcon}
+                  //   }}
+                    >
+                </Icon>
+                </View>
+              </View>
+            </Card>
+            <Card>
+              <View>
                 <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
                   Couleur
                   </Text>
@@ -140,6 +162,32 @@ function CatalogueCaviste({userstatus, navigation}) {
                 </Text>
               </View>
             </Card>
+            <Card>
+            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Avatar
+                    rounded
+                    source={require('../assets/vigneron.jpg')}
+                  ></Avatar>
+                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                  Jean Pierre DUPONT
+                  </Text>
+              </View> 
+                <View>
+                  <Text style={{ margin: 10 }}>
+                    Description
+                  </Text>
+                  <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Icon
+                  name="md-chatboxes" size={30} 
+                  style={{alignItems:'center', justifyContent: 'center'}}
+                  onPress={() => { 
+                    navigation.navigate('MessageCaviste')
+                    // color='#FFFFFF'
+                    }}>
+                </Icon>
+                </View>
+              </View>
+            </Card>
           </ScrollView>
 
           <TouchableOpacity
@@ -148,8 +196,7 @@ function CatalogueCaviste({userstatus, navigation}) {
             }}
             style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
           >
-            <Text
-              style={{ color: '#DF2F2F' }}>OK</Text>
+            <Text>AJOUTÉ EN FAVORIS</Text>
           </TouchableOpacity>
 
         </Overlay>
@@ -158,78 +205,79 @@ function CatalogueCaviste({userstatus, navigation}) {
   }
 
   if (userstatus == "Vigneron") {
-    return (<CaveVigneron navigation={navigation}/>)
+    return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      <View>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={pickerVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View style={{ flex: 1, backgroundColor: '#AAAAAA' }}>
-                <Text>CHOISIR UN TYPE DE VIN</Text>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={{ height: 10, width: 150 }}
-                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                  <Picker.Item label="BLANCS" value="blanc" />
-                  <Picker.Item label="ROUGES" value="rouge" />
-                  <Picker.Item label="BULLES" value="bulles" />
-                </Picker>
-                </View>
-
-                <View style={{ flex: 1, backgroundColor: '#AAAAAA'  }}>
-                <Text style={{ paddingTop: 20 }}>AUTRES</Text>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={{ height: 10, width: 150 }}
-                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                  <Picker.Item label="DOMAINE" value="domaine" />
-                  <Picker.Item label="PRODUCTEUR" value="producteur" />
-                  <Picker.Item label="REGION" value="region" />
-                </Picker>
-                </View>
+        <View>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={pickerVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
               <Button
-                buttonStyle={{ ...styles.openButton }}
-                title='Rechercher'
-                onPress={() => {
-                  setPickerVisible(!pickerVisible);
-                }}
-              >
-              </Button>
+                  buttonStyle={{ ...styles.openButton }}
+                  title='Rechercher'
+                  onPress={() => {
+                    setPickerVisible(!pickerVisible);
+                  }}
+                >
+                </Button>
+                <View style={{ flex: 1}}>
+                  <Picker
+                    selectedValue={selectedValue}
+                    style={{ height: 10, width: 150, color:'#FFFFFF' }}
+                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                  >
+                    <Picker.Item label="TYPES DE VINS" value="none" />
+                    <Picker.Item label="BLANCS" value="blanc"/>
+                    <Picker.Item label="ROUGES" value="rouge" />
+                    <Picker.Item label="ROSÉS" value="rosé" />
+                    <Picker.Item label="BULLES" value="bulles"/>
+                  </Picker>
+                </View>
+
+                <View style={{ flex: 1}}>
+                  <Picker
+                    selectedValue={selectedValue}
+                    style={{ height: 10, width: 150 }}
+                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                  >
+                    <Picker.Item label="AUTRES CHOIX" value="none" />
+                    <Picker.Item label="DOMAINE" value="domaine" />
+                    <Picker.Item label="PRODUCTEUR" value="producteur" />
+                    <Picker.Item label="REGION" value="region" />
+                  </Picker>
+                </View>
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
 
-        <Button
-          onPress={() => {
-            setPickerVisible(true);
-          }}
-          title='Filtres'
-          buttonStyle={styles.openButton}
-          icon={
-            <Icon
-              name='ios-arrow-down'
-              size={20}
-              color="#ffffff"
-            />
-          }
-        >
-        </Button>
-      </View>
+          <Button
+            onPress={() => {
+              setPickerVisible(true);
+            }}
+            title='FILTRES'
+            buttonStyle={styles.openButton}
+            icon={
+              <Icon
+                name='ios-arrow-down'
+                size={20}
+                color="#ffffff"
+              />
+            }
+          >
+          </Button>
+        </View>
 
-      {/* <View style={{ flex: 0.5, width: 100, height: 100 }}>
+        {/* <View style={{ flex: 0.5, width: 100, height: 100 }}>
         <Modal visible={isVisibleModal} transparent={true}>
           <View style={{ margin: 20, padding: 20, backgroundColor: '#efefef' }}
           >
@@ -242,7 +290,7 @@ function CatalogueCaviste({userstatus, navigation}) {
         </Modal>
       </View> */}
 
-      {/* <View style={{ flex: 1}}>
+        {/* <View style={{ flex: 1}}>
     <View style={{ flex: 1}}>
     <Picker
         selectedValue={selectedValue}
@@ -268,129 +316,130 @@ function CatalogueCaviste({userstatus, navigation}) {
       </View>
       </View> */}
 
-      <View style={styles.container}>
+        <View style={styles.container}>
 
-        <View style={styles.box1}>
+          <View style={styles.box1}>
 
-          <ScrollView>
+            <ScrollView>
 
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(true);
-              }}>
-              <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsVisible(true);
+                }}>
+                <View style={{ flexDirection: "row" }}>
 
-                <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                  <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
+                  </Card>
 
-                <Card>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                  <Card>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
-              </View>
+                  </Card>
+                </View>
 
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                <View style={{ flexDirection: "row" }}>
+                  <Card>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
+                  </Card>
 
-                <Card>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                  <Card>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                  </Card>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Card>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
+                  </Card>
 
-                <Card>
-                  <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-                  <Text style={{ fontWeight: 'bold' }}>
-                    Nom
+                  <Card>
+                    <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
+                    <Text style={{ fontWeight: 'bold' }}>
+                      Nom
                   </Text>
-                  <Text>
-                    Millesime
+                    <Text>
+                      Millesime
                   </Text>
-                  <Text>
-                    AOC
+                    <Text>
+                      AOC
                   </Text>
-                  <Text>
-                    Cépage
+                    <Text>
+                      Cépage
                   </Text>
-                </Card>
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
+                  </Card>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
-  );
-}}
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -411,15 +460,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  popup: {
-    width: 300,
-    height: 400,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 15,
-    // fontFamily: "Gothic A1",
-  },
   centeredView: {
     flex: 1,
     padding: 0,
@@ -428,9 +468,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    height: 500,
+    height: 450,
     width: 250,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     // margin: 20,
     padding: 30,
@@ -445,6 +485,8 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
+    flexDirection: 'row',
+    margin: 5,
     backgroundColor: "#FFD15C",
   },
   textStyle: {
@@ -458,51 +500,9 @@ const styles = StyleSheet.create({
   }
 });
 
-// var Catalogue = [{
-//   Vigneron: "Mathieu Vieules",
-//   Domaine: "Domaine Philémon",
-//   Region: "Sud Ouest",
-//   Ville: "Villeuneuve-sur-Ver",
-//   Nom: "Duras",
-//   Couleur: "Rouge",
-//   AOC: "AOC Gaillac",
-//   Desc: "Les notes d'épices et de poivre s'associent aux tanins souples offrant un bon compromis en bouche. A boire sur les viandes en sauce, les fromages affinés.",
-//   Cepage: "Gaillacois",
-//   Millesime: "2018",
-//   Photo: "../assets/imgdefault.png",
-// }];
-
-// // if (Catalogue > 0) {
-// //   CatalaogueItems = Catalogue.map((url, i) => {   return () });
-//    <Card>
-//      <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-//       <Badge status="success" value="homme" />
-//       <Badge status="success" value="70 ans" />
-//       <Badge status="success" value="barbe" />
-//       <Badge status="success" value="joyeux !" />
-//       <Badge status="success" value="cheveux gris" />
-//     </Card>
-
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Header
-//         containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' }}
-//         centerComponent={{ text: 'Favorite Caviste', marginTop: 30 }}
-//       >
-//         <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 30 }}></Image>
-//       </Header>
-
-//       <ScrollView style={{ marginTop: 25 }}>
-//         <Text h4 style={{ textAlign: 'center' }}>John's Gallery</Text>
-//         {/* {UrlGallery} */}
-//       </ScrollView>
-//     </View>
-//   );
-// }
 
 function mapStateToProps(state) {
-  return { token: state.token }
+  return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(

@@ -10,7 +10,7 @@ import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 function ProfilCaviste({ navigation, token, userstatus }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [nom, setNom] = useState("Nom")
   const [etablissement, setEtablissement] = useState("Nom d'établissement")
@@ -67,7 +67,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   };
 
   if (userstatus == "Vigneron") {
-    return (<ProfilVigneron navigation={navigation} token={token}/>)
+    return (<ProfilVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
   } else {
     return (
 

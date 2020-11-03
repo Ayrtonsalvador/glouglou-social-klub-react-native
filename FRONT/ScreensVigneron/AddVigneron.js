@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
+import { set } from 'react-native-reanimated';
 
 // ATTENTION ADRESS IP
 
@@ -124,20 +125,25 @@ function AddVigneron({ navigation, token}) {
                 buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
 
                 onPress={async () => {
-                  // navigation.navigate('CaveVigneron');
-
-                  var data = await fetch("http://172.17.1.153:3000/AddVin", {
+                  var data = await fetch("http://172.17.1.46:3000/AddVin", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`
                   })
                   var body = await data.json()
-                  console.log("RESPONSE", body)
+                  console.log("RESPONSE", body.saveBouteille)
 
-                  if(body.result == true){
+                  // if(body.result == true){
                     console.log("OK")
                     navigation.navigate('CaveVigneron');
-                  }
+
+                    setNomRef("Référence")
+                    setCouleur("Couleur")
+                    setCepage("Cépage")
+                    setMillesime("Millésime")
+                    setAppellation("Appellation")
+                    setDesc("Description")
+                  // }
                 }}
               />
             </View>
