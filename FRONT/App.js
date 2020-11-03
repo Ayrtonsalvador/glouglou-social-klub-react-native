@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 console.disableYellowBox = true;
+
 import { connect } from 'react-redux';
 
 // Screens Communs
@@ -11,18 +12,18 @@ import SignUpScreen from './Screens/SignUpScreen';
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-// import MailmainC from './ScreensCaviste/MailmainC';
-// import MailwriteC from './ScreensCaviste/MailwriteC';
-// import MailreadC from './ScreensCaviste/MailreadC';
+import MailmainC from './ScreensCaviste/MailmainC';
+import MailwriteC from './ScreensCaviste/MailwriteC';
+import MailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
 import MailboxVigneron from './ScreensVigneron/MailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-// import MailmainV from './ScreensVigneron/MailmainV';
-// import MailwriteV from './ScreensVigneron/MailwriteV';
-// import MailreadV from './ScreensVigneron/MailreadV';
+import MailmainV from './ScreensVigneron/MailmainV';
+import MailwriteV from './ScreensVigneron/MailwriteV';
+import MailreadV from './ScreensVigneron/MailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
@@ -46,7 +47,7 @@ var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,
   Favoris: FavoriteCaviste,
-  // Main : MailmainC,
+  Main : MailmainC,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -85,8 +86,8 @@ var StackNavigator = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   Favoris: FavoriteCaviste,
-  // Read : MailreadC,
-  // Write: MailwriteC,
+  Read : MailreadC,
+  Write: MailwriteC,
 
   BottomNavigator: BottomNavigator,
 },

@@ -15,22 +15,31 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [clickedMsg, setClickedMsg] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleClick = (id, texte) => {
+    setSelectedId(id) // ID détecté !
+    setClickedMsg(texte) // MSG détecté     
+    navigation.navigate('Read');
+
+    if(clickedMsg != null){return (<MailmainC clickedMsg={clickedMsg} />)}
+    
+    navigation.navigate('Read')
+  }
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
     var response = await rawResponse.json();
 
     if(response.result == true){
       setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)
-    
-    console.log("NOM", nomCaviste)
-  }
-    
+    setNomCaviste(response.Caviste.Nom)}
   } 
   loadData()
 }, []);
+
 
  var listMessagesItem = listMessages.map((msg, i) => {
       
@@ -46,7 +55,8 @@ useEffect(() => {
               //   // </Avatar>
               // }
               bottomDivider={true}
-                          >     
+              onPress={() => {handleClick(msg._id, msg.Texte)}} 
+                          >    
                  </ListItem>
     });
  

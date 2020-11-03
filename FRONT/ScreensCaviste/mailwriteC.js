@@ -83,13 +83,13 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
               color="#ffffff"
             />
               }
-            title="Send"
+            title=" Send"
             buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
             type="solid"
          
             onPress={async () => {
              
-              var data = await fetch("http://172.17.1.159:3000/mailbox-write", {
+              var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}`
@@ -107,7 +107,7 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
         <Button
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
           type="solid"
-          title="Contactez-nous"
+          title=" Contactez-nous"
           icon={
             <Icon
               name='heart'
