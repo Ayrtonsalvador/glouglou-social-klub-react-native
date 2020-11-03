@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+
+console.disableYellowBox = true;
+
 import { connect } from 'react-redux';
 
 // Screens Communs
@@ -8,23 +11,26 @@ import SignUpScreen from './Screens/SignUpScreen';
 
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
-import ChatCaviste from './ScreensCaviste/ChatCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import MessageCaviste from './ScreensCaviste/MessageCaviste';
+import MailmainC from './ScreensCaviste/MailmainC';
+import MailwriteC from './ScreensCaviste/MailwriteC';
+import MailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
+import MailboxVigneron from './ScreensVigneron/MailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import ChatVigneron from './ScreensVigneron/ChatVigneron';
-import MessageVigneron from './ScreensVigneron/MessageVigneron';
+import MailmainV from './ScreensVigneron/MailmainV';
+import MailwriteV from './ScreensVigneron/MailwriteV';
+import MailreadV from './ScreensVigneron/MailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -41,20 +47,20 @@ var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,
   Favoris: FavoriteCaviste,
-  Chat: ChatCaviste,
+  Main : MailmainC,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'Profil') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'home';
-        } else if (navigation.state.routeName == 'Chat') {
-          iconName = 'envelope';
+          iconName = 'ios-home';
+        } else if (navigation.state.routeName == 'Main') {
+          iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Favoris') {
-          iconName = 'glass';
+          iconName = 'ios-wine';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -79,8 +85,10 @@ var StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  Message: MessageCaviste,
   Favoris: FavoriteCaviste,
+  Read : MailreadC,
+  Write: MailwriteC,
+
   BottomNavigator: BottomNavigator,
 },
   { headerMode: 'none' }

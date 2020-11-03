@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 
-var VigneronSchema = mongoose.Schema ({
+var MessageSentSchema = mongoose.Schema ({
+    Nom: String,
+    Texte: String,
+    Photo: String,
+    Read: Boolean
+})
 
+var MessageReceivedSchema = mongoose.Schema ({
+    Nom: String,
+    Texte: String,
+    Photo: String,
+    Read: Boolean
+})
+
+var VigneronSchema = mongoose.Schema ({
+    MessagesS: [MessageSentSchema],
+    MessagesR: [MessageReceivedSchema],
     Nom: String,
     Prenom: String,
     Tel: String,
@@ -19,6 +34,6 @@ var VigneronSchema = mongoose.Schema ({
 
 })
 
-var VigneronModel = mongoose.model('vignerons', VigneronSchema);
+const VigneronModel = mongoose.model('vignerons', VigneronSchema);
 
 module.exports = VigneronModel;

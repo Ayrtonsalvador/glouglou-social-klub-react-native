@@ -23,6 +23,7 @@ const { populate } = require('../models/Bouteille');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  console.log('hello ?')
   res.render('index', { title: 'GlouGlou Social Club' });
 });
 
@@ -104,7 +105,6 @@ router.post('/sign-up', async function (req, res, next) {
       token = saveVigneron.token
     }
   }
-
   res.json({ result, saveCaviste, saveVigneron, error })
 });
 
@@ -148,6 +148,7 @@ router.post('/sign-in', async function (req, res, next) {
     const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
     })
+    console.log()
     console.log("SIGN IN VIGNERON", userVigneron)
 
     if (userVigneron) {
@@ -163,7 +164,6 @@ router.post('/sign-in', async function (req, res, next) {
       }
     }
   }
-
   res.json({ result, error, token, status })
 });
 
@@ -354,14 +354,115 @@ router.get('/info-v', async function (req, res, next) {
   var token = null
   var user = await VigneronModel.findOne({ token: req.query.token })
 
-  // console.log("TOKEN FOUND", req.query.token)
+  console.log("USER", user)
 
-  if (user != null) {
-    res.json({ result: true, user })
-  } else {
-    res.json({ result: false })
-  }
+   console.log("TOKEN FOUND", req.query.token)
+
+if (user != null) {
+  res.json({ result: true, user })
+} else {
+  res.json({ result: false })
+}
 })
+
+
+//---------------Mailbox CAVISTE--------------//
+
+// BOITE DE RECEPTION
+router.get('/mailbox-main', async function(req, res, next) {
+  
+  var Caviste = await CavisteModel.findOne(
+    {token: req.query.token })
+
+  var msgCaviste = Caviste.MessagesR
+
+  res.json({ Caviste, msgCaviste, result:true })
+});
+
+
+// LIRE UN MESSAGE
+router.get('/mailbox-read', async function(req, res, next) {
+
+  var msgClicked = await CavisteModel.findOne(
+    {MessagesR: {Texte: req.body.Texte} } )
+
+  res.json({ msgClicked })
+
+});
+
+
+//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+router.post('/mailbox-write', async function(req, res, next) {
+//  console.log(req.body.token);
+
+  var msg = await CavisteModel.updateOne(
+    {token: req.body.token}, {
+        $push: {MessagesS: {Texte: req.body.Texte} }   
+    });
+
+  var searchVigneron = await VigneronModel.findOne({
+        Nom: req.body.NomVigneron})
+
+  if(searchVigneron!= null) {
+  var msgVigneron = await VigneronModel.updateOne(
+        {Nom: req.body.NomVigneron}, {
+            $push: {MessagesR: {Texte: req.body.Texte} }   
+        });
+  }
+  
+  res.json({ msg, msgVigneron })
+
+});
+
+
+//---------------Mailbox VIGNERON--------------//
+
+// BOITE DE RECEPTION
+router.get('/mailbox-main-v', async function(req, res, next) {
+  
+  var Vigneron = await VigneronModel.findOne(
+    {token: req.query.token })
+
+  var msgVigneron = Vigneron.MessagesR
+
+  res.json({ Vigneron, msgVigneron, result:true })
+});
+
+
+// LIRE UN MESSAGE
+router.get('/mailbox-read-v', async function(req, res, next) {
+
+  var msgVigneron = await VigneronModel.findOne(
+    {MessagesR: {Texte: req.body.Texte} } )
+
+  res.json({ msgVigneron })
+
+});
+
+
+//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+router.post('/mailbox-write-v', async function(req, res, next) {
+//  console.log(req.body.token);
+
+  var msg = await VigneronModel.updateOne(
+    {token: req.body.token}, {
+        $push: {MessagesS: {Texte: req.body.Texte} }   
+    });
+
+  var searchCaviste = await CavisteModel.findOne({
+        Nom: req.body.NomCaviste})
+
+  if(searchCaviste!= null) {
+  var msgCaviste = await CavisteModel.updateOne(
+        {Nom: req.body.NomCaviste}, {
+            $push: {MessagesR: {Texte: req.body.Texte} }   
+        });
+  }
+  
+  res.json({ msg, msgCaviste })
+
+});
+
 
 // ---------------- INFOS CAVISTE ---------------- \\
 router.post('/info-update-c', async function (req, res, next) {
@@ -456,10 +557,14 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
+  var user = await CavisteModel.findOne({ token: req.query.token })
+  console.log("TOKEN FOUND", req.query.token)
+
   var catalogue = await BouteilleModel.find()
+  console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue })
+    res.json({ result: true, catalogue, user })
   } else {
     res.json({ result: false })
   }

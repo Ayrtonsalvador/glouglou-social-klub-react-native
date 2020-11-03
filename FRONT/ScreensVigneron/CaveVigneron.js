@@ -7,6 +7,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function CaveVigneron({ navigation, token }) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.46";
+
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
   const [domaine, setDomaine] = useState("Nom de domaine")
@@ -19,61 +22,22 @@ function CaveVigneron({ navigation, token }) {
   const [millesime, setMillesime] = useState("Millesime")
 
   const [popup, setPopup] = useState(false)
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const [listeVin, setlisteVin] = useState([])
+  const [listeModal, setlisteModal] = useState([])
+  const [getIndex, setGetIndex] = useState()
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://192.168.1.11:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response)
-
+      // console.log("GET INFOS BOUTEILLE", response)
       if (response.result == true) {
-        setPopup(true)
-        setNom(response.cave.Nom)
-        setAOC(response.cave.AOC)
-        setCepage(response.cave.Cepage)
-        setMillesime(response.cave.Millesime)
-        setDesc(response.cave.Desc)
-        setCouleur(response.cave.Couleur)
-        // setPhoto()
-
-        // Map Vins
-        // const cardVin = response.cave.map((i) => {
-        //   return (
-        //       <TouchableOpacity
-        //         onPress={() => { setIsVisible(true); }}>
-
-        //         <View style={{ flexDirection: "row" }}>
-        //           <Card
-        //             key={i}
-        //             style={{ alignItems: 'center', justifyContent: 'center' }}
-        //           // image={{ uri: '../assets/imagedefault-v.png' }}
-        //           >
-        //             <Text>
-        //               {nom}
-        //             </Text>
-        //             <Text>
-        //               {millesime}
-        //             </Text>
-        //             <Text>
-        //               {AOC}
-        //             </Text>
-        //             <Text>
-        //               {cepage}
-        //             </Text>
-        //           </Card>
-        //         </View>
-
-        //       </TouchableOpacity>
-        //   )
-        // })
-
-        // setlisteVin(cardVin)
-
+        var cave = response.cave;
+        setlisteVin(cave)
       } else {
         //CAVE VIDE
         setPopup(true)
@@ -82,6 +46,42 @@ function CaveVigneron({ navigation, token }) {
     loadData()
   }, []);
 
+
+  // Map Vins
+  const cardVin = listeVin.map((vin, i) => {
+    return (
+      <TouchableOpacity
+        onPress={() => { 
+          setIsVisible(true); 
+          setNom(vin.Nom);
+          setAOC(vin.AOC);
+          setCepage(vin.Cepage);
+          setDesc(vin.desc)
+
+          }}>
+        <View style={{ flexDirection: "row" }}>
+          <Card
+            key={i}
+            style={{ alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text>
+              {vin.Nom}
+            </Text>
+            <Text>
+              {vin.Millesime}
+            </Text>
+            <Text>
+              {vin.AOC}
+            </Text>
+            <Text>
+              {vin.Cepage}
+            </Text>
+          </Card>
+        </View>
+      </TouchableOpacity>
+    )
+  })
+
   // SUPPRIMER UNE REF
   var handleDeleteRef = async (nom) => {
     setlisteVin(listeVin.filter(object => object.nom != nom))
@@ -89,90 +89,81 @@ function CaveVigneron({ navigation, token }) {
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
-    return (
-      <View>
-        <Overlay
-          onBackdropPress={() => { setIsVisible(false) }}
-        >
-          <ScrollView>
-            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+      return (
+        <View>
+          <Overlay
+            onBackdropPress={() => { setIsVisible(false) }}
+          >
+            <ScrollView>
+              <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
-              <View style={{ justifyContent: 'center' }}>
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
-                </View>
+                <View style={{ justifyContent: 'center' }}>
+                  <View
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                  >
+                    <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
+                  </View>
 
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ marginBottom: 10, fontWeight: 'bold'}}>
-                    {nom}
+                  <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                    <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>
+                      {nom}
+                    </Text>
+                    <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                      {cepage}
+                    </Text>
+                  </View>
+                  <Text style={{ marginBottom: 10 }}>
+                    {AOC}
                   </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                  <Text style={{ marginBottom: 10 }}>
+                    {millesime}
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
                     {cepage}
                   </Text>
+
+                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                    Couleur
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
+                    {couleur}
+                  </Text>
+                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                    Description
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
+                    {desc}
+                  </Text>
                 </View>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  AOC
-              </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {AOC}
-                </Text>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  Millésime
-                  </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {millesime}
-                </Text>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  Cépage
-                  </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {cepage}
-                </Text>
+              </Card>
+            </ScrollView>
 
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  Couleur
-                  </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {couleur}
-                </Text>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                  Description
-                  </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {desc}
-                </Text>
-              </View>
-            </Card>
-          </ScrollView>
+            <TouchableOpacity
+              onPress={async () => {
+                await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+                  method: 'DELETE'
+                });
+                handleDeleteRef(nom)
+                console.log("DELETED FRONT", nom)
+              }}
+              style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Text
+                style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={async () => {
-              await fetch(`http://172.17.1.46:3000/delete-ref/${nom}`, {
-                method: 'DELETE'
-              });
-              handleDeleteRef(nom)
-              console.log("DELETED FRONT", nom)
-            }}
-            style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Text
-              style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
-          </TouchableOpacity>
-
-        </Overlay>
-      </View>
-    )
+          </Overlay>
+        </View>
+      )
   }
 
   if (popup) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
-        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-          < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
-        </View>
+          <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+          </View>
           <TouchableOpacity>
             <Text
               onPress={() => {
@@ -196,121 +187,9 @@ function CaveVigneron({ navigation, token }) {
         <View style={styles.box1}>
 
           <ScrollView>
-
-            {/* {listeVin} */}
-
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(true);
-              }}>
-              <View style={{ flexDirection: "row" }}>
-
-                <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-              </View>
-
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-              </View>
-            </TouchableOpacity>
+            {cardVin}
           </ScrollView>
+
         </View>
       </View>
     </View>

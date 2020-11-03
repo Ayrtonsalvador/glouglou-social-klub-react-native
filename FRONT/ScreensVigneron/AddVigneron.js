@@ -5,13 +5,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
+import { set } from 'react-native-reanimated';
 
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function AddVigneron({ navigation, token, userstatus }) {
 
   var IPmaison = "";
   var IPecole = "172.17.1.153";
+
+  var IPmaison = "";
+  var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
