@@ -556,17 +556,21 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
-  var user = await CavisteModel.findOne({ token: req.query.token })
-  // console.log("TOKEN FOUND", req.query.token)
+  var userCaviste = await CavisteModel.findOne({ token: req.query.token })
+  console.log("TOKEN FOUND", req.query.token)
 
   var catalogue = await BouteilleModel.find()
-  // console.log("CATALOGUE", catalogue)
+  .populate('IdVigneron')
+  .exec()
+  console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue, user })
+    res.json({ result: true, catalogue, userCaviste})
   } else {
     res.json({ result: false })
   }
 })
+
+// ---------------- FAVORIS CAVISTE ---------------- \\
 
 module.exports = router;

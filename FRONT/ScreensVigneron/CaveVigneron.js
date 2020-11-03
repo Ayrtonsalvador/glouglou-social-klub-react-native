@@ -40,7 +40,9 @@ function CaveVigneron({ navigation, token }) {
         console.log('TRUE');
         var cave = response.cave
         setlisteVin(cave)
-
+        // Juliette
+        // var cave = response.cave;
+        // setlisteVin([...listeVin,cave])
       } else {
         //CAVE VIDE
         console.log('FALSE');

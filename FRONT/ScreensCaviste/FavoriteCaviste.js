@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList, Modal } from 'react-native';
-import { Button, ListItem, Input, Header } from 'react-native-elements';
-
+import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from 'react-native';
+import { Button, Card, Badge, Overlay, Avatar }from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ScrollView } from 'react-native-gesture-handler';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 
