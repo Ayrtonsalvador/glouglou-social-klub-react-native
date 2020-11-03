@@ -23,7 +23,7 @@ const { populate } = require('../models/Bouteille');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log('hello ?')
+  // console.log('hello ?')
   res.render('index', { title: 'GlouGlou Social Club' });
 });
 
@@ -46,7 +46,7 @@ router.post('/sign-up', async function (req, res, next) {
   const dataCaviste = await CavisteModel.findOne({
     Email: req.body.emailFromFront
   })
-  console.log("DATA CAVISTE", dataCaviste)
+  // console.log("DATA CAVISTE", dataCaviste)
 
   if (dataCaviste != null) {
     result = false;
@@ -148,8 +148,7 @@ router.post('/sign-in', async function (req, res, next) {
     const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
     })
-    console.log()
-    console.log("SIGN IN VIGNERON", userVigneron)
+    // console.log("SIGN IN VIGNERON", userVigneron)
 
     if (userVigneron) {
       const passwordEncrypt = SHA256(req.body.passwordFromFront + userVigneron.salt).toString(encBase64)
@@ -176,7 +175,7 @@ router.post('/AddVin', async function (req, res, next) {
   if (image.size = 0) {
 
   const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-  console.log("TOKEN MA CAVE", vigneronID)
+  // console.log("TOKEN MA CAVE", vigneronID)
 
   var newBouteille = new BouteilleModel({
 
@@ -191,7 +190,7 @@ router.post('/AddVin', async function (req, res, next) {
   })
 
   saveBouteille = await newBouteille.save()
-  console.log("SAVE BOUTEILLE", saveBouteille)
+  // console.log("SAVE BOUTEILLE", saveBouteille)
 
 }  else {
 
@@ -206,7 +205,7 @@ router.post('/AddVin', async function (req, res, next) {
   fs.unlinkSync(imgpath)
 
   const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-  console.log("TOKEN MA CAVE", vigneronID)
+  // console.log("TOKEN MA CAVE", vigneronID)
 
   var newBouteille = new BouteilleModel({
 
@@ -222,7 +221,7 @@ router.post('/AddVin', async function (req, res, next) {
   })
 
   saveBouteille = await newBouteille.save()
-  console.log("SAVE BOUTEILLE", saveBouteille)
+  // console.log("SAVE BOUTEILLE", saveBouteille)
 
 }
 
@@ -234,7 +233,7 @@ router.get('/macave', async function (req, res, next) {
 
   // Trouver les infos de la bouteille par vigneron
   const user = await VigneronModel.findOne({ token: req.query.token })
-  console.log("TOKEN MA CAVE", user)
+  // console.log("TOKEN MA CAVE", user)
 
   if (user) {
     var ID = user._id;
@@ -245,12 +244,12 @@ router.get('/macave', async function (req, res, next) {
       Ville: user.Ville,
       Region: user.Region,
     }
-    console.log("")
+    // console.log("")
 
-    var cave = await BouteilleModel.findOne({ IdVigneron: ID })
+    var cave = await BouteilleModel.find({ IdVigneron: ID })
       .populate('IdVigneron')
       .exec();
-    console.log("CAVE", cave)
+    // console.log("CAVE", cave)
 
     if (cave != null) {
       res.json({ result: true, cave, infosUser })
@@ -264,10 +263,11 @@ router.delete('/delete-ref/:Nom', async function (req, res, next) {
 
   var result = false
 
-  var suppr = await BouteilleModel.deleteOne({ nomVin: req.params.nom })
-  console.log("SUPPR VIN", suppr)
+  var suppr = await BouteilleModel.deleteOne({ Nom: req.params.Nom })
+  console.log('SURRP', req.params.Nom);
+  // console.log("SUPPR VIN", suppr)
 
-  if (suppr.deletedCount == 1) {
+  if (suppr.deletedCount > 0) {
     result = true
   }
 
@@ -280,7 +280,7 @@ router.post('/info-update-v', async function (req, res, next) {
   var userinfosFB = JSON.parse(req.body.userinfos)
   var image = req.files.avatar
 
-  console.log(image.size)
+  // console.log(image.size)
 
   if (image.size == 0) {
 
@@ -354,9 +354,9 @@ router.get('/info-v', async function (req, res, next) {
   var token = null
   var user = await VigneronModel.findOne({ token: req.query.token })
 
-  console.log("USER", user)
+  // console.log("USER", user)
 
-   console.log("TOKEN FOUND", req.query.token)
+  //  console.log("TOKEN FOUND", req.query.token)
 
 if (user != null) {
   res.json({ result: true, user })
@@ -364,7 +364,6 @@ if (user != null) {
   res.json({ result: false })
 }
 })
-
 
 //---------------Mailbox CAVISTE--------------//
 
@@ -534,7 +533,7 @@ router.post('/info-update-c', async function (req, res, next) {
 
 }
 
-  console.log(infos)
+  // console.log(infos)
 
   res.json({ result: true, infos })
 })
@@ -544,7 +543,7 @@ router.get('/info-c', async function (req, res, next) {
   var token = null
   const user = await CavisteModel.findOne({ token: req.query.token })
 
-  console.log("Caviste", user)
+  // console.log("Caviste", user)
 
   if (user != null) {
     res.json({ result: true, user })
@@ -558,10 +557,10 @@ router.get('/info-c', async function (req, res, next) {
 router.get('/catalogue', async function (req, res, next) {
 
   var user = await CavisteModel.findOne({ token: req.query.token })
-  console.log("TOKEN FOUND", req.query.token)
+  // console.log("TOKEN FOUND", req.query.token)
 
   var catalogue = await BouteilleModel.find()
-  console.log("CATALOGUE", catalogue)
+  // console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
     res.json({ result: true, catalogue, user })
