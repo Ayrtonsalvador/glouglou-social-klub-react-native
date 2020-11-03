@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
 
-function FavoriteCaviste({ userstatus, navigation, token }) {
+function FavoriteCaviste({ navigation, token, userstatus }) {
 
   if (userstatus == "Vigneron") {
     return (<AddVigneron navigation={navigation} token={token} userstatus={userstatus}/>)

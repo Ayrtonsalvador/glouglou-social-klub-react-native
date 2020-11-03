@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
-// ATTENTION ADRESS IP
-
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-function AddVigneron({ navigation, token}) {
+function AddVigneron({ navigation, token, userstatus }) {
+
+  var IPmaison = "";
+  var IPecole = "172.17.1.153";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -42,10 +43,13 @@ function AddVigneron({ navigation, token}) {
     });
     if (!result.cancelled) {
       setImage(result.uri);
-      // console.log("URI", result.uri)
     }
   };
 
+  const updateClick = () => {
+    navigation.navigate('CaveVigneron');
+  }
+  
   return (
 
     <View style={{ flex: 1 }}>
@@ -121,24 +125,41 @@ function AddVigneron({ navigation, token}) {
                 icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                 rounded
                 type='font-awesome'
-                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
+                buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
 
                 onPress={async () => {
-                  // navigation.navigate('CaveVigneron');
 
-                  var data = await fetch("http://172.17.1.153:3000/AddVin", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`
+                  var data = new FormData();
+
+                  data.append('avatar', {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: 'avatar.jpg',
+                  });
+
+                  var bottleinfos = {
+                    NomRef: NomRef,
+                    Couleur: Couleur,
+                    Cepage: Cepage,
+                    Millesime: Millesime,
+                    AOC: Appellation,
+                    Desc: Desc,
+                    token: token,
+                  };
+
+                  data.append('bottleinfos', JSON.stringify(bottleinfos));
+
+                  var newbottle = await fetch(`http://${IPecole}:3000/AddVin`, {
+                    method: 'post',
+                    body: data
                   })
-                  var body = await data.json()
-                  console.log("RESPONSE", body)
-
-                  if(body.result == true){
-                    console.log("OK")
-                    navigation.navigate('CaveVigneron');
+                  var response = await newbottle.json();
+                  console.log("FB", response)
+                  if (response.result == true) {
+                    updateClick();
                   }
                 }}
+
               />
             </View>
           </View>
@@ -148,36 +169,6 @@ function AddVigneron({ navigation, token}) {
     </View>
   );
 }
-
-//Envoi de la photo sur le back
-                 // var data = new FormData();
- 
-                 // data.append('image', {
-                 //   uri: URLToUpload,
-                 //   type: 'image/jpeg',
-                 //   name: 'image_vin.jpg',
-                 // });
-                 // console.log("ImageFF", data.uri)
- 
-                 //Envoi du token et des infos des inputs sur le back
-                 // var infoVin = {
-                 //   token: token,
-                 //   Nom: NomRef,
-                 //   Couleur: Couleur,
-                 //   AOC: Appellation,
-                 //   Desc: Desc,
-                 //   Cepage: Cepage,
-                 //   Millesime: Millesime,
-                 // };
-                 // data.append('infoVin', JSON.stringify(infoVin));
-                 // console.log("infoVin", infoVin);
- 
-                 // var addVin = await fetch(http://192.168.1.22:3000/AddVin, {
-                 //   method: 'POST',
-                 //   body: data
-                 // })
-                 // var response = await addVin.json();
-                 // console.log("RESPONSE FRONT ADD VIN", response)
 
 const styles = StyleSheet.create({
   container: {
@@ -214,7 +205,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return { token: state.token }
+  return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(

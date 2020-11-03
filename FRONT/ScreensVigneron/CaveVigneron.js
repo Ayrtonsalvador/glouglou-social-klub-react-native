@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("TOKEN CAVE", state.token)
-  return { token: state.token }
+  return { token: state.token, userstatus : state.userstatus }
 }
 
 export default connect(

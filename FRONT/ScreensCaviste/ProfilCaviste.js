@@ -18,41 +18,44 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
 
-  const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [image, setImage] = useState(null);
+  const [sendinfos, setsendinfos] = useState(false)
 
-  useEffect(() => {
-    async function loadData() {
-      console.log("PROFIL")
-      var rawResponse = await fetch(`http:// 172.17.1.153:3000/info-c?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("GET INFOS CAVISTE", response)
+      useEffect(() => {
+      async function loadData() {
+        console.log("PROFIL")
+        var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("GET INFOS CAVISTE", response)
 
-      if (response.result == true) {
-        setImage(response.user.Photo)
-        setNom(response.user.Nom)
-        setEtablissement(response.user.Etablissement)
-        setVille(response.user.Ville)
-        setRegion(response.user.Region)
-        setDesc(response.user.Desc)
+        if (etablissement == "" || ville == "" || region == "" || desc == "") {
+          setDomaine("Nom d'établissement")
+          setVille("Ville")
+          setRegion("Région")
+          setDesc("Parlez-nous de vous!")
+        }
+
+        if (response.result == true) {
+          setNom(response.user.Nom)
+          setEtablissement(response.user.Etablissement)
+          setVille(response.user.Ville)
+          setRegion(response.user.Region)
+          setDesc(response.user.Desc)
+          setImage(response.user.Photo)
+        }
+
       }
 
-      if (etablissement == "" || ville == "" || region == "" || desc == "") {
-        setDomaine("Nom d'établissement")
-        setVille("Ville")
-        setRegion("Région")
-        setDesc("Parlez-nous de vous!")
-      }
-    }
+      (async () => {
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      })();
+      loadData()
+    }, []);
 
-    (async () => {
-      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    })();
-    loadData()
-  }, []);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -67,7 +70,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   };
 
   if (userstatus == "Vigneron") {
-    return (<ProfilVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
+    return (<ProfilVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
     return (
 
@@ -86,22 +89,17 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
                     {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
-                    <TouchableOpacity>
-                      <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Changer ma photo</Text>
-                    </TouchableOpacity>
-
                     <Button
                       icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                       rounded
                       buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-
-                      onPress={async () => {
-                        pickImage();
-                      }}
+                      onPress={pickImage}
                     />
-
                   </View>
 
+                  <TouchableOpacity>
+                    <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Changer ma photo</Text>
+                  </TouchableOpacity>
 
                   <Input
                     containerStyle={{ marginBottom: 20, width: '80%' }}
@@ -110,9 +108,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     disabled={disabled}
                     onChangeText={(val) => {
                       setNom(val)
-                      if (nom != null) {
-                        setNom("Nom")
-                      }
                     }}
                   />
 
@@ -123,9 +118,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     disabled={disabled}
                     onChangeText={(val) => {
                       setEtablissement(val)
-                      if (etablissement != null) {
-                        setEtablissement("Établissement")
-                      }
                     }}
                   />
                   <Input
@@ -135,9 +127,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     disabled={disabled}
                     onChangeText={(val) => {
                       setVille(val)
-                      if (ville != null) {
-                        setVille("Ville")
-                      }
                     }}
                   />
                   <Input
@@ -147,9 +136,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     disabled={disabled}
                     onChangeText={(val) => {
                       setRegion(val)
-                      if (region != null) {
-                        setRegion("Région")
-                      }
                     }}
                   />
                   <Input
@@ -160,26 +146,20 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     inputStyle={{ marginLeft: 10 }}
                     onChangeText={(val) => {
                       setDesc(val)
-                      if (desc != null) {
-                        setDesc("Description \n")
-                      }
                     }}
                   />
 
                   <Button onPress={async () => {
                     setDisabled(true)
-                    // création du form data qui formate les données
-                    var data = new FormData();
 
+                
+                    var data = new FormData();
                     // envoie du files avatar
                     data.append('avatar', {
                       uri: image,
                       type: 'image/jpeg',
                       name: 'avatar.jpg',
                     });
-
-                    console.log(data.append)
-
                     // création objet userinfo
                     var userinfos = {
                       nom: nom,
@@ -187,24 +167,25 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                       ville: ville,
                       region: region,
                       desc: desc,
-                      token: token,
+                      token: token
                     };
-
-                    console.log(userinfos)
-                    // envoie en string au serveur
+                
+                    // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
-                   
+                
                     var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
                       method: 'post',
                       body: data
                     })
-
+                
                     var response = await updateUser.json();
-                    // console.log("response from back", response)
-                   
-                   }}
+                    console.log('responseFB', response)
+          
+                    
+              }
+                }
 
-                    // disabled={disabled}
+                    disabled={disabled}
                     buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
                     title="OK"
                   />
