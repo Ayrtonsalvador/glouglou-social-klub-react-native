@@ -9,6 +9,9 @@ import * as ImagePicker from 'expo-image-picker';
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
+  var IPmaison = "";
+  var IPecole = "";
+
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
   const [domaine, setDomaine] = useState("Nom de domaine")
@@ -22,7 +25,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://172.17.1.153:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS VIGNERON", response)
 
@@ -145,7 +148,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
                 <Button onPress={async () => {
                   setDisabled(true)
-                  const data = await fetch("http://172.17.1.153:3000/info-update-v", {
+                  const data = await fetch("http://172.17.1.159:3000/info-update-v", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`

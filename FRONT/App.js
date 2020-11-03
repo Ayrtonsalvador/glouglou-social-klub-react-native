@@ -10,16 +10,19 @@ import SignUpScreen from './Screens/SignUpScreen';
 
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
-import ChatCaviste from './ScreensCaviste/ChatCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import MessageCaviste from './ScreensCaviste/MessageCaviste';
+// import mailmainC from './ScreensCaviste/MailmainC';
+// import mailwriteC from './ScreensCaviste/MailwriteC';
+// import mailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
+import MailboxVigneron from './ScreensVigneron/MailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import ChatVigneron from './ScreensVigneron/ChatVigneron';
-import MessageVigneron from './ScreensVigneron/MessageVigneron';
+// import mailmainV from './ScreensVigneron/MailmainV';
+// import mailwriteV from './ScreensVigneron/MailwriteV';
+// import mailreadV from './ScreensVigneron/MailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
@@ -43,7 +46,7 @@ var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,
   Favoris: FavoriteCaviste,
-  Chat: ChatCaviste,
+  // Main : MailmainC,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -52,8 +55,8 @@ var BottomNavigator = createBottomTabNavigator({
         if (navigation.state.routeName == 'Profil') {
           iconName = 'ios-person';
         } else if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'ios-home';
-        } else if (navigation.state.routeName == 'Chat') {
+          iconName = 'home';
+        } else if (navigation.state.routeName == 'Main') {
           iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Favoris') {
           iconName = 'ios-wine';
@@ -81,8 +84,10 @@ var StackNavigator = createStackNavigator({
   First: FirstScreen,
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
-  Message: MessageCaviste,
   Favoris: FavoriteCaviste,
+  // Read : mailreadC,
+  // Write: mailwriteC,
+
   BottomNavigator: BottomNavigator,
 },
   { headerMode: 'none' }

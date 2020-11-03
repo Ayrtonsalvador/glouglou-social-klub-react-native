@@ -7,6 +7,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function CaveVigneron({ navigation, token }) {
 
+  var IPmaison = "";
+  var IPecole = "";
+
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
   const [domaine, setDomaine] = useState("Nom de domaine")
@@ -27,7 +30,7 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://172.17.1.46:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       // console.log("GET INFOS BOUTEILLE", response)
 
@@ -145,7 +148,7 @@ function CaveVigneron({ navigation, token }) {
 
           <TouchableOpacity
             onPress={async () => {
-              await fetch(`http://172.17.1.46:3000/delete-ref/${nom}`, {
+              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)

@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
 
-// ATTENTION ADRESS IP
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function AddVigneron({ navigation, token}) {
+
+  var IPmaison = "";
+  var IPecole = "";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -125,7 +125,7 @@ function AddVigneron({ navigation, token}) {
                 buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
 
                 onPress={async () => {
-                  var data = await fetch("http://172.17.1.46:3000/AddVin", {
+                  var data = await fetch(`http://${IPecole}:3000/AddVin`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `NomRefFF=${NomRef}&CouleurFF=${Couleur}&CepageFF=${Cepage}&MillesimeFF=${Millesime}&AppellationFF=${Appellation}&DescFF=${Desc}&tokenFF=${token}`

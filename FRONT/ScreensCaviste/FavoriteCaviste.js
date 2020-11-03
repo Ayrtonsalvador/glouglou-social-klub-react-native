@@ -35,7 +35,7 @@ function FavoriteCaviste({ userstatus, navigation, token }) {
   
     useEffect(() => {
       async function loadData() {
-        var rawResponse = await fetch(`http://172.17.1.46:3000/catalogue?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
         var response = await rawResponse.json();
         console.log("GET INFOS CATALOGUE", response)
   
