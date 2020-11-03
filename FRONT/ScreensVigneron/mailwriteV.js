@@ -7,6 +7,9 @@ import userstatus from '../reducers/userstatus';
 
 function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
+
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
 
@@ -81,7 +84,7 @@ function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
          
             onPress={async () => {
              
-              var data = await fetch("http://172.17.1.159:3000/mailbox-write-v", {
+              var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&Nom=${Nom}`

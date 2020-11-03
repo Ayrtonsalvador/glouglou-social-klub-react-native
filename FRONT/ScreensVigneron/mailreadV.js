@@ -7,10 +7,13 @@ import userstatus from '../reducers/userstatus';
 
 function MailreadV({ navigation, pseudo, props, userstatus }) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
+
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
 
-  useEffect(() => { async () => { var data = await fetch("http://172.17.1.159:3000/mailbox-read-v")
+  useEffect(() => { async () => { var data = await fetch(`http://${IPecole}:3000/mailbox-read-v`)
       var body = await data.json()
       console.log("RESPONSE", body)}  
   }, [listMessage]);

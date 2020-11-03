@@ -7,6 +7,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function CaveVigneron({ navigation, token }) {
 
+  var IPmaison = "";
+  var IPecole = "";
+
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
   const [domaine, setDomaine] = useState("Nom de domaine")
@@ -19,7 +22,7 @@ function CaveVigneron({ navigation, token }) {
   const [millesime, setMillesime] = useState("Millesime")
 
   const [popup, setPopup] = useState(false)
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -27,52 +30,18 @@ function CaveVigneron({ navigation, token }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://172.17.1.159:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response)
+      // console.log("GET INFOS BOUTEILLE", response)
+
 
       if (response.result == true) {
-        setPopup(true)
-        setNom(response.cave.Nom)
-        setAOC(response.cave.AOC)
-        setCepage(response.cave.Cepage)
-        setMillesime(response.cave.Millesime)
-        setDesc(response.cave.Desc)
-        setCouleur(response.cave.Couleur)
-        // setPhoto()
 
-        // Map Vins
-        // const cardVin = response.cave.map((i) => {
-        //   return (
-        //       <TouchableOpacity
-        //         onPress={() => { setIsVisible(true); }}>
+        var cave = response.cave;
 
-        //         <View style={{ flexDirection: "row" }}>
-        //           <Card
-        //             key={i}
-        //             style={{ alignItems: 'center', justifyContent: 'center' }}
-        //           // image={{ uri: '../assets/imagedefault-v.png' }}
-        //           >
-        //             <Text>
-        //               {nom}
-        //             </Text>
-        //             <Text>
-        //               {millesime}
-        //             </Text>
-        //             <Text>
-        //               {AOC}
-        //             </Text>
-        //             <Text>
-        //               {cepage}
-        //             </Text>
-        //           </Card>
-        //         </View>
+        setlisteVin(cave)
 
-        //       </TouchableOpacity>
-        //   )
-        // })
-
-        // setlisteVin(cardVin)
+        // setPopup(true)
 
       } else {
         //CAVE VIDE
@@ -81,6 +50,36 @@ function CaveVigneron({ navigation, token }) {
     }
     loadData()
   }, []);
+
+
+  // // Map Vins
+  const cardVin = listeVin.map((vin, i) => {
+    return (
+      <TouchableOpacity
+        onPress={() => { setIsVisible(true); }}>
+        <View style={{ flexDirection: "row" }}>
+          <Card
+            key={i}
+            style={{ alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text>
+              {vin.Nom}
+            </Text>
+            <Text>
+              {vin.Millesime}
+            </Text>
+            <Text>
+              {vin.AOC}
+            </Text>
+            <Text>
+              {vin.Cepage}
+            </Text>
+          </Card>
+        </View>
+      </TouchableOpacity>
+    )
+  })
+
 
   // SUPPRIMER UNE REF
   var handleDeleteRef = async (nom) => {
@@ -105,7 +104,7 @@ function CaveVigneron({ navigation, token }) {
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ marginBottom: 10, fontWeight: 'bold'}}>
+                  <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>
                     {nom}
                   </Text>
                   <Text style={{ marginBottom: 10, marginLeft: 5 }}>
@@ -149,7 +148,7 @@ function CaveVigneron({ navigation, token }) {
 
           <TouchableOpacity
             onPress={async () => {
-              await fetch(`http://172.17.1.46:3000/delete-ref/${nom}`, {
+              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
@@ -170,9 +169,9 @@ function CaveVigneron({ navigation, token }) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
-        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-          < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
-        </View>
+          <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+          </View>
           <TouchableOpacity>
             <Text
               onPress={() => {
@@ -197,117 +196,14 @@ function CaveVigneron({ navigation, token }) {
 
           <ScrollView>
 
-            {/* {listeVin} */}
-
             <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
               }}>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "column" }}>
 
-                <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
+                {cardVin}
 
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-              </View>
-
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
-
-                <Card>
-                  <Image source={require('../assets/imagedefault-v.png')} style={styles.img} />
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {nom}
-                  </Text>
-                  <Text>
-                    {millesime}
-                  </Text>
-                  <Text>
-                    {AOC}
-                  </Text>
-                  <Text>
-                    {cepage}
-                  </Text>
-                </Card>
               </View>
             </TouchableOpacity>
           </ScrollView>

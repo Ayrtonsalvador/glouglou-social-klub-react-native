@@ -7,7 +7,10 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 
-function ProfilVigneron({ navigation, token }) {
+function ProfilVigneron({ navigation, token, userstatus }) {
+
+  var IPmaison = "";
+  var IPecole = "";
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")
@@ -22,7 +25,7 @@ function ProfilVigneron({ navigation, token }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://172.17.1.159:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS VIGNERON", response)
 
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("STATE TOKEN", state.token)
-  return { token: state.token }
+  return { token: state.token, userstatus: state.userstatus}
 }
 
 function mapDispatchToProps(dispatch) {

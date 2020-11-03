@@ -7,6 +7,9 @@ import userstatus from '../reducers/userstatus';
 
 function MailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
+
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
@@ -14,7 +17,7 @@ function MailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main-v?token=${token}&msgVigneron=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}&msgVigneron=${MessagesR}`);
     var response = await rawResponse.json();
 
     if(response.result == true){

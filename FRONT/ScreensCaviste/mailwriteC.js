@@ -5,7 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
+
 function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
+  
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();
@@ -85,7 +89,7 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
          
             onPress={async () => {
              
-              var data = await fetch("http://172.17.1.159:3000/mailbox-write", {
+              var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}`

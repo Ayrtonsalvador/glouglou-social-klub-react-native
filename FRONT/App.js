@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+console.disableYellowBox = true;
 import { connect } from 'react-redux';
 
 // Screens Communs
@@ -9,25 +11,25 @@ import SignUpScreen from './Screens/SignUpScreen';
 // Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
-import mailmainC from './ScreensCaviste/MailmainC';
-import mailwriteC from './ScreensCaviste/MailwriteC';
-import mailreadC from './ScreensCaviste/MailreadC';
+import MailmainC from './ScreensCaviste/MailmainC';
+import MailwriteC from './ScreensCaviste/MailwriteC';
+import MailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
 
 // Screens Vignerons
 import AddVigneron from './ScreensVigneron/AddVigneron';
 import MailboxVigneron from './ScreensVigneron/MailmainV';
 import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import mailmainV from './ScreensVigneron/MailmainV';
-import mailwriteV from './ScreensVigneron/MailwriteV';
-import mailreadV from './ScreensVigneron/MailreadV';
+import MailmainV from './ScreensVigneron/MailmainV';
+import MailwriteV from './ScreensVigneron/MailwriteV';
+import MailreadV from './ScreensVigneron/MailreadV';
 import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -44,20 +46,20 @@ var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,
   Favoris: FavoriteCaviste,
-  Main : mailmainC,
+  Main : MailmainC,
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         var iconName;
         if (navigation.state.routeName == 'Profil') {
-          iconName = 'user';
+          iconName = 'ios-person';
         } else if (navigation.state.routeName == 'Catalogue') {
           iconName = 'home';
         } else if (navigation.state.routeName == 'Main') {
-          iconName = 'envelope';
+          iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Favoris') {
-          iconName = 'glass';
+          iconName = 'ios-wine';
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -83,8 +85,8 @@ var StackNavigator = createStackNavigator({
   SignIn: SignInScreen,
   SignUp: SignUpScreen,
   Favoris: FavoriteCaviste,
-  Read : mailreadC,
-  Write: mailwriteC,
+  Read : MailreadC,
+  Write: MailwriteC,
 
   BottomNavigator: BottomNavigator,
 },

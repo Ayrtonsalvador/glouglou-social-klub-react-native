@@ -5,7 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailmainV from '../ScreensVigneron/MailmainV';
 
+
 function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
+  
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
@@ -26,7 +30,7 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
     var response = await rawResponse.json();
 
     if(response.result == true){

@@ -7,17 +7,20 @@ import MailreadV from '../ScreensVigneron/MailreadV';
 
 function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg }) {
 
+  var IPmaison = "";
+  var IPecole = "172.17.1.159";
+
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
 
-  const [clickedItem, setClickedItem] = useState();
+  // const [clickedMsg, setClickedMsg] = useState();
   const [selectedId, setSelectedId] = useState(null);
   
  
    console.log("CA MARCHE", clickedMsg)
   
 
-  useEffect(() => { async () => { var data = await fetch("http://172.17.1.159:3000/mailbox-read")
+  useEffect(() => { async () => { var data = await fetch(`http://${IPecole}:3000/mailbox-read`)
       var body = await data.json()
       console.log("RESPONSE", body)}  
   }, [listMessage]);
