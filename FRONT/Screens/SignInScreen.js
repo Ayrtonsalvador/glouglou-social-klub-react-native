@@ -10,8 +10,8 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
   var IPmaison = "";
   var IPecole = "172.17.1.46";
 
-  const [signInEmail, setSignInEmail] = useState('fab@gmail.com')
-  const [signInPassword, setSignInPassword] = useState('fab')
+  const [signInEmail, setSignInEmail] = useState('')
+  const [signInPassword, setSignInPassword] = useState('')
   const [listErrorsSignin, setErrorsSignin] = useState([])
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {

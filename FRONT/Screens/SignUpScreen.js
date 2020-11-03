@@ -12,7 +12,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.46";
 
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')

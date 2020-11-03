@@ -30,71 +30,64 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
 
   const [selectedValue, setSelectedValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
+  const [error, setError] = useState(false);
 
+  const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFFFFF');
   const [colorIcon, setColorIcon] = useState('#FFFFFF');
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://172.17.1.46:3000/catalogue?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("GET INFOS CATALOGUE", response)
+      console.log("GET INFOS CATALOGUE", response)
 
       if (response.result == true) {
-        setNom(response.catalogue.Nom)
-        setMillesime(response.catalogue.Millesime)
-        setCepage(response.catalogue.Cepage)
-        setAOC(response.catalogue.AOC)
-        // setPhoto()
-
-        setDesc(response.catalogue.Desc)
-        setCouleur(response.catalogue.Couleur)
-        setDomaine()
-
-        // setNomVi(response.catalogue.user.Nom)
-        // setRegionVi(response.catalogue.user.Region)
-        // setDescVi(response.catalogue.user.Desc)
-        // setDescVi(response.catalogue.user.Desc)
-        // setPhotoVi()
-
-        // Map Vins
-        // const cardVin = response.cave.map((i) => {
-        //   return (
-        //       <TouchableOpacity
-        //         onPress={() => { setIsVisible(true); }}>
-
-        //         <View style={{ flexDirection: "row" }}>
-        //           <Card
-        //             key={i}
-        //             style={{ alignItems: 'center', justifyContent: 'center' }}
-        //           // image={{ uri: '../assets/imagedefault-v.png' }}
-        //           >
-        //             <Text>
-        //               {nom}
-        //             </Text>
-        //             <Text>
-        //               {millesime}
-        //             </Text>
-        //             <Text>
-        //               {AOC}
-        //             </Text>
-        //             <Text>
-        //               {cepage}
-        //             </Text>
-        //           </Card>
-        //         </View>
-
-        //       </TouchableOpacity>
-        //   )
-        // })
-
-        // setlisteVin(cardVin)
+        var catalogue = response.catalogue;
+        setlisteVin(catalogue)
+      } else {
+        //ERREUR RECHERCHE
+        setError(true)
       }
     }
     loadData()
   }, []);
+
+    // Map Vins
+    const cardVin = listeVin.map((vin, i) => {
+      return (
+        <TouchableOpacity
+          onPress={() => { 
+            setIsVisible(true); 
+            setNom(vin.Nom);
+            setAOC(vin.AOC);
+            setCepage(vin.Cepage);
+            setMillesime(vin.millesime)
+  
+            }}>
+          <View style={{ flexDirection: "row" }}>
+            <Card
+              key={i}
+              style={{ alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Text>
+                {vin.Nom}
+              </Text>
+              <Text>
+                {vin.Millesime}
+              </Text>
+              <Text>
+                {vin.AOC}
+              </Text>
+              <Text>
+                {vin.Cepage}
+              </Text>
+            </Card>
+          </View>
+        </TouchableOpacity>
+      )
+    })
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
@@ -204,10 +197,32 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
     )
   }
 
+  // Message Erreur chargement
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
+        <View style={styles.popup}>
+          <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+            <Text>Erreur de chargement !</Text>
+          </View>
+          <TouchableOpacity>
+            <Text
+              onPress={() => {
+                navigation.navigate('Favoris');
+              }}
+              style={{ color: '#9D2A29', marginTop: 60 }}>Ajouter un vin à ma cave</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    );
+  }
+
   if (userstatus == "Vigneron") {
     return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
 
+    // Catalogue Caviste
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
@@ -277,52 +292,15 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
           </Button>
         </View>
 
-        {/* <View style={{ flex: 0.5, width: 100, height: 100 }}>
-        <Modal visible={isVisibleModal} transparent={true}>
-          <View style={{ margin: 20, padding: 20, backgroundColor: '#efefef' }}
-          >
-            <Text style={{ fontWeight: 'bold' }}>Pick a value</Text>
-            <TouchableHighlight>
-              <Text style={{ margin: 20, padding: 20, alignItems: 'center', justifyContent: 'center' }}>TYPE</Text>
-              <Text style={{margin: 20, padding: 20, alignItems:'center', justifyContent: 'center'}}>DOMAINE</Text>
-            </TouchableHighlight>
-          </View>
-        </Modal>
-      </View> */}
-
-        {/* <View style={{ flex: 1}}>
-    <View style={{ flex: 1}}>
-    <Picker
-        selectedValue={selectedValue}
-        style={{ height: 20, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="BLANCS" value="blanc" />
-        <Picker.Item label="ROUGES" value="rouge" />
-        <Picker.Item label="BULLES" value="bulles" />
-      </Picker>
-      </View>
-
-      <View style={{ flex: 1}}>
-      <Picker
-        selectedValue={selectedValue}
-        style={{ height: 20, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-      >
-        <Picker.Item label="DOMAINE" value="domaine" />
-        <Picker.Item label="PRODUCTEUR" value="producteur" />
-        <Picker.Item label="REGION" value="region" />
-      </Picker>
-      </View>
-      </View> */}
-
         <View style={styles.container}>
 
           <View style={styles.box1}>
 
             <ScrollView>
 
-              <TouchableOpacity
+            {cardVin}
+
+              {/* <TouchableOpacity
                 onPress={() => {
                   setIsVisible(true);
                 }}>
@@ -432,7 +410,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                   </Text>
                   </Card>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </ScrollView>
           </View>
         </View>

@@ -8,7 +8,7 @@ import userstatus from '../reducers/userstatus';
 function MailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
 
   var IPmaison = "";
-  var IPecole = "";
+  var IPecole = "172.17.1.46";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();

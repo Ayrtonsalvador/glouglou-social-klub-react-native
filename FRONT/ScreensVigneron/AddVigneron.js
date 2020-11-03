@@ -11,7 +11,7 @@ import { set } from 'react-native-reanimated';
 function AddVigneron({ navigation, token}) {
 
   var IPmaison = "";
-  var IPecole = "";
+  var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");

@@ -9,7 +9,7 @@ import MailwriteV from '../ScreensVigneron/MailwriteV';
 function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
   
   var IPmaison = "";
-  var IPecole = "";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();

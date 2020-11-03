@@ -8,7 +8,7 @@ import userstatus from '../reducers/userstatus';
 function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
   var IPmaison = "";
-  var IPecole = "";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
