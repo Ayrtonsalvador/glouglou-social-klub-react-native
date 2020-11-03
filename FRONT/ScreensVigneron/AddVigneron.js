@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, TouchableOpacity, Text, SafeAreaView } from "react-native";
-import { Button, Input, Header, Icon, Avatar } from 'react-native-elements';
+import { Button, Input, Header, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
 
-
 function AddVigneron({ navigation, token, userstatus }) {
 
   var IPmaison = "";
   var IPecole = "172.17.1.153";
-
-  var IPmaison = "";
-  var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -49,10 +45,10 @@ function AddVigneron({ navigation, token, userstatus }) {
     }
   };
 
-  const updateClick = () => {
-    navigation.navigate('CaveVigneron');
-  }
-  
+  // const updateClick = () => {
+  //   navigation.navigate('CaveVigneron');
+  // }
+
   return (
 
     <View style={{ flex: 1 }}>
@@ -63,12 +59,10 @@ function AddVigneron({ navigation, token, userstatus }) {
           <View style={styles.box1}>
 
             <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
-
-            <ScrollView >
-
+            <ScrollView>
               <View style={styles.box2}>
 
-                <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Ajouter une photo</Text>
+                <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Ajouter une photo</Text>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Button
@@ -78,6 +72,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                     onPress={pickImage} />
                   {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
                 </View>
+
 
                 <Input
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
@@ -132,6 +127,8 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                 onPress={async () => {
 
+                  navigation.navigate('Catalogue');
+
                   var data = new FormData();
 
                   data.append('avatar', {
@@ -157,14 +154,15 @@ function AddVigneron({ navigation, token, userstatus }) {
                     body: data
                   })
                   var response = await newbottle.json();
-                  console.log("FB", response)
+                  // console.log("FB", response)
                   if (response.result == true) {
-                    updateClick();
-                  }
+                    navigation.navigate('Catalogue') } 
                 }}
 
               />
             </View>
+
+
           </View>
         </KeyboardAvoidingView>
 

@@ -9,7 +9,7 @@ import MailmainV from '../ScreensVigneron/MailmainV';
 function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
   
   var IPmaison = "";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();

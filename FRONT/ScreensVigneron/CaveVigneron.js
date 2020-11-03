@@ -8,9 +8,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 function CaveVigneron({ navigation, token }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
-  const [photo, setPhoto] = useState('')
+  const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
   const [domaine, setDomaine] = useState("Nom de domaine")
   const [ville, setVille] = useState("Ville")
@@ -22,48 +22,66 @@ function CaveVigneron({ navigation, token }) {
   const [millesime, setMillesime] = useState("Millesime")
 
   const [popup, setPopup] = useState(false)
-  // const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const [listeVin, setlisteVin] = useState([])
   const [listeModal, setlisteModal] = useState([])
   const [getIndex, setGetIndex] = useState()
+  const [state, setState] = useState(true)
 
   useEffect(() => {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       // console.log("GET INFOS BOUTEILLE", response)
+      console.log("CAVE", response.cave);
       if (response.result == true) {
-        var cave = response.cave;
+        console.log('TRUE');
+        var cave = response.cave
         setlisteVin(cave)
+
       } else {
         //CAVE VIDE
+        console.log('FALSE');
+
         setPopup(true)
       }
     }
     loadData()
-  }, []);
+  }, [state]);
 
+  // SUPPRIMER UNE REF
+  var handleDeleteRef = async (nom) => {
+    setlisteVin(listeVin.filter(object => object.nom != nom))
+    setState(!state);
+  }
 
   // Map Vins
   const cardVin = listeVin.map((vin, i) => {
     return (
       <TouchableOpacity
-        onPress={() => { 
-          setIsVisible(true); 
+        onPress={() => {
+          setIsVisible(true);
           setNom(vin.Nom);
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
-          setDesc(vin.desc)
-
-          }}>
+          setDesc(vin.desc);
+          setPhoto(vin.Photo)
+        }}
+        >
         <View style={{ flexDirection: "row" }}>
           <Card
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
+
+            <View
+              style={{ justifyContent: 'center', alignItems: 'center' }}
+            >
+              <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
+            </View>
+
             <Text>
               {vin.Nom}
             </Text>
@@ -82,79 +100,77 @@ function CaveVigneron({ navigation, token }) {
     )
   })
 
-  // SUPPRIMER UNE REF
-  var handleDeleteRef = async (nom) => {
-    setlisteVin(listeVin.filter(object => object.nom != nom))
-  }
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
-      return (
-        <View>
-          <Overlay
-            onBackdropPress={() => { setIsVisible(false) }}
-          >
-            <ScrollView>
-              <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+    return (
+      <View>
+        <Overlay
+          onBackdropPress={() => { setIsVisible(false) }}
+        >
+          <ScrollView>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
-                <View style={{ justifyContent: 'center' }}>
-                  <View
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    <Image source={require('../assets/imagedefault-v.png')} style={{ margin: 10, width: 150, height: 150 }} />
-                  </View>
+              <View style={{ justifyContent: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                </View>
 
-                  <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                    <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>
-                      {nom}
-                    </Text>
-                    <Text style={{ marginBottom: 10, marginLeft: 5 }}>
-                      {cepage}
-                    </Text>
-                  </View>
-                  <Text style={{ marginBottom: 10 }}>
-                    {AOC}
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>
+                    {nom}
                   </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {millesime}
-                  </Text>
-                  <Text style={{ marginBottom: 10 }}>
+                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
                     {cepage}
                   </Text>
-
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Couleur
-                  </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {couleur}
-                  </Text>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Description
-                  </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {desc}
-                  </Text>
                 </View>
-              </Card>
-            </ScrollView>
+                <Text style={{ marginBottom: 10 }}>
+                  {AOC}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {millesime}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {cepage}
+                </Text>
 
-            <TouchableOpacity
-              onPress={async () => {
-                await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
-                  method: 'DELETE'
-                });
-                handleDeleteRef(nom)
-                console.log("DELETED FRONT", nom)
-              }}
-              style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Text
-                style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
-            </TouchableOpacity>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Couleur
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {couleur}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Description
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {desc}
+                </Text>
+              </View>
+            </Card>
+          </ScrollView>
 
-          </Overlay>
-        </View>
-      )
+          <TouchableOpacity
+            onPress={async () => {
+              setIsVisible(false);
+              setState(true);
+              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+                method: 'DELETE'
+              });
+              handleDeleteRef(nom)
+              console.log("DELETED FRONT", nom)
+            }}
+            style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Text
+              style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
+          </TouchableOpacity>
+
+        </Overlay>
+      </View>
+    )
   }
 
   if (popup) {
@@ -228,7 +244,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   console.log("TOKEN CAVE", state.token)
-  return { token: state.token, userstatus : state.userstatus }
+  return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(

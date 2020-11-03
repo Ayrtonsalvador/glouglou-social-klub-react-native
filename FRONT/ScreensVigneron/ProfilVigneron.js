@@ -158,7 +158,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 </TouchableOpacity>
 
                 <Button onPress={async () => {
-
+                navigation.navigate('Favoris');
                   setDisabled(true)
                   // création du form data qui formate les données
                 if ( userstatus == "Vigneron" ) {

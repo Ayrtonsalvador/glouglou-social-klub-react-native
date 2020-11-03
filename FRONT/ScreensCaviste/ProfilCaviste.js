@@ -10,7 +10,7 @@ import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 function ProfilCaviste({ navigation, token, userstatus }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState("Nom")
   const [etablissement, setEtablissement] = useState("Nom d'établissement")

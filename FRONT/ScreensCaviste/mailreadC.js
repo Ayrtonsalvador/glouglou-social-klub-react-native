@@ -8,7 +8,7 @@ import MailreadV from '../ScreensVigneron/MailreadV';
 function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg }) {
 
   var IPmaison = "";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();

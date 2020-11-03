@@ -10,7 +10,7 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 function FavoriteCaviste({ navigation, token, userstatus }) {
 
     var IPmaison = "";
-    var IPecole = "172.17.1.46";
+    var IPecole = "172.17.1.153";
   
     const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState("Nom")
