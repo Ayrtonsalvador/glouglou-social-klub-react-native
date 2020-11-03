@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import MailmainV from '../ScreensVigneron/MailmainV';
 
 
-function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
+function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessage }) {
   
   var IPmaison = "";
   var IPecole = "172.17.1.159";
@@ -18,13 +18,13 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
   const [clickedMsg, setClickedMsg] = useState();
   const [selectedId, setSelectedId] = useState(null);
 
-  const handleClick = (id, texte) => {
-    setSelectedId(id) // ID détecté !
-    setClickedMsg(texte) // MSG détecté     
-    navigation.navigate('Read');
 
-    if(clickedMsg != null){return (<MailmainC clickedMsg={clickedMsg} />)}
-    
+  const handleClick = (msgDatas) => { 
+    // setSelectedId(msg._id) // ID détecté !
+    // setClickedMsg(msg.Texte) // MSG détecté
+      // if(message != null){return (<MailmainC message={message} />)}
+    sendMessage({id:msgDatas.id, msg:msgDatas.msg})
+    console.log("selectedid+clickedMsg", msgDatas ) // ok, il a l'info
     navigation.navigate('Read')
   }
 
@@ -34,18 +34,28 @@ useEffect(() => {
     var response = await rawResponse.json();
 
     if(response.result == true){
-      setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)}
+    setListMessages(response.msgCaviste)
+    setNomCaviste(response.Caviste.Nom)
+    console.log("MSG CAVISTE", response.msgCaviste)
+  
+  }
   } 
+  
   loadData()
 }, []);
 
 
  var listMessagesItem = listMessages.map((msg, i) => {
+
+var result = listMessages[i].Texte;
+
+console.log("ALORS ALORS",result)
+
+    if(result.length > 75){
+      result = result.slice(0,75)+'...' }
       
           return <ListItem
-              title={msg.Texte}
-              subtitle={nomCaviste}
+              
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -54,9 +64,16 @@ useEffect(() => {
               //   //   <Accessory />
               //   // </Avatar>
               // }
+              title={result}
+              subtitle={nomCaviste}
               bottomDivider={true}
-              onPress={() => {handleClick(msg._id, msg.Texte)}} 
-                          >    
+              onPress={() => {
+                 handleClick({id:msg._id, msg:msg.Texte})
+                 console.log("yo",msg.Texte) // OK, il a l'info 
+
+              }
+            } 
+                          >   
                  </ListItem>
     });
  
@@ -89,7 +106,15 @@ function mapStateToProps(state) {
   
 }
 
+function mapDispatchToProps(dispatch) {
+  return { 
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message })
+    }
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(MailmainC);

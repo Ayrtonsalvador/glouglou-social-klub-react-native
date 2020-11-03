@@ -6,13 +6,28 @@ import { connect } from 'react-redux';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
-  
+function MailwriteC({ navigation, pseudo, token, userstatus}) {
+
   var IPmaison = "";
   var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();
+  const [Nom, setNom] = useState();
+
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-write-getuser?token=${token}`);
+      var response = await rawResponse.json();
+      console.log("MAIL WRITE RESPONSE", response)
+
+      if (response.result == true) {
+        setNom(response.user.Nom)
+      }
+    }     
+    loadData()
+    }, []);
+
 
   if (userstatus == "Vigneron") {
     return (<MailwriteV navigation={navigation} token={token} userstatus={userstatus}/>)
@@ -95,7 +110,8 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
                 body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}`
                 })
               var body = await data.json()
-             
+              setNomVigneron('');
+              setTexte('');
               } 
           
             } // onPress

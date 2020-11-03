@@ -5,20 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailreadV from '../ScreensVigneron/MailreadV';
 
-function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg }) {
+function MailreadC({ navigation, pseudo, props, token, userstatus, message }) {
 
   var IPmaison = "";
   var IPecole = "172.17.1.159";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
-
-  // const [clickedMsg, setClickedMsg] = useState();
-  const [selectedId, setSelectedId] = useState(null);
-  
+  const [nomVigneron, setNomVigneron] = useState();
+  const [answerVigneron, setAnswerVigneron] = useState();
  
-   console.log("CA MARCHE", clickedMsg)
-  
 
   useEffect(() => { async () => { var data = await fetch(`http://${IPecole}:3000/mailbox-read`)
       var body = await data.json()
@@ -50,22 +46,23 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg })
       {/* {listMessageItem} */}
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem
-              title={"Vigneron"}
-              subtitle={"Oui, nous sommes disponibles"}
+              title={message.id}
+              subtitle={message.msg}
               leftAvatar={
               <Avatar rounded
                        source={require('../assets/vigneron.jpg')} >
               <Accessory />
               </Avatar>}
               bottomDivider={true}
-              // {clickedItem}
-          />
+              >
+      </ListItem>
               
       </ScrollView >
 
       <KeyboardAvoidingView behavior="padding" enabled>
 
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "column" }}>
+
         <Input
             containerStyle={{ marginBottom: 5 }}
             placeholder={"Votre message \n"}
@@ -74,13 +71,8 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg })
                 setTexte(text);      }}
             value={Texte}
           />
-          {/* <Input
-            containerStyle={{ marginBottom: 5 }}
-            placeholder='To:'
-            onChangeText={(text) => setTexte(text)}
-            value={Texte}
-          /> */}
         </View>
+        
         <Button
           icon={
             <Icon
@@ -93,10 +85,19 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg })
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
           type="solid"
           // Envoi du message au back en appuyant sur Send
-          onPress={() => {
+          onPress={async () => {
+             
+            var data = await fetch(`http://${IPecole}:3000/mailbox-write-ans`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}AnswerVigneron=${answerVigneron}`
+              })
+            var body = await data.json();
+            setTexte('');
            
-            setTexte('')
-          }}
+            } 
+        
+          } // onPress
         />
 
         <Button
@@ -119,7 +120,8 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg })
 
 
 function mapStateToProps(state){
-  return {token: state.token, userstatus : state.userstatus}
+  console.log("MESSAGE ENVOYE MTP", state)
+  return {token: state.token, userstatus : state.userstatus, message: state.message}
 }
 
 export default connect(

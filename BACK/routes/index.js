@@ -367,6 +367,7 @@ router.get('/mailbox-main', async function(req, res, next) {
     {token: req.query.token })
 
   var msgCaviste = Caviste.MessagesR
+  console.log("CE MSG CAVISTE", msgCaviste)
 
   res.json({ Caviste, msgCaviste, result:true })
 });
@@ -398,13 +399,53 @@ router.post('/mailbox-write', async function(req, res, next) {
   if(searchVigneron!= null) {
   var msgVigneron = await VigneronModel.updateOne(
         {Nom: req.body.NomVigneron}, {
-            $push: {MessagesR: {Texte: req.body.Texte} }   
+            $push: {MessagesR:
+               {Texte: req.body.Texte, 
+                Nom: req.query.Nom} 
+              }   
         });
   }
   
   res.json({ msg, msgVigneron })
+});
+
+
+
+router.get('/mailbox-write-getuser', async function(req, res, next) {
+
+  var user = await CavisteModel.findOne(
+    {token: req.query.token} )
+
+    console.log("GET USER", user)
+
+  res.json({ user, result:true })
 
 });
+
+
+
+// REPONDRE A UN VIGNERON
+router.post('/mailbox-write-ans', async function(req, res, next) {
+  //  console.log(req.body.token);
+  
+    var msg = await CavisteModel.updateOne(
+      {token: req.body.token}, {
+          $push: {MessagesS: {Texte: req.body.Texte} }   
+      });
+  
+    // var searchVigneron = await VigneronModel.findOne({
+    //       Nom: req.body.NomVigneron})
+  
+ 
+    var answerVigneron = await VigneronModel.updateOne(
+          {Nom: req.body.NomVigneron}, {
+              $push: {MessagesR: {Texte: req.body.Texte} }   
+          });
+    
+    
+    res.json({ msg, answerVigneron })
+  
+  });
 
 
 //---------------Mailbox VIGNERON--------------//
@@ -454,6 +495,29 @@ router.post('/mailbox-write-v', async function(req, res, next) {
   res.json({ msg, msgCaviste })
 
 });
+
+// REPONDRE A UN CAVISTE
+// router.post('/mailbox-write-v-ans', async function(req, res, next) {
+//   //  console.log(req.body.token);
+  
+//     var msg = await VigneronModel.updateOne(
+//       {token: req.body.token}, {
+//           $push: {MessagesS: {Texte: req.body.Texte} }   
+//       });
+  
+//     var searchCaviste = await CavisteModel.findOne({
+//           Nom: req.body.NomCaviste})
+  
+//     if(searchCaviste!= null) {
+//     var msgCaviste = await CavisteModel.updateOne(
+//           {Nom: req.body.NomCaviste}, {
+//               $push: {MessagesR: {Texte: req.body.Texte} }   
+//           });
+//     }
+    
+//     res.json({ msg, msgCaviste })
+  
+  // });
 
 
 // ---------------- INFOS CAVISTE ---------------- \\
