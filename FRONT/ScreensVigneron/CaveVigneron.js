@@ -34,11 +34,13 @@ function CaveVigneron({ navigation, token }) {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response)
-      
+      // console.log("GET INFOS BOUTEILLE", response)
       if (response.result == true) {
         var cave = response.cave;
         setlisteVin(cave)
+        // Juliette
+        // var cave = response.cave;
+        // setlisteVin([...listeVin,cave])
       } else {
         //CAVE VIDE
         setPopup(true)

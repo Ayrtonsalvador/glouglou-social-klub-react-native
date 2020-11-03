@@ -470,30 +470,13 @@ router.get('/catalogue', async function (req, res, next) {
   .exec()
   console.log("CATALOGUE", catalogue)
 
-  // var userVigneron = await VigneronModel.findOne({ ID: catalogue.IdVigneron })
-  // console.log("TOKEN MA CAVE", userVigneron)
-
-  // if (userVigneron) {
-  //   var ID = user._id;
-
-  //   const infosVigneron = {
-  //     NomV: userVigneron.Nom,
-  //     Domaine: userVigneron.Domaine,
-  //     Ville: userVigneron.Ville,
-  //     Region: userVigneron.Region,
-  //   }
-  //   console.log("")
-
-  //   var cave = await BouteilleModel.find({IdVigneron : ID })
-  //   .populate('IdVigneron')
-  //   .exec();
-  //   console.log("CAVE", cave)
-
   if (catalogue != null) {
     res.json({ result: true, catalogue, userCaviste})
   } else {
     res.json({ result: false })
   }
 })
+
+// ---------------- FAVORIS CAVISTE ---------------- \\
 
 module.exports = router;
