@@ -209,8 +209,6 @@ router.get('/get-status', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
-// FAIRE TRANSITER COTER FRONT
-
   const vigneronID = await VigneronModel.findOne({ token: req.body.tokenFF })
   console.log("TOKEN MA CAVE", vigneronID)
 
@@ -235,45 +233,6 @@ router.post('/AddVin', async function (req, res, next) {
   res.json({ saveBouteille })
 
 });
-
-
- // var infovin = JSON.parse(req.body.infoVin)
- // console.log("infoVin", req.body.infoVin)
- // console.log("infovin", infovin)
- 
-   // Cloudinary
-   // var resultCloudinaryUrl = newBouteille.Photo
- 
-   // if (req.files.image != undefined) {
-   //   var imagePath = './tmp/' + uniqid() + '.jpg';
-   //   var resultCopy = await req.files.image.mv(imagePath);
-   //   console.log("RESULT IMG", resultCopy)
- 
-   //   if (!resultCopy) {
-   //     resultCloudinary = await cloudinary.uploader.upload(imagePath);
-   //     resultCloudinaryUrl = resultCloudinary.url
-   //     console.log("URL", resultCloudinaryUrl)
-   //   } else {
-   //     error.push("Problème d'upload de l'image")
-   //   }
-   //   fs.unlinkSync(imagePath);
-   // }
- 
- 
- // var newBouteille = new BouteilleModel({
- //   token: token,
- //   Nom: Nom,
- //   Couleur: Couleur,
- //   AOC: Appellation,
- //   Desc: Desc,
- //   Cepage: Cepage,
- //   Millesime: Millesime,
- //   // Photo: resultCloudinaryUrl,
- // })
- // saveBouteille = await newBouteille.save()
- // console.log("BOUTEILLE", saveBouteille)
- 
- // res.json({ saveBouteille, infovin })
 
 router.get('/macave', async function (req, res, next) {
 
@@ -503,14 +462,35 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
-  var user = await CavisteModel.findOne({ token: req.query.token })
+  var userCaviste = await CavisteModel.findOne({ token: req.query.token })
   console.log("TOKEN FOUND", req.query.token)
 
   var catalogue = await BouteilleModel.find()
+  .populate('IdVigneron')
+  .exec()
   console.log("CATALOGUE", catalogue)
 
+  // var userVigneron = await VigneronModel.findOne({ ID: catalogue.IdVigneron })
+  // console.log("TOKEN MA CAVE", userVigneron)
+
+  // if (userVigneron) {
+  //   var ID = user._id;
+
+  //   const infosVigneron = {
+  //     NomV: userVigneron.Nom,
+  //     Domaine: userVigneron.Domaine,
+  //     Ville: userVigneron.Ville,
+  //     Region: userVigneron.Region,
+  //   }
+  //   console.log("")
+
+  //   var cave = await BouteilleModel.find({IdVigneron : ID })
+  //   .populate('IdVigneron')
+  //   .exec();
+  //   console.log("CAVE", cave)
+
   if (catalogue != null) {
-    res.json({ result: true, catalogue, user })
+    res.json({ result: true, catalogue, userCaviste})
   } else {
     res.json({ result: false })
   }

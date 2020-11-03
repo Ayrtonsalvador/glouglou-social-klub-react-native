@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList, Modal } from 'react-native';
+import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList, Modal, Picker } from 'react-native';
 import { Button, ListItem, Input, Header } from 'react-native-elements';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';

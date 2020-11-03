@@ -41,11 +41,12 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS CATALOGUE", response)
+      console.log("GET INFOS CATALOGUE", response.catalogue)
 
       if (response.result == true) {
+        // Catalogue
         var catalogue = response.catalogue;
-        setlisteVin(catalogue)
+        setlisteVin(catalogue);
       } else {
         //ERREUR RECHERCHE
         setError(true)
@@ -54,7 +55,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
     loadData()
   }, []);
 
-    // Map Vins
+    // MAP VINS
     const cardVin = listeVin.map((vin, i) => {
       return (
         <TouchableOpacity
@@ -63,7 +64,13 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
             setNom(vin.Nom);
             setAOC(vin.AOC);
             setCepage(vin.Cepage);
-            setMillesime(vin.millesime)
+            setMillesime(vin.Millesime);
+            setCouleur(vin.Couleur);
+            setDesc(vin.Desc);
+
+            setNomVi(vin.IdVigneron.Nom);
+            setRegionVi(vin.IdVigneron.Ville);
+            setDescVi(vin.IdVigneron.Desc);
   
             }}>
           <View style={{ flexDirection: "row" }}>
@@ -109,31 +116,27 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                   <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                    Nom
                     {nom}
                   </Text>
                   <Text style={{ marginBottom: 10, marginLeft: 5 }}>
-                    Millésime
                     {millesime}
                   </Text>
                 </View>
                 <Text style={{ marginBottom: 10 }}>
-                  AOC
                   {AOC}
                 </Text>
                 <Text style={{ marginBottom: 10 }}>
-                  Cepage
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                 <Icon
-                  name="ios-heart" size={30} 
+                  name="ios-heart" 
+                  size={30} 
+                  color = {colorIcon}
                   style={{alignItems:'center', justifyContent: 'center'}}
-                  // onPress={() => { 
-                  //   setColorIcon('#FFAE34');
-                  //   setColorText('#DF2F2F')
-                  // color = {colorIcon}
-                  //   }}
+                  onPress={() => { 
+                      handlePressLike();
+                    }}
                     >
                 </Icon>
                 </View>
@@ -162,12 +165,15 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                     source={require('../assets/vigneron.jpg')}
                   ></Avatar>
                 <Text style={{ margin: 10, color: '#9D2A29' }}>
-                  Jean Pierre DUPONT
+                  {nomVi}
                   </Text>
               </View> 
                 <View>
+                <Text style={{ margin: 10 }}>
+                    {regionVi}
+                  </Text>
                   <Text style={{ margin: 10 }}>
-                    Description
+                    {descVi}
                   </Text>
                   <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                   <Icon
@@ -216,6 +222,11 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
         </View>
       </View>
     );
+  }
+
+  var handlePressLike = () => {
+  setColorIcon('#FFAE34');
+  setColorText('#DF2F2F');
   }
 
   if (userstatus == "Vigneron") {

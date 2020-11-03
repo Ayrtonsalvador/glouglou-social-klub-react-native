@@ -148,7 +148,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
                 <Button onPress={async () => {
                   setDisabled(true)
-                  const data = await fetch("http://172.17.1.159:3000/info-update-v", {
+                  const data = await fetch(`http://${IPecole}:3000/info-update-v`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`
