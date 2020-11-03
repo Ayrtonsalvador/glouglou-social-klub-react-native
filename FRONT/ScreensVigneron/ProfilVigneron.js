@@ -12,11 +12,7 @@ import * as ImagePicker from 'expo-image-picker';
 function ProfilVigneron({ navigation, token, userstatus }) {
 
   var IPmaison = "";
-<<<<<<< HEAD
   var IPecole = "172.17.1.153";
-=======
-  var IPecole = "172.17.1.46";
->>>>>>> 36e57a3e4d246cb20dcf5e69acc49452d4435db2
 
   const [nom, setNom] = useState(null)
   const [domaine, setDomaine] = useState(null)
@@ -152,24 +148,6 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                   }}
                 />
 
-<<<<<<< HEAD
-=======
-                <Button onPress={async () => {
-                  setDisabled(true)
-                  const data = await fetch("http://172.17.1.159:3000/info-update-v", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `photo=${photo}&nom=${nom}&domaine=${domaine}&ville=${ville}&region=${region}&desc=${desc}&img=${image}&token=${token}`
-                  })
-                  var body = await data.json()
-                  console.log("RESPONSE", body)
-                }}
-                  disabled={disabled}
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
-                  title="OK"
-                />
-
->>>>>>> 36e57a3e4d246cb20dcf5e69acc49452d4435db2
                 <TouchableOpacity>
                   <Icon
                     style={{ name: 'cog', size: 20, color: '#AAAAAA' }}
@@ -270,13 +248,8 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-<<<<<<< HEAD
   // console.log("STATE TOKEN", state.token)
   return { token: state.token, userstatus: state.userstatus }
-=======
-  console.log("STATE TOKEN", state.token)
-  return { token: state.token, userstatus: state.userstatus}
->>>>>>> 36e57a3e4d246cb20dcf5e69acc49452d4435db2
 }
 
 function mapDispatchToProps(dispatch) {
