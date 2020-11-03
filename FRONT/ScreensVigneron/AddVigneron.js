@@ -161,8 +161,6 @@ function AddVigneron({ navigation, token, userstatus }) {
 
               />
             </View>
-
-
           </View>
         </KeyboardAvoidingView>
 
