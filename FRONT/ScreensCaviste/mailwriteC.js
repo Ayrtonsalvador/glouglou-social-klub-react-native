@@ -79,7 +79,7 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
               color="#ffffff"
             />
               }
-            title="Send"
+            title=" Send"
             buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
             type="solid"
          
@@ -103,7 +103,7 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
         <Button
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
           type="solid"
-          title="Contactez-nous"
+          title=" Contactez-nous"
           icon={
             <Icon
               name='heart'

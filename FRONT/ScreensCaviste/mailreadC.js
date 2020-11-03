@@ -5,55 +5,27 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailreadV from '../ScreensVigneron/MailreadV';
 
-function MailreadC({ navigation, pseudo, props, token, userstatus }) {
+function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg }) {
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
+
+  const [clickedItem, setClickedItem] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+  
+ 
+   console.log("CA MARCHE", clickedMsg)
+  
 
   useEffect(() => { async () => { var data = await fetch("http://172.17.1.159:3000/mailbox-read")
       var body = await data.json()
       console.log("RESPONSE", body)}  
   }, [listMessage]);
 
-  var listMessageItem = listMessage.map((messageData, i) => {
-
-    var msg = messageData.message
-
-    return <ListItem
-    title={msg}
-    subtitle={messageData}
-    leftAvatar={
-              <Avatar rounded
-                       source={require('../assets/vigneron.jpg')} >
-              <Accessory />
-              </Avatar>}
-              bottomDivider={true}
-    
-  />
-  
-  //     (<ListItem
-  //       title={msg.nom}
-  //       subtitle="Parfait et toi ?"
-  //       style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
-  //       leftAvatar={
-  //         <Avatar
-  //           rounded
-  //           source={{
-  //             uri:
-  //               'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-  //           }}
-  //           badge={3}
-  //         >
-  //           <Accessory />
-  //         </Avatar>
-  //       }
-  //       bottomDivider={true}
-  //     />)
-  });
-
   if (userstatus == "Vigneron") {
     return (<MailreadV navigation={navigation} token={token} userstatus={userstatus}/>)
   } else {
+
     
   return (
     <View style={{ flex: 1 }}>
@@ -72,51 +44,39 @@ function MailreadC({ navigation, pseudo, props, token, userstatus }) {
               navigation.navigate('Main');
             }}>
             </Button>
-      {listMessageItem}
+      {/* {listMessageItem} */}
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
-        {/* <ListItem
-          title="Jean Pierre"
-          subtitle="Merci beaucoup"
-          style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
-          leftAvatar={
-            <Avatar
-              rounded
-              source={require('../assets/vigneron.jpg')} >
+      <ListItem
+              title={"Vigneron"}
+              subtitle={"Oui, nous sommes disponibles"}
+              leftAvatar={
+              <Avatar rounded
+                       source={require('../assets/vigneron.jpg')} >
               <Accessory />
-            </Avatar>
-          }
-        /> */}
+              </Avatar>}
+              bottomDivider={true}
+              // {clickedItem}
+          />
               
-
-        {/* <ListItem
-          title="La GlouGlou Team"
-          subtitle="Bienvenue au Club !"
-          style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
-          leftAvatar={ <Avatar
-                               rounded
-                                source={require('../assets/GGSC.png')} >
-                       <Accessory />
-                      </Avatar>
-                    }
-        /> */}
-      
       </ScrollView >
 
       <KeyboardAvoidingView behavior="padding" enabled>
 
         <View style={{ flexDirection: "row" }}>
-          <Input
+        <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder='Your message'
-            onChangeText={(text) => setTexte(text)}
+            placeholder={"Votre message \n"}
+            multiline={true}
+            onChangeText={(text) => {
+                setTexte(text);      }}
             value={Texte}
           />
-          <Input
+          {/* <Input
             containerStyle={{ marginBottom: 5 }}
             placeholder='To:'
             onChangeText={(text) => setTexte(text)}
             value={Texte}
-          />
+          /> */}
         </View>
         <Button
           icon={
@@ -126,7 +86,7 @@ function MailreadC({ navigation, pseudo, props, token, userstatus }) {
               color="#ffffff"
             />
           }
-          title="Send"
+          title=" Répondre"
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
           type="solid"
           // Envoi du message au back en appuyant sur Send
@@ -139,7 +99,7 @@ function MailreadC({ navigation, pseudo, props, token, userstatus }) {
         <Button
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}
           type="solid"
-          title="Contactez-nous"
+          title=" Contactez-nous"
           icon={
             <Icon
               name='heart'

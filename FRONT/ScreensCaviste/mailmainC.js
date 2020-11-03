@@ -11,6 +11,18 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [clickedMsg, setClickedMsg] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleClick = (id, texte) => {
+    setSelectedId(id) // ID détecté !
+    setClickedMsg(texte) // MSG détecté     
+    navigation.navigate('Read');
+
+    if(clickedMsg != null){return (<MailmainC clickedMsg={clickedMsg} />)}
+    
+    navigation.navigate('Read')
+  }
 
 useEffect(() => {
   async function loadData() {
@@ -19,14 +31,11 @@ useEffect(() => {
 
     if(response.result == true){
       setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)
-    
-    console.log("NOM", nomCaviste)
-  }
-    
+    setNomCaviste(response.Caviste.Nom)}
   } 
   loadData()
 }, []);
+
 
  var listMessagesItem = listMessages.map((msg, i) => {
       
@@ -42,7 +51,8 @@ useEffect(() => {
               //   // </Avatar>
               // }
               bottomDivider={true}
-                          >     
+              onPress={() => {handleClick(msg._id, msg.Texte)}} 
+                          >    
                  </ListItem>
     });
  

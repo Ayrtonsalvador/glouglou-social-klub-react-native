@@ -375,10 +375,10 @@ router.get('/mailbox-main', async function(req, res, next) {
 // LIRE UN MESSAGE
 router.get('/mailbox-read', async function(req, res, next) {
 
-  var msgCaviste = await CavisteModel.findOne(
+  var msgClicked = await CavisteModel.findOne(
     {MessagesR: {Texte: req.body.Texte} } )
 
-  res.json({ msgCaviste })
+  res.json({ msgClicked })
 
 });
 
