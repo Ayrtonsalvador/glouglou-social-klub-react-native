@@ -5,25 +5,38 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailreadV from '../ScreensVigneron/MailreadV';
 
-function MailreadC({ navigation, pseudo, props, token, userstatus, clickedMsg }) {
+function MailreadC({ navigation, token, userstatus, clickedMsg }) {
 
-  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
-
-  // const [clickedMsg, setClickedMsg] = useState();
   const [selectedId, setSelectedId] = useState(null);
-  
- 
-   console.log("CA MARCHE", clickedMsg)
+  //  console.log("CA MARCHE", clickedMsg)
   
 
   useEffect(() => { async () => { var data = await fetch(`http://${IPecole}:3000/mailbox-read`)
       var body = await data.json()
       console.log("RESPONSE", body)}  
   }, [listMessage]);
+
+  var listMessageItem = listMessage.map((messageData, i) => {
+
+    var msg = messageData.message
+
+
+    return <ListItem
+    title={msg}
+    subtitle={messageData}
+    leftAvatar={
+              <Avatar rounded
+                       source={require('../assets/vigneron.jpg')} >
+              <Accessory />
+              </Avatar>}
+              bottomDivider={true}
+    
+  />
+});
 
   if (userstatus == "Vigneron") {
     return (<MailreadV navigation={navigation} token={token} userstatus={userstatus}/>)

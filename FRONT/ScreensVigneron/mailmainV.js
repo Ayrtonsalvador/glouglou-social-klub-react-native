@@ -4,16 +4,29 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
+import MailreadV from '../ScreensVigneron/MailreadV';
 
 function MailmainV({ navigation, pseudo, token, userstatus }) {
 
-  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();
+  const [nomCaviste, setNomCaviste] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+  const [clickedMsg, setClickedMsg] = useState(null)
+
+  const handleClick = (id, texte) => {
+    setSelectedId(id) // ID détecté !
+    setClickedMsg(texte) // MSG détecté     
+    navigation.navigate('Read');
+
+    if(clickedMsg != null){return (<MailreadV clickedMsg={clickedMsg} />)}
+    
+    navigation.navigate('Read')
+  }
 
 useEffect(() => {
   async function loadData() {
@@ -22,8 +35,8 @@ useEffect(() => {
 
     if(response.result == true){
       setListMessages(response.msgVigneron)
-      setNomVigneron(response.Vigneron.Nom)
-      // console.log("NOM Vigneron", response.Vigneron.Nom)
+      setNomCaviste(response.Vigneron.MessagesR.Nom)
+      console.log("NOM Cav expediteur", response.Vigneron.MessagesR.Nom)
   }
     
   } 
@@ -34,7 +47,7 @@ useEffect(() => {
       
           return <ListItem
               title={msg.Texte}
-              subtitle={nomVigneron}
+              subtitle={msg.Nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -44,7 +57,8 @@ useEffect(() => {
               //   // </Avatar>
               // }
               bottomDivider={true}
-                          >     
+              onPress={() => {handleClick(msg._id, msg.Texte)}} 
+                          >    
                  </ListItem>
     });
  

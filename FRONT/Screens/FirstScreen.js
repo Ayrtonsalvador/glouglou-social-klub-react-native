@@ -5,6 +5,15 @@ import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Carousel from "react-native-carousel-control";
 
+import { 
+  responsiveHeight , 
+  responsiveWidth , 
+  responsiveFontSize,
+  responsiveScreenHeight , 
+  responsiveScreenWidth , 
+  responsiveScreenFontSize 
+}  from  "react-native-responsive-dimensions" ;
+
 import { connect } from 'react-redux';
 import { color } from 'react-native-reanimated';
 
@@ -41,7 +50,7 @@ function FirstScreen({ navigation }) {
 
   return (
 
-    <View style={{ flex: 1, backgroundColor: '#FCDF23' }}>
+    <View style={styles.container}>
 
       <View style={{ flex: 1 }}>
 
@@ -58,9 +67,11 @@ function FirstScreen({ navigation }) {
 
           
             <View style={styles.box2}>
+             
               <Text style={styles.text}>BOIRE BIEN, BOIRE MIEUX</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:10  }}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et professionnels de la restauration.</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5,}}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et professionnels de la restauration.</Text>
               {pagination}
+    
             </View>
 
             <View style={styles.box2}>
@@ -102,8 +113,9 @@ function FirstScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    height : responsiveScreenHeight (100 ) , 
+    width : responsiveScreenWidth ( 100),
     justifyContent: 'center',
     backgroundColor: '#FCDF23',
   },
@@ -141,13 +153,13 @@ const styles = StyleSheet.create({
     // fontFamily: "GothicA1-Bold",
   },
   box2: {
-    width: 300,
-    height: 200,
+    borderRadius: 15,
+    height : responsiveScreenHeight (30) , 
+    width : responsiveScreenHeight (45),
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 15,
-   
+      
   },
   glou: {
     alignItems: 'center',
