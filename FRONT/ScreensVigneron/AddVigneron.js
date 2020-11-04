@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
+import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
-function AddVigneron({ navigation, token, userstatus }) {
+function AddVigneron({ navigation, token, userstatus}) {
 
   var IPecole = "172.17.1.46";
 
@@ -82,12 +83,12 @@ function AddVigneron({ navigation, token, userstatus }) {
                   {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
                 </View>
 
-
                 <Input
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Nom de la référence"
                   onChangeText={(text) => setNomRef(text)}
+                  value={NomRef}
                 />
 
                 <Input
@@ -95,6 +96,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Couleur"
                   onChangeText={(text) => setCouleur(text)}
+                  value={Couleur}
                 />
 
                 <Input
@@ -103,6 +105,8 @@ function AddVigneron({ navigation, token, userstatus }) {
                   placeholder="Cépage"
                   disabled={disabled}
                   onChangeText={(text) => setCepage(text)}
+                  value={Cepage}
+
                 />
 
                 <Input
@@ -110,12 +114,15 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Millesime"
                   onChangeText={(text) => setMillesime(text)}
+                  value={Millesime}
+
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder="Appelation"
+                  placeholder="Appellation"
                   onChangeText={(text) => setAppellation(text)}
+                  value={Appellation}
                 />
 
                 <Input
@@ -123,6 +130,8 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Description"
                   onChangeText={(text) => setDesc(text)}
+                  value={Desc}
+
                 />
 
                 <Text>{ListError}</Text>
@@ -139,6 +148,8 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                 onPress={async () => {
 
+                  navigation.navigate('Catalogue');
+                  // setstate(!state)
                   var data = new FormData();
 
                   data.append('avatar', {
@@ -164,20 +175,14 @@ function AddVigneron({ navigation, token, userstatus }) {
                     body: data
                   })
                   var response = await newbottle.json();
+                  setCouleur('')
                   // console.log("FB", response)
-                  if (response.result == true) {
-                    navigation.navigate('Catalogue')
-
-                    setImage(null);
-                    setNomRef(null)
-                    setCouleur(null);
-                    setCepage(null);
-                    setMillesime(null);
-                    setAppellation(null);
-                    setDesc(null);
-                  } else if (response.result == false) {
-                    setError(response.error);
-                  }
+                  // if (response.result == true) {
+                   
+                  // } 
+                  // else if (response.result == false) {
+                  //   setError(response.error);
+                  // }
                 }}
 
               />
@@ -224,11 +229,12 @@ const styles = StyleSheet.create({
   }
 });
 
+
 function mapStateToProps(state) {
   return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(AddVigneron);

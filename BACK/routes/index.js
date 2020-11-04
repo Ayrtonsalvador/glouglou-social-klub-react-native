@@ -168,18 +168,32 @@ router.post('/sign-in', async function (req, res, next) {
 
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
+  // console.log('Yeah');
 
   var error = [];
-
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
   var image = req.files.avatar
 
-  if (image.size == 0 && bottleinfosFB.NomRef == null && bottleinfosFB.Couleur == null && bottleinfosFB.AOC == null && bottleinfosFB.Desc == null && bottleinfosFB.Cepage == null && bottleinfosFB.Millesime == null) {
-error.push('veuillez compléter les champs vides !')
-    res.json({ result: false, error })
-  }
+  if (image.size == 0 ) {
+   
+    const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
 
-  else {
+    var newBouteille = new BouteilleModel({
+
+      Nom: bottleinfosFB.NomRef,
+      Couleur: bottleinfosFB.Couleur,
+      AOC: bottleinfosFB.AOC,
+      Desc: bottleinfosFB.Desc,
+      Cepage: bottleinfosFB.Cepage,
+      Millesime: bottleinfosFB.Millesime,
+      IdVigneron: vigneronID.id,
+    })
+
+    saveBouteille = await newBouteille.save()
+    
+    res.json({ result: true, error })
+
+  } else {
 
     var imgpath = './tmp/' + uniqid() + '.jpg'
     var resultCopy = await image.mv(imgpath);
@@ -192,8 +206,7 @@ error.push('veuillez compléter les champs vides !')
     fs.unlinkSync(imgpath)
 
     const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-    // console.log("TOKEN MA CAVE", vigneronID)
-
+ 
     var newBouteille = new BouteilleModel({
 
       Nom: bottleinfosFB.NomRef,
@@ -208,6 +221,9 @@ error.push('veuillez compléter les champs vides !')
     })
 
     saveBouteille = await newBouteille.save()
+
+    // console.log('BOUTEILLES,', saveBouteille);
+    // console.log('CAVE ===', vigneronID);
 
     res.json({ result: true, saveBouteille })
   }
@@ -248,7 +264,7 @@ router.delete('/delete-ref/:Nom', async function (req, res, next) {
   var result = false
 
   var suppr = await BouteilleModel.deleteOne({ Nom: req.params.Nom })
-  console.log('SURRP', req.params.Nom);
+  // console.log('SURRP', req.params.Nom);
   // console.log("SUPPR VIN", suppr)
 
   if (suppr.deletedCount > 0) {
@@ -666,6 +682,19 @@ router.get('/favoris', async function (req, res, next) {
 
   if (favCaviste != null) {
     res.json({ result: true, favCaviste })
+  } else {
+    res.json({ result: false })
+  }
+})
+
+router.post('/filtre', async function (req, res, next) {
+
+  const catalogue = await BouteilleModel.find({ Couleur : req.body.filtreFF })
+
+  console.log("CATALOGUE", catalogue)
+
+  if (catalogue != null) {
+    res.json({ result: true, catalogue })
   } else {
     res.json({ result: false })
   }

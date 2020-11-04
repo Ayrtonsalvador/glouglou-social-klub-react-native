@@ -224,7 +224,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
 
   // POPUP FAVORIS VIDE
-  if (popup) {
+  if (popup  && userstatus == "Vigneron") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
