@@ -43,6 +43,7 @@ router.post('/sign-up', async function (req, res, next) {
     error.push('veuillez compléter les champs vides !')
   }
 
+
   // SIGNUP CAVISTES
   const dataCaviste = await CavisteModel.findOne({
     Email: req.body.emailFromFront
@@ -141,6 +142,7 @@ router.post('/sign-in', async function (req, res, next) {
 
   if (error.length == 0) {
 
+
     // SIGN-IN CAVISTES 
     const userCaviste = await CavisteModel.findOne({
       Email: req.body.emailFromFront,
@@ -159,6 +161,7 @@ router.post('/sign-in', async function (req, res, next) {
         error.push('mot de passe ou email incorrect')
       }
     }
+
 
     // SIGN-IN VIGNERONS
     const userVigneron = await VigneronModel.findOne({
@@ -183,6 +186,7 @@ router.post('/sign-in', async function (req, res, next) {
   res.json({ result, error, token, status })
 });
 
+
 // ---------------- STATUS ---------------- \\
 router.get('/get-status', async function (req, res, next) {
 
@@ -206,7 +210,8 @@ router.get('/get-status', async function (req, res, next) {
 
 });
 
-// ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
+
+// ------------------ AJOUTER & SUPPR UNE REF ---------------- \\
 router.post('/AddVin', async function (req, res, next) {
 
 // FAIRE TRANSITER COTER FRONT
@@ -275,6 +280,7 @@ router.post('/AddVin', async function (req, res, next) {
  
  // res.json({ saveBouteille, infovin })
 
+ 
 router.get('/macave', async function (req, res, next) {
 
   // Trouver les infos de la bouteille par vigneron
@@ -305,6 +311,7 @@ router.get('/macave', async function (req, res, next) {
   }
 })
 
+
 router.delete('/delete-ref/:Nom', async function (req, res, next) {
 
   var result = false
@@ -319,7 +326,8 @@ router.delete('/delete-ref/:Nom', async function (req, res, next) {
   res.json({ result })
 });
 
-// ---------------- INFOS VIGNERON  ---------------- \\
+
+// ------------------------ INFOS VIGNERON ------------------------ \\
 router.post('/info-update-v', async function (req, res, next) {
 
   const nomVigneron = await VigneronModel.findOne({
@@ -341,6 +349,7 @@ router.post('/info-update-v', async function (req, res, next) {
 
 })
 
+
 router.get('/info-v', async function (req, res, next) {
   var infos = []
   var token = null
@@ -358,9 +367,9 @@ if (user != null) {
 })
 
 
-//---------------Mailbox CAVISTE--------------//
+// --------------------------------------- Mailbox CAVISTE -------------------------------------- \\
 
-// BOITE DE RECEPTION
+// BOITE DE RECEPTION (tous les messages reçus par le caviste)
 router.get('/mailbox-main', async function(req, res, next) {
   
   var Caviste = await CavisteModel.findOne(
@@ -373,7 +382,7 @@ router.get('/mailbox-main', async function(req, res, next) {
 });
 
 
-// LIRE UN MESSAGE
+// LIRE UN MESSAGE (envoyé par un vigneron)
 router.get('/mailbox-read', async function(req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
@@ -384,9 +393,8 @@ router.get('/mailbox-read', async function(req, res, next) {
 });
 
 
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+// ECRIRE MESSAGE A UN VIGNERON et l'enregistrer en base de données (chez l'envoyeur et le receveur)
 router.post('/mailbox-write', async function(req, res, next) {
-//  console.log(req.body.token);
 
   var msg = await CavisteModel.updateOne(
     {token: req.body.token}, {
@@ -410,7 +418,7 @@ router.post('/mailbox-write', async function(req, res, next) {
 });
 
 
-
+// CAPTER LE TOKEN DU CAVISTE (pour afficher son nom sur ses messages envoyés)
 router.get('/mailbox-write-getuser', async function(req, res, next) {
 
   var user = await CavisteModel.findOne(
@@ -421,7 +429,6 @@ router.get('/mailbox-write-getuser', async function(req, res, next) {
   res.json({ user, result:true })
 
 });
-
 
 
 // REPONDRE A UN VIGNERON
@@ -448,9 +455,9 @@ router.post('/mailbox-write-ans', async function(req, res, next) {
   });
 
 
-//---------------Mailbox VIGNERON--------------//
+// ------------------------ Mailbox VIGNERON ------------------------ \\
 
-// BOITE DE RECEPTION
+// BOITE DE RECEPTION (tous les messages reçus par le vigneron)
 router.get('/mailbox-main-v', async function(req, res, next) {
   
   var Vigneron = await VigneronModel.findOne(
@@ -462,7 +469,7 @@ router.get('/mailbox-main-v', async function(req, res, next) {
 });
 
 
-// LIRE UN MESSAGE
+// LIRE UN MESSAGE (envoyé par un caviste)
 router.get('/mailbox-read-v', async function(req, res, next) {
 
   var msgVigneron = await VigneronModel.findOne(
@@ -473,7 +480,7 @@ router.get('/mailbox-read-v', async function(req, res, next) {
 });
 
 
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+// ECRIRE MESSAGE A UN VIGNERON et l'enregistrer en base de données (chez l'envoyeur et le receveur)
 router.post('/mailbox-write-v', async function(req, res, next) {
 //  console.log(req.body.token);
 
@@ -520,7 +527,12 @@ router.post('/mailbox-write-v', async function(req, res, next) {
   // });
 
 
-// ---------------- INFOS CAVISTE ---------------- \\
+
+
+
+
+
+// ------------------------- INFOS CAVISTE ------------------------- \\
 router.post('/info-update-c', async function (req, res, next) {
 
   //update les infos
@@ -563,7 +575,7 @@ router.get('/info-c', async function (req, res, next) {
   }
 })
 
-// ---------------- CATALOGUE CAVISTE ---------------- \\
+// ------------------------- CATALOGUE CAVISTE ------------------------- \\
 
 router.get('/catalogue', async function (req, res, next) {
 
