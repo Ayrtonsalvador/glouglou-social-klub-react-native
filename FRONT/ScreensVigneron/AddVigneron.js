@@ -10,7 +10,7 @@ import { set } from 'react-native-reanimated';
 
 function AddVigneron({ navigation, token}) {
 
-  var IPmaison = "";
+  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState("Référence");

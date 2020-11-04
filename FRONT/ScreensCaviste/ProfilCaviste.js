@@ -9,7 +9,7 @@ import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
+  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [nom, setNom] = useState("Nom")
@@ -24,7 +24,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http:// 172.17.1.153:3000/info-c?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS CAVISTE", response)
 

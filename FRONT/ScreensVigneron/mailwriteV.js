@@ -7,11 +7,27 @@ import userstatus from '../reducers/userstatus';
 
 function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
-  var IPmaison = "";
+  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [nomVigneron, setNomVigneron] = useState();
+
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v?token=${token}`);
+      var response = await rawResponse.json();
+      // console.log("RESPONSE MAIN", response)
+  
+      if(response.result == true){
+        setNomVigneron(response.Vigneron.Nom)
+        // console.log("NOM Vigneron", response.Vigneron.Nom)
+    }
+      
+    } 
+    loadData()
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -87,15 +103,11 @@ function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
               var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&Nom=${Nom}`
+                body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}`
                 })
               var body = await data.json()
-             
-              } 
-          
-            } // onPress
-
-        />
+              console.log("RESPONSE MAIL-MAIN-V", body)
+              }}/>
 
 
 

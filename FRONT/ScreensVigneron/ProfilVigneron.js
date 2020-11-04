@@ -9,7 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
+  var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState('')
