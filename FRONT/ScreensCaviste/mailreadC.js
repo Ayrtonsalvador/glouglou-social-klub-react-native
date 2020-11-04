@@ -8,7 +8,7 @@ import MailreadV from '../ScreensVigneron/MailreadV';
 function MailreadC({ navigation, pseudo, props, token, userstatus, message }) {
 
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
@@ -24,7 +24,7 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, message }) {
   if (userstatus == "Vigneron") {
     return (<MailreadV navigation={navigation} token={token} userstatus={userstatus}/>)
   } else {
-
+console.log("MESSAGE.MSG", message)
     
   return (
     <View style={{ flex: 1 }}>
@@ -46,8 +46,8 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, message }) {
       {/* {listMessageItem} */}
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem
-              title={message.id}
-              subtitle={message.msg}
+              title={message.msg}
+              subtitle={message.msg.Nom}
               leftAvatar={
               <Avatar rounded
                        source={require('../assets/vigneron.jpg')} >
@@ -72,7 +72,7 @@ function MailreadC({ navigation, pseudo, props, token, userstatus, message }) {
             value={Texte}
           />
         </View>
-        
+
         <Button
           icon={
             <Icon

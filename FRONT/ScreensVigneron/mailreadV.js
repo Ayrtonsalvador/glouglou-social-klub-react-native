@@ -8,7 +8,7 @@ import userstatus from '../reducers/userstatus';
 function MailreadV({ navigation, pseudo, props, userstatus }) {
 
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
@@ -21,6 +21,7 @@ function MailreadV({ navigation, pseudo, props, userstatus }) {
   var listMessageItem = listMessage.map((messageData, i) => {
 
     var msg = messageData.message
+    var nom = messageData.nom
 
 
     return <ListItem

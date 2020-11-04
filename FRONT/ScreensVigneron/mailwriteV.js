@@ -8,7 +8,7 @@ import userstatus from '../reducers/userstatus';
 function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
 
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -107,6 +107,8 @@ function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
                 })
               var body = await data.json()
               console.log("RESPONSE MAIL-MAIN-V", body)
+              setNomCaviste('');
+              setTexte('');
               }}/>
 
 

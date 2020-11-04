@@ -9,14 +9,13 @@ import MailmainV from '../ScreensVigneron/MailmainV';
 function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessage }) {
   
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [selectedId, setSelectedId] = useState(null);
-
 
   const handleClick = (msgDatas) => { 
     // setSelectedId(msg._id) // ID détecté !
@@ -47,16 +46,19 @@ useEffect(() => {
  var listMessagesItem = listMessages.map((msg, i) => {
 
 var result = listMessages[i].Texte;
+var result2 = listMessages[i].Nom
 
 console.log("ALORS ALORS",result)
+console.log("ALORS",result2)
 
     if(result.length > 75){
       result = result.slice(0,75)+'...' }
       
+      
           return <ListItem
               key={i}
-              title={msg.Texte}
-              subtitle={msg.Nom}
+              title={result}
+              subtitle={result2}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -65,8 +67,8 @@ console.log("ALORS ALORS",result)
               //   //   <Accessory />
               //   // </Avatar>
               // }
-              title={result}
-              subtitle={nomCaviste}
+              // title={result}
+              // subtitle={nomCaviste}
               bottomDivider={true}
               onPress={() => {
                  handleClick({id:msg._id, msg:msg.Texte})

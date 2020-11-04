@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 function CaveVigneron({ navigation, token }) {
 
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [photo, setPhoto] = useState('')
   const [nom, setNom] = useState("Nom")

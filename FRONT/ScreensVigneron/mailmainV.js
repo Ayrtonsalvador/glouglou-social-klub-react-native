@@ -5,15 +5,25 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
 
-function MailmainV({ navigation, pseudo, token, userstatus }) {
+function MailmainV({ navigation, pseudo, token, userstatus, sendMessage }) {
 
   var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();
+  const [nomCaviste, setNomCaviste] = useState();
+
+  const handleClick = (msgDatas) => { 
+    // setSelectedId(msg._id) // ID détecté !
+    // setClickedMsg(msg.Texte) // MSG détecté
+      // if(message != null){return (<MailmainC message={message} />)}
+    sendMessage({id:msgDatas.id, msg:msgDatas.msg})
+    console.log("selectedid+clickedMsg", msgDatas ) // ok, il a l'info
+    navigation.navigate('Read')
+  }
 
 useEffect(() => {
   async function loadData() {
@@ -22,7 +32,7 @@ useEffect(() => {
 
     if(response.result == true){
       setListMessages(response.msgVigneron)
-      setNomVigneron(response.Vigneron.Nom)
+      setNomCaviste(response.Vigneron.MessagesR.Nom)
       // console.log("NOM Vigneron", response.Vigneron.Nom)
   }
     
@@ -32,9 +42,18 @@ useEffect(() => {
 
  var listMessagesItem = listMessages.map((msg, i) => {
       
+  var result = listMessages[i].Texte;
+
+  console.log("ALORS ALORS",result)
+  
+      if(result.length > 75){
+        result = result.slice(0,75)+'...' }
+
           return <ListItem
+               key={i}
               title={msg.Texte}
-              subtitle={nomVigneron}
+              // subtitle={nomVigneron}
+              subtitle={msg.nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
@@ -43,7 +62,15 @@ useEffect(() => {
               //   //   <Accessory />
               //   // </Avatar>
               // }
+              title={result}
+              subtitle={nomCaviste}
               bottomDivider={true}
+              onPress={() => {
+                handleClick({id:msg._id, msg:msg.Texte})
+                console.log("yo",msg.Texte) // OK, il a l'info 
+
+             }
+           } 
                           >     
                  </ListItem>
     });
@@ -75,9 +102,17 @@ function mapStateToProps(state) {
   
 }
 
+function mapDispatchToProps(dispatch) {
+  return { 
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message })
+    }
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(MailmainV);
 
 

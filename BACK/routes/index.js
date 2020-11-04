@@ -66,10 +66,10 @@ router.post('/sign-up', async function (req, res, next) {
       MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
       salt: salt,
-      Etablissement: '',
-      Ville: '',
-      Desc: '',
-      Photo: '',
+      // Etablissement: '',
+      // Ville: '',
+      // Desc: '',
+      // Photo: '',
       MessagesS: [],
       MessagesR: []
 
@@ -105,10 +105,10 @@ router.post('/sign-up', async function (req, res, next) {
       MDP: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
       token: uid2(32),
       salt: salt,
-      Region: '',
-      Ville: '',
-      Desc: '',
-      Photo: '',
+      // Region: '',
+      // Ville: '',
+      // Desc: '',
+      // Photo: '',
       MessagesS: [],
       MessagesR: []
 
@@ -362,7 +362,9 @@ router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
     { token: req.body.token }, {
-    $push: { MessagesS: { Texte: req.body.Texte } }
+    $push: { MessagesS: { 
+      Texte: req.body.Texte,
+      Nom: req.body.NomVigneron } }
   });
 
   var searchVigneron = await VigneronModel.findOne({
@@ -372,7 +374,9 @@ router.post('/mailbox-write', async function (req, res, next) {
   if (searchVigneron != null) {
     var msgVigneron = await VigneronModel.updateOne(
       { Nom: req.body.NomVigneron }, {
-      $push: { MessagesR: { Texte: req.body.Texte } }
+      $push: { MessagesR: { 
+          Texte: req.body.Texte,
+          Nom: req.body.NomCaviste } }
     });
   }
 
@@ -415,6 +419,10 @@ router.post('/mailbox-write-ans', async function(req, res, next) {
     res.json({ msg, answerVigneron })
   
   });
+
+
+  // --------------------------------------- Mailbox VIGNERON -------------------------------------- \\
+
 
 // BOITE DE RECEPTION
 router.get('/mailbox-main-v', async function (req, res, next) {
