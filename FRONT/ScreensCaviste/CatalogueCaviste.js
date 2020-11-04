@@ -268,6 +268,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                   </Picker>
                 </View>
 
+              
               </View>
             </View>
           </Modal>

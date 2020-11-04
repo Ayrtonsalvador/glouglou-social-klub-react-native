@@ -1,4 +1,19 @@
 const mongoose = require('mongoose');
+const { stringify } = require('crypto-js/enc-base64');
+
+var FavorisSchema = mongoose.Schema ({
+    Nom: String,
+    Couleur: String, 
+    Millesime: String,
+    Cepage: String, 
+    Desc: String, 
+    AOC: String,
+    
+    NomVi: String, 
+    RegionVi: String, 
+    DescVi: String,
+    Photo: String,
+})
 
 var MessageSentSchema = mongoose.Schema ({
     Nom: String,
@@ -17,6 +32,7 @@ var MessageReceivedSchema = mongoose.Schema ({
 var CavisteSchema = mongoose.Schema ({
     MessagesS: [MessageSentSchema],
     MessagesR: [MessageReceivedSchema],
+    Favoris: [FavorisSchema],
     Nom: String,
     Prenom: String,
     Tel: String,

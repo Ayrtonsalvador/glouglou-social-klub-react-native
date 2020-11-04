@@ -14,7 +14,6 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-  const [clickedMsg, setClickedMsg] = useState();
   const [selectedId, setSelectedId] = useState(null);
 
   const handleClick = (id, texte) => {
@@ -29,12 +28,15 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
     var response = await rawResponse.json();
+    // console.log("RESPONSE MAIL MAIN C", response)
+    // console.log("NOM EXPEDITEUR", response.Caviste.MessagesR[3].Nom)
 
     if(response.result == true){
-      setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)}
+    setListMessages(response.msgCaviste)
+    setNomVigneron(response.Caviste.MessagesR.Nom)
+  }
   } 
   loadData()
 }, []);
@@ -43,8 +45,9 @@ useEffect(() => {
  var listMessagesItem = listMessages.map((msg, i) => {
       
           return <ListItem
+              key={i}
               title={msg.Texte}
-              subtitle={nomCaviste}
+              subtitle={msg.Nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
