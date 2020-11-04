@@ -319,7 +319,7 @@ router.get('/info-v', async function (req, res, next) {
 
 //---------------Mailbox CAVISTE--------------//
 
-// BOITE DE RECEPTION
+// BOITE DE RECEPTION - OK
 router.get('/mailbox-main', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
@@ -337,7 +337,7 @@ router.get('/mailbox-main', async function (req, res, next) {
 });
 
 
-// LIRE UN MESSAGE
+// LIRE UN MESSAGE - OK
 router.get('/mailbox-read', async function (req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
@@ -348,7 +348,7 @@ router.get('/mailbox-read', async function (req, res, next) {
 });
 
 
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+//PUSHER LE NOM DES CAVISTES A ENVOYER UX VIGNERONS
 router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
@@ -374,7 +374,7 @@ router.post('/mailbox-write', async function (req, res, next) {
 
 //---------------Mailbox VIGNERON--------------//
 
-// BOITE DE RECEPTION
+// BOITE DE RECEPTION - REPRENDRE MAIL MAIN C
 router.get('/mailbox-main-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
@@ -386,7 +386,7 @@ router.get('/mailbox-main-v', async function (req, res, next) {
 });
 
 
-// LIRE UN MESSAGE
+// LIRE UN MESSAGE - REPRENDRE READ C
 router.get('/mailbox-read-v', async function (req, res, next) {
 
   var msgVigneron = await VigneronModel.findOne(
@@ -397,7 +397,7 @@ router.get('/mailbox-read-v', async function (req, res, next) {
 });
 
 
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+//OK
 router.get('/mailbox-write-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
@@ -410,6 +410,7 @@ router.get('/mailbox-write-v', async function (req, res, next) {
   }
 });
 
+// ECRIRE MESSAGE et l'enregistrer en bdd - OK
 router.post('/mailbox-write-v', async function (req, res, next) {
   //  console.log(req.body.token);
 

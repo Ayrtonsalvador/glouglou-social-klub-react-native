@@ -90,15 +90,12 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
             onPress={async () => {
              
               var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
-                method: 'POST',
+                method: 'POST', 
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}`
                 })
               var body = await data.json()
-             
-              } 
-          
-            } // onPress
+              }}
 
         />
 
