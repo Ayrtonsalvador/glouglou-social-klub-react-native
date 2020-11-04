@@ -567,16 +567,13 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
-  // var userCaviste = await CavisteModel.findOne({ token: req.query.token })
-  // console.log("TOKEN FOUND", req.query.token)
-
   var catalogue = await BouteilleModel.find()
     .populate('IdVigneron')
     .exec()
   console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue, userCaviste })
+    res.json({ result: true, catalogue })
   } else {
     res.json({ result: false })
   }
