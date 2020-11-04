@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
 
-function MailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
+function MailmainV({ navigation, pseudo, token, userstatus }) {
 
-  var IPmaison = "";
-  var IPecole = "172.17.1.159";
+  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.46";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
@@ -17,14 +17,13 @@ function MailmainV({ navigation, pseudo, token, userstatus, MessagesR }) {
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}&msgVigneron=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
     var response = await rawResponse.json();
 
     if(response.result == true){
       setListMessages(response.msgVigneron)
-    setNomVigneron(response.Vigneron.Nom)
-    
-    console.log("NOM", nomVigneron)
+      setNomVigneron(response.Vigneron.Nom)
+      // console.log("NOM Vigneron", response.Vigneron.Nom)
   }
     
   } 

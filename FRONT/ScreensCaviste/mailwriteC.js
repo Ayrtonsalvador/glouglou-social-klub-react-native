@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, pseudo, token, userstatus}) {
-
-  var IPmaison = "";
-  var IPecole = "172.17.1.159";
+function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
+  
+  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomVigneron, setNomVigneron] = useState();

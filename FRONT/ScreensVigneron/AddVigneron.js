@@ -10,8 +10,8 @@ import { set } from 'react-native-reanimated';
 
 function AddVigneron({ navigation, token}) {
 
-  var IPmaison = "";
-  var IPecole = "";
+  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState("Référence");
   const [Couleur, setCouleur] = useState("Couleur");
@@ -154,36 +154,6 @@ function AddVigneron({ navigation, token}) {
     </View>
   );
 }
-
-//Envoi de la photo sur le back
-                 // var data = new FormData();
- 
-                 // data.append('image', {
-                 //   uri: URLToUpload,
-                 //   type: 'image/jpeg',
-                 //   name: 'image_vin.jpg',
-                 // });
-                 // console.log("ImageFF", data.uri)
- 
-                 //Envoi du token et des infos des inputs sur le back
-                 // var infoVin = {
-                 //   token: token,
-                 //   Nom: NomRef,
-                 //   Couleur: Couleur,
-                 //   AOC: Appellation,
-                 //   Desc: Desc,
-                 //   Cepage: Cepage,
-                 //   Millesime: Millesime,
-                 // };
-                 // data.append('infoVin', JSON.stringify(infoVin));
-                 // console.log("infoVin", infoVin);
- 
-                 // var addVin = await fetch(http://192.168.1.22:3000/AddVin, {
-                 //   method: 'POST',
-                 //   body: data
-                 // })
-                 // var response = await addVin.json();
-                 // console.log("RESPONSE FRONT ADD VIN", response)
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 console.disableYellowBox = true;
+
 import { connect } from 'react-redux';
 
 // Screens Communs
@@ -56,7 +57,7 @@ var BottomNavigator = createBottomTabNavigator({
         if (navigation.state.routeName == 'Profil') {
           iconName = 'ios-person';
         } else if (navigation.state.routeName == 'Catalogue') {
-          iconName = 'home';
+          iconName = 'ios-home';
         } else if (navigation.state.routeName == 'Main') {
           iconName = 'md-chatboxes';
         } else if (navigation.state.routeName == 'Favoris') {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, SafeAreaView, StatusBar, FlatList, Modal } from 'react-native';
-import { Button, ListItem, Input, Header } from 'react-native-elements';
-
+import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from 'react-native';
+import { Button, Card, Badge, Overlay, Avatar }from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ScrollView } from 'react-native-gesture-handler';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 
@@ -9,10 +10,10 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 
 function FavoriteCaviste({ userstatus, navigation, token }) {
 
-    var IPmaison = "";
+    var IPmaison = "192.168.1.22";
     var IPecole = "172.17.1.46";
   
-    const [photo, setPhoto] = useState('')
+    // const [photo, setPhoto] = useState('')
     const [nom, setNom] = useState("Nom")
     const [millesime, setMillesime] = useState("Millesime")
     const [cepage, setCepage] = useState("Cépage")
@@ -35,9 +36,9 @@ function FavoriteCaviste({ userstatus, navigation, token }) {
   
     useEffect(() => {
       async function loadData() {
-        var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
         var response = await rawResponse.json();
-        console.log("GET INFOS CATALOGUE", response)
+        console.log("GET INFOS FAVORIS", response)
   
         if (response.result == true) {
           setNom(response.catalogue.Nom)
@@ -165,111 +166,8 @@ function FavoriteCaviste({ userstatus, navigation, token }) {
   } else {
     return (
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    
-          <View>
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={pickerVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}
-            >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={{ flex: 1, backgroundColor: '#AAAAAA' }}>
-                    <Text>CHOISIR UN TYPE DE VIN</Text>
-                    <Picker
-                      selectedValue={selectedValue}
-                      style={{ height: 10, width: 150 }}
-                      onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                      <Picker.Item label="BLANCS" value="blanc" />
-                      <Picker.Item label="ROUGES" value="rouge" />
-                      <Picker.Item label="BULLES" value="bulles" />
-                    </Picker>
-                    </View>
-    
-                    <View style={{ flex: 1, backgroundColor: '#AAAAAA'  }}>
-                    <Text style={{ paddingTop: 20 }}>AUTRES</Text>
-                    <Picker
-                      selectedValue={selectedValue}
-                      style={{ height: 10, width: 150 }}
-                      onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                      <Picker.Item label="DOMAINE" value="domaine" />
-                      <Picker.Item label="PRODUCTEUR" value="producteur" />
-                      <Picker.Item label="REGION" value="region" />
-                    </Picker>
-                    </View>
-                  <Button
-                    buttonStyle={{ ...styles.openButton }}
-                    title='Rechercher'
-                    onPress={() => {
-                      setPickerVisible(!pickerVisible);
-                    }}
-                  >
-                  </Button>
-                </View>
-              </View>
-            </Modal>
-    
-            <Button
-              onPress={() => {
-                setPickerVisible(true);
-              }}
-              title='Filtres'
-              buttonStyle={styles.openButton}
-              icon={
-                <Icon
-                  name='ios-arrow-down'
-                  size={20}
-                  color="#ffffff"
-                />
-              }
-            >
-            </Button>
-          </View>
-    
-          {/* <View style={{ flex: 0.5, width: 100, height: 100 }}>
-            <Modal visible={isVisibleModal} transparent={true}>
-              <View style={{ margin: 20, padding: 20, backgroundColor: '#efefef' }}
-              >
-                <Text style={{ fontWeight: 'bold' }}>Pick a value</Text>
-                <TouchableHighlight>
-                  <Text style={{ margin: 20, padding: 20, alignItems: 'center', justifyContent: 'center' }}>TYPE</Text>
-                  <Text style={{margin: 20, padding: 20, alignItems:'center', justifyContent: 'center'}}>DOMAINE</Text>
-                </TouchableHighlight>
-              </View>
-            </Modal>
-          </View> */}
-    
-          {/* <View style={{ flex: 1}}>
-        <View style={{ flex: 1}}>
-        <Picker
-            selectedValue={selectedValue}
-            style={{ height: 20, width: 150 }}
-            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-          >
-            <Picker.Item label="BLANCS" value="blanc" />
-            <Picker.Item label="ROUGES" value="rouge" />
-            <Picker.Item label="BULLES" value="bulles" />
-          </Picker>
-          </View>
-    
-          <View style={{ flex: 1}}>
-          <Picker
-            selectedValue={selectedValue}
-            style={{ height: 20, width: 150 }}
-            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-          >
-            <Picker.Item label="DOMAINE" value="domaine" />
-            <Picker.Item label="PRODUCTEUR" value="producteur" />
-            <Picker.Item label="REGION" value="region" />
-          </Picker>
-          </View>
-          </View> */}
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
     
           <View style={styles.container}>
     
@@ -277,117 +175,7 @@ function FavoriteCaviste({ userstatus, navigation, token }) {
     
               <ScrollView>
     
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsVisible(true);
-                  }}>
-                  <View style={{ flexDirection: "row" }}>
-    
-                    <Card style={{ alignItems: 'center', justifyContent: 'center' }}>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-    
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-    
-                    <Card>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-    
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-                  </View>
-    
-                  <View style={{ flexDirection: "row" }}>
-                    <Card>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-    
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-    
-                    <Card>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-    
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Card>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-    
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-    
-                    <Card>
-                      <Image source={require('../assets/imagedefault-c.png')} style={styles.img} />
-                      <Text style={{ fontWeight: 'bold' }}>
-                        Nom
-                      </Text>
-                      <Text>
-                        Millesime
-                      </Text>
-                      <Text>
-                        AOC
-                      </Text>
-                      <Text>
-                        Cépage
-                      </Text>
-                    </Card>
-                  </View>
-                </TouchableOpacity>
+                
               </ScrollView>
             </View>
           </View>

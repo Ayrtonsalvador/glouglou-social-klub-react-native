@@ -8,14 +8,13 @@ import MailmainV from '../ScreensVigneron/MailmainV';
 
 function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessage }) {
   
-  var IPmaison = "";
-  var IPecole = "172.17.1.159";
+  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.46";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-  const [clickedMsg, setClickedMsg] = useState();
   const [selectedId, setSelectedId] = useState(null);
 
 
@@ -30,14 +29,14 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessa
 
 useEffect(() => {
   async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}&msgCaviste=${MessagesR}`);
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
     var response = await rawResponse.json();
+    // console.log("RESPONSE MAIL MAIN C", response)
+    // console.log("NOM EXPEDITEUR", response.Caviste.MessagesR[3].Nom)
 
     if(response.result == true){
     setListMessages(response.msgCaviste)
-    setNomCaviste(response.Caviste.Nom)
-    console.log("MSG CAVISTE", response.msgCaviste)
-  
+    setNomVigneron(response.Caviste.MessagesR.Nom)
   }
   } 
   
@@ -55,7 +54,9 @@ console.log("ALORS ALORS",result)
       result = result.slice(0,75)+'...' }
       
           return <ListItem
-              
+              key={i}
+              title={msg.Texte}
+              subtitle={msg.Nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded
