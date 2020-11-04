@@ -1,17 +1,25 @@
 
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, SafeAreaView } from "react-native";
-import { Button, Input, Header, Avatar, Card} from 'react-native-elements';
-import {  ScrollView } from 'react-native-gesture-handler';
+import { Button, Input, Header, Avatar, Card } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import * as ImagePicker from 'expo-image-picker';
 
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize
+} from "react-native-responsive-dimensions";
+
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState(null)
@@ -73,16 +81,13 @@ function ProfilVigneron({ navigation, token, userstatus }) {
   return (
 
     <View style={{ flex: 1 }}>
-
       <View style={styles.container}>
 
         <KeyboardAvoidingView behavior="position" enabled>
-      
           <View style={styles.box1}>
-      
-            <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
-          
-             <ScrollView alwaysBounceHorizontal = {false}>
+            <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center' }}></Image>
+
+            <ScrollView>
 
               <View style={styles.box2}>
 
@@ -158,30 +163,30 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 </TouchableOpacity>
 
                 <Button onPress={async () => {
-                navigation.navigate('Favoris');
+                  
                   setDisabled(true)
                   // création du form data qui formate les données
-                if ( userstatus == "Vigneron" ) {
-                  var data = new FormData();
-                  // envoie du files avatar
-                  data.append('avatar', {
-                    uri: image,
-                    type: 'image/jpeg',
-                    name: 'avatar.jpg',
-                  });
-                  // création objet userinfo
-                  var userinfos = {
-                    nom: nom,
-                    domaine: domaine,
-                    ville: ville,
-                    region: region,
-                    desc: desc,
-                    token: token
-                  };
+                  if (userstatus == "Vigneron") {
+                    var data = new FormData();
+                    // envoie du files avatar
+                    data.append('avatar', {
+                      uri: image,
+                      type: 'image/jpeg',
+                      name: 'avatar.jpg',
+                    });
+                    // création objet userinfo
+                    var userinfos = {
+                      nom: nom,
+                      domaine: domaine,
+                      ville: ville,
+                      region: region,
+                      desc: desc,
+                      token: token
+                    };
 
-                  // envoie l'objet en string au serveur
-                  data.append('userinfos', JSON.stringify(userinfos));
-                 
+                    // envoie l'objet en string au serveur
+                    data.append('userinfos', JSON.stringify(userinfos));
+
                     var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
                       method: 'post',
                       body: data
@@ -189,8 +194,10 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
                     var response = await updateUser.json();
                     console.log('responseFB', response)
-            
-                }}}
+
+                  }
+                  navigation.navigate('Catalogue');
+                }}
 
                   disabled={disabled}
                   buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15, width: 25, height: 25, margin: 10 }}
@@ -212,36 +219,34 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 </TouchableOpacity>
 
               </View>
-
             </ScrollView>
-            
           </View>
-         
-
         </KeyboardAvoidingView>
-
-      </View>
-
-    </View>
+      </View >
+    </View >
 
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    height: responsiveScreenHeight(100),
+    width: responsiveScreenWidth(100),
     justifyContent: 'center',
+
   },
   box1: {
     flex: 1,
     alignItems: 'center',
+    height: responsiveHeight(90),
+    width: responsiveWidth(90),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box2: {
-    width: 350,
-    height: 400,
+    height: responsiveScreenHeight(90),
+    width: responsiveScreenWidth(90),
     alignItems: 'center',
     justifyContent: 'center',
   }

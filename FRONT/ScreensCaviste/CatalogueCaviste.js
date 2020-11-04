@@ -9,10 +9,9 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({ userstatus, navigation, token }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
-  const [photo, setPhoto] = useState('')
+  const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
   const [millesime, setMillesime] = useState("Millesime")
   const [cepage, setCepage] = useState("Cépage")
@@ -26,7 +25,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
   const [nomVi, setNomVi] = useState("Nom Vigneron")
   const [regionVi, setRegionVi] = useState("Région Vigneron")
   const [descVi, setDescVi] = useState("Description Vigneron")
-  const [photoVi, setPhotoVi] = useState("Photo Vigneron")
+  const [photoVi, setPhotoVi] = useState(null)
 
   const [selectedValue, setSelectedValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -47,7 +46,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-
+        console.log("CATALOGUE" ,catalogue)
         // Version Juliette
         // var catalogue = response.catalogue;
         // setlisteVin([...listeVin, catalogue]);
@@ -81,10 +80,12 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
           setMillesime(vin.Millesime);
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
+          setPhoto(vin.Photo);
 
           setNomVi(vin.IdVigneron.Nom);
           setRegionVi(vin.IdVigneron.Ville);
           setDescVi(vin.IdVigneron.Desc);
+          setPhotoVi(vin.IdVigneron.Photo);
 
         }}>
         <View style={{ flexDirection: "row" }}>
@@ -92,6 +93,8 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
+             <Image source={{uri : vin.Photo}} style={{ margin: 10, width: 150, height: 150 }} />
+
             <Text>
               {vin.Nom}
             </Text>
@@ -128,7 +131,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={require('../assets/imagedefault-c.png')} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{uri : photo}} style={{ margin: 10, width: 150, height: 150 }} />
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -179,7 +182,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
               <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                 <Avatar
                   rounded
-                  source={require('../assets/vigneron.jpg')}
+                  source={{uri : photoVi}}
                 ></Avatar>
                 <Text style={{ margin: 10, color: '#9D2A29' }}>
                   {nomVi}
@@ -265,18 +268,6 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                   </Picker>
                 </View>
 
-                <View style={{ flex: 1 }}>
-                  <Picker
-                    selectedValue={selectedValue}
-                    style={{ height: 10, width: 150 }}
-                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                  >
-                    <Picker.Item label="AUTRES CHOIX" value="none" />
-                    <Picker.Item label="DOMAINE" value="domaine" />
-                    <Picker.Item label="PRODUCTEUR" value="producteur" />
-                    <Picker.Item label="REGION" value="region" />
-                  </Picker>
-                </View>
               </View>
             </View>
           </Modal>

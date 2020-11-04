@@ -7,7 +7,6 @@ import userstatus from '../reducers/userstatus';
 
 function MailreadV({ navigation, pseudo, props, userstatus }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
   const [listMessage, setListMessage] = useState([]);

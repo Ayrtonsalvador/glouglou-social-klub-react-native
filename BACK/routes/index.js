@@ -169,63 +169,48 @@ router.post('/sign-in', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
 
+  var error = [];
+
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
   var image = req.files.avatar
 
-  if (image.size = 0) {
-
-  const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-  // console.log("TOKEN MA CAVE", vigneronID)
-
-  var newBouteille = new BouteilleModel({
-
-    Nom: bottleinfosFB.NomRef,
-    Couleur: bottleinfosFB.Couleur,
-    AOC: bottleinfosFB.AOC,
-    Desc: bottleinfosFB.Desc,
-    Cepage: bottleinfosFB.Cepage,
-    Millesime: bottleinfosFB.Millesime,
-    IdVigneron: vigneronID.id,
-   
-  })
-
-  saveBouteille = await newBouteille.save()
-  // console.log("SAVE BOUTEILLE", saveBouteille)
-
-}  else {
-
-  var imgpath = './tmp/' + uniqid() + '.jpg'
-  var resultCopy = await image.mv(imgpath);
-
-  if (!resultCopy) {
-    var resultCloudinary = await cloudinary.uploader.upload(imgpath);
-    var CloudURL = resultCloudinary.url
+  if (image.size == 0 && bottleinfosFB.NomRef == null && bottleinfosFB.Couleur == null && bottleinfosFB.AOC == null && bottleinfosFB.Desc == null && bottleinfosFB.Cepage == null && bottleinfosFB.Millesime == null) {
+error.push('veuillez compléter les champs vides !')
+    res.json({ result: false, error })
   }
 
-  fs.unlinkSync(imgpath)
+  else {
 
-  const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-  // console.log("TOKEN MA CAVE", vigneronID)
+    var imgpath = './tmp/' + uniqid() + '.jpg'
+    var resultCopy = await image.mv(imgpath);
 
-  var newBouteille = new BouteilleModel({
+    if (!resultCopy) {
+      var resultCloudinary = await cloudinary.uploader.upload(imgpath);
+      var CloudURL = resultCloudinary.url
+    }
 
-    Nom: bottleinfosFB.NomRef,
-    Couleur: bottleinfosFB.Couleur,
-    AOC: bottleinfosFB.AOC,
-    Desc: bottleinfosFB.Desc,
-    Cepage: bottleinfosFB.Cepage,
-    Millesime: bottleinfosFB.Millesime,
-    IdVigneron: vigneronID.id,
-    Photo: CloudURL,
+    fs.unlinkSync(imgpath)
 
-  })
+    const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
+    // console.log("TOKEN MA CAVE", vigneronID)
 
-  saveBouteille = await newBouteille.save()
-  // console.log("SAVE BOUTEILLE", saveBouteille)
+    var newBouteille = new BouteilleModel({
 
-}
+      Nom: bottleinfosFB.NomRef,
+      Couleur: bottleinfosFB.Couleur,
+      AOC: bottleinfosFB.AOC,
+      Desc: bottleinfosFB.Desc,
+      Cepage: bottleinfosFB.Cepage,
+      Millesime: bottleinfosFB.Millesime,
+      IdVigneron: vigneronID.id,
+      Photo: CloudURL,
 
-  res.json({ result: true, saveBouteille })
+    })
+
+    saveBouteille = await newBouteille.save()
+
+    res.json({ result: true, saveBouteille })
+  }
 
 });
 
@@ -298,7 +283,6 @@ router.post('/info-update-v', async function (req, res, next) {
         { token: userinfosFB.token }
       )
       var infos = {
-        Photo: CloudURL,
         Nom: user.Nom,
         Domaine: user.Domaine,
         Ville: user.Ville,
@@ -352,38 +336,38 @@ router.post('/info-update-v', async function (req, res, next) {
 router.get('/info-v', async function (req, res, next) {
   var infos = []
   var token = null
-  var user = await VigneronModel.findOne({ token: req.query.token })
+  const user = await VigneronModel.findOne({ token: req.query.token })
 
   // console.log("USER", user)
 
   //  console.log("TOKEN FOUND", req.query.token)
 
-if (user != null) {
-  res.json({ result: true, user })
-} else {
-  res.json({ result: false })
-}
+  if (user != null) {
+    res.json({ result: true, user })
+  } else {
+    res.json({ result: false })
+  }
 })
 
 //---------------Mailbox CAVISTE--------------//
 
 // BOITE DE RECEPTION
-router.get('/mailbox-main', async function(req, res, next) {
-  
+router.get('/mailbox-main', async function (req, res, next) {
+
   var Caviste = await CavisteModel.findOne(
-    {token: req.query.token })
+    { token: req.query.token })
 
   var msgCaviste = Caviste.MessagesR
 
-  res.json({ Caviste, msgCaviste, result:true })
+  res.json({ Caviste, msgCaviste, result: true })
 });
 
 
 // LIRE UN MESSAGE
-router.get('/mailbox-read', async function(req, res, next) {
+router.get('/mailbox-read', async function (req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
-    {MessagesR: {Texte: req.body.Texte} } )
+    { MessagesR: { Texte: req.body.Texte } })
 
   res.json({ msgClicked })
 
@@ -391,24 +375,25 @@ router.get('/mailbox-read', async function(req, res, next) {
 
 
 //OK - ECRIRE MESSAGE et l'enregistrer en bdd
-router.post('/mailbox-write', async function(req, res, next) {
-//  console.log(req.body.token);
+router.post('/mailbox-write', async function (req, res, next) {
+  //  console.log(req.body.token);
 
   var msg = await CavisteModel.updateOne(
-    {token: req.body.token}, {
-        $push: {MessagesS: {Texte: req.body.Texte} }   
-    });
+    { token: req.body.token }, {
+    $push: { MessagesS: { Texte: req.body.Texte } }
+  });
 
   var searchVigneron = await VigneronModel.findOne({
-        Nom: req.body.NomVigneron})
+    Nom: req.body.NomVigneron
+  })
 
-  if(searchVigneron!= null) {
-  var msgVigneron = await VigneronModel.updateOne(
-        {Nom: req.body.NomVigneron}, {
-            $push: {MessagesR: {Texte: req.body.Texte} }   
-        });
+  if (searchVigneron != null) {
+    var msgVigneron = await VigneronModel.updateOne(
+      { Nom: req.body.NomVigneron }, {
+      $push: { MessagesR: { Texte: req.body.Texte } }
+    });
   }
-  
+
   res.json({ msg, msgVigneron })
 
 });
@@ -417,22 +402,22 @@ router.post('/mailbox-write', async function(req, res, next) {
 //---------------Mailbox VIGNERON--------------//
 
 // BOITE DE RECEPTION
-router.get('/mailbox-main-v', async function(req, res, next) {
-  
+router.get('/mailbox-main-v', async function (req, res, next) {
+
   var Vigneron = await VigneronModel.findOne(
-    {token: req.query.token })
+    { token: req.query.token })
 
   var msgVigneron = Vigneron.MessagesR
 
-  res.json({ Vigneron, msgVigneron, result:true })
+  res.json({ Vigneron, msgVigneron, result: true })
 });
 
 
 // LIRE UN MESSAGE
-router.get('/mailbox-read-v', async function(req, res, next) {
+router.get('/mailbox-read-v', async function (req, res, next) {
 
   var msgVigneron = await VigneronModel.findOne(
-    {MessagesR: {Texte: req.body.Texte} } )
+    { MessagesR: { Texte: req.body.Texte } })
 
   res.json({ msgVigneron })
 
@@ -440,24 +425,25 @@ router.get('/mailbox-read-v', async function(req, res, next) {
 
 
 //OK - ECRIRE MESSAGE et l'enregistrer en bdd
-router.post('/mailbox-write-v', async function(req, res, next) {
-//  console.log(req.body.token);
+router.post('/mailbox-write-v', async function (req, res, next) {
+  //  console.log(req.body.token);
 
   var msg = await VigneronModel.updateOne(
-    {token: req.body.token}, {
-        $push: {MessagesS: {Texte: req.body.Texte} }   
-    });
+    { token: req.body.token }, {
+    $push: { MessagesS: { Texte: req.body.Texte } }
+  });
 
   var searchCaviste = await CavisteModel.findOne({
-        Nom: req.body.NomCaviste})
+    Nom: req.body.NomCaviste
+  })
 
-  if(searchCaviste!= null) {
-  var msgCaviste = await CavisteModel.updateOne(
-        {Nom: req.body.NomCaviste}, {
-            $push: {MessagesR: {Texte: req.body.Texte} }   
-        });
+  if (searchCaviste != null) {
+    var msgCaviste = await CavisteModel.updateOne(
+      { Nom: req.body.NomCaviste }, {
+      $push: { MessagesR: { Texte: req.body.Texte } }
+    });
   }
-  
+
   res.json({ msg, msgCaviste })
 
 });
@@ -469,8 +455,8 @@ router.post('/info-update-c', async function (req, res, next) {
   var userinfosFB = JSON.parse(req.body.userinfos)
   var image = req.files.avatar
 
-  if (image=0) {
-  
+  if (image.size == 0) {
+
     var update = await CavisteModel.updateOne(
       { token: userinfosFB.token }, {
       Nom: userinfosFB.nom,
@@ -479,12 +465,12 @@ router.post('/info-update-c', async function (req, res, next) {
       Region: userinfosFB.region,
       Desc: userinfosFB.desc
     })
-  
+
     if (update) {
       const user = await CavisteModel.findOne(
         { token: userinfosFB.token }
       )
-  
+
       var infos = {
         Nom: user.Nom,
         Etablissement: user.Etablissement,
@@ -494,45 +480,43 @@ router.post('/info-update-c', async function (req, res, next) {
       }
     }
 
-} else {
+  } else {
 
-  var imgpath = './tmp/' + uniqid() + '.jpg'
-  var resultCopy = await image.mv(imgpath);
+    var imgpath = './tmp/' + uniqid() + '.jpg'
+    var resultCopy = await image.mv(imgpath);
 
-  if (!resultCopy) {
-    var resultCloudinary = await cloudinary.uploader.upload(imgpath);
-    var CloudURL = resultCloudinary.url
-  }
+    if (!resultCopy) {
+      var resultCloudinary = await cloudinary.uploader.upload(imgpath);
+      var CloudURL = resultCloudinary.url
+    }
 
-  fs.unlinkSync(imgpath)
+    fs.unlinkSync(imgpath)
 
-  var update = await CavisteModel.updateOne(
-    { token: userinfosFB.token }, {
-    Photo: CloudURL,
-    Nom: userinfosFB.nom,
-    Etablissement: userinfosFB.etablissement,
-    Ville: userinfosFB.ville,
-    Region: userinfosFB.region,
-    Desc: userinfosFB.desc
-  })
-
-  if (update) {
-    const user = await CavisteModel.findOne(
-      { token: userinfosFB.token }
-    )
-
-    var infos = {
+    var update = await CavisteModel.updateOne(
+      { token: userinfosFB.token }, {
       Photo: CloudURL,
-      Nom: user.Nom,
-      Etablissement: user.Etablissement,
-      Ville: user.Ville,
-      Region: user.Region,
-      Desc: user.Desc
+      Nom: userinfosFB.nom,
+      Etablissement: userinfosFB.etablissement,
+      Ville: userinfosFB.ville,
+      Region: userinfosFB.region,
+      Desc: userinfosFB.desc
+    })
+
+    if (update) {
+      const user = await CavisteModel.findOne(
+        { token: userinfosFB.token }
+      )
+
+      var infos = {
+        Photo: CloudURL,
+        Nom: user.Nom,
+        Etablissement: user.Etablissement,
+        Ville: user.Ville,
+        Region: user.Region,
+        Desc: user.Desc
+      }
     }
   }
-
-}
-
   // console.log(infos)
 
   res.json({ result: true, infos })
@@ -560,12 +544,12 @@ router.get('/catalogue', async function (req, res, next) {
   console.log("TOKEN FOUND", req.query.token)
 
   var catalogue = await BouteilleModel.find()
-  .populate('IdVigneron')
-  .exec()
+    .populate('IdVigneron')
+    .exec()
   console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue, userCaviste})
+    res.json({ result: true, catalogue, userCaviste })
   } else {
     res.json({ result: false })
   }

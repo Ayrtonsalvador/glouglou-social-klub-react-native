@@ -7,11 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
-  const [signInEmail, setSignInEmail] = useState('V@p.fr')
-  const [signInPassword, setSignInPassword] = useState('v')
+  const [signInEmail, setSignInEmail] = useState()
+  const [signInPassword, setSignInPassword] = useState()
   const [listErrorsSignin, setErrorsSignin] = useState([])
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {

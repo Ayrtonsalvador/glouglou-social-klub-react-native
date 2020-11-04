@@ -5,9 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
-function CaveVigneron({ navigation, token }) {
+function CaveVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
@@ -35,9 +34,9 @@ function CaveVigneron({ navigation, token }) {
       var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       // console.log("GET INFOS BOUTEILLE", response)
-      console.log("CAVE", response.cave);
+      // console.log("CAVE", response.cave);
       if (response.result == true) {
-        console.log('TRUE');
+        // console.log('TRUE');
         var cave = response.cave
         setlisteVin(cave)
         // Juliette
@@ -45,7 +44,7 @@ function CaveVigneron({ navigation, token }) {
         // setlisteVin([...listeVin,cave])
       } else {
         //CAVE VIDE
-        console.log('FALSE');
+        // console.log('FALSE');
 
         setPopup(true)
       }
@@ -55,7 +54,7 @@ function CaveVigneron({ navigation, token }) {
 
   // SUPPRIMER UNE REF
   var handleDeleteRef = async (nom) => {
-    setlisteVin(listeVin.filter(object => object.nom != nom))
+    setlisteVin(listeVin.filter(object => console.log("OBJET", object)))
     setState(!state);
   }
 
@@ -162,7 +161,7 @@ function CaveVigneron({ navigation, token }) {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
-              console.log("DELETED FRONT", nom)
+              // console.log("DELETED FRONT", nom)
             }}
             style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
           >
@@ -180,7 +179,7 @@ function CaveVigneron({ navigation, token }) {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
           <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
           </View>
           <TouchableOpacity>
             <Text
@@ -245,7 +244,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log("TOKEN CAVE", state.token)
+  // console.log("TOKEN CAVE", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 

@@ -9,18 +9,27 @@ import { set } from 'react-native-reanimated';
 
 function AddVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
-  const [NomRef, setNomRef] = useState("Référence");
-  const [Couleur, setCouleur] = useState("Couleur");
-  const [Cepage, setCepage] = useState("Cépage");
-  const [Millesime, setMillesime] = useState("Millesime");
-  const [Appellation, setAppellation] = useState("Appelation");
-  const [Desc, setDesc] = useState("Description");
+  const [NomRef, setNomRef] = useState(null);
+  const [Couleur, setCouleur] = useState(null);
+  const [Cepage, setCepage] = useState(null);
+  const [Millesime, setMillesime] = useState(null);
+  const [Appellation, setAppellation] = useState(null);
+  const [Desc, setDesc] = useState(null);
 
   const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
+
+  const [Error, setError] = useState([]);
+
+  var ListError = Error.map((error, i) => {
+    return (
+      <View>
+        <Text style={{ color: '#9D2A29' }}>{error}</Text>
+      </View>
+    )
+  })
 
   // Demander accès à la bibliothèque photo
   useEffect(() => {
@@ -58,7 +67,7 @@ function AddVigneron({ navigation, token, userstatus }) {
         <KeyboardAvoidingView behavior="position" enabled>
           <View style={styles.box1}>
 
-            <Image source={require('../assets/macave.png')} style={{ width: 120, height: 100 }}></Image>
+            <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
             <ScrollView>
               <View style={styles.box2}>
 
@@ -77,21 +86,21 @@ function AddVigneron({ navigation, token, userstatus }) {
                 <Input
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={NomRef}
+                  placeholder="Nom de la référence"
                   onChangeText={(text) => setNomRef(text)}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={Couleur}
+                  placeholder="Couleur"
                   onChangeText={(text) => setCouleur(text)}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={Cepage}
+                  placeholder="Cépage"
                   disabled={disabled}
                   onChangeText={(text) => setCepage(text)}
                 />
@@ -99,23 +108,26 @@ function AddVigneron({ navigation, token, userstatus }) {
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={Millesime}
+                  placeholder="Millesime"
                   onChangeText={(text) => setMillesime(text)}
                 />
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={Appellation}
+                  placeholder="Appelation"
                   onChangeText={(text) => setAppellation(text)}
                 />
 
                 <Input
                   containerStyle={{ marginBottom: 20, width: '70%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder={Desc}
+                  placeholder="Description"
                   onChangeText={(text) => setDesc(text)}
                 />
+
+                <Text>{ListError}</Text>
               </View>
+
             </ScrollView>
 
             <View>
@@ -126,8 +138,6 @@ function AddVigneron({ navigation, token, userstatus }) {
                 buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
 
                 onPress={async () => {
-
-                  navigation.navigate('Catalogue');
 
                   var data = new FormData();
 
@@ -156,7 +166,18 @@ function AddVigneron({ navigation, token, userstatus }) {
                   var response = await newbottle.json();
                   // console.log("FB", response)
                   if (response.result == true) {
-                    navigation.navigate('Catalogue') } 
+                    navigation.navigate('Catalogue')
+
+                    setImage(null);
+                    setNomRef(null)
+                    setCouleur(null);
+                    setCepage(null);
+                    setMillesime(null);
+                    setAppellation(null);
+                    setDesc(null);
+                  } else if (response.result == false) {
+                    setError(response.error);
+                  }
                 }}
 
               />

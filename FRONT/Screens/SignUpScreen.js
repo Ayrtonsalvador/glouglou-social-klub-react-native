@@ -7,11 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// ATTENTION ADRESS IP 
-
 function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
   const [signUpUsername, setSignUpUsername] = useState('')

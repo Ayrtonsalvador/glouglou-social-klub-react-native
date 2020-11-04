@@ -7,20 +7,27 @@ import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 
+import { 
+  responsiveHeight , 
+  responsiveWidth , 
+  responsiveFontSize,
+  responsiveScreenHeight , 
+  responsiveScreenWidth , 
+  responsiveScreenFontSize 
+}  from  "react-native-responsive-dimensions" ;
+
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPmaison = "";
   var IPecole = "172.17.1.153";
 
-  const [nom, setNom] = useState("Nom")
-  const [etablissement, setEtablissement] = useState("Nom d'établissement")
-  const [ville, setVille] = useState("Ville")
-  const [region, setRegion] = useState("Région")
-  const [desc, setDesc] = useState("Description")
+  const [nom, setNom] = useState(null)
+  const [etablissement, setEtablissement] = useState(null)
+  const [ville, setVille] = useState(null)
+  const [region, setRegion] = useState(null)
+  const [desc, setDesc] = useState(null)
 
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState(null);
-  const [sendinfos, setsendinfos] = useState(false)
 
       useEffect(() => {
       async function loadData() {
@@ -29,13 +36,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
         var response = await rawResponse.json();
         console.log("GET INFOS CAVISTE", response)
 
-        if (etablissement == "" || ville == "" || region == "" || desc == "") {
-          setDomaine("Nom d'établissement")
-          setVille("Ville")
-          setRegion("Région")
-          setDesc("Parlez-nous de vous!")
-        }
-
         if (response.result == true) {
           setNom(response.user.Nom)
           setEtablissement(response.user.Etablissement)
@@ -43,6 +43,13 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
           setImage(response.user.Photo)
+        }
+
+        if (etablissement == null || ville == null || region == null || desc == null) {
+          setEtablissement("Nom d'établissement")
+          setVille("Ville")
+          setRegion("Région")
+          setDesc("Parlez-nous de vous!")
         }
 
       }
@@ -79,7 +86,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
           <KeyboardAvoidingView behavior="position" enabled>
             <View style={styles.box1}>
-              <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80 }}></Image>
+              <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center' }}></Image>
 
               <ScrollView>
 
@@ -151,7 +158,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
                   <Button onPress={async () => {
                     setDisabled(true)
-
+                    navigation.navigate('Catalogue');
                 
                     var data = new FormData();
                     // envoie du files avatar
@@ -220,14 +227,17 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    height : responsiveScreenHeight ( 90 ) , 
+    width : responsiveScreenWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
     alignItems: 'center',
+    height : responsiveHeight ( 90 ) , 
+    width : responsiveWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
