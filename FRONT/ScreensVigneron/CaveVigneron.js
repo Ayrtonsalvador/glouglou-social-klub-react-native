@@ -33,27 +33,33 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   const [state, setState] = useState(false)
 
   useEffect(() => {
+
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPmaison}:3000/macave?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response.cave)
-      // console.log("CAVE", response.cave);
-      if (response.result == true) {
-        var cave = response.cave
-        setlisteVin(cave)
-      } else {
-        // CAVE VIDE
-        setPopup(true)
-      }
-    }
+
+      if (userstatus == "Vigneron") {
+
+        var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("GET INFOS BOUTEILLE", response.cave)
+        // console.log("CAVE", response.cave);
+        if (response.result == true) {
+          var cave = response.cave
+          setlisteVin(cave)
+        } else {
+          // CAVE VIDE
+          setPopup(true)
+        }
+      }}
+      
     loadData()
+
   }, [state]);
 
-  if(isFocused && !state){
+  if (isFocused && !state) {
     console.log('FOCUSED');
     setState(true)
   }
-  if(!isFocused && state) {
+  if (!isFocused && state) {
     console.log('IS NOT FOCUSED');
     setState(false)
   }

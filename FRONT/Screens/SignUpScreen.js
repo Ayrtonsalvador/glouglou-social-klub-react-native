@@ -160,7 +160,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch(`http://${IPmaison}:3000/sign-up`, {
+                  var data = await fetch(`http://${Iecole}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`

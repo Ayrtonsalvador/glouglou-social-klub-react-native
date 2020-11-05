@@ -39,8 +39,12 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
   const [state, setState] = useState(false);
 
   useEffect(() => {
-    async function loadData() {
-      var rawResponse = await fetch(`http://${IPmaison}:3000/favoris?token=${token}`);
+
+      async function loadData() {
+
+        if ( userstatus == "Caviste") {
+
+      var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS FAVORIS", response)
 
@@ -52,7 +56,8 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
         //FAVORIS VIDE
         setPopup(true)
       }
-    }
+    }}
+    
     loadData()
   }, [state]);
 

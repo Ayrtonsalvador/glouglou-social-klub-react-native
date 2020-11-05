@@ -32,7 +32,7 @@ function MailmainV({ navigation, pseudo, token, userstatus, openMessage }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPmaison}:3000/mailbox-main-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("RESPONSE MAIL MAIN V", response)
 
