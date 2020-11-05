@@ -11,7 +11,7 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -20,7 +20,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [AOC, setAOC] = useState("AOC")
   const [domaine, setDomaine] = useState("Nom de domaine")
 
-  const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
   const [couleur, setCouleur] = useState("Couleur")
 
@@ -39,6 +38,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
 
+  const [state, setstate] = useState(false)
 
   useEffect(() => {
     async function loadData() {
@@ -59,10 +59,9 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
       }}
     }
     loadData()
-  }, []);
+  }, [state]);
 
   const handlePressLike = () => {
-    console.log("ADD FAVORIS")
     setColorIcon('#DF2F2F');
   }
 
@@ -82,6 +81,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
           setMillesime(vin.Millesime);
+          setDomaine(vin.IdVigneron.Domaine);
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
           setPhoto(vin.Photo);
@@ -98,20 +98,18 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 220, height: 220, borderRadius: 5 }} />
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5 }} />
 
-            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', margin: 5 }}>
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
-            <Text style={{ margin: 5 }}>
+            <Text style={{ marginLeft: 10 }}>
               {vin.Millesime}
             </Text>
-            </View>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.AOC}
             </Text>
-            <Text style={{ fontWeight: "200", margin: 5 }}>
+            <Text style={{ marginLeft: 10, marginBottom: 10 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -138,21 +136,19 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150, borderRadius: 5 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200, borderRadius: 5 }} />
                 </View>
-
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+              
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
                     {nom}
-                  </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                     {millesime}
-                  </Text>
-                </View>
-                <Text style={{ marginBottom: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10, fontWeight: "200"}}>
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -168,8 +164,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
                       })
-                      var response = await data.json()
-                      console.log('AJOUT FAVORIS', response)
+
                     }}
                   >
                   </Icon>
@@ -248,15 +243,15 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
     // CATALOGUE CAVISTE
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: "center", alignItems:'center'}}>
 
-        <View>
+        <View style={{alignItems: 'stretch'}}>
           <Modal
             animationType="fade"
             transparent={true}
             visible={pickerVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+              setPickerVisible(false)
             }}
           >
             <View style={styles.centeredView}>
@@ -267,20 +262,20 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   onPress={async () => {
                     setPickerVisible(!pickerVisible);
 
-                    var filtre = await fetch(`http://${IPmaison}:3000/filtre`, {
+                    var filtre = await fetch(`http://${IPecole}:3000/filtre`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `filtreFF=${selectedValue}`
                     })
 
                     var filtredata = await filtre.json()
-                    console.log(filtredata.catalogue)
+                   // console.log(filtredata.catalogue)
                     setlisteVin(filtredata.catalogue)
 
                   }}
                 >
                 </Button>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1}}>
                   <Picker
                     selectedValue={selectedValue}
                     style={{ height: 10, width: 150, color: '#FFFFFF' }}
@@ -292,6 +287,23 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     <Picker.Item label="LES BULLES" value="Bulles" />
                   </Picker>
                 </View>
+
+                <Button
+            onPress={() => {
+              setPickerVisible(false);
+              setstate(!state);
+            }}
+            title=''
+            buttonStyle={styles.cross}
+            icon={
+              <Icon
+                name='md-close-circle-outline'
+                size={30}
+                color= "#FFAE34"
+              />
+            }
+          >
+          </Button>
 
               </View>
             </View>
@@ -338,8 +350,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 10,
     borderColor: '#808080',
-    marginTop: 50,
+    marginTop: 0,
     elevation: 10
+  },
+  cross: {
+    backgroundColor:"#FFFFFF"
   },
   img: {
     width: 80,
@@ -348,10 +363,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centeredView: {
-    flex: 1,
+
     padding: 0,
-    // marginTop: 20,
-    // justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
@@ -359,7 +372,8 @@ const styles = StyleSheet.create({
     width: 250,
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
-    padding: 30,
+    paddingHorizontal: 20,
+  
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -373,7 +387,10 @@ const styles = StyleSheet.create({
   openButton: {
     flexDirection: 'row',
     margin: 5,
-    backgroundColor: "#FFD15C",
+    marginTop: 22,
+    marginBottom: 5,
+    width: 250,
+    backgroundColor: "#FFAE34",
   },
   textStyle: {
     color: "white",

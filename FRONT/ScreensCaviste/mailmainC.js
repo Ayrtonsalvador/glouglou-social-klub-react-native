@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import MailmainV from '../ScreensVigneron/MailmainV';
-import MailreadC from '../ScreensCaviste/MailreadC';
+import MailreadC from './MailreadC';
 
 function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
   

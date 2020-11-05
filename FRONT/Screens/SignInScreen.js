@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,14 +9,8 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   var IPecole = "172.17.1.46";
 
-  // Vigneron
-  // const [signInEmail, setSignInEmail] = useState("Mv@gmail.com")
-  // const [signInPassword, setSignInPassword] = useState("mv")
-
-  // Caviste
-  const [signInEmail, setSignInEmail] = useState("Rt@gmail.com")
-  const [signInPassword, setSignInPassword] = useState("rt")
-
+  const [signInEmail, setSignInEmail] = useState("")
+  const [signInPassword, setSignInPassword] = useState("")
   const [listErrorsSignin, setErrorsSignin] = useState([])
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {
@@ -32,8 +26,8 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
     <View style={{ flex: 1, backgroundColor: '#FCDF23' }}>
       <View style={styles.container}>
 
-        <KeyboardAvoidingView behavior="position" enabled>
-
+      <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+        <ScrollView>
           <View style={styles.box1}>
 
             <Image source={require('../assets/GGSC.png')} style={styles.img}></Image>
@@ -116,6 +110,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
             </View>
           </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </View>
     </View>

@@ -5,14 +5,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
-import { withNavigationFocus } from 'react-navigation'; 
+import { withNavigationFocus } from 'react-navigation';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
 import MailwriteC from './MailwriteC';
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -31,56 +31,48 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
   const [photoVi, setPhotoVi] = useState(null)
 
   const [isVisible, setIsVisible] = useState(false);
-  const [popup, setPopup] = useState(false)
-  const [write, setWrite] = useState(false)
 
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
-  const [colorIcon, setColorIcon] = useState('#C4C4C4');
   const [state, setState] = useState(false);
 
   useEffect(() => {
 
-      async function loadData() {
+    async function loadData() {
 
-        if ( userstatus == "Caviste") {
+      if (userstatus == "Caviste") {
 
-      var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
-      var response = await rawResponse.json();
-      // console.log("GET INFOS FAVORIS", response)
+        var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
+        var response = await rawResponse.json();
 
-      if (response.result == true) {
-        var favoris = response.favCaviste.Favoris;
-        setlisteVin(favoris);
-        // console.log("FAVORIS", favoris)
-      } else {
-        //FAVORIS VIDE
-        setPopup(true)
+        if (response.result == true) {
+          var favoris = response.favCaviste.Favoris;
+          setlisteVin(favoris);
+          console.log('FAVORIS',favoris);
+        }
       }
-    }}
-    
+    }
+
     loadData()
   }, [state]);
 
-  if(isFocused && !state){
-    // console.log('FOCUSED');
+  if (isFocused && !state) {
     setState(true)
   }
   if(!isFocused && state) {
-    // console.log('IS NOT FOCUSED');
     setState(false)
   }
 
-  const handlePressLike = () => {
-    // console.log("ADD FAVORIS")
-    setColorIcon('#DF2F2F');
+  const handlePressMessage = () => {
+    navigation.navigate('Write')
+    setIsVisible(false);
   }
 
-  // if(write){
-  //   return (
-  //   <MailwriteC navigation={navigation} token={token} userstatus={userstatus} message={message}/>
-  //   )
-  // }
+  // SUPPRIMER UNE REF
+  var handleDeleteLike = async (nom) => {
+    setlisteVin(listeVin.filter(object => object.nom != nom))
+    setState(!state);
+  }
 
   // MAP VINS
   const cardVin = listeVin.map((vin, i) => {
@@ -108,18 +100,18 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
-
-            <Text>
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5  }} />
+            
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.Millesime}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.AOC}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10, marginBottom: 15 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -136,42 +128,46 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
         <Overlay
           onBackdropPress={() => {
             setIsVisible(false);
-            setColorIcon('#C4C4C4')
           }}
         >
-          <ScrollView>
+          <ScrollView containerStyle={{ borderRadius: 30 }}>
             <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
               <View style={{ justifyContent: 'center' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200, borderRadius: 5 }} />
                 </View>
 
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
                     {nom}
-                  </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                     {millesime}
-                  </Text>
-                </View>
-                <Text style={{ marginBottom: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10}}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                   <Icon
                     name="ios-heart"
                     size={30}
-                    color={colorIcon}
+                    color="#DF2F2F"
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
-                      handlePressLike();
-                      console.log('SUPPR FAVORIS')
+
+                      var rawResponse = await fetch(`http://${IPecole}:3000/delete-favoris/${nom}/${token}`, {
+                        method: 'DELETE'
+                      });
+                      var response = await rawResponse.json();
+                      console.log("FAVORIS", response.Favoris);
+                      handleDeleteLike(nom)
+                      setIsVisible(false);
+                      setState(!state);
                     }}
                   >
                   </Icon>
@@ -200,7 +196,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
                   rounded
                   source={{ uri: photoVi }}
                 ></Avatar>
-                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                <Text style={{ margin: 10, color: '#9D2A29', fontWeight: "bold" }}>
                   {nomVi}
                 </Text>
               </View>
@@ -232,14 +228,13 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
     )
   }
 
-
   // POPUP FAVORIS VIDE
-  if (popup  && userstatus == "Vigneron") {
+  if (cardVin.length == 0 && userstatus == "Caviste") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
           <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
           </View>
           <TouchableOpacity>
             <Text
@@ -288,23 +283,15 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 10,
     borderColor: '#808080',
-    marginTop: 50,
-    elevation: 10
+    marginTop: 0,
+    elevation: 10,
+    
   },
   img: {
     width: 80,
     height: 80,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  popup: {
-    width: 300,
-    height: 400,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 15,
-    // fontFamily: "Gothic A1",
   },
   centeredView: {
     flex: 1,
@@ -314,7 +301,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    height: 500,
+    height: 300,
     width: 250,
     backgroundColor: "white",
     borderRadius: 15,
@@ -331,6 +318,8 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
+    flexDirection: 'row',
+    margin: 5,
     backgroundColor: "#FFD15C",
   },
   textStyle: {
@@ -341,7 +330,16 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  }
+  },
+  popup: {
+    width: 300,
+    height: 400,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    // fontFamily: "Gothic A1",
+  },
 });
 
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
@@ -355,8 +353,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  // console.log("STATE FAVORIS", state.token)
-  return { token: state.token, userstatus: state.userstatus }
+return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(

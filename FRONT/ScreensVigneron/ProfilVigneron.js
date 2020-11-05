@@ -102,15 +102,16 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
                   {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
-                  <Button
+                  {/* <Button
                     icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                     rounded
                     buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                    onPress={pickImage} />
+                    onPress={pickImage} /> */}
                 </View>
 
                 <TouchableOpacity>
-                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Changer ma photo</Text>
+                <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
+                         onPress={pickImage} >Changer ma photo</Text>
                 </TouchableOpacity>
 
                 <Input
@@ -187,7 +188,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                     // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
 
-                    var updateUser = await fetch(`http://${IPmaison}:3000/info-update-v`, {
+                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
                       method: 'post',
                       body: data
                     })
