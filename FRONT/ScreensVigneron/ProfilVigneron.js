@@ -108,7 +108,107 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
               {/* <View style={styles.box2}> */}
 
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+
+                  {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+
+                  {/* <Button
+                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                    rounded
+                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
+                    onPress={pickImage} /> */}
+                </View>
+
+                <TouchableOpacity>
+                <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
+                         onPress={pickImage} >Changer ma photo</Text>
+                </TouchableOpacity>
+
+                <Input
+                  containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder={nom}
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setNom(val)
+                  }}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder={domaine}
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setDomaine(val)
+                  }}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder={ville}
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setVille(val)
+                  }}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder={region}
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setRegion(val)
+                  }}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  placeholder={desc}
+                  multiline={true}
+                  disabled={disabled}
+                  inputStyle={{ marginLeft: 10 }}
+                  onChangeText={(val) => {
+                    setDesc(val)
+                  }}
+                />
+
+                
+
+                <Button onPress={async () => {
+                  setDisabled(true)
+                  // création du form data qui formate les données
+                  if (userstatus == "Vigneron") {
+                    
+                    var data = new FormData();
+                    // envoie du files avatar
+                    data.append('avatar', {
+                      uri: image,
+                      type: 'image/jpeg',
+                      name: 'avatar.jpg',
+                    });
+                    // création objet userinfo
+                    var userinfos = {
+                      nom: nom,
+                      domaine: domaine,
+                      ville: ville,
+                      region: region,
+                      desc: desc,
+                      token: token
+                    };
+
+                    // envoie l'objet en string au serveur
+                    data.append('userinfos', JSON.stringify(userinfos));
+
+                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
+                      method: 'post',
+                      body: data
+                    })
+
+                    var response = await updateUser.json();
+                    console.log('responseFB', response)
+
+                  }
+                  navigation.navigate('Catalogue');
+                }}
 
                 {image && <Avatar size={100} rounded source={uri} title={nom}></Avatar>}
 

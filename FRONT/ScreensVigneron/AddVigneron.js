@@ -88,13 +88,15 @@ function AddVigneron({ navigation, token, userstatus }) {
                 
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Button
+                  {/* <Button
                     icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                     rounded
                     buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                    onPress={pickImage} />
-                  {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
-                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Ajouter une photo</Text>
+                    onPress={pickImage} /> */}
+                  {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} 
+                  />}
+                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}
+                  onPress={pickImage}>Ajouter une photo</Text>
                 </View>
 
                 <Input
@@ -180,7 +182,7 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                   data.append('bottleinfos', JSON.stringify(bottleinfos));
 
-                  var newbottle = await fetch(`http://${IPmaison}:3000/AddVin`, {
+                  var newbottle = await fetch(`http://${IPecole}:3000/AddVin`, {
                     method: 'post',
                     body: data
                   })
@@ -215,17 +217,17 @@ const styles = StyleSheet.create({
   box1: {
     flex: 1,
     alignItems: 'center',
-    height : responsiveHeight ( 100 ) , 
+    height : responsiveHeight ( 120 ) , 
     width : responsiveWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
-  box2: {
-    width: 350,
-    height: 400,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // box2: {
+  //   width: 350,
+  //   height: 400,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
   responsiveBox: {
     width: wp('84.5%'),
     height: hp('17%'),

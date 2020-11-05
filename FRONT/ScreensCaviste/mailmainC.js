@@ -52,7 +52,7 @@ if(read){
       }
       onPress={async () => {
         setRead(true)
-        sendMessage(msg)
+        sendMessage({message: msg})
         navigation.navigate('Read')
       }}>
     </ListItem>

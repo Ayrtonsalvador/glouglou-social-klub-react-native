@@ -69,20 +69,20 @@ function FirstScreen({ navigation }) {
             <View style={styles.box2}>
              
               <Text style={styles.text}>BOIRE BIEN, BOIRE MIEUX</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:5,}}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et professionnels de la restauration.</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5,}}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et les cavistes.</Text>
               {pagination}
     
             </View>
 
             <View style={styles.box2}>
               <Text style={styles.text}>CÔTÉ VIGNERONS</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:5  }}>Nous participons au dévellopement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5  }}>Nous participons au développement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.</Text>
               {pagination}
             </View>
 
             <View style={styles.box2}>
               <Text style={styles.text}>CÔTÉ CAVISTES</Text>
-              <Text style={{ width: 200, justifyContent: "center", padding:5 }}>Nous aidons les restaurateurs à étoffer leur carte grâce à une préselection de références de petits producteurs.</Text>
+              <Text style={{ width: 200, justifyContent: "center", padding:5 }}>Nous aidons les restaurateurs à étoffer leur carte grâce à une présélection de références de petits producteurs.</Text>
               {pagination}
             </View>
 
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     color : "#FFAE34",
     fontSize: 18,
     padding: 5,
+
     // fontFamily: "GothicA1-Bold",
   },
 
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
   },
   box2: {
     borderRadius: 15,
-    height : responsiveScreenHeight (30) , 
+    height : responsiveScreenHeight (30), 
     width : responsiveScreenHeight (45),
     backgroundColor: '#FFFFFF',
     alignItems: 'center',

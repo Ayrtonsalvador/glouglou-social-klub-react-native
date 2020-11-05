@@ -191,9 +191,12 @@ router.post('/AddVin', async function (req, res, next) {
     res.json({ result: true, error })
 
   } else {
-
+    
     var imgpath = './tmp/' + uniqid() + '.jpg'
+    console.log("INFO4", imgpath)
     var resultCopy = await image.mv(imgpath);
+    console.log("INFO3", resultCopy)
+   
 
     if (!resultCopy) {
       var resultCloudinary = await cloudinary.uploader.upload(imgpath);

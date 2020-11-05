@@ -106,7 +106,124 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
                 {/* <View style={styles.box2}> */}
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+
+                    {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+
+                    {/* <Button
+                      icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                      rounded
+                      buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
+                      onPress={pickImage}/> */}
+                  </View>
+
+                  <TouchableOpacity>
+                    <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
+                        onPress={pickImage}>Changer ma photo</Text>
+                  </TouchableOpacity>
+
+                  <Input
+                    containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
+                    inputStyle={{ marginLeft: 10 }}
+                    placeholder={nom}
+                    disabled={disabled}
+                    onChangeText={(val) => {
+                      setNom(val)
+                    }}
+                  />
+
+                  <Input
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
+                    inputStyle={{ marginLeft: 10 }}
+                    placeholder={etablissement}
+                    disabled={disabled}
+                    onChangeText={(val) => {
+                      setEtablissement(val)
+                    }}
+                  />
+                  <Input
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
+                    inputStyle={{ marginLeft: 10 }}
+                    placeholder={ville}
+                    disabled={disabled}
+                    onChangeText={(val) => {
+                      setVille(val)
+                    }}
+                  />
+                  <Input
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
+                    inputStyle={{ marginLeft: 10 }}
+                    placeholder={region}
+                    disabled={disabled}
+                    onChangeText={(val) => {
+                      setRegion(val)
+                    }}
+                  />
+                  <Input
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
+                    placeholder={desc}
+                    multiline={true}
+                    disabled={disabled}
+                    inputStyle={{ marginLeft: 10 }}
+                    onChangeText={(val) => {
+                      setDesc(val)
+                    }}
+                  />
+
+                  <Button onPress={async () => {
+                    setDisabled(true)
+                    navigation.navigate('Catalogue');
+
+                    var data = new FormData();
+                    // envoie du files avatar
+                    data.append('avatar', {
+                      uri: image,
+                      type: 'image/jpeg',
+                      name: 'avatar.jpg',
+                    });
+                    // création objet userinfo
+                    var userinfos = {
+                      nom: nom,
+                      etablissement: etablissement,
+                      ville: ville,
+                      region: region,
+                      desc: desc,
+                      token: token
+                    };
+
+                    // envoie l'objet en string au serveur
+                    data.append('userinfos', JSON.stringify(userinfos));
+                
+                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
+                      method: 'post',
+                      body: data
+                    })
+
+                    var response = await updateUser.json();
+                    console.log('responseFB', response)
+                  }
+                  }
+
+                    disabled={disabled}
+                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
+                    title="OK"
+                  />
+
+                  <TouchableOpacity>
+                    <Icon
+                      style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                    ></Icon>
+                    <Text
+                      style={{ color: '#AAAAAA' }}
+                      >Changer mes paramètres</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <Text onPress={() => {
+                           navigation.navigate('SignIn');
+                      }}
+                      style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
+                  </TouchableOpacity>
 
                   {image && <Avatar size={100} rounded source={{uri : image}} title={nom}></Avatar>}
 
