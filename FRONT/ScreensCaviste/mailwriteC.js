@@ -3,7 +3,7 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import userstatus from '../reducers/userstatus';
+
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
