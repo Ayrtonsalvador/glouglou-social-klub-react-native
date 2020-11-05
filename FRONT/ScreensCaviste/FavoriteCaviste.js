@@ -66,7 +66,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
     setState(true)
   }
   if(!isFocused && state) {
-    console.log('IS NOT OCUSED');
+    console.log('IS NOT FOCUSED');
     setState(false)
   }
 
@@ -106,18 +106,18 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
-
-            <Text>
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5  }} />
+            
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.Millesime}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.AOC}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10, marginBottom: 15 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -137,28 +137,26 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
             setColorIcon('#C4C4C4')
           }}
         >
-          <ScrollView>
+          <ScrollView containerStyle={{ borderRadius: 30 }}>
             <Card style={{ flex: 0.5, width: 100, height: 100 }}>
 
               <View style={{ justifyContent: 'center' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200, borderRadius: 5 }} />
                 </View>
 
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
                     {nom}
-                  </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                     {millesime}
-                  </Text>
-                </View>
-                <Text style={{ marginBottom: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10}}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -198,7 +196,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                   rounded
                   source={{ uri: photoVi }}
                 ></Avatar>
-                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                <Text style={{ margin: 10, color: '#9D2A29', fontWeight: "bold" }}>
                   {nomVi}
                 </Text>
               </View>
@@ -284,23 +282,15 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 10,
     borderColor: '#808080',
-    marginTop: 50,
-    elevation: 10
+    marginTop: 0,
+    elevation: 10,
+    
   },
   img: {
     width: 80,
     height: 80,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  popup: {
-    width: 300,
-    height: 400,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 15,
-    // fontFamily: "Gothic A1",
   },
   centeredView: {
     flex: 1,
@@ -310,7 +300,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    height: 500,
+    height: 300,
     width: 250,
     backgroundColor: "white",
     borderRadius: 15,
@@ -327,6 +317,8 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
+    flexDirection: 'row',
+    margin: 5,
     backgroundColor: "#FFD15C",
   },
   textStyle: {
@@ -337,7 +329,16 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  }
+  },
+  popup: {
+    width: 300,
+    height: 400,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    // fontFamily: "Gothic A1",
+  },
 });
 
 var focusedAdd = withNavigationFocus(FavoriteCaviste)

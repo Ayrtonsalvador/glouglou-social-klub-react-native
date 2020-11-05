@@ -102,20 +102,18 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 220, height: 220, borderRadius: 5 }} />
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5 }} />
 
-            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', margin: 5 }}>
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
-            <Text style={{ margin: 5 }}>
+            <Text style={{ marginLeft: 10 }}>
               {vin.Millesime}
             </Text>
-            </View>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.AOC}
             </Text>
-            <Text style={{ fontWeight: "200", margin: 5 }}>
+            <Text style={{ marginLeft: 10, marginBottom: 10 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -142,21 +140,19 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150, borderRadius: 5 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200, borderRadius: 5 }} />
                 </View>
-
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+              
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
                     {nom}
-                  </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                     {millesime}
-                  </Text>
-                </View>
-                <Text style={{ marginBottom: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10, fontWeight: "200"}}>
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -167,7 +163,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
                       handlePressLike();
-                      var data = await fetch(`http://${IPmaison}:3000/add-favoris`, {
+                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
@@ -271,7 +267,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   onPress={async () => {
                     setPickerVisible(!pickerVisible);
 
-                    var filtre = await fetch(`http://${IPmaison}:3000/filtre`, {
+                    var filtre = await fetch(`http://${IPecole}:3000/filtre`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `filtreFF=${selectedValue}`
@@ -342,7 +338,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 10,
     borderColor: '#808080',
-    marginTop: 50,
+    marginTop: 0,
     elevation: 10
   },
   img: {
@@ -377,6 +373,9 @@ const styles = StyleSheet.create({
   openButton: {
     flexDirection: 'row',
     margin: 5,
+    marginTop: 22,
+    marginBottom: 5,
+    width: 250,
     backgroundColor: "#FFD15C",
   },
   textStyle: {

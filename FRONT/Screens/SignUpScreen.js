@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, AsyncStorage, ScrollView, PixelRatio } from 'react-native';
 
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -37,7 +37,8 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
       <View style={styles.container}>
         <View style={styles.popup}>
           <Text style={styles.text}>A BIENTÔT DANS LE</Text>
-          <Image style={{ width: "20%", height: "20%" }} source={require('../assets/ContacterGlouGlou.png')}>
+          <Image style={{ height: 100 * PixelRatio.getFontScale(), width: 100 * PixelRatio.getFontScale(),  }} source={require('../assets/ContacterGlouGlou.png')}>
+          {/* <Image style={{ width: "20%", height: "20%" }} source={require('../assets/ContacterGlouGlou.png')}> */}
           </Image>
           <Button
             containerStyle={{ marginBottom: 15, width: '20%', borderRadius: 15, }}
@@ -62,8 +63,8 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
 
         <View style={styles.container}>
 
-          <KeyboardAvoidingView behavior="position" enabled>
-
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+          <ScrollView>
             <View style={styles.box}>
 
               <Image source={require('../assets/ContactGlouGlou.png')} style={{ margin: 10, width: 120, height: 120 }}></Image>
@@ -131,7 +132,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch(`http://${IPmaison}:3000/sign-up`, {
+                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
@@ -160,7 +161,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch(`http://${Iecole}:3000/sign-up`, {
+                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
@@ -193,6 +194,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
               </TouchableOpacity>
 
             </View>
+            </ScrollView>
           </KeyboardAvoidingView>
         </View>
       </View>
@@ -207,6 +209,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FCDF23',
+    marginTop: 35
     // fontFamily: "Gothic A1",
   },
   box: {
@@ -224,8 +227,8 @@ const styles = StyleSheet.create({
     color: '#FFD15C',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 22,
-    padding: 10,
+    fontSize: 16 * PixelRatio.getFontScale(), 
+    padding: 15,
     // fontFamily: "Gothic A1",
   },
   popup: {

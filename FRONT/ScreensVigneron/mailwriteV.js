@@ -18,7 +18,7 @@ function MailwriteV({ navigation, token, userstatus }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPmaison}:3000/mailbox-write-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("RESPONSE WRITE V", response)
 

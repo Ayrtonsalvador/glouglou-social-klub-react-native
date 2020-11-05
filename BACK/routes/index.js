@@ -172,6 +172,9 @@ router.post('/sign-in', async function (req, res, next) {
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
   // console.log('Yeah');
+  console.log("INFO", req.body)
+  
+
 
   var error = [];
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
@@ -197,9 +200,12 @@ router.post('/AddVin', async function (req, res, next) {
     res.json({ result: true, error })
 
   } else {
-
+    
     var imgpath = './tmp/' + uniqid() + '.jpg'
+    console.log("INFO4", imgpath)
     var resultCopy = await image.mv(imgpath);
+    console.log("INFO3", resultCopy)
+   
 
     if (!resultCopy) {
       var resultCloudinary = await cloudinary.uploader.upload(imgpath);
