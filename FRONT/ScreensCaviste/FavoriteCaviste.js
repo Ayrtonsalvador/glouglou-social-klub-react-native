@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 
-import { withNavigationFocus } from 'react-navigation'; 
+import { withNavigationFocus } from 'react-navigation';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
 
@@ -34,49 +34,49 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
-  const [colorIcon, setColorIcon] = useState('#C4C4C4');
   const [state, setState] = useState(false);
 
   useEffect(() => {
 
-      async function loadData() {
+    async function loadData() {
 
-        if ( userstatus == "Caviste") {
+      if (userstatus == "Caviste") {
 
-      var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("GET INFOS FAVORIS", response)
+        var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
+        var response = await rawResponse.json();
 
-      if (response.result == true) {
-        var favoris = response.favCaviste.Favoris;
-        setlisteVin(favoris);
-        console.log("FAVORIS", favoris)
-      } else {
-        //FAVORIS VIDE
-        setPopup(true)
+        if (response.result == true) {
+          var favoris = response.favCaviste.Favoris;
+          setlisteVin(favoris);
+          // console.log("FAVORIS", favoris)
+        } else {
+          //FAVORIS VIDE
+          setPopup(!popup)
+        }
       }
-    }}
-    
+    }
+
     loadData()
   }, [state]);
 
-  if(isFocused && !state){
-    console.log('OCUSED');
+  if (isFocused && !state) {
+    // console.log('FOCUSED');
     setState(true)
   }
-  if(!isFocused && state) {
-    console.log('IS NOT OCUSED');
+  if (!isFocused && state) {
+    // console.log('IS NOT FOCUSED');
     setState(false)
-  }
-
-  const handlePressLike = () => {
-    console.log("ADD FAVORIS")
-    setColorIcon('#DF2F2F');
   }
 
   const handlePressMessage = () => {
     navigation.navigate('Write')
     setIsVisible(false);
+  }
+
+  // SUPPRIMER UNE REF
+  var handleDeleteLike = async (nom) => {
+    setlisteVin(listeVin.filter(object => object.nom != nom))
+    setState(!state);
   }
 
   // MAP VINS
@@ -106,7 +106,6 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
             <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
-
             <Text>
               {vin.Nom}
             </Text>
@@ -133,7 +132,6 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
         <Overlay
           onBackdropPress={() => {
             setIsVisible(false);
-            setColorIcon('#C4C4C4')
           }}
         >
           <ScrollView>
@@ -164,11 +162,18 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                   <Icon
                     name="ios-heart"
                     size={30}
-                    color={colorIcon}
+                    color="#DF2F2F"
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
-                      handlePressLike();
-                      console.log('SUPPR FAVORIS')
+
+                      var rawResponse = await fetch(`http://${IPecole}:3000/delete-favoris/${nom}/${token}`, {
+                        method: 'DELETE'
+                      });
+                      var response = await rawResponse.json();
+
+                      handleDeleteLike(nom)
+                      setIsVisible(false);
+                      setState(!state);
                     }}
                   >
                   </Icon>
@@ -229,7 +234,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
 
   // POPUP FAVORIS VIDE
-  if (popup  && userstatus == "Vigneron") {
+  if (popup && userstatus == "Vigneron") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
@@ -342,7 +347,7 @@ const styles = StyleSheet.create({
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
 
 function mapStateToProps(state) {
-  console.log("STATE FAVORIS", state.token)
+  // console.log("STATE FAVORIS", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
