@@ -20,7 +20,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [AOC, setAOC] = useState("AOC")
   const [domaine, setDomaine] = useState("Nom de domaine")
 
-  const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
   const [couleur, setCouleur] = useState("Couleur")
 
@@ -85,6 +84,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
           setMillesime(vin.Millesime);
+          setDomaine(vin.IdVigneron.Domaine);
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
           setPhoto(vin.Photo);
@@ -153,6 +153,9 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   </Text>
                 </View>
                 <Text style={{ marginBottom: 10 }}>
+                  {domaine}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
                   {AOC}
                 </Text>
                 <Text style={{ marginBottom: 10, fontWeight: "200"}}>
@@ -166,13 +169,15 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
                       handlePressLike();
-                      var data = await fetch(`http://${IPmaison}:3000/add-favoris`, {
+                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
                       })
                       var response = await data.json()
-                      console.log('AJOUT FAVORIS', response)
+                                     
+                      // console.log('AJOUT FAVORIS', response)
+
                     }}
                   >
                   </Icon>
@@ -251,15 +256,15 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
     // CATALOGUE CAVISTE
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: "center", alignItems:'center'}}>
 
-        <View>
+        <View style={{alignItems: 'stretch'}}>
           <Modal
             animationType="fade"
             transparent={true}
             visible={pickerVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+              setPickerVisible(false)
             }}
           >
             <View style={styles.centeredView}>
@@ -270,14 +275,14 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   onPress={async () => {
                     setPickerVisible(!pickerVisible);
 
-                    var filtre = await fetch(`http://${IPmaison}:3000/filtre`, {
+                    var filtre = await fetch(`http://${IPecole}:3000/filtre`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `filtreFF=${selectedValue}`
                     })
 
                     var filtredata = await filtre.json()
-                    console.log(filtredata.catalogue)
+                   // console.log(filtredata.catalogue)
                     setlisteVin(filtredata.catalogue)
 
                   }}

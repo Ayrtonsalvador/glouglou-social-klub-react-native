@@ -44,6 +44,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
           setImage(response.user.Photo)
+          console.log(image)
         }
 
         if (etablissement == null || ville == null || region == null || desc == null) {
@@ -62,6 +63,11 @@ function ProfilCaviste({ navigation, token, userstatus }) {
       loadData()
     }, []);
 
+    if (image == null) {
+      var uri = `require('../assets/gris.png')`
+    } else {
+       uri = { uri: image }
+    }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -100,7 +106,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
-                    {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+                    {image && <Avatar size={100} rounded source={uri} title={nom}></Avatar>}
 
                     <Button
                       icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
@@ -185,7 +191,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
                 
-                    var updateUser = await fetch(`http://${IPmaison}:3000/info-update-c`, {
+                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
                       method: 'post',
                       body: data
                     })

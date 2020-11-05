@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#FCDF23',
+    
     // fontFamily: "GothicA1-Bold",
   },
   box2: {
