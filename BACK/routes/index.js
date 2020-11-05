@@ -171,18 +171,32 @@ router.post('/sign-in', async function (req, res, next) {
 
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
+  // console.log('Yeah');
 
   var error = [];
-
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
   var image = req.files.avatar
 
-  if (image.size == 0 && bottleinfosFB.NomRef == null && bottleinfosFB.Couleur == null && bottleinfosFB.AOC == null && bottleinfosFB.Desc == null && bottleinfosFB.Cepage == null && bottleinfosFB.Millesime == null) {
-error.push('veuillez compléter les champs vides !')
-    res.json({ result: false, error })
-  }
+  if (image.size == 0 ) {
+   
+    const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
 
-  else {
+    var newBouteille = new BouteilleModel({
+
+      Nom: bottleinfosFB.NomRef,
+      Couleur: bottleinfosFB.Couleur,
+      AOC: bottleinfosFB.AOC,
+      Desc: bottleinfosFB.Desc,
+      Cepage: bottleinfosFB.Cepage,
+      Millesime: bottleinfosFB.Millesime,
+      IdVigneron: vigneronID.id,
+    })
+
+    saveBouteille = await newBouteille.save()
+    
+    res.json({ result: true, error })
+
+  } else {
 
     var imgpath = './tmp/' + uniqid() + '.jpg'
     var resultCopy = await image.mv(imgpath);
@@ -195,8 +209,7 @@ error.push('veuillez compléter les champs vides !')
     fs.unlinkSync(imgpath)
 
     const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
-    // console.log("TOKEN MA CAVE", vigneronID)
-
+ 
     var newBouteille = new BouteilleModel({
 
       Nom: bottleinfosFB.NomRef,
@@ -211,6 +224,9 @@ error.push('veuillez compléter les champs vides !')
     })
 
     saveBouteille = await newBouteille.save()
+
+    // console.log('BOUTEILLES,', saveBouteille);
+    // console.log('CAVE ===', vigneronID);
 
     res.json({ result: true, saveBouteille })
   }
@@ -232,7 +248,6 @@ router.get('/macave', async function (req, res, next) {
       Ville: user.Ville,
       Region: user.Region,
     }
-    // console.log("")
 
     var cave = await BouteilleModel.find({ IdVigneron: ID })
       .populate('IdVigneron')
@@ -253,7 +268,7 @@ router.delete('/delete-ref/:Nom', async function (req, res, next) {
   var result = false
 
   var suppr = await BouteilleModel.deleteOne({ Nom: req.params.Nom })
-  console.log('SURRP', req.params.Nom);
+  // console.log('SURRP', req.params.Nom);
   // console.log("SUPPR VIN", suppr)
 
   if (suppr.deletedCount > 0) {
@@ -358,26 +373,23 @@ router.get('/info-v', async function (req, res, next) {
 
 // --------------------------------------- Mailbox CAVISTE -------------------------------------- \\
 
-// BOITE DE RECEPTION
+//
 router.get('/mailbox-main', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
     { token: req.query.token })
 
- // console.log("Caviste Mailbox", Caviste)
-
-  var msgCaviste = Caviste.MessagesR
-  console.log("CE MSG CAVISTE", msgCaviste)
+    console.log("Caviste Mailbox", Caviste)
 
   if (Caviste != null) {
-    res.json({ Caviste, msgCaviste, result: true })
+    res.json({ Caviste, result: true })
   } else {
     res.json({ result: false })
   }
 });
 
 
-// LIRE UN MESSAGE
+//
 router.get('/mailbox-read', async function (req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
@@ -387,15 +399,31 @@ router.get('/mailbox-read', async function (req, res, next) {
 
 });
 
+//
+router.get('/mailbox-write', async function (req, res, next) {
 
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+  var Caviste = await CavisteModel.findOne(
+    { token: req.query.token })
+    // console.log("Nom", Caviste)
+
+  if (Caviste != null) {
+    res.json({ Caviste, result: true })
+  } else {
+    res.json({ result: false })
+  }
+});
+
+
+//
 router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
     { token: req.body.token }, {
-    $push: { MessagesS: { 
+    $push: { 
+      MessagesS: { 
       Texte: req.body.Texte,
-      Nom: req.body.NomVigneron } }
+      Nom: req.body.NomVigneron,
+    }}
   });
 
   var searchVigneron = await VigneronModel.findOne({
@@ -405,11 +433,14 @@ router.post('/mailbox-write', async function (req, res, next) {
   if (searchVigneron != null) {
     var msgVigneron = await VigneronModel.updateOne(
       { Nom: req.body.NomVigneron }, {
-      $push: { MessagesR: { 
+      $push: { 
+        MessagesR: { 
           Texte: req.body.Texte,
-          Nom: req.body.NomCaviste } }
+          Nom: req.body.NomCaviste
+        }}
     });
   }
+  // console.log("WRITE C", searchVigneron)
 
   res.json({ msg, msgVigneron })
 });
@@ -460,25 +491,32 @@ router.get('/mailbox-main-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
     { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  var msgVigneron = Vigneron.MessagesR
-
-  res.json({ Vigneron, msgVigneron, result: true })
+if (Vigneron != null) {
+  res.json({ Vigneron, result: true })
+} else {
+  res.json({ result: false })
+}
 });
 
 
 // LIRE UN MESSAGE
 router.get('/mailbox-read-v', async function (req, res, next) {
 
-  var msgVigneron = await VigneronModel.findOne(
-    { MessagesR: { Texte: req.body.Texte } })
+  var Vigneron = await VigneronModel.findOne(
+    { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  res.json({ msgVigneron })
+  if (Vigneron != null) {
+    res.json({ Vigneron, result: true })
+  } else {
+    res.json({ result: false })
+  }
+  });
 
-});
 
-
-//OK - ECRIRE MESSAGE et l'enregistrer en bdd
+//OK
 router.get('/mailbox-write-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
@@ -491,8 +529,8 @@ router.get('/mailbox-write-v', async function (req, res, next) {
   }
 });
 
+// ECRIRE MESSAGE et l'enregistrer en bdd - OK
 router.post('/mailbox-write-v', async function (req, res, next) {
-  //  console.log(req.body.token);
 
   var msg = await VigneronModel.updateOne(
     { token: req.body.token }, {
@@ -520,7 +558,9 @@ router.post('/mailbox-write-v', async function (req, res, next) {
     });
   }
 
-  res.json({ msg, msgCaviste })
+  // console.log("WRITE V", searchCaviste)
+
+  res.json({ msg, msgCaviste, searchCaviste })
 
 });
 
@@ -644,13 +684,19 @@ router.get('/info-c', async function (req, res, next) {
 
 router.get('/catalogue', async function (req, res, next) {
 
+  const userCaviste = await CavisteModel.findOne({
+    token: req.query.token
+  })
+  // console.log("Catalogue", userCaviste)
+  // console.log("token user cav", req.query.token)
+
   var catalogue = await BouteilleModel.find()
     .populate('IdVigneron')
     .exec()
-  console.log("CATALOGUE", catalogue)
+  // console.log("CATALOGUE", catalogue)
 
   if (catalogue != null) {
-    res.json({ result: true, catalogue })
+    res.json({ result: true, catalogue, userCaviste })
   } else {
     res.json({ result: false })
   }
@@ -659,16 +705,17 @@ router.get('/catalogue', async function (req, res, next) {
 // ---------------- FAVORIS CAVISTE ---------------- \\
 router.post('/add-favoris', async function (req, res, next) {
 
-  // const caviste = await CavisteModel.findOne({
-  //   token: req.body.tokenFF
-  // })
+  const userCaviste = await CavisteModel.findOne({
+    token: req.body.tokenFF
+  })
+  // console.log("USER CAVISTE", userCaviste)
   // console.log("TOKEN FAVORIS", req.body.tokenFF)
 
-  // BOUTEILLE NULL - CHANGER FIND ONE ?
   const bouteille = await BouteilleModel.findOne({
-    ID: req.body.IdFF
+    id: req.body.IdFF
   })
-  console.log("Favoris", bouteille)
+  // console.log("Favoris", bouteille)
+  // console.log("ID FAVORIS", req.body.IdFF)
 
   var favorisCaviste = await CavisteModel.updateOne(
     { token: req.body.tokenFF }, {
@@ -681,16 +728,21 @@ router.post('/add-favoris', async function (req, res, next) {
         Cepage: req.body.CepageFF,
         Desc: req.body.DescFF,
         AOC: req.body.AOCFF,
+        Photo: req.body.PhotoFF,
         NomVi: req.body.NomViFF,
         RegionVi: req.body.RegionViFF,
-        DescVi: req.body.DescViFF
+        DescVi: req.body.DescViFF,
+        PhotoVi: req.body.PhotoViFF,
       },
-      // {Photo: req.body.PhotoFF} 
     }
   })
 
+  console.log("RESULTAT BACK", favorisCaviste)
+  // console.log("PHOTO VI", req.body.PhotoViFF)
+  // console.log("PHOTO", req.body.PhotoFF)
+
   if (favorisCaviste != null) {
-    res.json({ result: true, bouteille, favorisCaviste })
+    res.json({ result: true, bouteille, favorisCaviste, userCaviste })
   } else {
     res.json({ result: false })
   }
@@ -700,9 +752,23 @@ router.get('/favoris', async function (req, res, next) {
 
   var favCaviste = await CavisteModel.findOne({ token: req.query.token })
   console.log("TOKEN FOUND", req.query.token)
+  console.log("GET FAV CAVISTE", favCaviste)
 
   if (favCaviste != null) {
     res.json({ result: true, favCaviste })
+  } else {
+    res.json({ result: false })
+  }
+})
+
+router.post('/filtre', async function (req, res, next) {
+
+  const catalogue = await BouteilleModel.find({ Couleur : req.body.filtreFF })
+
+  console.log("CATALOGUE", catalogue)
+
+  if (catalogue != null) {
+    res.json({ result: true, catalogue })
   } else {
     res.json({ result: false })
   }

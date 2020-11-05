@@ -1,186 +1,276 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from 'react-native';
-import { Button, Card, Badge, Overlay, Avatar }from 'react-native-elements';
+import { Button, Card, Badge, Overlay, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
+
+import { withNavigationFocus } from 'react-navigation'; 
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
 
-function FavoriteCaviste({ navigation, token, userstatus }) {
+function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
-    var IPmaison = "192.168.1.22";
+  var IPmaison = "192.168.1.22";
     var IPecole = "172.17.1.159";
-  
-    // const [photo, setPhoto] = useState('')
-    const [nom, setNom] = useState("Nom")
-    const [millesime, setMillesime] = useState("Millesime")
-    const [cepage, setCepage] = useState("Cépage")
-    const [AOC, setAOC] = useState("AOC")
-    const [domaine, setDomaine] = useState("Nom de domaine")
-  
-    const [region, setRegion] = useState("Région")
-    const [desc, setDesc] = useState("Description")
-    const [couleur, setCouleur] = useState("Couleur")
-  
-    const [nomVi, setNomVi] = useState("Nom Vigneron")
-    const [regionVi, setRegionVi] = useState("Région Vigneron")
-    const [descVi, setDescVi] = useState("Description Vigneron")
-    const [photoVi, setPhotoVi] = useState("Photo Vigneron")
-  
-    const [selectedValue, setSelectedValue] = useState("");
-    const [isVisible, setIsVisible] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [pickerVisible, setPickerVisible] = useState(false);
-  
-    useEffect(() => {
+
+  const [photo, setPhoto] = useState(null)
+  const [nom, setNom] = useState("Nom")
+  const [millesime, setMillesime] = useState("Millesime")
+  const [cepage, setCepage] = useState("Cépage")
+  const [AOC, setAOC] = useState("AOC")
+  const [domaine, setDomaine] = useState("Nom de domaine")
+
+  const [region, setRegion] = useState("Région")
+  const [desc, setDesc] = useState("Description")
+  const [couleur, setCouleur] = useState("Couleur")
+
+  const [nomVi, setNomVi] = useState("Nom Vigneron")
+  const [regionVi, setRegionVi] = useState("Région Vigneron")
+  const [descVi, setDescVi] = useState("Description Vigneron")
+  const [photoVi, setPhotoVi] = useState(null)
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [popup, setPopup] = useState(false)
+
+  const [listeVin, setlisteVin] = useState([])
+  const [colorText, setColorText] = useState('#FFD15C');
+  const [colorIcon, setColorIcon] = useState('#C4C4C4');
+  const [state, setState] = useState(false);
+
+  useEffect(() => {
+
       async function loadData() {
-        var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
-        var response = await rawResponse.json();
-        console.log("GET INFOS FAVORIS", response)
-  
-        if (response.result == true) {
-          setNom(response.catalogue.Nom)
-          setMillesime(response.catalogue.Millesime)
-          setCepage(response.catalogue.Cepage)
-          setAOC(response.catalogue.AOC)
-          // setPhoto()
-  
-          setDesc(response.catalogue.Desc)
-          setCouleur(response.catalogue.Couleur)
-          setDomaine()
-  
-          setNomVi(response.catalogue.user.Nom)
-          setRegionVi(response.catalogue.user.Region)
-          setDescVi(response.catalogue.user.Desc)
-          setDescVi(response.catalogue.user.Desc)
-          // setPhotoVi()
-  
-          // Map Vins
-          // const cardVin = response.cave.map((i) => {
-          //   return (
-          //       <TouchableOpacity
-          //         onPress={() => { setIsVisible(true); }}>
-  
-          //         <View style={{ flexDirection: "row" }}>
-          //           <Card
-          //             key={i}
-          //             style={{ alignItems: 'center', justifyContent: 'center' }}
-          //           // image={{ uri: '../assets/imagedefault-v.png' }}
-          //           >
-          //             <Text>
-          //               {nom}
-          //             </Text>
-          //             <Text>
-          //               {millesime}
-          //             </Text>
-          //             <Text>
-          //               {AOC}
-          //             </Text>
-          //             <Text>
-          //               {cepage}
-          //             </Text>
-          //           </Card>
-          //         </View>
-  
-          //       </TouchableOpacity>
-          //   )
-          // })
-  
-          // setlisteVin(cardVin)
-  
-        } else {
-          //CAVE VIDE
-          setPopup(true)
-        }
+
+        if ( userstatus == "Caviste") {
+
+      var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
+      var response = await rawResponse.json();
+      console.log("GET INFOS FAVORIS", response)
+
+      if (response.result == true) {
+        var favoris = response.favCaviste.Favoris;
+        setlisteVin(favoris);
+        console.log("FAVORIS", favoris)
+      } else {
+        //FAVORIS VIDE
+        setPopup(true)
       }
-      loadData()
-    }, []);
-  
-    // MODAL AFFICHAGE VIN
-    if (isVisible) {
-      return (
-        <View>
-          <Overlay
-            onBackdropPress={() => { setIsVisible(false) }}
+    }}
+    
+    loadData()
+  }, [state]);
+
+  if(isFocused && !state){
+    console.log('OCUSED');
+    setState(true)
+  }
+  if(!isFocused && state) {
+    console.log('IS NOT OCUSED');
+    setState(false)
+  }
+
+  const handlePressLike = () => {
+    console.log("ADD FAVORIS")
+    setColorIcon('#DF2F2F');
+  }
+
+  const handlePressMessage = () => {
+    navigation.navigate('Write')
+    setIsVisible(false);
+  }
+
+  // MAP VINS
+  const cardVin = listeVin.map((vin, i) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setIsVisible(true);
+
+          setNom(vin.Nom);
+          setAOC(vin.AOC);
+          setCepage(vin.Cepage);
+          setMillesime(vin.Millesime);
+          setCouleur(vin.Couleur);
+          setDesc(vin.Desc);
+          setPhoto(vin.Photo);
+
+          setNomVi(vin.NomVi);
+          setRegionVi(vin.regionVi);
+          setDescVi(vin.DescVi);
+          setPhotoVi(vin.PhotoVi);
+        }}>
+
+        <View style={{ flexDirection: "row" }}>
+          <Card
+            key={i}
+            style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <ScrollView>
-              <Card style={{ flex: 0.5, width: 100, height: 100 }}>
-  
-                <View style={{ justifyContent: 'center' }}>
-                  <View
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    <Image source={require('../assets/imagedefault-c.png')} style={{ margin: 10, width: 150, height: 150 }} />
-                  </View>
-  
-                  <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                     {nom}
-                    </Text>
-                    <Text style={{ marginBottom: 10, marginLeft: 5 }}>
-                      {millesime}
-                    </Text>
-                  </View>
-                  <Text style={{ marginBottom: 10 }}>
-                    {AOC}
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
+
+            <Text>
+              {vin.Nom}
+            </Text>
+            <Text>
+              {vin.Millesime}
+            </Text>
+            <Text>
+              {vin.AOC}
+            </Text>
+            <Text>
+              {vin.Cepage}
+            </Text>
+          </Card>
+        </View>
+      </TouchableOpacity>
+    )
+  })
+
+  // MODAL AFFICHAGE VIN
+  if (isVisible) {
+
+    return (
+      <View>
+        <Overlay
+          onBackdropPress={() => {
+            setIsVisible(false);
+            setColorIcon('#C4C4C4')
+          }}
+        >
+          <ScrollView>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+
+              <View style={{ justifyContent: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                </View>
+
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                    {nom}
                   </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {cepage}
-                  </Text>
-  
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Couleur
-                    </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {couleur}
-                  </Text>
-                  <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                    Description
-                    </Text>
-                  <Text style={{ marginBottom: 10 }}>
-                    {desc}
+                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                    {millesime}
                   </Text>
                 </View>
-              </Card>
-            </ScrollView>
-  
-            <TouchableOpacity
-              onPress={async () => {
-                console.log("OK")
-              }}
-              style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Text
-                style={{ color: '#DF2F2F' }}>OK</Text>
-            </TouchableOpacity>
-  
-          </Overlay>
-        </View>
-      )
-    }
+                <Text style={{ marginBottom: 10 }}>
+                  {AOC}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {cepage}
+                </Text>
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Icon
+                    name="ios-heart"
+                    size={30}
+                    color={colorIcon}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onPress={async () => {
+                      handlePressLike();
+                      console.log('SUPPR FAVORIS')
+                    }}
+                  >
+                  </Icon>
+                </View>
+              </View>
+            </Card>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+              <View>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Couleur
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {couleur}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Description
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {desc}
+                </Text>
+              </View>
+            </Card>
+            <Card>
+              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                <Avatar
+                  rounded
+                  source={{ uri: photoVi }}
+                ></Avatar>
+                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                  {nomVi}
+                </Text>
+              </View>
+              <View>
+                <Text style={{ margin: 10 }}>
+                  {regionVi}
+                </Text>
+                <Text style={{ margin: 10 }}>
+                  {descVi}
+                </Text>
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Icon
+                    name="md-chatboxes"
+                    size={30}
+                    color={colorText}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onPress={() => {
+                      handlePressMessage();
+                    }}>
+                  </Icon>
+                </View>
+              </View>
+            </Card>
+          </ScrollView>
+        </Overlay>
+      </View>
+    )
+  }
 
-    if (userstatus == "Vigneron") {
-    return (<AddVigneron navigation={navigation} token={token} userstatus={userstatus}/>)
+
+  // POPUP FAVORIS VIDE
+  if (popup  && userstatus == "Vigneron") {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
+        <View style={styles.popup}>
+          <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
+          </View>
+          <TouchableOpacity>
+            <Text
+              onPress={() => {
+                navigation.navigate('Catalogue');
+              }}
+              style={{ color: '#9D2A29', marginTop: 60 }}>Ajouter un vin à mes favoris</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    );
+  }
+
+  if (userstatus == "Vigneron") {
+    return (<AddVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
+
+    // FAVORIS CAVISTE
     return (
 
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
-    
-          <View style={styles.container}>
-    
-            <View style={styles.box1}>
-    
-              <ScrollView>
-    
-                
-              </ScrollView>
-            </View>
+        <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
+
+        <View style={styles.container}>
+
+          <View style={styles.box1}>
+
+            <ScrollView>
+              {cardVin}
+            </ScrollView>
           </View>
         </View>
-      );
+      </View>
+    );
   }
 }
 
@@ -250,11 +340,14 @@ const styles = StyleSheet.create({
   }
 });
 
+var focusedAdd = withNavigationFocus(FavoriteCaviste)
+
 function mapStateToProps(state) {
+  console.log("STATE FAVORIS", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  null
-)(FavoriteCaviste);
+  null,
+)(focusedAdd);

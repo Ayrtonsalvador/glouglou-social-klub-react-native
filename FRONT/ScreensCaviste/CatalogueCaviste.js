@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { withNavigationFocus } from 'react-navigation';
+
 import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
-function CatalogueCaviste({ userstatus, navigation, token }) {
+function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
   var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.159";
@@ -28,33 +30,37 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
   const [descVi, setDescVi] = useState("Description Vigneron")
   const [photoVi, setPhotoVi] = useState(null)
 
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
   const [error, setError] = useState(false);
 
+  const [id, setId] = useState();
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
 
+
   useEffect(() => {
     async function loadData() {
+
+      if ( userstatus == "Caviste") {
+
       var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS CATALOGUE", response.catalogue)
 
       if (response.result == true) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-        console.log("CATALOGUE" ,catalogue)
+        console.log("CATALOGUE", catalogue)
         // Version Juliette
         // var catalogue = response.catalogue;
         // setlisteVin([...listeVin, catalogue]);
       } else {
-        //ERREUR RECHERCHE
+        // ERREUR RECHERCHE
         setError(true)
-      }
+      }}
     }
     loadData()
   }, []);
@@ -69,12 +75,13 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
     setIsVisible(false);
   }
 
-  // MAP VINS
+  //  MAP VIN ALL
   const cardVin = listeVin.map((vin, i) => {
     return (
       <TouchableOpacity
         onPress={() => {
           setIsVisible(true);
+
           setNom(vin.Nom);
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
@@ -82,6 +89,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
           setPhoto(vin.Photo);
+          setId(vin._id);
 
           setNomVi(vin.IdVigneron.Nom);
           setRegionVi(vin.IdVigneron.Ville);
@@ -94,18 +102,20 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-             <Image source={{uri : vin.Photo}} style={{ margin: 10, width: 150, height: 150 }} />
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 220, height: 220, borderRadius: 5 }} />
 
-            <Text>
+            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', margin: 5 }}>
               {vin.Nom}
             </Text>
-            <Text>
+            <Text style={{ margin: 5 }}>
               {vin.Millesime}
             </Text>
+            </View>
             <Text>
               {vin.AOC}
             </Text>
-            <Text>
+            <Text style={{ fontWeight: "200", margin: 5 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -125,14 +135,14 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
             setColorIcon('#C4C4C4')
           }}
         >
-          <ScrollView>
-            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+          <ScrollView containerStyle={{ borderRadius: 30 }}>
+            <Card style={{ flex: 0.5, width: 100, height: 100, borderRadius: 15 }}>
 
               <View style={{ justifyContent: 'center' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{uri : photo}} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150, borderRadius: 5 }} />
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -146,7 +156,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                 <Text style={{ marginBottom: 10 }}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginBottom: 10, fontWeight: "200"}}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -155,8 +165,15 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                     size={30}
                     color={colorIcon}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onPress={() => {
+                    onPress={async () => {
                       handlePressLike();
+                      var data = await fetch(`http://${IPmaison}:3000/add-favoris`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
+                      })
+                      var response = await data.json()
+                      console.log('AJOUT FAVORIS', response)
                     }}
                   >
                   </Icon>
@@ -183,14 +200,14 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
               <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                 <Avatar
                   rounded
-                  source={{uri : photoVi}}
+                  source={{ uri: photoVi }}
                 ></Avatar>
-                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                <Text style={{ margin: 10, color: '#9D2A29', fontWeight: "bold" }}>
                   {nomVi}
                 </Text>
               </View>
               <View>
-                <Text style={{ margin: 10 }}>
+                <Text style={{ margin: 10, fontWeight: "200" }}>
                   {regionVi}
                 </Text>
                 <Text style={{ margin: 10 }}>
@@ -202,8 +219,8 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                     size={30}
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onPress={() => {
-                      handlePressMessage();
+                   onPress={() => { 
+                     handlePressMessage();
                     }}>
                   </Icon>
                 </View>
@@ -228,11 +245,12 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
     );
   }
 
+
   if (userstatus == "Vigneron") {
     return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
 
-    // Catalogue Caviste
+    // CATALOGUE CAVISTE
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
@@ -249,9 +267,20 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
               <View style={styles.modalView}>
                 <Button
                   buttonStyle={{ ...styles.openButton }}
-                  title='Rechercher'
-                  onPress={() => {
+                  title='RECHERCHER'
+                  onPress={async () => {
                     setPickerVisible(!pickerVisible);
+
+                    var filtre = await fetch(`http://${IPmaison}:3000/filtre`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                      body: `filtreFF=${selectedValue}`
+                    })
+
+                    var filtredata = await filtre.json()
+                    console.log(filtredata.catalogue)
+                    setlisteVin(filtredata.catalogue)
+
                   }}
                 >
                 </Button>
@@ -261,15 +290,13 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
                     style={{ height: 10, width: 150, color: '#FFFFFF' }}
                     onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
                   >
-                    <Picker.Item label="TYPES DE VINS" value="none" />
-                    <Picker.Item label="BLANCS" value="blanc" />
-                    <Picker.Item label="ROUGES" value="rouge" />
-                    <Picker.Item label="ROSÉS" value="rosé" />
-                    <Picker.Item label="BULLES" value="bulles" />
+                    <Picker.Item label="LES BLANCS" value="Blanc" />
+                    <Picker.Item label="LES ROUGES" value="Rouge" />
+                    <Picker.Item label="LES ROSÉS" value="Rosé" />
+                    <Picker.Item label="LES BULLES" value="Bulles" />
                   </Picker>
                 </View>
 
-              
               </View>
             </View>
           </Modal>
@@ -278,7 +305,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
             onPress={() => {
               setPickerVisible(true);
             }}
-            title='FILTRES'
+            title=' FILTRES'
             buttonStyle={styles.openButton}
             icon={
               <Icon
@@ -332,11 +359,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    height: 450,
+    height: 300,
     width: 250,
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
-    // margin: 20,
     padding: 30,
     alignItems: "center",
     shadowColor: "#000",
@@ -364,135 +390,14 @@ const styles = StyleSheet.create({
   }
 });
 
+var focusedAdd = withNavigationFocus(CatalogueCaviste)
 
 function mapStateToProps(state) {
+  // console.log("STATE CATALOGUE", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
   null
-)(CatalogueCaviste);
-//}
-
-// Carousel fiche produit
-
-// function FirstScreen() {
-
-//     const [activeIndex, setactiveIndex] = useState(0);
-
-//     const carouselItems = [{ title: "BOIRE BIEN, BOIRE MIEUX", text: 'GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et professionnels de la restauration.' },
-//     { title: "CÔTÉS VIGNERONS", text: 'Nous participons au dévellopement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.' },
-//     { title: "CÔTÉS CAVISTES", text: "Nous aidons les restaurateurs à étoffer leur carte grâce à une préselection de références de petits producteurs." },]
-
-//     const Item = ({ title, text }) => (
-//         <View style={styles.item}>
-//             <Text style={styles.title}>{title}</Text>
-//             <Text style={styles.text}>{text}</Text>
-//         </View>
-//     );
-
-//     const renderItem = ({ item, i }) => (
-//         <Item key={i} title={item.title} text={item.text} />
-//     );
-
-//     const pagi = ({ item, activeIndex }) => (
-//         <Pagination
-//             dotsLength={item.length}
-//             activeDotIndex={activeIndex}
-//             containerStyle={{ backgroundColor: '#FFFFFF' }}
-//             dotStyle={{
-//                 width: 10,
-//                 height: 10,
-//                 borderRadius: 5,
-//                 marginHorizontal: 8,
-//                 backgroundColor: "#FFD15C"
-//             }}
-//             inactiveDotStyle={{
-//                 width: 5,
-//                 height: 5,
-//                 borderRadius: 5,
-//                 marginHorizontal: 8,
-//                 backgroundColor: 'FFF2A0'
-//             }}
-//             inactiveDotOpacity={0.4}
-//             inactiveDotScale={0.6}
-//         />
-//     )
-
-//     return (
-
-//         // <View style={{backgroundColor: '#FCDF23'}}> 
-// // {/* 
-// //             <View style={{ flex: 1, alignItems: 'center' }}>
-// //                 <Image source={require('../assets/GGSC.png')} style={{ width: 200, height: 200, margin: 40 }} />
-// //             </View> */}
-
-//         <SafeAreaView style={{flex: 1, backgroundColor:'#FCDF23', paddingTop: 50, }}>
-//             <View style={{ flex: 1, flexDirection:'row', justifyContent: 'center', }}>
-//                 <Carousel
-//                 useScrollView
-//                     layout={"default"}
-//                     ref={ref => carousel = ref}
-//                     data={carouselItems}
-//                     sliderWidth={300}
-//                     itemWidth={300}
-//                     renderItem={renderItem}
-//                     onSnapToItem={index => setactiveIndex({ activeIndex: index })} />
-//                 {/* {pagi} */}
-//                 </View>
-//             </SafeAreaView >
-
-
-// // {/*         
-// //                     <View style={{ flex:1, justifyContent:'flex-end', borderColor: '#FFD15C', margin:10}}>
-// //                     <Text style={styles.txt}
-// //                     onPress={() => {
-// //                         navigation.navigate('SignIn');
-// //                     }}>S'IDENTIFIER</Text>
-
-
-// //                     <Text style={{backgroundColor: '#FFAE34', margin:10}}
-// //                     onPress={() => {
-// //                     navigation.navigate('SignUp');
-// //                     }}>S'INSCRIRE</Text>
-
-// //                     </View> */}
-
-// // </View>
-
-//     );
-// }
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexWrap: 'wrap',
-//     flexDirection: 'row'
-//   },
-//   box1: {
-//     borderWidth: 0,
-//     marginBottom: 10,
-//     borderColor: '#808080',
-//     marginTop: 50,
-//     elevation: 10
-//   },
-//   img: {
-//     width: 80,
-//     height: 80,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   popup: {
-//     width: 300,
-//     height: 400,
-//     backgroundColor: '#FFFFFF',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     borderRadius: 15,
-//     // fontFamily: "Gothic A1",
-//   },
-// });
-
-// export default FirstScreen;
+)(focusedAdd);

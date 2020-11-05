@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import MailmainV from '../ScreensVigneron/MailmainV';
 
 
-function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessage }) {
-  
+function MailmainC({ navigation, token, userstatus }) {
+
   var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.159";
 
@@ -15,98 +15,86 @@ function MailmainC({ navigation, pseudo, token, MessagesR, userstatus, sendMessa
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [nomVigneron, setNomVigneron] = useState();
   const [selectedId, setSelectedId] = useState(null);
+  const [clickedMsg, setClickedMsg] = useState(null)
 
-  const handleClick = (msgDatas) => { 
-    // setSelectedId(msg._id) // ID détecté !
-    // setClickedMsg(msg.Texte) // MSG détecté
-      // if(message != null){return (<MailmainC message={message} />)}
-    sendMessage({id:msgDatas.id, msg:msgDatas.msg})
-    console.log("selectedid+clickedMsg", msgDatas ) // ok, il a l'info
+  const handleClick = (id, texte) => {
+    setSelectedId(id)
+    setClickedMsg(texte)   
+    navigation.navigate('Read');
+
+    if (clickedMsg != null) { return (<MailreadC clickedMsg={clickedMsg} />) }
+
     navigation.navigate('Read')
   }
 
-useEffect(() => {
-  async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
-    var response = await rawResponse.json();
-    // console.log("RESPONSE MAIL MAIN C", response)
-    // console.log("NOM EXPEDITEUR", response.Caviste.MessagesR[3].Nom)
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPmaison}:3000/mailbox-main?token=${token}`);
+      var response = await rawResponse.json();
+      // console.log("RESPONSE MAIL MAIN C", response)
 
-    if(response.result == true){
-    setListMessages(response.msgCaviste)
-    setNomVigneron(response.Caviste.MessagesR.Nom)
+      if (response.result == true) {
+        setListMessages(response.Caviste.MessagesR)
+        setNomVigneron(response.Caviste.MessagesR.Nom)
+        // console.log("NOM Cav expediteur", response.Caviste.MessagesR.Nom)
+      }
+    }
+    loadData()
+  }, []);
+
+
+  var listMessagesItem = listMessages.map((msg, i) => {
+
+    return <ListItem
+      key={i}
+      title={msg.Texte}
+      subtitle={msg.Nom}
+      leftAvatar={
+        <Avatar rounded
+          // source={require('../assets/vigneron.jpg')} 
+          >
+        </Avatar>
+      }
+      bottomDivider={true}
+      onPress={() => { handleClick(msg._id, msg.Texte) }}
+    >
+    </ListItem>
+  });
+
+  if (userstatus == "Vigneron") {
+    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} />)
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+
+      {/* <Header> */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
+        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+        <Icon
+          name="pencil"
+          size={25}
+          color="#FFD15C"
+          buttonStyle={{ backgroundColor: '#FF9900' }}
+          onPress={() => {
+            navigation.navigate('Write');
+          }} />
+      </View>
+      {/* </Header> */}
+
+        <ScrollView style={{ flex: 1 }}>
+          {listMessagesItem}
+        </ScrollView>
+      </View>
+    )
   }
-  } 
-  
-  loadData()
-}, []);
-
-
- var listMessagesItem = listMessages.map((msg, i) => {
-
-var result = listMessages[i].Texte;
-var result2 = listMessages[i].Nom
-
-console.log("ALORS ALORS",result)
-console.log("ALORS",result2)
-
-    if(result.length > 75){
-      result = result.slice(0,75)+'...' }
-      
-      
-          return <ListItem
-              key={i}
-              title={msg.Text}
-              subtitle={msg.Nom}
-              // subtitle={i}
-              // leftAvatar={
-              //   // <Avatar rounded
-              //   //   // source={require('../assets/vigneron.jpg')} 
-              //   //   >
-              //   //   <Accessory />
-              //   // </Avatar>
-              // }
-              // title={result}
-              // subtitle={nomCaviste}
-              bottomDivider={true}
-              onPress={() => {
-                 handleClick({id:msg._id, msg:msg.Texte})
-                 console.log("yo",msg.Texte) // OK, il a l'info 
-
-              }
-            } 
-                          >   
-                 </ListItem>
-    });
- 
-    if (userstatus == "Vigneron") {
-      return (<MailmainV navigation={navigation} token={token} userstatus={userstatus}/>)
-    } else {
-  return (
-<View style={{ flex: 1 }}>
-
-<Header
-  containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-  centerComponent={{ text: 'REDIGER NOUVEAU MESSAGE', marginTop: 30 }}
->
-  <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 20 }}></Image>
-  <Button icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-          rounded
-          buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-          onPress={() => {navigation.navigate('Write');}} />
-</Header>
-<ScrollView style={{ flex: 1}}>
-{listMessagesItem}
-</ScrollView>
-</View>
-  )
- }}
+}
 
 function mapStateToProps(state) {
   // console.log("state", state.token)
-  return { token: state.token, userstatus : state.userstatus}
-  
+  return { token: state.token, userstatus: state.userstatus }
+
 }
 
 function mapDispatchToProps(dispatch) {

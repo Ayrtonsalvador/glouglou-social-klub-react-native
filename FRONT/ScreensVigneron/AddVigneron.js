@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
+import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
 import { 
   responsiveHeight , 
@@ -44,7 +45,6 @@ function AddVigneron({ navigation, token, userstatus }) {
   // Demander accès à la bibliothèque photo
   useEffect(() => {
     (async () => {
-
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');
@@ -98,12 +98,12 @@ function AddVigneron({ navigation, token, userstatus }) {
                   <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Ajouter une photo</Text>
                 </View>
 
-
                 <Input
                   containerStyle={{ marginTop: 20, marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Nom de la référence"
                   onChangeText={(text) => setNomRef(text)}
+                  value={NomRef}
                 />
 
                 <Input
@@ -111,6 +111,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Couleur"
                   onChangeText={(text) => setCouleur(text)}
+                  value={Couleur}
                 />
 
                 <Input
@@ -119,6 +120,8 @@ function AddVigneron({ navigation, token, userstatus }) {
                   placeholder="Cépage"
                   disabled={disabled}
                   onChangeText={(text) => setCepage(text)}
+                  value={Cepage}
+
                 />
 
                 <Input
@@ -126,12 +129,15 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Millésime"
                   onChangeText={(text) => setMillesime(text)}
+                  value={Millesime}
+
                 />
                 <Input
                   containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Appellation"
                   onChangeText={(text) => setAppellation(text)}
+                  value={Appellation}
                 />
 
                 <Input
@@ -139,6 +145,8 @@ function AddVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Description"
                   onChangeText={(text) => setDesc(text)}
+                  value={Desc}
+
                 />
 
                 <Text>{ListError}</Text>
@@ -151,6 +159,8 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                 onPress={async () => {
 
+                  navigation.navigate('Catalogue');
+                  // setstate(!state)
                   var data = new FormData();
 
                   data.append('avatar', {
@@ -171,25 +181,19 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                   data.append('bottleinfos', JSON.stringify(bottleinfos));
 
-                  var newbottle = await fetch(`http://${IPecole}:3000/AddVin`, {
+                  var newbottle = await fetch(`http://${IPmaison}:3000/AddVin`, {
                     method: 'post',
                     body: data
                   })
                   var response = await newbottle.json();
+                  setCouleur('')
                   // console.log("FB", response)
-                  if (response.result == true) {
-                    navigation.navigate('Catalogue')
-
-                    setImage(null);
-                    setNomRef(null)
-                    setCouleur(null);
-                    setCepage(null);
-                    setMillesime(null);
-                    setAppellation(null);
-                    setDesc(null);
-                  } else if (response.result == false) {
-                    setError(response.error);
-                  }
+                  // if (response.result == true) {
+                   
+                  // } 
+                  // else if (response.result == false) {
+                  //   setError(response.error);
+                  // }
                 }}
 
               />
@@ -238,11 +242,12 @@ const styles = StyleSheet.create({
   }
 });
 
+
 function mapStateToProps(state) {
   return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(AddVigneron);

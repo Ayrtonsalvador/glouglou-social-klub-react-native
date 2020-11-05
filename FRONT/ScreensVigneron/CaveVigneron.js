@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
-function CaveVigneron({ navigation, token, userstatus }) {
+import { withNavigationFocus } from 'react-navigation';
+
+function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.159";
@@ -28,34 +30,43 @@ function CaveVigneron({ navigation, token, userstatus }) {
   const [listeVin, setlisteVin] = useState([])
   const [listeModal, setlisteModal] = useState([])
   const [getIndex, setGetIndex] = useState()
-  const [state, setState] = useState(true)
+  const [state, setState] = useState(false)
 
   useEffect(() => {
-    async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
-      var response = await rawResponse.json();
-      // console.log("GET INFOS BOUTEILLE", response)
-      // console.log("CAVE", response.cave);
-      if (response.result == true) {
-        // console.log('TRUE');
-        var cave = response.cave
-        setlisteVin(cave)
-        // Juliette
-        // var cave = response.cave;
-        // setlisteVin([...listeVin,cave])
-      } else {
-        //CAVE VIDE
-        // console.log('FALSE');
 
-        setPopup(true)
-      }
-    }
+    async function loadData() {
+
+      if (userstatus == "Vigneron") {
+
+        var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("GET INFOS BOUTEILLE", response.cave)
+        // console.log("CAVE", response.cave);
+        if (response.result == true) {
+          var cave = response.cave
+          setlisteVin(cave)
+        } else {
+          // CAVE VIDE
+          setPopup(true)
+        }
+      }}
+      
     loadData()
+
   }, [state]);
+
+  if (isFocused && !state) {
+    console.log('FOCUSED');
+    setState(true)
+  }
+  if (!isFocused && state) {
+    console.log('IS NOT FOCUSED');
+    setState(false)
+  }
 
   // SUPPRIMER UNE REF
   var handleDeleteRef = async (nom) => {
-    setlisteVin(listeVin.filter(object => console.log("OBJET", object)))
+    setlisteVin(listeVin.filter(object => object.nom != nom))
     setState(!state);
   }
 
@@ -69,9 +80,9 @@ function CaveVigneron({ navigation, token, userstatus }) {
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
           setDesc(vin.desc);
-          setPhoto(vin.Photo)
+          setPhoto(vin.Photo);
         }}
-        >
+      >
         <View style={{ flexDirection: "row" }}>
           <Card
             key={i}
@@ -158,7 +169,7 @@ function CaveVigneron({ navigation, token, userstatus }) {
             onPress={async () => {
               setIsVisible(false);
               setState(true);
-              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+              await fetch(`http://${IPmaison}:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
@@ -175,6 +186,7 @@ function CaveVigneron({ navigation, token, userstatus }) {
     )
   }
 
+  // POPUP FAVORIS VIDE
   if (popup) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
@@ -244,6 +256,8 @@ const styles = StyleSheet.create({
   },
 });
 
+var focusedAdd = withNavigationFocus(CaveVigneron)
+
 function mapStateToProps(state) {
   // console.log("TOKEN CAVE", state.token)
   return { token: state.token, userstatus: state.userstatus }
@@ -252,4 +266,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null,
-)(CaveVigneron);
+)(focusedAdd);
