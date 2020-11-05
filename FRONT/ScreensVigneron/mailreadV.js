@@ -10,6 +10,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
 
   const [Texte, setTexte] = useState();
   const [texteSent, setTexteSent] = useState();
+  const [photo, setPhoto] = useState();
   const [response, setResponse] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -26,6 +27,8 @@ function MailreadV({ navigation, userstatus, token, message}) {
   
         if (response.result == true) {
           setNomVigneron(response.Vigneron.Nom)
+          setPhoto(response.Vigneron.Photo)
+          // console.log("NomVigneron", nomVigneron)
         }
       }
       loadData()
@@ -35,13 +38,13 @@ function MailreadV({ navigation, userstatus, token, message}) {
       return (
         <ListItem
           key={i}
-          title={nomCaviste}
+          title={nomVigneron}
           subtitle={msg}
           style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
           bottomDivider={true}
           leftAvatar={<Avatar
             rounded
-            source={require('../assets/GGSC.png')} >
+            source={{uri: photo}} >
           </Avatar>
           }
         />
@@ -65,11 +68,11 @@ function MailreadV({ navigation, userstatus, token, message}) {
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem
-        title={nomCaviste}
-        subtitle={Texte}
+        title={message.Nom}
+        subtitle={message.Texte}
         leftAvatar={
           <Avatar rounded
-            source={require('../assets/vigneron.jpg')} >
+            source={{uri: message.Photo}} >
           </Avatar>}
         bottomDivider={true}
       />
@@ -85,7 +88,8 @@ function MailreadV({ navigation, userstatus, token, message}) {
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
-              setNomVigneron(message.Nom);
+              setNomCaviste(message.Nom);
+              console.log("nomVigneron READ", nomVigneron)
             }}
           />
         </View>
@@ -106,13 +110,13 @@ function MailreadV({ navigation, userstatus, token, message}) {
               var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
                 })
               var body = await data.json()
-              console.log("RESPONSE MAIL WRITE V", body)
+              // console.log("RESPONSE MAIL WRITE V", body)
               setNewMsg([...newMsg, Texte])
-              console.log("NOM", nomCaviste)
-              console.log("TEXTE", Texte)
+              // console.log("NOM", nomCaviste)
+              // console.log("TEXTE", Texte)
               setPalceholderMsg("")
               }}/>
       </KeyboardAvoidingView>
@@ -121,7 +125,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
 }
 
 function mapStateToProps(state) {
-  console.log("STATE MESSAGE", state.message.message)
+  console.log("STATE MESSAGE V", state.message.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message.message }
 }
 

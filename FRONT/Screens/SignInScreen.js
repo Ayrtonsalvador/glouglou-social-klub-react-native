@@ -10,12 +10,12 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
   var IPecole = "172.17.1.46";
 
   // Vigneron
-  const [signInEmail, setSignInEmail] = useState("Mv@gmail.com")
-  const [signInPassword, setSignInPassword] = useState("mv")
+  // const [signInEmail, setSignInEmail] = useState("Mv@gmail.com")
+  // const [signInPassword, setSignInPassword] = useState("mv")
 
   // Caviste
-  // const [signInEmail, setSignInEmail] = useState("Rt@gmail.com")
-  // const [signInPassword, setSignInPassword] = useState("rt")
+  const [signInEmail, setSignInEmail] = useState("Rt@gmail.com")
+  const [signInPassword, setSignInPassword] = useState("rt")
 
   const [listErrorsSignin, setErrorsSignin] = useState([])
 

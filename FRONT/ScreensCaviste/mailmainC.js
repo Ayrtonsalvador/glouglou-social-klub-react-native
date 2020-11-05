@@ -24,7 +24,7 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIL MAIN C", response)
+      console.log("RESPONSE MAIL MAIN C", response)
 
       if (response.result == true) {
         setListMessages(response.Caviste.MessagesR)
@@ -47,12 +47,12 @@ if(read){
       bottomDivider={true}
       leftAvatar={
         <Avatar rounded
-          // source={require('../assets/vigneron.jpg')} 
+          source={{uri: msg.Photo}} 
           />
       }
       onPress={async () => {
         setRead(true)
-        sendMessage(msg)
+        sendMessage({message: msg})
         navigation.navigate('Read')
       }}>
     </ListItem>

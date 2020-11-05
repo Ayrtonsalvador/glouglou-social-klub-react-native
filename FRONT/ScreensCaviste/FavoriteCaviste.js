@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation'; 
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
+import MailwriteC from './MailwriteC';
 
-function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
+function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
 
   var IPecole = "172.17.1.46";
 
@@ -31,6 +32,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
   const [isVisible, setIsVisible] = useState(false);
   const [popup, setPopup] = useState(false)
+  const [write, setWrite] = useState(false)
 
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
@@ -45,12 +47,12 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
       var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
       var response = await rawResponse.json();
-      console.log("GET INFOS FAVORIS", response)
+      // console.log("GET INFOS FAVORIS", response)
 
       if (response.result == true) {
         var favoris = response.favCaviste.Favoris;
         setlisteVin(favoris);
-        console.log("FAVORIS", favoris)
+        // console.log("FAVORIS", favoris)
       } else {
         //FAVORIS VIDE
         setPopup(true)
@@ -61,23 +63,24 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
   }, [state]);
 
   if(isFocused && !state){
-    console.log('OCUSED');
+    // console.log('FOCUSED');
     setState(true)
   }
   if(!isFocused && state) {
-    console.log('IS NOT OCUSED');
+    // console.log('IS NOT FOCUSED');
     setState(false)
   }
 
   const handlePressLike = () => {
-    console.log("ADD FAVORIS")
+    // console.log("ADD FAVORIS")
     setColorIcon('#DF2F2F');
   }
 
-  const handlePressMessage = () => {
-    navigation.navigate('Write')
-    setIsVisible(false);
-  }
+  // if(write){
+  //   return (
+  //   <MailwriteC navigation={navigation} token={token} userstatus={userstatus} message={message}/>
+  //   )
+  // }
 
   // MAP VINS
   const cardVin = listeVin.map((vin, i) => {
@@ -215,7 +218,9 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={() => {
-                      handlePressMessage();
+                      setWrite(true);
+                      sendMessage(nomVi)
+                      setIsVisible(false);
                     }}>
                   </Icon>
                 </View>
@@ -341,12 +346,20 @@ const styles = StyleSheet.create({
 
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
 
+function mapDispatchToProps(dispatch) {
+  return { 
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message})
+    }
+  }
+}
+
 function mapStateToProps(state) {
-  console.log("STATE FAVORIS", state.token)
+  // console.log("STATE FAVORIS", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(focusedAdd);

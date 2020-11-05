@@ -12,6 +12,7 @@ function MailreadC({ navigation, token, userstatus, message}) {
   const [Texte, setTexte] = useState();
   const [texteSent, setTexteSent] = useState();
   const [response, setResponse] = useState();
+  const [photo, setPhoto] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [send, setSend] = useState();
@@ -23,10 +24,11 @@ function MailreadC({ navigation, token, userstatus, message}) {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIL READ C", response)
+      console.log("RESPONSE MAIL READ C", response)
 
       if (response.result == true) {
         setNomCaviste(response.Caviste.Nom)
+        setPhoto(response.Caviste.Photo)
       }
     }
     loadData()
@@ -42,7 +44,7 @@ function MailreadC({ navigation, token, userstatus, message}) {
           bottomDivider={true}
           leftAvatar={<Avatar
             rounded
-            source={require('../assets/GGSC.png')} >
+            source={{uri: photo}}>
           </Avatar>
           }
         />
@@ -74,7 +76,7 @@ function MailreadC({ navigation, token, userstatus, message}) {
         subtitle={message.Texte}
         leftAvatar={
           <Avatar rounded
-            source={require('../assets/vigneron.jpg')} >
+            source={{uri: message.Photo}} >
           </Avatar>}
         bottomDivider={true}
       />
@@ -112,7 +114,7 @@ function MailreadC({ navigation, token, userstatus, message}) {
               var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
                 })
               var body = await data.json()
               setNewMsg([...newMsg, Texte])

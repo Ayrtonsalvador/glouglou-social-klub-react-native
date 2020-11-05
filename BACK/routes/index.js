@@ -422,6 +422,7 @@ router.post('/mailbox-write', async function (req, res, next) {
       MessagesS: { 
       Texte: req.body.Texte,
       Nom: req.body.NomVigneron,
+      Photo: req.body.PhotoFF
     }}
   });
 
@@ -435,7 +436,8 @@ router.post('/mailbox-write', async function (req, res, next) {
       $push: { 
         MessagesR: { 
           Texte: req.body.Texte,
-          Nom: req.body.NomCaviste
+          Nom: req.body.NomCaviste,
+          Photo: req.body.PhotoFF
         }}
     });
   }
@@ -443,44 +445,6 @@ router.post('/mailbox-write', async function (req, res, next) {
 
   res.json({ msg, msgVigneron })
 });
-
-
-// // CAPTER LE TOKEN DU CAVISTE (pour afficher son nom sur ses messages envoyés)
-// router.get('/mailbox-write-getuser', async function(req, res, next) {
-
-//   var user = await CavisteModel.findOne(
-//     {token: req.query.token} )
-
-//     console.log("GET USER", user)
-
-//   res.json({ user, result:true })
-
-// });
-
-
-// // REPONDRE A UN VIGNERON
-// router.post('/mailbox-write-ans', async function(req, res, next) {
-//   //  console.log(req.body.token);
-  
-//     var msg = await CavisteModel.updateOne(
-//       {token: req.body.token}, {
-//           $push: {MessagesS: {Texte: req.body.Texte} }   
-//       });
-  
-//     // var searchVigneron = await VigneronModel.findOne({
-//     //       Nom: req.body.NomVigneron})
-  
- 
-//     var answerVigneron = await VigneronModel.updateOne(
-//           {Nom: req.body.NomVigneron}, {
-//               $push: {MessagesR: {Texte: req.body.Texte} }   
-//           });
-    
-    
-//     res.json({ msg, answerVigneron })
-  
-//   });
-
 
   // --------------------------------------- Mailbox VIGNERON -------------------------------------- \\
 
@@ -536,7 +500,8 @@ router.post('/mailbox-write-v', async function (req, res, next) {
     $push: {
       MessagesS: {
         Texte: req.body.Texte,
-        Nom: req.body.NomCaviste
+        Nom: req.body.NomCaviste, 
+        Photo: req.body.PhotoFF
       }
     }
   });
@@ -551,7 +516,8 @@ router.post('/mailbox-write-v', async function (req, res, next) {
       $push: {
         MessagesR: {
           Texte: req.body.Texte,
-          Nom: req.body.NomVigneron
+          Nom: req.body.NomVigneron,
+          Photo: req.body.PhotoFF
         }
       }
     });
