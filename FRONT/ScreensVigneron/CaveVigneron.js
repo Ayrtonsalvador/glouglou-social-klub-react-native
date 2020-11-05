@@ -47,8 +47,9 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
           // CAVE VIDE
           setPopup(true)
         }
-      }}
-      
+      }
+    }
+
     loadData()
 
   }, [state]);
@@ -87,7 +88,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
             <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250 }} />
-            
+
             <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
@@ -124,21 +125,21 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
                   <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200 }} />
                 </View>
 
-                
-                  <Text style={{ fontWeight: 'bold', margin: 10 }}>
-                    {nom}
-                  </Text>
-                  <Text style={{ marginLeft: 10 }}>
+
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
+                  {nom}
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {millesime}
-                  </Text>
-                  <Text style={{ marginLeft: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
-                  <Text style={{ marginLeft: 10, marginBottom: 15  }}>
-                    {cepage}
-                  </Text>
-                
-              
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
+                  {cepage}
+                </Text>
+
+
 
                 <Text style={{ marginLeft: 10, color: '#9D2A29' }}>
                   Couleur
@@ -243,7 +244,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    // fontFamily: "Gothic A1",
   },
 });
 

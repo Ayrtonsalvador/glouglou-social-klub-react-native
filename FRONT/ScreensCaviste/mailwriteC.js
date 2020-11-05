@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, token, userstatus, message}) {
-  
+function MailwriteC({ navigation, token, userstatus, message }) {
+
   var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
@@ -46,20 +46,23 @@ function MailwriteC({ navigation, token, userstatus, message}) {
 
   } else {
 
-      var MsgSend = newMsg.map((msg, i) => {
-        return (
-          <ListItem
-            title={nomVigneron}
-            subtitle={msg}
-            style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
-            leftAvatar={<Avatar
-              rounded
-              source={{uri: photo}}>
-            </Avatar>
-            }
-          />
-        )
-      })
+    var MsgSend = newMsg.map((msg, i) => {
+      return (
+        // <View>
+        // <Text style={{ marginBottom: 10, fontWeight: '500' }}>Envoyé à:</Text>
+        <ListItem
+          title={nomVigneron}
+          subtitle={msg}
+          style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
+          leftAvatar={<Avatar
+            rounded
+            source={{ uri: photo }}>
+          </Avatar>
+          }
+        />
+        // </View>
+      )
+    })
 
     return (
       <View style={{ flex: 1 }}>
@@ -87,11 +90,11 @@ function MailwriteC({ navigation, token, userstatus, message}) {
             <Input
               containerStyle={{ marginBottom: 5 }}
               placeholder="A :"
-              onChangeText={(text) => 
+              onChangeText={(text) =>
                 setNomVigneron(text)
               }
               value={placeholderTo}
-            /> 
+            />
 
             <Input
               containerStyle={{ marginBottom: 5 }}
@@ -126,13 +129,13 @@ function MailwriteC({ navigation, token, userstatus, message}) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
-                })
+              })
               var body = await data.json()
               // console.log("RESPONSE MAIL WRITE-V", body)
               // console.log("Nom Caviste", nomCaviste)
               // console.log("Nom Caviste", nomVigneron)
               // console.log("Texte envoyé", Texte)
-            }}/>
+            }} />
         </KeyboardAvoidingView>
       </View>
     );

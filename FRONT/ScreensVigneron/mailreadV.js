@@ -9,21 +9,20 @@ function MailreadV({ navigation, userstatus, token, message}) {
   var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
-  const [texteSent, setTexteSent] = useState();
   const [photo, setPhoto] = useState();
-  const [response, setResponse] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-  const [send, setSend] = useState();
+
+  // const [send, setSend] = useState();
   const [newMsg, setNewMsg] = useState([]); 
-  const [placeholderMsg, setPalceholderMsg] = useState("Répondre \n");
+  const [placeholderMsg, setPalceholderMsg] = useState();
 
     // Récupérer les messages reçus par le caviste
     useEffect(() => {
       async function loadData() {
         var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
         var response = await rawResponse.json();
-        console.log("RESPONSE MAIL READ V", response)
+        // console.log("RESPONSE MAIL READ V", response)
   
         if (response.result == true) {
           setNomVigneron(response.Vigneron.Nom)
@@ -84,13 +83,13 @@ function MailreadV({ navigation, userstatus, token, message}) {
         <View style={{ flexDirection: "row" }}>
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderMsg}
+            placeholder={"Répondre \n"}
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
               setNomCaviste(message.Nom);
-              console.log("nomVigneron READ", nomVigneron)
             }}
+            value={placeholderMsg}
           />
         </View>
         <Button
@@ -115,8 +114,6 @@ function MailreadV({ navigation, userstatus, token, message}) {
               var body = await data.json()
               // console.log("RESPONSE MAIL WRITE V", body)
               setNewMsg([...newMsg, Texte])
-              // console.log("NOM", nomCaviste)
-              // console.log("TEXTE", Texte)
               setPalceholderMsg("")
               }}/>
       </KeyboardAvoidingView>

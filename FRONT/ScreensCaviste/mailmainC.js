@@ -8,9 +8,9 @@ import MailmainV from '../ScreensVigneron/MailmainV';
 import MailreadC from './MailreadC';
 
 function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
-  
+
   var IPecole = "172.17.1.46";
- 
+
   const [listMessages, setListMessages] = useState([]);
 
   const [Nom, setNom] = useState();
@@ -19,7 +19,7 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
   const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-// Récupérer les messages reçus par le caviste
+  // Récupérer les messages reçus par le caviste
   useEffect(() => {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
@@ -33,10 +33,10 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
     loadData()
   }, []);
 
-// OUVRIR MESSAGE RECU
-if(read){
-  (<MailreadC/>)
-}
+  // OUVRIR MESSAGE RECU
+  if (read) {
+    (<MailreadC />)
+  }
 
   var listMessagesItem = listMessages.map((msg, i) => {
 
@@ -47,36 +47,36 @@ if(read){
       bottomDivider={true}
       leftAvatar={
         <Avatar rounded
-          source={{uri: msg.Photo}} 
-          />
+          source={{ uri: msg.Photo }}
+        />
       }
       onPress={async () => {
         setRead(true)
-        sendMessage({message: msg})
+        sendMessage({ message: msg })
         navigation.navigate('Read')
       }}>
     </ListItem>
   });
 
   if (userstatus == "Vigneron") {
-    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} message={message}/>)
+    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} message={message} />)
   } else {
     return (
       <View style={{ flex: 1 }}>
 
-      {/* <Header> */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-        <Icon
-          name="pencil"
-          size={25}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Write');
-          }} />
-      </View>
-      {/* </Header> */}
+        {/* <Header> */}
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
+          <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+          <Icon
+            name="pencil"
+            size={25}
+            color="#FFD15C"
+            buttonStyle={{ backgroundColor: '#FF9900' }}
+            onPress={() => {
+              navigation.navigate('Write');
+            }} />
+        </View>
+        {/* </Header> */}
 
         <ScrollView style={{ flex: 1 }}>
           {listMessagesItem}
@@ -87,14 +87,14 @@ if(read){
 }
 
 function mapStateToProps(state) {
-  return { token: state.token, userstatus: state.userstatus, message: state.message}
+  return { token: state.token, userstatus: state.userstatus, message: state.message }
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     sendMessage: function (message) {
-      dispatch({ type: 'addMessage', message: message})
+      dispatch({ type: 'addMessage', message: message })
     }
   }
 }

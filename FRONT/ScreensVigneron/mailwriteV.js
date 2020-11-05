@@ -15,8 +15,8 @@ function MailwriteV({ navigation, token, userstatus }) {
   const [nomVigneron, setNomVigneron] = useState();
   const [send, setSend] = useState(false);
   const [newMsg, setNewMsg] = useState([]);
-  const [placeholderTo, setPalceholderTo] = useState("A:");
-  const [placeholderMsg, setPalceholderMsg] = useState("Votre message \n");
+  const [placeholderTo, setPalceholderTo] = useState();
+  const [placeholderMsg, setPalceholderMsg] = useState();
 
   useEffect(() => {
     async function loadData() {
@@ -36,6 +36,8 @@ function MailwriteV({ navigation, token, userstatus }) {
   if (send) {
   var MsgSend = newMsg.map((msg, i) => {
         return (
+          // <View>
+          // <Text style={{ marginBottom: 10, fontWeight: '500' }}>Envoyé à:</Text>
           <ListItem
             key={i}
             title={nomCaviste}
@@ -47,6 +49,7 @@ function MailwriteV({ navigation, token, userstatus }) {
             </Avatar>
             }
           />
+          // </View>
         )
       })
     }
@@ -76,19 +79,21 @@ function MailwriteV({ navigation, token, userstatus }) {
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderTo}
+            placeholder="A :"
             onChangeText={(text) => {
               setNomCaviste(text);
             }}
+            value={placeholderTo}
           />
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderMsg}
+            placeholder={"Votre message \n"}
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
             }}
+            value={placeholderMsg}
           />
 
         </View>

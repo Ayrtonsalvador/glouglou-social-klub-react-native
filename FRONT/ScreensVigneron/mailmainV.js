@@ -18,23 +18,22 @@ function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message
   const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-// Récupérer les messages reçus par le vigneron
-useEffect(() => {
-  async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
-    var response = await rawResponse.json();
-    // console.log("RESPONSE MAIL MAIN V", response)
+  // Récupérer les messages reçus par le vigneron
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+      var response = await rawResponse.json();
+      // console.log("RESPONSE MAIL MAIN V", response)
 
-    if (response.result == true) {
-      setListMessages(response.Vigneron.MessagesR)
-      setPhoto(response.Vigneron.MessagesR.Photo)
+      if (response.result == true) {
+        setListMessages(response.Vigneron.MessagesR)
+        setPhoto(response.Vigneron.MessagesR.Photo)
+      }
     }
-  }
-  loadData()
-}, []);
+    loadData()
+  }, []);
 
-// console.log("message", message)
-if(read){ (<MailreadV message={message}/>) }
+  if (read) { (<MailreadV message={message} />) }
 
 
   var listMessagesItem = listMessages.map((msg, i) => {
@@ -47,12 +46,12 @@ if(read){ (<MailreadV message={message}/>) }
       leftAvatar={
         <Avatar
           rounded
-          source={{uri: msg.Photo}}
+          source={{ uri: msg.Photo }}
         />
       }
       onPress={async () => {
         setRead(true)
-        sendMessage({message: msg})
+        sendMessage({ message: msg })
         navigation.navigate('Read')
       }}>
     </ListItem>
@@ -81,16 +80,16 @@ if(read){ (<MailreadV message={message}/>) }
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     sendMessage: function (message) {
-      dispatch({ type: 'addMessage', message: message})
+      dispatch({ type: 'addMessage', message: message })
     }
   }
 }
 
 function mapStateToProps(state) {
   console.log("STATE V", state.message)
-  return { token: state.token, userstatus: state.userstatus,  message: state.message}
+  return { token: state.token, userstatus: state.userstatus, message: state.message }
 }
 
 
