@@ -5,10 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailmainV from '../ScreensVigneron/MailmainV';
 
-
 function MailmainC({ navigation, token, userstatus }) {
   
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
  
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();

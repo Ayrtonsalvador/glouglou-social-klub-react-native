@@ -4,11 +4,11 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
-import MailreadV from '../ScreensVigneron/MailreadV';
+import MailreadV from './MailreadV';
 
 function MailmainV({ navigation, pseudo, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();

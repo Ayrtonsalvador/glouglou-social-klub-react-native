@@ -7,7 +7,7 @@ import userstatus from '../reducers/userstatus';
 
 function MailreadV({ navigation, userstatus, token, }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();

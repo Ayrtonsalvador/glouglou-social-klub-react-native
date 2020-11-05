@@ -18,7 +18,7 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState(null)
   const [etablissement, setEtablissement] = useState(null)
