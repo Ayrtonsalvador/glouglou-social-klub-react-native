@@ -47,6 +47,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
         if (response.result == true) {
           var favoris = response.favCaviste.Favoris;
           setlisteVin(favoris);
+          console.log('FAVORIS',favoris);
         }
       }
     }
@@ -55,11 +56,9 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
   }, [state]);
 
   if (isFocused && !state) {
-    // console.log('FOCUSED');
     setState(true)
   }
   if (!isFocused && state) {
-    // console.log('IS NOT FOCUSED');
     setState(false)
   }
 
@@ -165,7 +164,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                         method: 'DELETE'
                       });
                       var response = await rawResponse.json();
-
+                      console.log("FAVORIS", response.Favoris);
                       handleDeleteLike(nom)
                       setIsVisible(false);
                       setState(!state);
@@ -341,7 +340,6 @@ const styles = StyleSheet.create({
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
 
 function mapStateToProps(state) {
-console.log("STATE FAVORIS", state.token)  
 return { token: state.token, userstatus: state.userstatus }
 }
 

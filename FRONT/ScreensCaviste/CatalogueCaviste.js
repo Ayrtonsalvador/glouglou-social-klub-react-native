@@ -11,7 +11,7 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -51,10 +51,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-        console.log("CATALOGUE", catalogue)
-        // Version Juliette
-        // var catalogue = response.catalogue;
-        // setlisteVin([...listeVin, catalogue]);
+
       } else {
         // ERREUR RECHERCHE
         setError(true)
@@ -64,7 +61,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   }, []);
 
   const handlePressLike = () => {
-    console.log("ADD FAVORIS")
     setColorIcon('#DF2F2F');
   }
 

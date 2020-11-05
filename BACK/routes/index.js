@@ -739,6 +739,7 @@ router.post('/add-favoris', async function (req, res, next) {
 router.get('/favoris', async function (req, res, next) {
 
   var favCaviste = await CavisteModel.findOne({ token: req.query.token })
+  // console.log(favCaviste)
 
   if (favCaviste != null) {
     res.json({ result: true, favCaviste })
