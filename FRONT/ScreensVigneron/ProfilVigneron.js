@@ -21,6 +21,7 @@ import {
 function ProfilVigneron({ navigation, token, userstatus }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [nom, setNom] = useState(null)
   const [domaine, setDomaine] = useState(null)
@@ -34,7 +35,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
   useEffect(() => {
     async function loadData() {
       console.log("PROFIL")
-      var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPmaison}:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS VIGNERON", response)
 
@@ -187,7 +188,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                     // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
 
-                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
+                    var updateUser = await fetch(`http://${IPmaison}:3000/info-update-v`, {
                       method: 'post',
                       body: data
                     })

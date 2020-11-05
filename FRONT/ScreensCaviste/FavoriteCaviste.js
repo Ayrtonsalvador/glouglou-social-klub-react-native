@@ -12,6 +12,7 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -39,7 +40,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
+      var rawResponse = await fetch(`http://${IPmaison}:3000/favoris?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS FAVORIS", response)
 

@@ -10,6 +10,7 @@ import { withNavigationFocus } from 'react-navigation';
 function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -33,7 +34,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
+      var rawResponse = await fetch(`http://${IPmaison}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS BOUTEILLE", response.cave)
       // console.log("CAVE", response.cave);
@@ -162,7 +163,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             onPress={async () => {
               setIsVisible(false);
               setState(true);
-              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+              await fetch(`http://${IPmaison}:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)

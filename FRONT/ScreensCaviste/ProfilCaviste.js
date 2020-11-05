@@ -19,6 +19,7 @@ import {
 function ProfilCaviste({ navigation, token, userstatus }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [nom, setNom] = useState(null)
   const [etablissement, setEtablissement] = useState(null)
@@ -32,7 +33,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
       useEffect(() => {
       async function loadData() {
         console.log("PROFIL")
-        var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
+        var rawResponse = await fetch(`http://${IPmaison}:3000/info-c?token=${token}`);
         var response = await rawResponse.json();
         console.log("GET INFOS CAVISTE", response)
 
@@ -180,7 +181,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
                 
-                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
+                    var updateUser = await fetch(`http://${IPmaison}:3000/info-update-c`, {
                       method: 'post',
                       body: data
                     })

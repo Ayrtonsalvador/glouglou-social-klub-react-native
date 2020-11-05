@@ -12,6 +12,7 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -42,7 +43,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   useEffect(() => {
     async function loadData() {
 
-      var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
+      var rawResponse = await fetch(`http://${IPmaison}:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
 
       if (response.result == true) {
@@ -98,18 +99,20 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 220, height: 220, borderRadius: 5 }} />
 
-            <Text>
+            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', margin: 5 }}>
               {vin.Nom}
             </Text>
-            <Text>
+            <Text style={{ margin: 5 }}>
               {vin.Millesime}
             </Text>
+            </View>
             <Text>
               {vin.AOC}
             </Text>
-            <Text>
+            <Text style={{ fontWeight: "200", margin: 5 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -117,8 +120,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
       </TouchableOpacity>
     )
   })
-
-
 
   // MODAL AFFICHAGE VIN
   if (isVisible) {
@@ -131,14 +132,14 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
             setColorIcon('#C4C4C4')
           }}
         >
-          <ScrollView>
-            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+          <ScrollView containerStyle={{ borderRadius: 30 }}>
+            <Card style={{ flex: 0.5, width: 100, height: 100, borderRadius: 15 }}>
 
               <View style={{ justifyContent: 'center' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150, borderRadius: 5 }} />
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -152,7 +153,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                 <Text style={{ marginBottom: 10 }}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginBottom: 10, fontWeight: "200"}}>
                   {cepage}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: 'center' }}>
@@ -163,7 +164,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
                       handlePressLike();
-                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
+                      var data = await fetch(`http://${IPmaison}:3000/add-favoris`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
@@ -198,12 +199,12 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   rounded
                   source={{ uri: photoVi }}
                 ></Avatar>
-                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                <Text style={{ margin: 10, color: '#9D2A29', fontWeight: "bold" }}>
                   {nomVi}
                 </Text>
               </View>
               <View>
-                <Text style={{ margin: 10 }}>
+                <Text style={{ margin: 10, fontWeight: "200" }}>
                   {regionVi}
                 </Text>
                 <Text style={{ margin: 10 }}>
@@ -267,7 +268,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   onPress={async () => {
                     setPickerVisible(!pickerVisible);
 
-                    var filtre = await fetch(`http://${IPecole}:3000/filtre`, {
+                    var filtre = await fetch(`http://${IPmaison}:3000/filtre`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `filtreFF=${selectedValue}`

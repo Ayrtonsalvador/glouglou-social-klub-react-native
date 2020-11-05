@@ -366,26 +366,23 @@ router.get('/info-v', async function (req, res, next) {
 
 //---------------Mailbox CAVISTE--------------//
 
-// BOITE DE RECEPTION - OK
+//
 router.get('/mailbox-main', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
     { token: req.query.token })
 
-//  console.log("Caviste Mailbox", Caviste)
-
-  var msgCaviste = Caviste.MessagesR
-  // console.log("MSG CAVISTE", msgCaviste)
+    console.log("Caviste Mailbox", Caviste)
 
   if (Caviste != null) {
-    res.json({ Caviste, msgCaviste, result: true })
+    res.json({ Caviste, result: true })
   } else {
     res.json({ result: false })
   }
 });
 
 
-// LIRE UN MESSAGE - OK
+//
 router.get('/mailbox-read', async function (req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
@@ -395,12 +392,11 @@ router.get('/mailbox-read', async function (req, res, next) {
 
 });
 
-//OK
+//
 router.get('/mailbox-write', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
     { token: req.query.token })
-
     // console.log("Nom", Caviste)
 
   if (Caviste != null) {
@@ -411,7 +407,7 @@ router.get('/mailbox-write', async function (req, res, next) {
 });
 
 
-//PUSHER LE NOM DES CAVISTES A ENVOYER UX VIGNERONS
+//
 router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
@@ -437,7 +433,6 @@ router.post('/mailbox-write', async function (req, res, next) {
         }}
     });
   }
-
   // console.log("WRITE C", searchVigneron)
 
   res.json({ msg, msgVigneron })
@@ -447,27 +442,34 @@ router.post('/mailbox-write', async function (req, res, next) {
 
 //---------------Mailbox VIGNERON--------------//
 
-// BOITE DE RECEPTION - REPRENDRE MAIL MAIN C
+// BOITE DE RECEPTION
 router.get('/mailbox-main-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
     { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  var msgVigneron = Vigneron.MessagesR
-
-  res.json({ Vigneron, msgVigneron, result: true })
+if (Vigneron != null) {
+  res.json({ Vigneron, result: true })
+} else {
+  res.json({ result: false })
+}
 });
 
 
-// LIRE UN MESSAGE - REPRENDRE READ C
+// LIRE UN MESSAGE
 router.get('/mailbox-read-v', async function (req, res, next) {
 
-  var msgVigneron = await VigneronModel.findOne(
-    { MessagesR: { Texte: req.body.Texte } })
+  var Vigneron = await VigneronModel.findOne(
+    { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  res.json({ msgVigneron })
-
-});
+  if (Vigneron != null) {
+    res.json({ Vigneron, result: true })
+  } else {
+    res.json({ result: false })
+  }
+  });
 
 
 //OK

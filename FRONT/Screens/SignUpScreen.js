@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   var IPecole = "172.17.1.46";
+  var IPmaison = "192.168.1.22";
 
   const [signUpUsername, setSignUpUsername] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
@@ -130,7 +131,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                   setSignUpStatus('Vigneron');
                   onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
+                  var data = await fetch(`http://${IPmaison}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
@@ -159,7 +160,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                   setSignUpStatus('Caviste');
                   onSubmitUserstatus(signUpStatus);
 
-                  var data = await fetch(`http://${IPecole}:3000/sign-up`, {
+                  var data = await fetch(`http://${IPmaison}:3000/sign-up`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
