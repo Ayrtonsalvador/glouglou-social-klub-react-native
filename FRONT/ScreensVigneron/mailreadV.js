@@ -3,18 +3,50 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import userstatus from '../reducers/userstatus';
 
-function MailreadV({ navigation, userstatus, token, message, clickedMsg}) {
+function MailreadV({ navigation, userstatus, token, message}) {
 
   var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
 
   const [Texte, setTexte] = useState();
   const [texteSent, setTexteSent] = useState();
   const [response, setResponse] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [send, setSend] = useState();
+  const [newMsg, setNewMsg] = useState([]); 
+  const [placeholderMsg, setPalceholderMsg] = useState("Répondre \n");
+
+    // Récupérer les messages reçus par le caviste
+    useEffect(() => {
+      async function loadData() {
+        var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("RESPONSE MAIL READ V", response)
+  
+        if (response.result == true) {
+          setNomVigneron(response.Vigneron.Nom)
+        }
+      }
+      loadData()
+    }, []);
+
+    var MsgSend = newMsg.map((msg, i) => {
+      return (
+        <ListItem
+          key={i}
+          title={nomCaviste}
+          subtitle={msg}
+          style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
+          bottomDivider={true}
+          leftAvatar={<Avatar
+            rounded
+            source={require('../assets/GGSC.png')} >
+          </Avatar>
+          }
+        />
+      )
+    })
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -41,6 +73,7 @@ function MailreadV({ navigation, userstatus, token, message, clickedMsg}) {
           </Avatar>}
         bottomDivider={true}
       />
+      {MsgSend}
       </ScrollView >
 
       <KeyboardAvoidingView behavior="padding" enabled>
@@ -48,8 +81,12 @@ function MailreadV({ navigation, userstatus, token, message, clickedMsg}) {
         <View style={{ flexDirection: "row" }}>
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder='Répondre'
-            onChangeText={(text) => setTexte(text)}
+            placeholder={placeholderMsg}
+            multiline={true}
+            onChangeText={(text) => {
+              setTexte(text);
+              setNomVigneron(message.Nom);
+            }}
           />
         </View>
         <Button
@@ -66,25 +103,26 @@ function MailreadV({ navigation, userstatus, token, message, clickedMsg}) {
             type="solid"
          
             onPress={async () => {
-              // var data = await fetch(`http://${IPmaison}:3000/mailbox-write-v`, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              //   body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}`
-              //   })
-              // var body = await data.json()
-              // console.log("RESPONSE MAIL WRITE-V", body)
-              setNomCaviste()
-              setResponse()
+              var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+                })
+              var body = await data.json()
+              console.log("RESPONSE MAIL WRITE V", body)
+              setNewMsg([...newMsg, Texte])
+              console.log("NOM", nomCaviste)
+              console.log("TEXTE", Texte)
+              setPalceholderMsg("")
               }}/>
       </KeyboardAvoidingView>
-
     </View>
   );
 }
 
 function mapStateToProps(state) {
-  console.log("STATE MESSAGE", state.message)
-  return { token: state.token, userstatus: state.userstatus, message: state.message }
+  console.log("STATE MESSAGE", state.message.message)
+  return { token: state.token, userstatus: state.userstatus, message: state.message.message }
 }
 
 export default connect(

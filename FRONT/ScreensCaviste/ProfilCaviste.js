@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
 import { Button, Input, Header, Avatar, Icon } from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -18,8 +17,7 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState(null)
   const [etablissement, setEtablissement] = useState(null)
@@ -85,29 +83,40 @@ function ProfilCaviste({ navigation, token, userstatus }) {
     return (
 
       <View style={{ flex: 1 }}>
+
         <View style={styles.container}>
 
-          <KeyboardAvoidingView behavior="position" enabled>
+        <Image source={require('../assets/monprofil.png')} 
+        style={{ height : responsiveScreenHeight ( 15 ), 
+                  width : responsiveScreenWidth ( 40 ), 
+                  justifyContent:"center", 
+                  alignItems: 'center' }}></Image>
+
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+          {/* <KeyboardAvoidingView behavior="position" enabled> */}
+          <ScrollView>
             <View style={styles.box1}>
-              <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent: "center", alignItems: 'center' }}></Image>
+              {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
 
-              <ScrollView>
-
-                <View style={styles.box2}>
+                {/* <View style={styles.box2}> */}
 
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                     {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
+                    <Button
+                      icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
+                      rounded
+                      buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
+                      onPress={pickImage}/>
                   </View>
 
-                  <TouchableOpacity
-                    onPress={pickImage}>
-                    <Text style={{ color: '#AAAAAA' }}>Changer ma photo</Text>
+                  <TouchableOpacity>
+                    <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Changer ma photo</Text>
                   </TouchableOpacity>
 
                   <Input
-                    containerStyle={{ marginBottom: 20, width: '80%' }}
+                    containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
                     placeholder={nom}
                     disabled={disabled}
@@ -117,7 +126,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                   />
 
                   <Input
-                    containerStyle={{ marginBottom: 20, width: '80%' }}
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
                     placeholder={etablissement}
                     disabled={disabled}
@@ -126,7 +135,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     }}
                   />
                   <Input
-                    containerStyle={{ marginBottom: 20, width: '80%' }}
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
                     placeholder={ville}
                     disabled={disabled}
@@ -135,7 +144,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     }}
                   />
                   <Input
-                    containerStyle={{ marginBottom: 20, width: '80%' }}
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
                     placeholder={region}
                     disabled={disabled}
@@ -144,7 +153,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                     }}
                   />
                   <Input
-                    containerStyle={{ marginBottom: 20, width: '80%' }}
+                    containerStyle={{ marginBottom: 15, width: '80%' }}
                     placeholder={desc}
                     multiline={true}
                     disabled={disabled}
@@ -198,21 +207,20 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                       style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
                     ></Icon>
                     <Text
-                      onPress={() => setDisabled(false)}
-                      style={{ color: '#AAAAAA' }}>Changer mes paramètres</Text>
+                      style={{ color: '#AAAAAA' }}
+                      >Changer mes paramètres</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity>
-                    <Text
-                      onPress={() => {
-                        navigation.navigate('SignIn');
+                    <Text onPress={() => {
+                           navigation.navigate('SignIn');
                       }}
-                      style={{ color: '#9D2A29' }}>Déconnexion</Text>
+                      style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
                   </TouchableOpacity>
 
+                {/* </View> */}
                 </View>
               </ScrollView>
-            </View>
           </KeyboardAvoidingView>
         </View>
       </View>
@@ -224,16 +232,16 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    height: responsiveScreenHeight(90),
-    width: responsiveScreenWidth(90),
+    height : responsiveScreenHeight ( 90 ) , 
+    width : responsiveScreenWidth ( 100 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
     alignItems: 'center',
-    height: responsiveHeight(90),
-    width: responsiveWidth(90),
+    height : responsiveHeight ( 100 ) , 
+    width : responsiveWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },

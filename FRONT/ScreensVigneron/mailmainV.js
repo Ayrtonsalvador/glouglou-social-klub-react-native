@@ -4,68 +4,58 @@ import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
-import MailreadV from '../ScreensVigneron/MailreadV';
+import MailreadV from './MailreadV';
 
-function MailmainV({ navigation, pseudo, token, userstatus, openMessage }) {
+function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message }) {
 
   var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
-
-  const [Nom, setNom] = useState();
-  const [Texte, setTexte] = useState();
-  const [nomVigneron, setNomVigneron] = useState();
-  const [nomCaviste, setNomCaviste] = useState();
 
   const [listMessages, setListMessages] = useState([]);
-  const [clickedMsg, setClickedMsg] = useState([])
-  const [choosen, setChoosen] = useState()
+  const [Nom, setNom] = useState();
+  const [Texte, setTexte] = useState();
+  const [nomCaviste, setNomCaviste] = useState();
+  const [nomVigneron, setNomVigneron] = useState();
+  const [read, setRead] = useState(false);
 
-  const handleClick = (id, texte, nomCaviste) => {
-    navigation.navigate('Read');
+// Récupérer les messages reçus par le vigneron
+useEffect(() => {
+  async function loadData() {
+    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+    var response = await rawResponse.json();
+    // console.log("RESPONSE MAIL MAIN V", response)
 
-    setClickedMsg({ texte: texte, nomCaviste: choosen })
-    openMessage(clickedMsg)
-    console.log("Envoi redux message", clickedMsg)
-
-    if (clickedMsg != null) { return (<MailreadV clickedMsg={clickedMsg} />) }
-  }
-
-  useEffect(() => {
-    async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("RESPONSE MAIL MAIN V", response)
-
-      if (response.result == true) {
-        setListMessages(response.Vigneron.MessagesR)
-        setNomCaviste(response.Vigneron.MessagesR.Nom)
-        // console.log("NOM Cav expediteur", response.Vigneron.MessagesR.Nom)
-      }
+    if (response.result == true) {
+      setListMessages(response.Vigneron.MessagesR)
     }
-    loadData()
-  }, []);
+  }
+  loadData()
+}, []);
+
+// console.log("message", message)
+// OUVRIR MESSAGE RECU
+if(read){ (<MailreadV message={message}/>) }
+
 
   var listMessagesItem = listMessages.map((msg, i) => {
 
     return <ListItem
       key={i}
-      title={msg.Texte}
-      subtitle={msg.Nom}
+      title={msg.Nom}
+      subtitle={msg.Texte}
       style={{ backgroundColor: "transparent" }}
       leftAvatar={
         <Avatar
           rounded
           source={require('../assets/vigneron.jpg')}
-        />}
-      bottomDivider={true}
-      onPress={() => {
-        setChoosen(msg.Nom)
-        handleClick(msg.Nom, msg.Texte)
-      }}
-      >
+        />
+      }
+      onPress={async () => {
+        setRead(true)
+        sendMessage({message: msg})
+        navigation.navigate('Read')
+      }}>
     </ListItem>
   });
-
 
   return (
     <View style={{ flex: 1 }}>
@@ -90,19 +80,18 @@ function MailmainV({ navigation, pseudo, token, userstatus, openMessage }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    openMessage: function (message) {
-      dispatch({ type: 'readMessage', message: message })
-
-    },
+  return { 
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message})
+    }
   }
 }
 
 function mapStateToProps(state) {
-  // console.log("state", state.token)
-  return { token: state.token, userstatus: state.userstatus }
-
+  console.log("STATE V", state.message)
+  return { token: state.token, userstatus: state.userstatus,  message: state.message}
 }
+
 
 export default connect(
   mapStateToProps,

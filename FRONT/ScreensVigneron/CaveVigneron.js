@@ -10,7 +10,6 @@ import { withNavigationFocus } from 'react-navigation';
 function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")

@@ -8,10 +8,15 @@ import { connect } from 'react-redux';
 function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
 
-  const [signInEmail, setSignInEmail] = useState()
-  const [signInPassword, setSignInPassword] = useState()
+  // Vigneron
+  const [signInEmail, setSignInEmail] = useState("Mv@gmail.com")
+  const [signInPassword, setSignInPassword] = useState("mv")
+
+  // Caviste
+  // const [signInEmail, setSignInEmail] = useState("Rt@gmail.com")
+  // const [signInPassword, setSignInPassword] = useState("rt")
+
   const [listErrorsSignin, setErrorsSignin] = useState([])
 
   var tabErrorsSignin = listErrorsSignin.map((error, i) => {

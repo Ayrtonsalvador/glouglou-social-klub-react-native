@@ -12,7 +12,6 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
   var IPecole = "172.17.1.46";
-  var IPmaison = "192.168.1.22";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -167,7 +166,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
                       handlePressLike();
-                      var data = await fetch(`http://${IPmaison}:3000/add-favoris`, {
+                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
