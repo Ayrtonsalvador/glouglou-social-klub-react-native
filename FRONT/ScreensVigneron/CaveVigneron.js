@@ -22,7 +22,6 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   const [cepage, setCepage] = useState("Cépage")
   const [millesime, setMillesime] = useState("Millesime")
 
-  const [popup, setPopup] = useState(false)
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -186,12 +185,12 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   }
 
   // POPUP FAVORIS VIDE
-  if (popup) {
+  if (cardVin.length == 0 && userstatus == "Vigneron") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
           <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
           </View>
           <TouchableOpacity>
             <Text

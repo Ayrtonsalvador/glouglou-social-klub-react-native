@@ -65,7 +65,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
 
             <View style={styles.box}>
 
-              <Image source={require('../assets/ContactGlouGlou.png')} style={{ margin: 10, width: 120, height: 120 }}></Image>
+              <Image source={require('../assets/ContactGlouGlou.png')} style={{ margin: 10, width: 300, height: 300 }}></Image>
 
               <Input
                 containerStyle={{ marginBottom: 25, width: '70%' }}

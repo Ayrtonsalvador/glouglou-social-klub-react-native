@@ -11,7 +11,7 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -30,7 +30,6 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
   const [photoVi, setPhotoVi] = useState(null)
 
   const [isVisible, setIsVisible] = useState(false);
-  const [popup, setPopup] = useState(false)
 
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
@@ -48,10 +47,6 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
         if (response.result == true) {
           var favoris = response.favCaviste.Favoris;
           setlisteVin(favoris);
-          // console.log("FAVORIS", favoris)
-        } else {
-          //FAVORIS VIDE
-          setPopup(!popup)
         }
       }
     }
@@ -232,14 +227,13 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
     )
   }
 
-
   // POPUP FAVORIS VIDE
-  if (popup && userstatus == "Vigneron") {
+  if (cardVin.length == 0 && userstatus == "Caviste") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
           <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
           </View>
           <TouchableOpacity>
             <Text
@@ -347,8 +341,8 @@ const styles = StyleSheet.create({
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
 
 function mapStateToProps(state) {
-  // console.log("STATE FAVORIS", state.token)
-  return { token: state.token, userstatus: state.userstatus }
+console.log("STATE FAVORIS", state.token)  
+return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
