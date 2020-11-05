@@ -13,87 +13,97 @@ function MailmainC({ navigation, token, userstatus }) {
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-  const [nomVigneron,setNomVigneron] = useState();
+  const [nomVigneron, setNomVigneron] = useState();
   const [selectedId, setSelectedId] = useState(null);
   const [clickedMsg, setClickedMsg] = useState(null)
 
   const handleClick = (id, texte) => {
-    setSelectedId(id) // ID détecté !
-    setClickedMsg(texte) // MSG détecté     
+    setSelectedId(id)
+    setClickedMsg(texte)   
     navigation.navigate('Read');
 
-    if(clickedMsg != null){return (<MailreadC clickedMsg={clickedMsg} />)}
-    
+    if (clickedMsg != null) { return (<MailreadC clickedMsg={clickedMsg} />) }
+
     navigation.navigate('Read')
   }
 
-useEffect(() => {
-  async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
-    var response = await rawResponse.json();
-    // console.log("RESPONSE MAIL MAIN C", response)
-    // console.log("NOM EXPEDITEUR", response.Caviste.MessagesR[3].Nom)
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPmaison}:3000/mailbox-main?token=${token}`);
+      var response = await rawResponse.json();
+      // console.log("RESPONSE MAIL MAIN C", response)
 
-    if(response.result == true){
-    setListMessages(response.msgCaviste)
-    setNomVigneron(response.Caviste.MessagesR.Nom)
-    console.log("NOM Cav expediteur", response.Caviste.MessagesR.Nom)
+      if (response.result == true) {
+        setListMessages(response.Caviste.MessagesR)
+        setNomVigneron(response.Caviste.MessagesR.Nom)
+        // console.log("NOM Cav expediteur", response.Caviste.MessagesR.Nom)
+      }
+    }
+    loadData()
+  }, []);
+
+
+  var listMessagesItem = listMessages.map((msg, i) => {
+
+    return <ListItem
+      key={i}
+      title={msg.Texte}
+      subtitle={msg.Nom}
+      leftAvatar={
+        <Avatar rounded
+          // source={require('../assets/vigneron.jpg')} 
+          >
+        </Avatar>
+      }
+      bottomDivider={true}
+      onPress={() => { handleClick(msg._id, msg.Texte) }}
+    >
+    </ListItem>
+  });
+
+  if (userstatus == "Vigneron") {
+    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} />)
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+
+      {/* <Header> */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
+        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
+        <Icon
+          name="pencil"
+          size={25}
+          color="#FFD15C"
+          buttonStyle={{ backgroundColor: '#FF9900' }}
+          onPress={() => {
+            navigation.navigate('Write');
+          }} />
+      </View>
+      {/* </Header> */}
+
+        <ScrollView style={{ flex: 1 }}>
+          {listMessagesItem}
+        </ScrollView>
+      </View>
+    )
   }
-  } 
-  loadData()
-}, []);
-
-
- var listMessagesItem = listMessages.map((msg, i) => {
-      
-          return <ListItem
-              key={i}
-              title={msg.Texte}
-              subtitle={msg.Nom}
-              // subtitle={i}
-              // leftAvatar={
-              //   // <Avatar rounded
-              //   //   // source={require('../assets/vigneron.jpg')} 
-              //   //   >
-              //   //   <Accessory />
-              //   // </Avatar>
-              // }
-              bottomDivider={true}
-              onPress={() => {handleClick(msg._id, msg.Texte)}} 
-                          >    
-                 </ListItem>
-    });
- 
-    if (userstatus == "Vigneron") {
-      return (<MailmainV navigation={navigation} token={token} userstatus={userstatus}/>)
-    } else {
-  return (
-<View style={{ flex: 1 }}>
-
-<Header
-  containerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#FCDF23' }}
-  centerComponent={{ text: 'REDIGER NOUVEAU MESSAGE', marginTop: 30 }}
->
-  <Image source={require('../assets/MainGlouGlou.png')} style={{ width: 20, height: 20 }}></Image>
-  <Button icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-          rounded
-          buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-          onPress={() => {navigation.navigate('Write');}} />
-</Header>
-<ScrollView style={{ flex: 1}}>
-{listMessagesItem}
-</ScrollView>
-</View>
-  )
- }}
+}
 
 function mapStateToProps(state) {
   // console.log("state", state.token)
-  return { token: state.token, userstatus : state.userstatus}
-  
+  return { token: state.token, userstatus: state.userstatus }
+
+}
+
+function mapDispatchToProps(dispatch) {
+  return { 
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message })
+    }
+  }
 }
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(MailmainC);

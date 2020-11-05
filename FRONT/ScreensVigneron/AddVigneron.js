@@ -8,9 +8,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
 import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
-function AddVigneron({ navigation, token, userstatus}) {
+import { 
+  responsiveHeight , 
+  responsiveWidth , 
+  responsiveFontSize,
+  responsiveScreenHeight , 
+  responsiveScreenWidth , 
+  responsiveScreenFontSize 
+}  from  "react-native-responsive-dimensions" ;
 
-  var IPecole = "172.17.1.153";
+function AddVigneron({ navigation, token, userstatus }) {
+
+  var IPmaison = "192.168.1.22";
+  var IPecole = "172.17.1.159";
 
   const [NomRef, setNomRef] = useState(null);
   const [Couleur, setCouleur] = useState(null);
@@ -64,14 +74,19 @@ function AddVigneron({ navigation, token, userstatus}) {
 
       <View style={styles.container}>
 
-        <KeyboardAvoidingView behavior="position" enabled>
-          <View style={styles.box1}>
+          <Image source={require('../assets/macave.png')} 
+        style={{ height : responsiveScreenHeight ( 15 ), 
+                  width : responsiveScreenWidth ( 40 ), 
+                  justifyContent:"center", 
+                  alignItems: 'center' }}></Image>
 
-            <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
+<KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+
             <ScrollView>
-              <View style={styles.box2}>
+            <View style={styles.box1}>
+              {/* <View style={styles.box2}> */}
 
-                <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Ajouter une photo</Text>
+                
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Button
@@ -80,10 +95,11 @@ function AddVigneron({ navigation, token, userstatus}) {
                     buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
                     onPress={pickImage} />
                   {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
+                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Ajouter une photo</Text>
                 </View>
 
                 <Input
-                  containerStyle={{ marginTop: 20, marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginTop: 20, marginBottom: 20, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Nom de la référence"
                   onChangeText={(text) => setNomRef(text)}
@@ -91,7 +107,7 @@ function AddVigneron({ navigation, token, userstatus}) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Couleur"
                   onChangeText={(text) => setCouleur(text)}
@@ -99,7 +115,7 @@ function AddVigneron({ navigation, token, userstatus}) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Cépage"
                   disabled={disabled}
@@ -109,15 +125,15 @@ function AddVigneron({ navigation, token, userstatus}) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
-                  placeholder="Millesime"
+                  placeholder="Millésime"
                   onChangeText={(text) => setMillesime(text)}
                   value={Millesime}
 
                 />
                 <Input
-                  containerStyle={{ marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Appellation"
                   onChangeText={(text) => setAppellation(text)}
@@ -125,7 +141,7 @@ function AddVigneron({ navigation, token, userstatus}) {
                 />
 
                 <Input
-                  containerStyle={{ marginBottom: 20, width: '70%' }}
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Description"
                   onChangeText={(text) => setDesc(text)}
@@ -134,12 +150,8 @@ function AddVigneron({ navigation, token, userstatus}) {
                 />
 
                 <Text>{ListError}</Text>
-              </View>
 
-            </ScrollView>
-
-            <View>
-              <Button
+                <Button
                 icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                 rounded
                 type='font-awesome'
@@ -169,7 +181,7 @@ function AddVigneron({ navigation, token, userstatus}) {
 
                   data.append('bottleinfos', JSON.stringify(bottleinfos));
 
-                  var newbottle = await fetch(`http://${IPecole}:3000/AddVin`, {
+                  var newbottle = await fetch(`http://${IPmaison}:3000/AddVin`, {
                     method: 'post',
                     body: data
                   })
@@ -185,11 +197,10 @@ function AddVigneron({ navigation, token, userstatus}) {
                 }}
 
               />
-            </View>
-          </View>
+              </View>
+            </ScrollView>
         </KeyboardAvoidingView>
-
-      </View>
+    </View>
     </View>
   );
 }
@@ -197,17 +208,20 @@ function AddVigneron({ navigation, token, userstatus}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height : responsiveScreenHeight ( 90 ) , 
+    width : responsiveScreenWidth ( 100 ),
     alignItems: 'center',
     justifyContent: 'center',
   },
   box1: {
     flex: 1,
     alignItems: 'center',
+    height : responsiveHeight ( 100 ) , 
+    width : responsiveWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box2: {
-    marginTop: 60,
     width: 350,
     height: 400,
     alignItems: 'center',

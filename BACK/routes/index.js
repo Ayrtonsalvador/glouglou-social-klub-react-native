@@ -42,6 +42,7 @@ router.post('/sign-up', async function (req, res, next) {
     error.push('veuillez compléter les champs vides !')
   }
 
+
   // SIGNUP CAVISTES
   const dataCaviste = await CavisteModel.findOne({
     Email: req.body.emailFromFront
@@ -125,6 +126,7 @@ router.post('/sign-in', async function (req, res, next) {
 
   if (error.length == 0) {
 
+
     // SIGN-IN CAVISTES 
     const userCaviste = await CavisteModel.findOne({
       Email: req.body.emailFromFront,
@@ -143,6 +145,7 @@ router.post('/sign-in', async function (req, res, next) {
         error.push('mot de passe ou email incorrect')
       }
     }
+
 
     // SIGN-IN VIGNERONS
     const userVigneron = await VigneronModel.findOne({
@@ -259,6 +262,7 @@ router.get('/macave', async function (req, res, next) {
   }
 })
 
+
 router.delete('/delete-ref/:Nom', async function (req, res, next) {
 
   var result = false
@@ -274,7 +278,8 @@ router.delete('/delete-ref/:Nom', async function (req, res, next) {
   res.json({ result })
 });
 
-// ---------------- INFOS VIGNERON  ---------------- \\
+
+// ------------------------ INFOS VIGNERON ------------------------ \\
 router.post('/info-update-v', async function (req, res, next) {
 
   var userinfosFB = JSON.parse(req.body.userinfos)
@@ -348,6 +353,7 @@ router.post('/info-update-v', async function (req, res, next) {
 
 })
 
+
 router.get('/info-v', async function (req, res, next) {
   var infos = []
   var token = null
@@ -364,28 +370,26 @@ router.get('/info-v', async function (req, res, next) {
   }
 })
 
-//---------------Mailbox CAVISTE--------------//
 
-// BOITE DE RECEPTION - OK
+// --------------------------------------- Mailbox CAVISTE -------------------------------------- \\
+
+//
 router.get('/mailbox-main', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
     { token: req.query.token })
 
-//  console.log("Caviste Mailbox", Caviste)
-
-  var msgCaviste = Caviste.MessagesR
-  // console.log("MSG CAVISTE", msgCaviste)
+    console.log("Caviste Mailbox", Caviste)
 
   if (Caviste != null) {
-    res.json({ Caviste, msgCaviste, result: true })
+    res.json({ Caviste, result: true })
   } else {
     res.json({ result: false })
   }
 });
 
 
-// LIRE UN MESSAGE - OK
+//
 router.get('/mailbox-read', async function (req, res, next) {
 
   var msgClicked = await CavisteModel.findOne(
@@ -395,12 +399,11 @@ router.get('/mailbox-read', async function (req, res, next) {
 
 });
 
-//OK
+//
 router.get('/mailbox-write', async function (req, res, next) {
 
   var Caviste = await CavisteModel.findOne(
     { token: req.query.token })
-
     // console.log("Nom", Caviste)
 
   if (Caviste != null) {
@@ -411,7 +414,7 @@ router.get('/mailbox-write', async function (req, res, next) {
 });
 
 
-//PUSHER LE NOM DES CAVISTES A ENVOYER UX VIGNERONS
+//
 router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
@@ -437,37 +440,80 @@ router.post('/mailbox-write', async function (req, res, next) {
         }}
     });
   }
-
   // console.log("WRITE C", searchVigneron)
 
   res.json({ msg, msgVigneron })
+});
+
+
+// CAPTER LE TOKEN DU CAVISTE (pour afficher son nom sur ses messages envoyés)
+router.get('/mailbox-write-getuser', async function(req, res, next) {
+
+  var user = await CavisteModel.findOne(
+    {token: req.query.token} )
+
+    console.log("GET USER", user)
+
+  res.json({ user, result:true })
 
 });
 
 
-//---------------Mailbox VIGNERON--------------//
+// REPONDRE A UN VIGNERON
+router.post('/mailbox-write-ans', async function(req, res, next) {
+  //  console.log(req.body.token);
+  
+    var msg = await CavisteModel.updateOne(
+      {token: req.body.token}, {
+          $push: {MessagesS: {Texte: req.body.Texte} }   
+      });
+  
+    // var searchVigneron = await VigneronModel.findOne({
+    //       Nom: req.body.NomVigneron})
+  
+ 
+    var answerVigneron = await VigneronModel.updateOne(
+          {Nom: req.body.NomVigneron}, {
+              $push: {MessagesR: {Texte: req.body.Texte} }   
+          });
+    
+    
+    res.json({ msg, answerVigneron })
+  
+  });
 
-// BOITE DE RECEPTION - REPRENDRE MAIL MAIN C
+
+  // --------------------------------------- Mailbox VIGNERON -------------------------------------- \\
+
+
+// BOITE DE RECEPTION
 router.get('/mailbox-main-v', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
     { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  var msgVigneron = Vigneron.MessagesR
-
-  res.json({ Vigneron, msgVigneron, result: true })
+if (Vigneron != null) {
+  res.json({ Vigneron, result: true })
+} else {
+  res.json({ result: false })
+}
 });
 
 
-// LIRE UN MESSAGE - REPRENDRE READ C
+// LIRE UN MESSAGE
 router.get('/mailbox-read-v', async function (req, res, next) {
 
-  var msgVigneron = await VigneronModel.findOne(
-    { MessagesR: { Texte: req.body.Texte } })
+  var Vigneron = await VigneronModel.findOne(
+    { token: req.query.token })
+    console.log("Message Recu Vigneron", Vigneron)
 
-  res.json({ msgVigneron })
-
-});
+  if (Vigneron != null) {
+    res.json({ Vigneron, result: true })
+  } else {
+    res.json({ result: false })
+  }
+  });
 
 
 //OK
@@ -518,8 +564,36 @@ router.post('/mailbox-write-v', async function (req, res, next) {
 
 });
 
+// REPONDRE A UN CAVISTE
+// router.post('/mailbox-write-v-ans', async function(req, res, next) {
+//   //  console.log(req.body.token);
+  
+//     var msg = await VigneronModel.updateOne(
+//       {token: req.body.token}, {
+//           $push: {MessagesS: {Texte: req.body.Texte} }   
+//       });
+  
+//     var searchCaviste = await CavisteModel.findOne({
+//           Nom: req.body.NomCaviste})
+  
+//     if(searchCaviste!= null) {
+//     var msgCaviste = await CavisteModel.updateOne(
+//           {Nom: req.body.NomCaviste}, {
+//               $push: {MessagesR: {Texte: req.body.Texte} }   
+//           });
+//     }
+    
+//     res.json({ msg, msgCaviste })
+  
+  // });
 
-// ---------------- INFOS CAVISTE ---------------- \\
+
+
+
+
+
+
+// ------------------------- INFOS CAVISTE ------------------------- \\
 router.post('/info-update-c', async function (req, res, next) {
 
   var userinfosFB = JSON.parse(req.body.userinfos)
@@ -606,7 +680,7 @@ router.get('/info-c', async function (req, res, next) {
   }
 })
 
-// ---------------- CATALOGUE CAVISTE ---------------- \\
+// ------------------------- CATALOGUE CAVISTE ------------------------- \\
 
 router.get('/catalogue', async function (req, res, next) {
 

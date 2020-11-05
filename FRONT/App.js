@@ -36,10 +36,11 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 import token from './reducers/token';
+import message from './reducers/message';
 
 // ATTENTION ADRESS IP
 
-const store = createStore(combineReducers({ userstatus, token }));
+const store = createStore(combineReducers({ userstatus, token, message }));
 
 // STACK-NAVIGATION
 

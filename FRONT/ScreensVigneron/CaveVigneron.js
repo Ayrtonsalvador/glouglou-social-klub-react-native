@@ -168,7 +168,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             onPress={async () => {
               setIsVisible(false);
               setState(true);
-              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+              await fetch(`http://${IPmaison}:3000/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
