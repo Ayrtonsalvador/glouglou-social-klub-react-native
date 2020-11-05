@@ -1,7 +1,8 @@
-export default function(messagePress = [], action){
-    if(action.type == 'readMessage'){
-        console.log("REDUX MESSAGE", action.message)
-        return ([...messagePress], action.message)
+export default function (messagePress = '', action) {
+    console.log("REDUX MESSAGE", messagePress)
+    if (action.type == 'addMessage') {
+        // console.log("REDUX MESSAGE", action.message)
+         return action.message
     } else {
         return messagePress;
     }

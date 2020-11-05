@@ -19,8 +19,7 @@ import {
 
 function AddVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.46";
 
   const [NomRef, setNomRef] = useState(null);
   const [Couleur, setCouleur] = useState(null);

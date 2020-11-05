@@ -3,20 +3,21 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import userstatus from '../reducers/userstatus';
-import MailwriteV from '../ScreensVigneron/MailmainV';
+
+import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, token, userstatus }) {
-
-  var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.159";
+function MailwriteC({ navigation, token, userstatus}) {
+  
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [send, setSend] = useState(false);
-  const [newMsg, setNewMSg] = useState([]);
+  const [newMsg, setNewMsg] = useState([]);
+  const [placeholderTo, setPalceholderTo] = useState("A:");
+  const [placeholderMsg, setPalceholderMsg] = useState("Votre message \n");
 
   useEffect(() => {
     async function loadData() {
@@ -26,36 +27,23 @@ function MailwriteC({ navigation, token, userstatus }) {
 
       if (response.result == true) {
         setNomCaviste(response.Caviste.Nom)
-        console.log("NOM Cav", response.Caviste.Nom)
+        // console.log("NOM Cav", response.Caviste.Nom)
       }
     }
     loadData()
   }, []);
 
-  // useEffect(() => {
-  //   async function loadData() {
-  //     var rawResponse = await fetch(`http://172.17.1.159:3000/mailbox-write-getuser?token=${token}`);
-  //     var response = await rawResponse.json();
-  //     console.log("MAIL WRITE RESPONSE", response)
-
-  //     if (response.result == true) {
-  //       setNom(response.user.Nom)
-  //     }
-  //   }     
-  //   loadData()
-  //   }, []);
-
 
   if (userstatus == "Vigneron") {
     return (<MailwriteV navigation={navigation} token={token} userstatus={userstatus} />)
+
   } else {
 
-    if (send) {
       var MsgSend = newMsg.map((msg, i) => {
         return (
           <ListItem
             title={nomVigneron}
-            subtitle={Texte}
+            subtitle={msg}
             style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
             leftAvatar={<Avatar
               rounded
@@ -65,7 +53,6 @@ function MailwriteC({ navigation, token, userstatus }) {
           />
         )
       })
-    }
 
     return (
       <View style={{ flex: 1 }}>
@@ -92,14 +79,15 @@ function MailwriteC({ navigation, token, userstatus }) {
 
             <Input
               containerStyle={{ marginBottom: 5 }}
-              placeholder='A:'
-              onChangeText={(text) => setNomCaviste(text)}
-              value={nomVigneron}
-            />
+              placeholder={placeholderTo}
+              onChangeText={(text) => 
+                setNomVigneron(text)
+              }
+            /> 
 
             <Input
               containerStyle={{ marginBottom: 5 }}
-              placeholder={"Votre message \n"}
+              placeholder={placeholderMsg}
               multiline={true}
               onChangeText={(text) => {
                 setTexte(text);
@@ -123,15 +111,21 @@ function MailwriteC({ navigation, token, userstatus }) {
             onPress={async () => {
 
               setSend(true);
+              setPalceholderTo("");
+              setPalceholderMsg("");
+              setNewMsg([...newMsg, Texte])
 
-              // var data = await fetch(`http://${IPmaison}:3000/mailbox-write-v`, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              //   body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}`
-              //   })
-              // var body = await data.json()
-              // console.log("RESPONSE MAIL WRITE-V", body)
-            }} />
+              var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+                })
+              var body = await data.json()
+              console.log("RESPONSE MAIL WRITE-V", body)
+              console.log("Nom Caviste", nomCaviste)
+              console.log("Nom Caviste", nomVigneron)
+              console.log("Texte envoyé", Texte)
+            }}/>
         </KeyboardAvoidingView>
       </View>
     );

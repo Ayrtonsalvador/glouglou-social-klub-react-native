@@ -7,14 +7,15 @@ import userstatus from '../reducers/userstatus';
 
 function MailwriteV({ navigation, token, userstatus }) {
 
-  var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [send, setSend] = useState(false);
   const [newMsg, setNewMSg] = useState([]);
+  const [placeholderTo, setPalceholderTo] = useState("A:");
+  const [placeholderMsg, setPalceholderMsg] = useState("Votre message \n");
 
   useEffect(() => {
     async function loadData() {
@@ -24,9 +25,8 @@ function MailwriteV({ navigation, token, userstatus }) {
 
       if (response.result == true) {
         setNomVigneron(response.Vigneron.Nom)
-        console.log("NOM Vigneron", response.Vigneron.Nom)
+        // console.log("NOM Vigneron", response.Vigneron.Nom)
       }
-
     }
     loadData()
   }, []);
@@ -35,7 +35,8 @@ function MailwriteV({ navigation, token, userstatus }) {
   var MsgSend = newMsg.map((msg, i) => {
         return (
           <ListItem
-            title={nomVigneron}
+            key={i}
+            title={nomCaviste}
             subtitle={Texte}
             style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
             leftAvatar={<Avatar
@@ -73,19 +74,19 @@ function MailwriteV({ navigation, token, userstatus }) {
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder='A:'
-            onChangeText={(text) => setNomCaviste(text)}
-            value={nomCaviste}
+            placeholder={placeholderTo}
+            onChangeText={(text) => {
+              setNomCaviste(text);
+            }}
           />
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={"Votre message \n"}
+            placeholder={placeholderMsg}
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
             }}
-            value={Texte}
           />
 
         </View>
@@ -105,14 +106,18 @@ function MailwriteV({ navigation, token, userstatus }) {
           onPress={async () => {
 
             setSend(true);
+            setPalceholderTo("");
+            setPalceholderMsg("");
 
-            // var data = await fetch(`http://${IPmaison}:3000/mailbox-write-v`, {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            //   body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}`
-            //   })
-            // var body = await data.json()
-            // console.log("RESPONSE MAIL WRITE-V", body)
+            var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+              })
+            var body = await data.json()
+            console.log("RESPONSE MAIL WRITE-V", body)
+            console.log("Nom Caviste", nomCaviste)
+            console.log("Texte envoyé", Texte)
           }} />
       </KeyboardAvoidingView>
     </View>

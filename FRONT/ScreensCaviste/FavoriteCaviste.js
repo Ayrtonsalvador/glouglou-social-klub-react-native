@@ -11,8 +11,7 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
 
-  var IPmaison = "192.168.1.22";
-    var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")

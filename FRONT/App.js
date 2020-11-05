@@ -36,9 +36,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 import token from './reducers/token';
-import message from './reducers/message';
-
-// ATTENTION ADRESS IP
+import message from './reducers/messageRead';
 
 const store = createStore(combineReducers({ userstatus, token, message }));
 

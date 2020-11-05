@@ -18,8 +18,7 @@ import {
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.46";
 
   const [nom, setNom] = useState(null)
   const [domaine, setDomaine] = useState(null)

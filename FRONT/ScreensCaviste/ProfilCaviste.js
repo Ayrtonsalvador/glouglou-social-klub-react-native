@@ -6,19 +6,18 @@ import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 
-import { 
-  responsiveHeight , 
-  responsiveWidth , 
+import {
+  responsiveHeight,
+  responsiveWidth,
   responsiveFontSize,
-  responsiveScreenHeight , 
-  responsiveScreenWidth , 
-  responsiveScreenFontSize 
-}  from  "react-native-responsive-dimensions" ;
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize
+} from "react-native-responsive-dimensions";
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPmaison = "192.168.1.22";
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState(null)
   const [etablissement, setEtablissement] = useState(null)
@@ -29,10 +28,10 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState(null);
 
-      useEffect(() => {
-      async function loadData() {
+  useEffect(() => {
+    async function loadData() {
 
-        if ( userstatus == "Caviste") {
+      if (userstatus == "Caviste") {
 
         var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
         var response = await rawResponse.json();
@@ -52,16 +51,18 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setVille("Ville")
           setRegion("Région")
           setDesc("Parlez-nous de vous!")
-        }}
+        }
+      }
 
       (async () => {
         const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
         }
-      })();}
-      loadData()
-    }, []);
+      })();
+    }
+    loadData()
+  }, []);
 
 
   const pickImage = async () => {
@@ -166,7 +167,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                   <Button onPress={async () => {
                     setDisabled(true)
                     navigation.navigate('Catalogue');
-                
+
                     var data = new FormData();
                     // envoie du files avatar
                     data.append('avatar', {
@@ -183,7 +184,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                       desc: desc,
                       token: token
                     };
-                
+
                     // envoie l'objet en string au serveur
                     data.append('userinfos', JSON.stringify(userinfos));
                 
@@ -191,12 +192,11 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                       method: 'post',
                       body: data
                     })
-                
+
                     var response = await updateUser.json();
                     console.log('responseFB', response)
-             
-              }
-                }
+                  }
+                  }
 
                     disabled={disabled}
                     buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}

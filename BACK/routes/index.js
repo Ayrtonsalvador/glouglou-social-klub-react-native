@@ -171,10 +171,6 @@ router.post('/sign-in', async function (req, res, next) {
 
 // ---------------------- AJOUTER & SUPPR UNE REF --------------------\\
 router.post('/AddVin', async function (req, res, next) {
-  // console.log('Yeah');
-  console.log("INFO", req.body)
-  
-
 
   var error = [];
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
@@ -446,47 +442,47 @@ router.post('/mailbox-write', async function (req, res, next) {
         }}
     });
   }
-  // console.log("WRITE C", searchVigneron)
+  console.log("WRITE C", searchVigneron)
 
   res.json({ msg, msgVigneron })
 });
 
 
-// CAPTER LE TOKEN DU CAVISTE (pour afficher son nom sur ses messages envoyés)
-router.get('/mailbox-write-getuser', async function(req, res, next) {
+// // CAPTER LE TOKEN DU CAVISTE (pour afficher son nom sur ses messages envoyés)
+// router.get('/mailbox-write-getuser', async function(req, res, next) {
 
-  var user = await CavisteModel.findOne(
-    {token: req.query.token} )
+//   var user = await CavisteModel.findOne(
+//     {token: req.query.token} )
 
-    console.log("GET USER", user)
+//     console.log("GET USER", user)
 
-  res.json({ user, result:true })
+//   res.json({ user, result:true })
 
-});
+// });
 
 
-// REPONDRE A UN VIGNERON
-router.post('/mailbox-write-ans', async function(req, res, next) {
-  //  console.log(req.body.token);
+// // REPONDRE A UN VIGNERON
+// router.post('/mailbox-write-ans', async function(req, res, next) {
+//   //  console.log(req.body.token);
   
-    var msg = await CavisteModel.updateOne(
-      {token: req.body.token}, {
-          $push: {MessagesS: {Texte: req.body.Texte} }   
-      });
+//     var msg = await CavisteModel.updateOne(
+//       {token: req.body.token}, {
+//           $push: {MessagesS: {Texte: req.body.Texte} }   
+//       });
   
-    // var searchVigneron = await VigneronModel.findOne({
-    //       Nom: req.body.NomVigneron})
+//     // var searchVigneron = await VigneronModel.findOne({
+//     //       Nom: req.body.NomVigneron})
   
  
-    var answerVigneron = await VigneronModel.updateOne(
-          {Nom: req.body.NomVigneron}, {
-              $push: {MessagesR: {Texte: req.body.Texte} }   
-          });
+//     var answerVigneron = await VigneronModel.updateOne(
+//           {Nom: req.body.NomVigneron}, {
+//               $push: {MessagesR: {Texte: req.body.Texte} }   
+//           });
     
     
-    res.json({ msg, answerVigneron })
+//     res.json({ msg, answerVigneron })
   
-  });
+//   });
 
 
   // --------------------------------------- Mailbox VIGNERON -------------------------------------- \\
@@ -535,7 +531,7 @@ router.get('/mailbox-write-v', async function (req, res, next) {
   }
 });
 
-// ECRIRE MESSAGE et l'enregistrer en bdd - OK
+// OK
 router.post('/mailbox-write-v', async function (req, res, next) {
 
   var msg = await VigneronModel.updateOne(
@@ -564,40 +560,13 @@ router.post('/mailbox-write-v', async function (req, res, next) {
     });
   }
 
-  // console.log("WRITE V", searchCaviste)
+
+  console.log("WRITE V", searchCaviste)
+
 
   res.json({ msg, msgCaviste, searchCaviste })
 
 });
-
-// REPONDRE A UN CAVISTE
-// router.post('/mailbox-write-v-ans', async function(req, res, next) {
-//   //  console.log(req.body.token);
-  
-//     var msg = await VigneronModel.updateOne(
-//       {token: req.body.token}, {
-//           $push: {MessagesS: {Texte: req.body.Texte} }   
-//       });
-  
-//     var searchCaviste = await CavisteModel.findOne({
-//           Nom: req.body.NomCaviste})
-  
-//     if(searchCaviste!= null) {
-//     var msgCaviste = await CavisteModel.updateOne(
-//           {Nom: req.body.NomCaviste}, {
-//               $push: {MessagesR: {Texte: req.body.Texte} }   
-//           });
-//     }
-    
-//     res.json({ msg, msgCaviste })
-  
-  // });
-
-
-
-
-
-
 
 // ------------------------- INFOS CAVISTE ------------------------- \\
 router.post('/info-update-c', async function (req, res, next) {
