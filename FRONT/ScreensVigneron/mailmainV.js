@@ -53,7 +53,7 @@ useEffect(() => {
                key={i}
               title={msg.Texte}
               // subtitle={nomVigneron}
-              subtitle={msg.nom}
+              subtitle={msg.Nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded

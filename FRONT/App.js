@@ -89,6 +89,7 @@ var StackNavigator = createStackNavigator({
   Favoris: FavoriteCaviste,
   Read : MailreadC,
   Write: MailwriteC,
+  Catalogue: CatalogueCaviste,
 
   BottomNavigator: BottomNavigator,
 },

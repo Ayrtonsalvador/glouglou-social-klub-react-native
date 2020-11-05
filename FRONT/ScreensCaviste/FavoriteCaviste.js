@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
 
-function FavoriteCaviste({ userstatus, navigation, token }) {
+function FavoriteCaviste({ navigation, token, userstatus }) {
 
     var IPmaison = "192.168.1.22";
     var IPecole = "172.17.1.159";

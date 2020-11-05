@@ -44,9 +44,9 @@ var CavisteSchema = mongoose.Schema ({
     
     Etablissement: String,
     Ville: String,
+    Region: String,
     Desc: String,
     Photo: String
-
 })
 
 const CavisteModel = mongoose.model('cavistes', CavisteSchema);

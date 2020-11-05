@@ -57,8 +57,8 @@ console.log("ALORS",result2)
       
           return <ListItem
               key={i}
-              title={result}
-              subtitle={result2}
+              title={msg.Text}
+              subtitle={msg.Nom}
               // subtitle={i}
               // leftAvatar={
               //   // <Avatar rounded

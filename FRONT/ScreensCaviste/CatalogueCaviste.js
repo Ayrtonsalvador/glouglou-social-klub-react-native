@@ -12,7 +12,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
   var IPmaison = "192.168.1.22";
   var IPecole = "172.17.1.159";
 
-  const [photo, setPhoto] = useState('')
+  const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
   const [millesime, setMillesime] = useState("Millesime")
   const [cepage, setCepage] = useState("Cépage")
@@ -22,12 +22,11 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
   const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
   const [couleur, setCouleur] = useState("Couleur")
-  const [idBouteille, setIdBouteille] = useState("ID")
 
   const [nomVi, setNomVi] = useState("Nom Vigneron")
   const [regionVi, setRegionVi] = useState("Région Vigneron")
   const [descVi, setDescVi] = useState("Description Vigneron")
-  const [photoVi, setPhotoVi] = useState("Photo Vigneron")
+  const [photoVi, setPhotoVi] = useState(null)
 
   const [selectedValue, setSelectedValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -48,7 +47,7 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-
+        console.log("CATALOGUE" ,catalogue)
         // Version Juliette
         // var catalogue = response.catalogue;
         // setlisteVin([...listeVin, catalogue]);
@@ -61,266 +60,249 @@ function CatalogueCaviste({ userstatus, navigation, token }) {
   }, []);
 
   const handlePressLike = () => {
+    console.log("ADD FAVORIS")
     setColorIcon('#DF2F2F');
   }
 
-const handlePressMessage = () => {
-  navigation.navigate('Write')
-  setIsVisible(false);
-}
+  const handlePressMessage = () => {
+    navigation.navigate('Write')
+    setIsVisible(false);
+  }
 
-// MAP VINS
-const cardVin = listeVin.map((vin, i) => {
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        setIsVisible(true);
-        setNom(vin.Nom);
-        setAOC(vin.AOC);
-        setCepage(vin.Cepage);
-        setMillesime(vin.Millesime);
-        setCouleur(vin.Couleur);
-        setDesc(vin.Desc);
-        setIdBouteille(vin.id)
+  // MAP VINS
+  const cardVin = listeVin.map((vin, i) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setIsVisible(true);
+          setNom(vin.Nom);
+          setAOC(vin.AOC);
+          setCepage(vin.Cepage);
+          setMillesime(vin.Millesime);
+          setCouleur(vin.Couleur);
+          setDesc(vin.Desc);
+          setPhoto(vin.Photo);
 
-        setNomVi(vin.IdVigneron.Nom);
-        setRegionVi(vin.IdVigneron.Ville);
-        setDescVi(vin.IdVigneron.Desc);
+          setNomVi(vin.IdVigneron.Nom);
+          setRegionVi(vin.IdVigneron.Ville);
+          setDescVi(vin.IdVigneron.Desc);
+          setPhotoVi(vin.IdVigneron.Photo);
 
-      }}>
-      <View style={{ flexDirection: "row" }}>
-        <Card
-          key={i}
-          style={{ alignItems: 'center', justifyContent: 'center' }}
+        }}>
+        <View style={{ flexDirection: "row" }}>
+          <Card
+            key={i}
+            style={{ alignItems: 'center', justifyContent: 'center' }}
+          >
+             <Image source={{uri : vin.Photo}} style={{ margin: 10, width: 150, height: 150 }} />
+
+            <Text>
+              {vin.Nom}
+            </Text>
+            <Text>
+              {vin.Millesime}
+            </Text>
+            <Text>
+              {vin.AOC}
+            </Text>
+            <Text>
+              {vin.Cepage}
+            </Text>
+          </Card>
+        </View>
+      </TouchableOpacity>
+    )
+  })
+
+  // MODAL AFFICHAGE VIN
+  if (isVisible) {
+
+    return (
+      <View>
+        <Overlay
+          onBackdropPress={() => {
+            setIsVisible(false);
+            setColorIcon('#C4C4C4')
+          }}
         >
-          <Text>
-            {vin.Nom}
-          </Text>
-          <Text>
-            {vin.Millesime}
-          </Text>
-          <Text>
-            {vin.AOC}
-          </Text>
-          <Text>
-            {vin.Cepage}
-          </Text>
-        </Card>
+          <ScrollView>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+
+              <View style={{ justifyContent: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                  <Image source={{uri : photo}} style={{ margin: 10, width: 150, height: 150 }} />
+                </View>
+
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                    {nom}
+                  </Text>
+                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
+                    {millesime}
+                  </Text>
+                </View>
+                <Text style={{ marginBottom: 10 }}>
+                  {AOC}
+                </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {cepage}
+                </Text>
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Icon
+                    name="ios-heart"
+                    size={30}
+                    color={colorIcon}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onPress={() => {
+                      handlePressLike();
+                    }}
+                  >
+                  </Icon>
+                </View>
+              </View>
+            </Card>
+            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+              <View>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Couleur
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {couleur}
+                </Text>
+                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                  Description
+                  </Text>
+                <Text style={{ marginBottom: 10 }}>
+                  {desc}
+                </Text>
+              </View>
+            </Card>
+            <Card>
+              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                <Avatar
+                  rounded
+                  source={{uri : photoVi}}
+                ></Avatar>
+                <Text style={{ margin: 10, color: '#9D2A29' }}>
+                  {nomVi}
+                </Text>
+              </View>
+              <View>
+                <Text style={{ margin: 10 }}>
+                  {regionVi}
+                </Text>
+                <Text style={{ margin: 10 }}>
+                  {descVi}
+                </Text>
+                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
+                  <Icon
+                    name="md-chatboxes"
+                    size={30}
+                    color={colorText}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onPress={() => {
+                      handlePressMessage();
+                    }}>
+                  </Icon>
+                </View>
+              </View>
+            </Card>
+          </ScrollView>
+        </Overlay>
       </View>
-    </TouchableOpacity>
-  )
-})
+    )
+  }
 
-// MODAL AFFICHAGE VIN
-if (isVisible) {
+  // Message Erreur chargement
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
+        <View style={styles.popup}>
+          <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
+            <Text>Erreur de chargement ! Veuillez réessayer</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
-  return (
-    <View>
-      <Overlay
-        onBackdropPress={() => {
-          setIsVisible(false);
-          setColorIcon('#C4C4C4')
-        }}
-      >
-        <ScrollView>
-          <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+  if (userstatus == "Vigneron") {
+    return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
+  } else {
 
-            <View style={{ justifyContent: 'center' }}>
-              <View
-                style={{ justifyContent: 'center', alignItems: 'center' }}
-              >
-                <Image source={require('../assets/imagedefault-c.png')} style={{ margin: 10, width: 150, height: 150 }} />
-              </View>
+    // Catalogue Caviste
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>
-                  {nom}
-                </Text>
-                <Text style={{ marginBottom: 10, marginLeft: 5 }}>
-                  {millesime}
-                </Text>
-              </View>
-              <Text style={{ marginBottom: 10 }}>
-                {AOC}
-              </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {cepage}
-              </Text>
-              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                <Icon
-                  name="ios-heart"
-                  size={30}
-                  color={colorIcon}
-                  style={{ alignItems: 'center', justifyContent: 'center' }}
-
-                  onPress={async () => {
-                    handlePressLike();
-                    
-                    // Poster les données de la card favorite en BDD
-                    var rawResponse = await fetch(`http://${IPecole}:3000/add-favoris`, {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: `NomFF=${nom}&CouleurFF=${couleur}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${idBouteille}&tokenFF=${token}`
-                    })
-                    var response = await rawResponse.json()
-                    console.log("ADD FAVORIS", response)
+        <View>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={pickerVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Button
+                  buttonStyle={{ ...styles.openButton }}
+                  title='Rechercher'
+                  onPress={() => {
+                    setPickerVisible(!pickerVisible);
                   }}
                 >
-                </Icon>
-              </View>
-            </View>
-          </Card>
-          <Card style={{ flex: 0.5, width: 100, height: 100 }}>
-            <View>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Couleur
-                  </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {couleur}
-              </Text>
-              <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
-                Description
-                  </Text>
-              <Text style={{ marginBottom: 10 }}>
-                {desc}
-              </Text>
-            </View>
-          </Card>
-          <Card>
-            <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-              <Avatar
-                rounded
-                source={require('../assets/vigneron.jpg')}
-              ></Avatar>
-              <Text style={{ margin: 10, color: '#9D2A29' }}>
-                {nomVi}
-              </Text>
-            </View>
-            <View>
-              <Text style={{ margin: 10 }}>
-                {regionVi}
-              </Text>
-              <Text style={{ margin: 10 }}>
-                {descVi}
-              </Text>
-              <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                <Icon
-                  name="md-chatboxes"
-                  size={30}
-                  color={colorText}
-                  style={{ alignItems: 'center', justifyContent: 'center' }}
-                  onPress={() => {
-                    handlePressMessage();
-                  }}>
-                </Icon>
-              </View>
-            </View>
-          </Card>
-        </ScrollView>
-      </Overlay>
-    </View>
-  )
-}
+                </Button>
+                <View style={{ flex: 1 }}>
+                  <Picker
+                    selectedValue={selectedValue}
+                    style={{ height: 10, width: 150, color: '#FFFFFF' }}
+                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                  >
+                    <Picker.Item label="TYPES DE VINS" value="none" />
+                    <Picker.Item label="BLANCS" value="blanc" />
+                    <Picker.Item label="ROUGES" value="rouge" />
+                    <Picker.Item label="ROSÉS" value="rosé" />
+                    <Picker.Item label="BULLES" value="bulles" />
+                  </Picker>
+                </View>
 
-// Message Erreur chargement
-if (error) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
-      <View style={styles.popup}>
-        <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-          <Text>Erreur de chargement ! Veuillez réessayer</Text>
+              
+              </View>
+            </View>
+          </Modal>
+
+          <Button
+            onPress={() => {
+              setPickerVisible(true);
+            }}
+            title='FILTRES'
+            buttonStyle={styles.openButton}
+            icon={
+              <Icon
+                name='ios-arrow-down'
+                size={20}
+                color="#ffffff"
+              />
+            }
+          >
+          </Button>
         </View>
-      </View>
-    </View>
-  );
-}
 
-if (userstatus == "Vigneron") {
-  return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
-} else {
+        <View style={styles.container}>
 
-  // Catalogue Caviste
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.box1}>
 
-      <View>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={pickerVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Button
-                buttonStyle={{ ...styles.openButton }}
-                title='Rechercher'
-                onPress={() => {
-                  setPickerVisible(!pickerVisible);
-                }}
-              >
-              </Button>
-              <View style={{ flex: 1 }}>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={{ height: 10, width: 150, color: '#FFFFFF' }}
-                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                  <Picker.Item label="TYPES DE VINS" value="none" />
-                  <Picker.Item label="BLANCS" value="blanc" />
-                  <Picker.Item label="ROUGES" value="rouge" />
-                  <Picker.Item label="ROSÉS" value="rosé" />
-                  <Picker.Item label="BULLES" value="bulles" />
-                </Picker>
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={{ height: 10, width: 150 }}
-                  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                  <Picker.Item label="AUTRES CHOIX" value="none" />
-                  <Picker.Item label="DOMAINE" value="domaine" />
-                  <Picker.Item label="PRODUCTEUR" value="producteur" />
-                  <Picker.Item label="REGION" value="region" />
-                </Picker>
-              </View>
-            </View>
+            <ScrollView>
+              {cardVin}
+            </ScrollView>
           </View>
-        </Modal>
-
-        <Button
-          onPress={() => {
-            setPickerVisible(true);
-          }}
-          title='FILTRES'
-          buttonStyle={styles.openButton}
-          icon={
-            <Icon
-              name='ios-arrow-down'
-              size={20}
-              color="#ffffff"
-            />
-          }
-        >
-        </Button>
-      </View>
-
-      <View style={styles.container}>
-
-        <View style={styles.box1}>
-
-          <ScrollView>
-            {cardVin}
-          </ScrollView>
         </View>
       </View>
-    </View>
-  );
-}
+    );
+  }
 }
 
 const styles = StyleSheet.create({
