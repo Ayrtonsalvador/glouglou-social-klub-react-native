@@ -8,11 +8,12 @@ var FavorisSchema = mongoose.Schema ({
     Cepage: String, 
     Desc: String, 
     AOC: String,
+    Photo: String,
     
     NomVi: String, 
     RegionVi: String, 
     DescVi: String,
-    Photo: String,
+    PhotoVi: String,
 })
 
 var MessageSentSchema = mongoose.Schema ({

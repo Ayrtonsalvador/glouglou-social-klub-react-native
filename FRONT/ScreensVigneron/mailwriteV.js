@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
 
-function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
+function MailwriteV({ navigation, token, userstatus}) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -17,11 +17,11 @@ function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIN", response)
+      console.log("RESPONSE WRITE V", response)
   
       if(response.result == true){
         setNomVigneron(response.Vigneron.Nom)
-        // console.log("NOM Vigneron", response.Vigneron.Nom)
+        console.log("NOM Vigneron", response.Vigneron.Nom)
     }
       
     } 
@@ -105,10 +105,8 @@ function MailwriteV({ navigation, pseudo, token, Nom, userstatus}) {
                 body: `Texte=${Texte}&token=${token}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}`
                 })
               var body = await data.json()
-              console.log("RESPONSE MAIL-MAIN-V", body)
+              console.log("RESPONSE MAIL WRITE-V", body)
               }}/>
-
-
 
         <Button
           buttonStyle={{ backgroundColor: "#FFD15C", marginBottom: 5 }}

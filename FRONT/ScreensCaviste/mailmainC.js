@@ -6,22 +6,24 @@ import { connect } from 'react-redux';
 import MailmainV from '../ScreensVigneron/MailmainV';
 
 
-function MailmainC({ navigation, pseudo, token, MessagesR, userstatus }) {
+function MailmainC({ navigation, token, userstatus }) {
   
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
  
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
+  const [nomVigneron,setNomVigneron] = useState();
   const [selectedId, setSelectedId] = useState(null);
+  const [clickedMsg, setClickedMsg] = useState(null)
 
   const handleClick = (id, texte) => {
     setSelectedId(id) // ID détecté !
     setClickedMsg(texte) // MSG détecté     
     navigation.navigate('Read');
 
-    if(clickedMsg != null){return (<MailmainC clickedMsg={clickedMsg} />)}
+    if(clickedMsg != null){return (<MailreadC clickedMsg={clickedMsg} />)}
     
     navigation.navigate('Read')
   }
@@ -36,6 +38,7 @@ useEffect(() => {
     if(response.result == true){
     setListMessages(response.msgCaviste)
     setNomVigneron(response.Caviste.MessagesR.Nom)
+    console.log("NOM Cav expediteur", response.Caviste.MessagesR.Nom)
   }
   } 
   loadData()

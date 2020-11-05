@@ -5,12 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import userstatus from '../reducers/userstatus';
 
-function MailreadV({ navigation, pseudo, props, userstatus }) {
+function MailreadV({ navigation, userstatus, token, }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [listMessage, setListMessage] = useState([]);
   const [Texte, setTexte] = useState();
+  const [selectedId, setSelectedId] = useState(null);
+  //  console.log("CA MARCHE", clickedMsg)
 
   useEffect(() => { async () => { var data = await fetch(`http://${IPecole}:3000/mailbox-read-v`)
       var body = await data.json()

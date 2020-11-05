@@ -9,7 +9,7 @@ import { withNavigationFocus } from 'react-navigation';
 
 function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -33,30 +33,33 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   useEffect(() => {
 
-    if ( userstatus == "Vigneron") {
-      
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("GET INFOS BOUTEILLE", response.cave)
-      // console.log("CAVE", response.cave);
-      if (response.result == true) {
-        var cave = response.cave
-        setlisteVin(cave)
-      } else {
-        setPopup(true)
-      }
-    }}
+
+      if (userstatus == "Vigneron") {
+
+        var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("GET INFOS BOUTEILLE", response.cave)
+        // console.log("CAVE", response.cave);
+        if (response.result == true) {
+          var cave = response.cave
+          setlisteVin(cave)
+        } else {
+          // CAVE VIDE
+          setPopup(true)
+        }
+      }}
+      
     loadData()
 
   }, [state]);
 
-  if(isFocused && !state){
-    console.log('OCUSED');
+  if (isFocused && !state) {
+    console.log('FOCUSED');
     setState(true)
   }
-  if(!isFocused && state) {
-    console.log('IS NOT OCUSED');
+  if (!isFocused && state) {
+    console.log('IS NOT FOCUSED');
     setState(false)
   }
 
@@ -182,6 +185,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
     )
   }
 
+  // POPUP FAVORIS VIDE
   if (popup) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>

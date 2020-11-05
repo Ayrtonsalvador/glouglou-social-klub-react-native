@@ -3,15 +3,31 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import userstatus from '../reducers/userstatus';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
+function MailwriteC({ navigation, token, userstatus}) {
   
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
+  const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
+
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write?token=${token}`);
+      var response = await rawResponse.json();
+      console.log("RESPONSE WRITE C", response)
+  
+      if(response.result == true){
+        setNomCaviste(response.Caviste.Nom)
+        console.log("NOM Cav", response.Caviste.Nom)
+    }
+    } 
+    loadData()
+  }, []);
 
   if (userstatus == "Vigneron") {
     return (<MailwriteV navigation={navigation} token={token} userstatus={userstatus}/>)
@@ -89,17 +105,13 @@ function MailwriteC({ navigation, pseudo, token, Nom , userstatus}) {
             onPress={async () => {
              
               var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
-                method: 'POST',
+                method: 'POST', 
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&Nom=${Nom}`
+                body: `Texte=${Texte}&token=${token}&NomVigneron=${nomVigneron}&NomCaviste=${nomCaviste}`
                 })
               var body = await data.json()
-             
-              } 
-          
-            } // onPress
-
-        />
+              console.log("RESPONSE MAIL WRITE-C", body)
+              }}/>
 
 
 

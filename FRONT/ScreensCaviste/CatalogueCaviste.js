@@ -11,7 +11,7 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -34,6 +34,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [pickerVisible, setPickerVisible] = useState(false);
   const [error, setError] = useState(false);
 
+  const [id, setId] = useState();
   const [listeVin, setlisteVin] = useState([])
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
@@ -49,14 +50,14 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
       if (response.result == true) {
         // Catalogue
-        // var catalogue = response.catalogue;
-        setlisteVin(response.catalogue);
-        // console.log("CATALOGUE", catalogue)
+        var catalogue = response.catalogue;
+        setlisteVin(catalogue);
+        console.log("CATALOGUE", catalogue)
         // Version Juliette
         // var catalogue = response.catalogue;
         // setlisteVin([...listeVin, catalogue]);
       } else {
-        //ERREUR RECHERCHE
+        // ERREUR RECHERCHE
         setError(true)
       }}
     }
@@ -79,6 +80,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
       <TouchableOpacity
         onPress={() => {
           setIsVisible(true);
+
           setNom(vin.Nom);
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
@@ -86,6 +88,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
           setPhoto(vin.Photo);
+          setId(vin._id);
 
           setNomVi(vin.IdVigneron.Nom);
           setRegionVi(vin.IdVigneron.Ville);
@@ -161,8 +164,15 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     size={30}
                     color={colorIcon}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onPress={() => {
+                    onPress={async () => {
                       handlePressLike();
+                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
+                      })
+                      var response = await data.json()
+                      console.log('AJOUT FAVORIS', response)
                     }}
                   >
                   </Icon>
@@ -208,8 +218,8 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     size={30}
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onPress={() => {
-                      handlePressMessage();
+                   onPress={() => { 
+                     handlePressMessage();
                     }}>
                   </Icon>
                 </View>
@@ -238,7 +248,8 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   if (userstatus == "Vigneron") {
     return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
-    // Catalogue Caviste
+
+    // CATALOGUE CAVISTE
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
@@ -381,6 +392,7 @@ const styles = StyleSheet.create({
 var focusedAdd = withNavigationFocus(CatalogueCaviste)
 
 function mapStateToProps(state) {
+  // console.log("STATE CATALOGUE", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
