@@ -99,14 +99,9 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-<<<<<<< HEAD
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
-            <Text>
-=======
             <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5  }} />
             
             <Text style={{ fontWeight: 'bold', margin: 10 }}>
->>>>>>> 648dbbb0595900b3e07d82370493db992f584601
               {vin.Nom}
             </Text>
             <Text style={{ marginLeft: 10 }}>

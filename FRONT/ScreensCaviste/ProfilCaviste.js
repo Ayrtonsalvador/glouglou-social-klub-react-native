@@ -35,6 +35,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
         var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
         var response = await rawResponse.json();
+        console.log("GET INFOS CAVISTE", response)
 
         if (response.result == true) {
           setNom(response.user.Nom)
@@ -42,13 +43,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setVille(response.user.Ville)
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
-          // setImage(response.user.Photo)
-          // console.log(image)
-          if (response.user.Photo == null) {
-            setImage(`require('../assets/gris.png')`)
-          } else {
-            setImage(response.user.Photo)
-          }
+          setImage(response.user.Photo)
         }
 
         if (etablissement == null || ville == null || region == null || desc == null) {
@@ -68,6 +63,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
     }
     loadData()
   }, []);
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,19 +86,17 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
         <View style={styles.container}>
 
-          <Image source={require('../assets/monprofil.png')}
-            style={{
-              height: responsiveScreenHeight(15),
-              width: responsiveScreenWidth(40),
-              justifyContent: "center",
-              alignItems: 'center'
-            }}></Image>
+        <Image source={require('../assets/monprofil.png')} 
+        style={{ height : responsiveScreenHeight ( 15 ), 
+                  width : responsiveScreenWidth ( 40 ), 
+                  justifyContent:"center", 
+                  alignItems: 'center' }}></Image>
 
-          <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
-            {/* <KeyboardAvoidingView behavior="position" enabled> */}
-            <ScrollView>
-              <View style={styles.box1}>
-                {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+          {/* <KeyboardAvoidingView behavior="position" enabled> */}
+          <ScrollView>
+            <View style={styles.box1}>
+              {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
 
                 {/* <View style={styles.box2}> */}
 
@@ -225,125 +219,9 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                       style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
                   </TouchableOpacity>
 
-                  {image && <Avatar size={100} rounded source={{uri : image}} title={nom}></Avatar>}
-
-                  <Button
-                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                    rounded
-                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                    onPress={pickImage} />
-                </View>
-
-                <TouchableOpacity>
-                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}>Changer ma photo</Text>
-                </TouchableOpacity>
-
-                <Input
-                  containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder={nom}
-                  disabled={disabled}
-                  onChangeText={(val) => {
-                    setNom(val)
-                  }}
-                />
-
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder={etablissement}
-                  disabled={disabled}
-                  onChangeText={(val) => {
-                    setEtablissement(val)
-                  }}
-                />
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder={ville}
-                  disabled={disabled}
-                  onChangeText={(val) => {
-                    setVille(val)
-                  }}
-                />
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder={region}
-                  disabled={disabled}
-                  onChangeText={(val) => {
-                    setRegion(val)
-                  }}
-                />
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  placeholder={desc}
-                  multiline={true}
-                  disabled={disabled}
-                  inputStyle={{ marginLeft: 10 }}
-                  onChangeText={(val) => {
-                    setDesc(val)
-                  }}
-                />
-
-                <Button onPress={async () => {
-                  setDisabled(true)
-                  navigation.navigate('Catalogue');
-
-                  var data = new FormData();
-                  // envoie du files avatar
-                  data.append('avatar', {
-                    uri: image,
-                    type: 'image/jpeg',
-                    name: 'avatar.jpg',
-                  });
-                  // création objet userinfo
-                  var userinfos = {
-                    nom: nom,
-                    etablissement: etablissement,
-                    ville: ville,
-                    region: region,
-                    desc: desc,
-                    token: token
-                  };
-
-                  // envoie l'objet en string au serveur
-                  data.append('userinfos', JSON.stringify(userinfos));
-
-                  var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
-                    method: 'post',
-                    body: data
-                  })
-
-                  var response = await updateUser.json();
-                  // console.log('responseFB', response)
-                }
-                }
-
-                  disabled={disabled}
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
-                  title="OK"
-                />
-
-                <TouchableOpacity>
-                  <Icon
-                    style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  ></Icon>
-                  <Text
-                    style={{ color: '#AAAAAA' }}
-                  >Changer mes paramètres</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                  <Text onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                    style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
-                </TouchableOpacity>
-
                 {/* </View> */}
-              </View>
-            </ScrollView>
+                </View>
+              </ScrollView>
           </KeyboardAvoidingView>
         </View>
       </View>
@@ -355,16 +233,16 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    height: responsiveScreenHeight(90),
-    width: responsiveScreenWidth(100),
+    height : responsiveScreenHeight ( 90 ) , 
+    width : responsiveScreenWidth ( 100 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
     alignItems: 'center',
-    height: responsiveHeight(100),
-    width: responsiveWidth(90),
+    height : responsiveHeight ( 100 ) , 
+    width : responsiveWidth ( 90 ),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
@@ -377,6 +255,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log("STATE TOKEN", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 

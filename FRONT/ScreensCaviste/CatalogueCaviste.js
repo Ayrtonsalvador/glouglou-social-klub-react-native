@@ -38,6 +38,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
 
+  const [state, setstate] = useState(false)
 
   useEffect(() => {
     async function loadData() {
@@ -58,7 +59,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
       }}
     }
     loadData()
-  }, []);
+  }, [state]);
 
   const handlePressLike = () => {
     setColorIcon('#DF2F2F');
@@ -163,9 +164,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
                       })
-                      var response = await data.json()
-                                     
-                      // console.log('AJOUT FAVORIS', response)
 
                     }}
                   >
@@ -277,7 +275,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                   }}
                 >
                 </Button>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1}}>
                   <Picker
                     selectedValue={selectedValue}
                     style={{ height: 10, width: 150, color: '#FFFFFF' }}
@@ -289,6 +287,23 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     <Picker.Item label="LES BULLES" value="Bulles" />
                   </Picker>
                 </View>
+
+                <Button
+            onPress={() => {
+              setPickerVisible(false);
+              setstate(!state);
+            }}
+            title=''
+            buttonStyle={styles.cross}
+            icon={
+              <Icon
+                name='md-close-circle-outline'
+                size={30}
+                color= "#FFAE34"
+              />
+            }
+          >
+          </Button>
 
               </View>
             </View>
@@ -338,6 +353,9 @@ const styles = StyleSheet.create({
     marginTop: 0,
     elevation: 10
   },
+  cross: {
+    backgroundColor:"#FFFFFF"
+  },
   img: {
     width: 80,
     height: 80,
@@ -345,10 +363,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centeredView: {
-    flex: 1,
+
     padding: 0,
-    // marginTop: 20,
-    // justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
@@ -356,7 +372,8 @@ const styles = StyleSheet.create({
     width: 250,
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
-    padding: 30,
+    paddingHorizontal: 20,
+  
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -373,7 +390,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
     marginBottom: 5,
     width: 250,
-    backgroundColor: "#FFD15C",
+    backgroundColor: "#FFAE34",
   },
   textStyle: {
     color: "white",
