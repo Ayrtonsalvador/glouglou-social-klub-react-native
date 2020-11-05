@@ -35,7 +35,6 @@ function AddVigneron({ navigation, token, userstatus}) {
   // Demander accès à la bibliothèque photo
   useEffect(() => {
     (async () => {
-
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');

@@ -38,8 +38,11 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
 
+
   useEffect(() => {
     async function loadData() {
+
+      if ( userstatus == "Caviste") {
 
       var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
       var response = await rawResponse.json();
@@ -55,7 +58,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
       } else {
         //ERREUR RECHERCHE
         setError(true)
-      }
+      }}
     }
     loadData()
   }, []);

@@ -32,9 +32,14 @@ function FavoriteCaviste({ navigation, token, userstatus }) {
     const [isVisible, setIsVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [pickerVisible, setPickerVisible] = useState(false);
+
+    const [Popup, setPopup] = useState(false);
   
     useEffect(() => {
       async function loadData() {
+
+        if ( userstatus == "Caviste") {
+
         var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
         var response = await rawResponse.json();
         console.log("GET INFOS FAVORIS", response)
@@ -92,7 +97,7 @@ function FavoriteCaviste({ navigation, token, userstatus }) {
         } else {
           //CAVE VIDE
           setPopup(true)
-        }
+        } }
       }
       loadData()
     }, []);

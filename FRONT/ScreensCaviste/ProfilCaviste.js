@@ -31,7 +31,9 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
       useEffect(() => {
       async function loadData() {
-        console.log("PROFIL")
+
+        if ( userstatus == "Caviste") {
+
         var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
         var response = await rawResponse.json();
         console.log("GET INFOS CAVISTE", response)
@@ -59,7 +61,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
         }
-      })();
+      })();}
       loadData()
     }, []);
 
@@ -187,8 +189,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                 
                     var response = await updateUser.json();
                     console.log('responseFB', response)
-          
-                    
+             
               }
                 }
 

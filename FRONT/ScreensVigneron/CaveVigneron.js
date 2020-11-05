@@ -32,6 +32,9 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   const [state, setState] = useState(false)
 
   useEffect(() => {
+
+    if ( userstatus == "Vigneron") {
+      
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
       var response = await rawResponse.json();
@@ -43,8 +46,9 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
       } else {
         setPopup(true)
       }
-    }
+    }}
     loadData()
+
   }, [state]);
 
   if(isFocused && !state){

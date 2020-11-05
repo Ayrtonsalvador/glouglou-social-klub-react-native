@@ -33,7 +33,9 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
   useEffect(() => {
     async function loadData() {
-      console.log("PROFIL")
+
+      if ( userstatus == "Vigneron") {
+     
       var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
       var response = await rawResponse.json();
       console.log("GET INFOS VIGNERON", response)
@@ -61,7 +63,8 @@ function ProfilVigneron({ navigation, token, userstatus }) {
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');
       }
-    })();
+    })(); }
+
     loadData()
   }, []);
 
