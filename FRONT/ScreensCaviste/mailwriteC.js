@@ -81,7 +81,7 @@ function MailwriteC({ navigation, token, userstatus }) {
               placeholder='A:'
               onChangeText={(text) => setNomCaviste(text)}
               value={nomVigneron}
-            />
+            /> 
 
             <Input
               containerStyle={{ marginBottom: 5 }}

@@ -98,15 +98,11 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                   {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
-
-                  <Button
-                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                    rounded
-                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5, width: 25, height: 25 }}
-                    onPress={pickImage} />
+                  
                 </View>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={pickImage}>
                   <Text style={{ color: '#AAAAAA', marginTop: 20 }}>Changer ma photo</Text>
                 </TouchableOpacity>
 
