@@ -86,23 +86,18 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-
-            <View
-              style={{ justifyContent: 'center', alignItems: 'center' }}
-            >
-              <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 150, height: 150 }} />
-            </View>
-
-            <Text>
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250 }} />
+            
+            <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.Millesime}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10 }}>
               {vin.AOC}
             </Text>
-            <Text>
+            <Text style={{ marginLeft: 10, marginBottom: 10 }}>
               {vin.Cepage}
             </Text>
           </Card>
@@ -119,44 +114,42 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
         <Overlay
           onBackdropPress={() => { setIsVisible(false) }}
         >
-          <ScrollView>
-            <Card style={{ flex: 0.5, width: 100, height: 100 }}>
+          <ScrollView containerStyle={{ borderRadius: 30 }}>
+            <Card style={{ flex: 0.5, width: 100, height: 100, borderRadius: 15 }}>
 
               <View style={{ justifyContent: 'center' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Image source={{ uri: photo }} style={{ margin: 10, width: 150, height: 150 }} />
+                  <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200 }} />
                 </View>
 
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                  <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>
+                
+                  <Text style={{ fontWeight: 'bold', margin: 10 }}>
                     {nom}
                   </Text>
-                  <Text style={{ marginBottom: 10, marginLeft: 5 }}>
-                    {cepage}
+                  <Text style={{ marginLeft: 10 }}>
+                  {millesime}
                   </Text>
-                </View>
-                <Text style={{ marginBottom: 10 }}>
+                  <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {millesime}
-                </Text>
-                <Text style={{ marginBottom: 10 }}>
-                  {cepage}
-                </Text>
+                  <Text style={{ marginLeft: 10, marginBottom: 15  }}>
+                    {cepage}
+                  </Text>
+                
+              
 
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                <Text style={{ marginLeft: 10, color: '#9D2A29' }}>
                   Couleur
                   </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {couleur}
                 </Text>
-                <Text style={{ marginBottom: 10, color: '#9D2A29' }}>
+                <Text style={{ marginLeft: 10, color: '#9D2A29' }}>
                   Description
                   </Text>
-                <Text style={{ marginBottom: 10 }}>
+                <Text style={{ marginLeft: 10 }}>
                   {desc}
                 </Text>
               </View>
@@ -176,7 +169,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
           >
             <Text
-              style={{ color: '#DF2F2F' }}>Supprimer la référence</Text>
+              style={{ color: '#DF2F2F', marginTop: 15, marginBottom: 15, }}>Supprimer la référence</Text>
           </TouchableOpacity>
 
         </Overlay>
@@ -234,7 +227,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     marginBottom: 10,
     borderColor: '#808080',
-    marginTop: 50,
+    marginTop: 0,
     elevation: 10
   },
   img: {
