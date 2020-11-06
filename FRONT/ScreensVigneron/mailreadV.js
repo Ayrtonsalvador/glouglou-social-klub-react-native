@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 function MailreadV({ navigation, userstatus, token, message}) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [texteSent, setTexteSent] = useState();
@@ -51,7 +51,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
 
-      <View style={{ alignItems: "center", flexDirection: "row", justifyContent:"space-around"}}>
+      {/* <View style={{ alignItems: "center", flexDirection: "row", justifyContent:"space-around"}}>
       <Icon
         name="arrow-circle-o-left"
         size={20}
@@ -61,7 +61,28 @@ function MailreadV({ navigation, userstatus, token, message}) {
           navigation.navigate('Main');
         }}/>
         <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View>
+      </View> */}
+
+      <Header 
+       leftComponent={<Icon
+        name="arrow-circle-o-left"
+        size={30}
+        color="#FFD15C"
+        buttonStyle={{ backgroundColor: '#FF9900' }}
+        onPress={() => {
+          navigation.navigate('Main');
+        }}/>}
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+          // rightComponent={<Icon
+          //    name="pencil"
+          //    size={25}
+          //    color="#FFD15C"
+          //    buttonStyle={{ backgroundColor: '#FF9900' }}
+          //    onPress={() => {navigation.navigate('Main');}}>
+          //    </Icon>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem

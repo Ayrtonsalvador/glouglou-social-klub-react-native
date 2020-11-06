@@ -7,7 +7,7 @@ import userstatus from '../reducers/userstatus';
 
 function MailwriteV({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [nomCaviste, setNomCaviste] = useState();
@@ -52,7 +52,7 @@ function MailwriteV({ navigation, token, userstatus }) {
   return (
     <View style={{ flex: 1 }}>
 
-      <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-around" }}>
+      {/* <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-around" }}>
         <Icon
           name="arrow-circle-o-left"
           size={20}
@@ -62,7 +62,28 @@ function MailwriteV({ navigation, token, userstatus }) {
             navigation.navigate('Main');
           }} />
         <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View>
+      </View> */}
+
+<Header 
+       leftComponent={<Icon
+        name="arrow-circle-o-left"
+        size={30}
+        color="#FFD15C"
+        buttonStyle={{ backgroundColor: '#FF9900' }}
+        onPress={() => {
+          navigation.navigate('Main');
+        }}/>}
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+          // rightComponent={<Icon
+          //    name="pencil"
+          //    size={25}
+          //    color="#FFD15C"
+          //    buttonStyle={{ backgroundColor: '#FF9900' }}
+          //    onPress={() => {navigation.navigate('Main');}}>
+          //    </Icon>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
 
       <ScrollView style={{ flex: 1, marginTop: 20 }}>
       {MsgSend}

@@ -18,7 +18,7 @@ import {
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [nom, setNom] = useState(null)
   const [domaine, setDomaine] = useState(null)
@@ -86,10 +86,10 @@ function ProfilVigneron({ navigation, token, userstatus }) {
       <View style={styles.container}>
 
       <Image source={require('../assets/monprofil.png')} 
-        style={{ height : responsiveScreenHeight ( 15 ), 
-                  width : responsiveScreenWidth ( 40 ), 
+     style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
                   justifyContent:"center", 
-                  alignItems: 'center' }}></Image>
+                  alignItems: 'center' }}>         
+       </Image>
 
           <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
            

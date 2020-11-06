@@ -9,7 +9,7 @@ import MailreadC from './MailreadC';
 
 function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
   
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
  
   const [listMessages, setListMessages] = useState([]);
 
@@ -64,7 +64,7 @@ if(read){
     return (
       <View style={{ flex: 1 }}>
 
-      {/* <Header> */}
+      {/* <Header>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
         <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
         <Icon
@@ -76,7 +76,22 @@ if(read){
             navigation.navigate('Write');
           }} />
       </View>
-      {/* </Header> */}
+      </Header> */}
+
+          <Header 
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+          rightComponent={<Icon
+             name="pencil"
+             size={25}
+             color="#FFD15C"
+             buttonStyle={{ backgroundColor: '#FF9900' }}
+             onPress={() => {navigation.navigate('Write');}}>
+             </Icon>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
+
+           
 
         <ScrollView style={{ flex: 1 }}>
           {listMessagesItem}

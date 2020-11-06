@@ -19,7 +19,7 @@ import {
 
 function AddVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.159";
 
   const [NomRef, setNomRef] = useState(null);
   const [Couleur, setCouleur] = useState(null);
@@ -74,8 +74,7 @@ function AddVigneron({ navigation, token, userstatus }) {
       <View style={styles.container}>
 
           <Image source={require('../assets/macave.png')} 
-        style={{ height : responsiveScreenHeight ( 15 ), 
-                  width : responsiveScreenWidth ( 40 ), 
+        style={{ width: 120, height: 100, marginTop: -10,
                   justifyContent:"center", 
                   alignItems: 'center' }}></Image>
 
@@ -95,7 +94,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                     onPress={pickImage} /> */}
                   {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} 
                   />}
-                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}
+                  <Text style={{ color: '#FFAE34', marginTop: 10}}
                   onPress={pickImage}>Ajouter une photo</Text>
                 </View>
 
