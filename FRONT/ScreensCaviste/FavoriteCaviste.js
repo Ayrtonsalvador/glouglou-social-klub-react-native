@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
+// import MailwriteC from './MailwriteC';
 
-function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
+function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.46";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -47,7 +48,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
         if (response.result == true) {
           var favoris = response.favCaviste.Favoris;
           setlisteVin(favoris);
-          console.log('FAVORIS',favoris);
+          console.log('FAVORIS', favoris);
         }
       }
     }
@@ -58,7 +59,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
   if (isFocused && !state) {
     setState(true)
   }
-  if(!isFocused && state) {
+  if (!isFocused && state) {
     setState(false)
   }
 
@@ -99,8 +100,8 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
             key={i}
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5  }} />
-            
+            <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250, borderRadius: 5 }} />
+
             <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
@@ -140,12 +141,12 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                 </View>
 
                 <Text style={{ fontWeight: 'bold', margin: 10 }}>
-                    {nom}
+                  {nom}
                 </Text>
                 <Text style={{ marginLeft: 10 }}>
-                    {millesime}
+                  {millesime}
                 </Text>
-                <Text style={{ marginLeft: 10}}>
+                <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
                 <Text style={{ marginLeft: 10, marginBottom: 15 }}>
@@ -213,7 +214,9 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused }) {
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={() => {
-                      handlePressMessage();
+                      setWrite(true);
+                      sendMessage(nomVi)
+                      setIsVisible(false);
                     }}>
                   </Icon>
                 </View>
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
     borderColor: '#808080',
     marginTop: 0,
     elevation: 10,
-    
+
   },
   img: {
     width: 80,
@@ -341,11 +344,19 @@ const styles = StyleSheet.create({
 
 var focusedAdd = withNavigationFocus(FavoriteCaviste)
 
+function mapDispatchToProps(dispatch) {
+  return {
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message })
+    }
+  }
+}
+
 function mapStateToProps(state) {
-return { token: state.token, userstatus: state.userstatus }
+  return { token: state.token, userstatus: state.userstatus }
 }
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(focusedAdd);

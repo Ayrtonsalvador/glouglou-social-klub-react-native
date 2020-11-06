@@ -17,13 +17,13 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "192.168.1.22";
 
-  const [nom, setNom] = useState(null)
-  const [etablissement, setEtablissement] = useState(null)
-  const [ville, setVille] = useState(null)
-  const [region, setRegion] = useState(null)
-  const [desc, setDesc] = useState(null)
+  const [nom, setNom] = useState()
+  const [etablissement, setEtablissement] = useState()
+  const [ville, setVille] = useState()
+  const [region, setRegion] = useState()
+  const [desc, setDesc] = useState()
 
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState(null);
@@ -58,8 +58,10 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setVille("Ville")
           setRegion("Région")
           setDesc("Parlez-nous de vous!")
-        }}
-    
+        } else {
+          setDisabled(true)
+        }
+      }
 
       (async () => {
         const { status } = await ImagePicker.requestCameraRollPermissionsAsync();

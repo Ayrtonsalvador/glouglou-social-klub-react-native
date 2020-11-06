@@ -7,52 +7,62 @@ import { connect } from 'react-redux';
 import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 
-function MailwriteC({ navigation, token, userstatus}) {
-  
+function MailwriteC({ navigation, token, userstatus, message }) {
+
   var IPecole = "172.17.1.46";
 
   const [Texte, setTexte] = useState();
+  const [photo, setPhoto] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [send, setSend] = useState(false);
   const [newMsg, setNewMsg] = useState([]);
-  const [placeholderTo, setPalceholderTo] = useState("A:");
-  const [placeholderMsg, setPalceholderMsg] = useState("Votre message \n");
+  const [placeholderTo, setPalceholderTo] = useState();
+  const [placeholderMsg, setPalceholderMsg] = useState();
+  const [ok, setOk] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write?token=${token}`);
       var response = await rawResponse.json();
-      console.log("RESPONSE WRITE C", response)
+      // console.log("RESPONSE WRITE C", response)
 
       if (response.result == true) {
         setNomCaviste(response.Caviste.Nom)
+        setPhoto(response.Caviste.Photo)
         // console.log("NOM Cav", response.Caviste.Nom)
       }
     }
     loadData()
   }, []);
 
+  // if(message != null && ok){
+  //   setPalceholderTo(message)
+  //   setOk(false);
+  // }
 
   if (userstatus == "Vigneron") {
     return (<MailwriteV navigation={navigation} token={token} userstatus={userstatus} />)
 
   } else {
 
-      var MsgSend = newMsg.map((msg, i) => {
-        return (
-          <ListItem
-            title={nomVigneron}
-            subtitle={msg}
-            style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
-            leftAvatar={<Avatar
-              rounded
-              source={require('../assets/GGSC.png')} >
-            </Avatar>
-            }
-          />
-        )
-      })
+    var MsgSend = newMsg.map((msg, i) => {
+      return (
+        // <View>
+        // <Text style={{ marginBottom: 10, fontWeight: '500' }}>Envoyé à:</Text>
+        <ListItem
+          title={nomVigneron}
+          subtitle={msg}
+          style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
+          leftAvatar={<Avatar
+            rounded
+            source={{ uri: photo }}>
+          </Avatar>
+          }
+        />
+        // </View>
+      )
+    })
 
     return (
       <View style={{ flex: 1 }}>
@@ -79,19 +89,21 @@ function MailwriteC({ navigation, token, userstatus}) {
 
             <Input
               containerStyle={{ marginBottom: 5 }}
-              placeholder={placeholderTo}
-              onChangeText={(text) => 
+              placeholder="A :"
+              onChangeText={(text) =>
                 setNomVigneron(text)
               }
-            /> 
+              value={placeholderTo}
+            />
 
             <Input
               containerStyle={{ marginBottom: 5 }}
-              placeholder={placeholderMsg}
+              placeholder={"Votre message \n"}
               multiline={true}
               onChangeText={(text) => {
                 setTexte(text);
               }}
+              value={placeholderMsg}
             />
 
           </View>
@@ -111,21 +123,19 @@ function MailwriteC({ navigation, token, userstatus}) {
             onPress={async () => {
 
               setSend(true);
-              setPalceholderTo("");
-              setPalceholderMsg("");
               setNewMsg([...newMsg, Texte])
 
               var data = await fetch(`http://${IPecole}:3000/mailbox-write`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
-                })
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
+              })
               var body = await data.json()
-              console.log("RESPONSE MAIL WRITE-V", body)
-              console.log("Nom Caviste", nomCaviste)
-              console.log("Nom Caviste", nomVigneron)
-              console.log("Texte envoyé", Texte)
-            }}/>
+              // console.log("RESPONSE MAIL WRITE-V", body)
+              // console.log("Nom Caviste", nomCaviste)
+              // console.log("Nom Caviste", nomVigneron)
+              // console.log("Texte envoyé", Texte)
+            }} />
         </KeyboardAvoidingView>
       </View>
     );
@@ -133,8 +143,8 @@ function MailwriteC({ navigation, token, userstatus}) {
 }
 
 function mapStateToProps(state) {
-  console.log("state", state.token)
-  return { token: state.token, userstatus: state.userstatus }
+  console.log("STATE WRITE C", state.message)
+  return { token: state.token, userstatus: state.userstatus, message: state.message }
 
 }
 

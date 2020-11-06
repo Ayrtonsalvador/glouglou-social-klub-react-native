@@ -52,7 +52,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-
+        // console.log("CATALOGUE", catalogue)
       } else {
         // ERREUR RECHERCHE
         setError(true)

@@ -37,8 +37,9 @@ import { Provider } from 'react-redux';
 import userstatus from './reducers/userstatus';
 import token from './reducers/token';
 import message from './reducers/messageRead';
+import messageSend from './reducers/messageSend';
 
-const store = createStore(combineReducers({ userstatus, token, message }));
+const store = createStore(combineReducers({ userstatus, token, message, messageSend }));
 
 // STACK-NAVIGATION
 

@@ -8,14 +8,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { set } from 'react-native-reanimated';
 import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
-import { 
-  responsiveHeight , 
-  responsiveWidth , 
+import {
+  responsiveHeight,
+  responsiveWidth,
   responsiveFontSize,
-  responsiveScreenHeight , 
-  responsiveScreenWidth , 
-  responsiveScreenFontSize 
-}  from  "react-native-responsive-dimensions" ;
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize
+} from "react-native-responsive-dimensions";
 
 function AddVigneron({ navigation, token, userstatus }) {
 
@@ -78,82 +78,83 @@ function AddVigneron({ navigation, token, userstatus }) {
 
       <View style={styles.container}>
 
-          <Image source={require('../assets/macave.png')} 
-        style={{ height : responsiveScreenHeight ( 15 ), 
-                  width : responsiveScreenWidth ( 40 ), 
-                  justifyContent:"center", 
-                  alignItems: 'center' }}></Image>
+        <Image source={require('../assets/macave.png')}
+          style={{
+            height: responsiveScreenHeight(15),
+            width: responsiveScreenWidth(40),
+            justifyContent: "center",
+            alignItems: 'center'
+          }}></Image>
 
-<KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
+        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
 
-            <ScrollView>
+          <ScrollView>
             <View style={styles.box1}>
               {/* <View style={styles.box2}> */}
 
                 
-
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 
                   {image && <Avatar size={100} source={{ uri: image }} style={{ width: 150, height: 150 }}></Avatar>}
                 
                 <Text style={{ color: '#AAAAAA', marginTop: 10 }}
                   onPress={pickImage}>Ajouter une photo</Text>
-                </View>
+              </View>
 
-                <Input
-                  containerStyle={{ marginTop: 20, marginBottom: 20, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Nom de la référence"
-                  onChangeText={(text) => setNomRef(text)}
-                  value={NomRef}
-                />
+              <Input
+                containerStyle={{ marginTop: 20, marginBottom: 20, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Nom de la référence"
+                onChangeText={(text) => setNomRef(text)}
+                value={NomRef}
+              />
 
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Couleur"
-                  onChangeText={(text) => setCouleur(text)}
-                  value={Couleur}
-                />
+              <Input
+                containerStyle={{ marginBottom: 15, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Couleur"
+                onChangeText={(text) => setCouleur(text)}
+                value={Couleur}
+              />
 
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Cépage"
-                  disabled={disabled}
-                  onChangeText={(text) => setCepage(text)}
-                  value={Cepage}
+              <Input
+                containerStyle={{ marginBottom: 15, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Cépage"
+                disabled={disabled}
+                onChangeText={(text) => setCepage(text)}
+                value={Cepage}
 
-                />
+              />
 
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Millésime"
-                  onChangeText={(text) => setMillesime(text)}
-                  value={Millesime}
+              <Input
+                containerStyle={{ marginBottom: 15, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Millésime"
+                onChangeText={(text) => setMillesime(text)}
+                value={Millesime}
 
-                />
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Appellation"
-                  onChangeText={(text) => setAppellation(text)}
-                  value={Appellation}
-                />
+              />
+              <Input
+                containerStyle={{ marginBottom: 15, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Appellation"
+                onChangeText={(text) => setAppellation(text)}
+                value={Appellation}
+              />
 
-                <Input
-                  containerStyle={{ marginBottom: 15, width: '80%' }}
-                  inputStyle={{ marginLeft: 10 }}
-                  placeholder="Description"
-                  onChangeText={(text) => setDesc(text)}
-                  value={Desc}
+              <Input
+                containerStyle={{ marginBottom: 15, width: '80%' }}
+                inputStyle={{ marginLeft: 10 }}
+                placeholder="Description"
+                onChangeText={(text) => setDesc(text)}
+                value={Desc}
 
-                />
+              />
 
-                <Text>{ListError}</Text>
+              <Text>{ListError}</Text>
 
-                <Button
+              <Button
                 icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
                 rounded
                 type='font-awesome'
@@ -191,7 +192,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                   setCouleur('')
                   // console.log("FB", response)
                   // if (response.result == true) {
-                   
+
                   // } 
                   // else if (response.result == false) {
                   //   setError(response.error);
@@ -199,10 +200,10 @@ function AddVigneron({ navigation, token, userstatus }) {
                 }}
 
               />
-              </View>
-            </ScrollView>
+            </View>
+          </ScrollView>
         </KeyboardAvoidingView>
-    </View>
+      </View>
     </View>
   );
 }
@@ -210,25 +211,18 @@ function AddVigneron({ navigation, token, userstatus }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height : responsiveScreenHeight ( 90 ) , 
-    width : responsiveScreenWidth ( 100 ),
+    height: responsiveScreenHeight(90),
+    width: responsiveScreenWidth(100),
     alignItems: 'center',
     justifyContent: 'center',
   },
   box1: {
     flex: 1,
     alignItems: 'center',
-    height : responsiveHeight ( 120 ) , 
-    width : responsiveWidth ( 90 ),
+    height: responsiveHeight(120),
+    width: responsiveWidth(90),
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
-  // box2: {
-  //   width: 350,
-  //   height: 400,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
   responsiveBox: {
     width: wp('84.5%'),
     height: hp('17%'),
