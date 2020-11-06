@@ -42,7 +42,6 @@ import messageSend from './reducers/messageSend';
 const store = createStore(combineReducers({ userstatus, token, message, messageSend }));
 
 // STACK-NAVIGATION
-
 var BottomNavigator = createBottomTabNavigator({
   Profil: ProfilCaviste,
   Catalogue: CatalogueCaviste,

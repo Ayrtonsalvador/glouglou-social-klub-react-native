@@ -9,18 +9,18 @@ import { withNavigationFocus } from 'react-navigation';
 
 function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
-  const [nom, setNom] = useState("Nom")
-  const [domaine, setDomaine] = useState("Nom de domaine")
-  const [ville, setVille] = useState("Ville")
-  const [region, setRegion] = useState("Région")
-  const [desc, setDesc] = useState("Description")
-  const [couleur, setCouleur] = useState("Couleur")
-  const [AOC, setAOC] = useState("AOC")
-  const [cepage, setCepage] = useState("Cépage")
-  const [millesime, setMillesime] = useState("Millesime")
+  const [nom, setNom] = useState()
+  const [domaine, setDomaine] = useState()
+  const [ville, setVille] = useState()
+  const [region, setRegion] = useState()
+  const [desc, setDesc] = useState()
+  const [couleur, setCouleur] = useState()
+  const [AOC, setAOC] = useState()
+  const [cepage, setCepage] = useState()
+  const [millesime, setMillesime] = useState()
 
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -77,8 +77,9 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
           setIsVisible(true);
           setNom(vin.Nom);
           setAOC(vin.AOC);
+          setCouleur(vin.Couleur)
           setCepage(vin.Cepage);
-          setDesc(vin.desc);
+          setDesc(vin.Desc);
           setPhoto(vin.Photo);
         }}
       >

@@ -19,7 +19,7 @@ import {
 
 function AddVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.46";
+  var IPecole = "172.17.1.153";
 
   const [NomRef, setNomRef] = useState(null);
   const [Couleur, setCouleur] = useState(null);
@@ -43,6 +43,11 @@ function AddVigneron({ navigation, token, userstatus }) {
 
   // Demander accès à la bibliothèque photo
   useEffect(() => {
+
+    if (image == null) {
+      setImage(`require('../assets/gris.png')`)
+      }
+    
     (async () => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
@@ -73,22 +78,22 @@ function AddVigneron({ navigation, token, userstatus }) {
 
       <View style={styles.container}>
 
-        <Image source={require('../assets/macave.png')}
-          style={{
-            height: responsiveScreenHeight(15),
-            width: responsiveScreenWidth(40),
-            justifyContent: "center",
-            alignItems: 'center'
-          }}></Image>
+          <Image source={require('../assets/macave.png')} 
+        style={{ width: 120, height: 100, marginTop: -10,
+                  justifyContent:"center", 
+                  alignItems: 'center' }}></Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
 
           <ScrollView>
             <View style={styles.box1}>
-              
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }}
-                />}
+              {/* <View style={styles.box2}> */}
+
+                
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                
+                  {image && <Avatar size={100} source={{ uri: image }} style={{ width: 150, height: 150 }}></Avatar>}
+                
                 <Text style={{ color: '#AAAAAA', marginTop: 10 }}
                   onPress={pickImage}>Ajouter une photo</Text>
               </View>

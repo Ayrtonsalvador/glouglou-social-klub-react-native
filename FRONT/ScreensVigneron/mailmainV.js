@@ -59,19 +59,20 @@ function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <Header> */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-        <Icon
-          name="pencil"
-          size={25}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Write');
-          }} />
-      </View>
-      {/* </Header> */}
+
+      <Header 
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+          rightComponent={<Icon
+             name="pencil"
+             size={25}
+             color="#FFD15C"
+             buttonStyle={{ backgroundColor: '#FF9900' }}
+             onPress={() => {navigation.navigate('Write');}}>
+             </Icon>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
+
       <ScrollView style={{ flex: 1 }}>
         {listMessagesItem}
       </ScrollView>

@@ -44,16 +44,23 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
           setImage(response.user.Photo)
+        
+        
+        if (image == null) {
+          setImage(`require('../assets/gris.png')`)
+          } else {
+            setImage(response.user.Photo)
+          }
         }
 
-        if (etablissement == null || ville == null || region == null || desc == null) {
-          setEtablissement("Nom d'établissement")
-          setVille("Ville")
-          setRegion("Région")
-          setDesc("Parlez-nous de vous!")
-        } else {
+        // if (etablissement == null || ville == null || region == null || desc == null) {
+        //   setEtablissement("Nom d'établissement")
+        //   setVille("Ville")
+        //   setRegion("Région")
+        //   setDesc("Parlez-nous de vous!")
+        // } else {
           setDisabled(true)
-        }
+        // }
       }
 
       (async () => {
@@ -89,28 +96,20 @@ function ProfilCaviste({ navigation, token, userstatus }) {
         <View style={styles.container}>
 
         <Image source={require('../assets/monprofil.png')} 
-        style={{ height : responsiveScreenHeight ( 15 ), 
-                  width : responsiveScreenWidth ( 40 ), 
+     style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
                   justifyContent:"center", 
-                  alignItems: 'center' }}></Image>
+                  alignItems: 'center' }}>         
+       </Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
-          {/* <KeyboardAvoidingView behavior="position" enabled> */}
+         
           <ScrollView>
             <View style={styles.box1}>
-              {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
-
-                {/* <View style={styles.box2}> */}
 
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                     {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
-                    {/* <Button
-                      icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                      rounded
-                      buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                      onPress={pickImage}/> */}
                   </View>
 
                   <TouchableOpacity>
@@ -121,49 +120,54 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                   <Input
                     containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={nom}
+                    placeholder="Nom"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setNom(val)
                     }}
+                    value={nom}
                   />
 
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={etablissement}
+                    placeholder="Etablissement"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setEtablissement(val)
                     }}
+                    value={etablissement}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={ville}
+                    placeholder="Ville"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setVille(val)
                     }}
+                    value={ville}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={region}
+                    placeholder="Région"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setRegion(val)
                     }}
+                    value={region}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
-                    placeholder={desc}
+                    placeholder="Description"
                     multiline={true}
                     disabled={disabled}
                     inputStyle={{ marginLeft: 10 }}
                     onChangeText={(val) => {
                       setDesc(val)
                     }}
+                    value={desc}
                   />
 
                   <Button onPress={async () => {

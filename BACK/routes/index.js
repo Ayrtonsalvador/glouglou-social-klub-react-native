@@ -417,8 +417,6 @@ router.get('/mailbox-write', async function (req, res, next) {
   }
 });
 
-
-//
 router.post('/mailbox-write', async function (req, res, next) {
 
   var msg = await CavisteModel.updateOne(
@@ -644,11 +642,8 @@ router.post('/add-favoris', async function (req, res, next) {
   const bouteille = await BouteilleModel.findOne({
     id: req.body.IdFF
   })
-
-  // const already = await BouteilleModel.findOne(userCaviste.Favoris.id)
-
-  // if (!already) {
-  var favorisCaviste = await CavisteModel.updateOne(
+ 
+   var favorisCaviste = await CavisteModel.updateOne(
     { token: req.body.tokenFF }, {
     $push: {
       Favoris:
@@ -667,8 +662,7 @@ router.post('/add-favoris', async function (req, res, next) {
       },
     }
   })
-  // }
-
+  
   if (favorisCaviste != null) {
     res.json({ result: true, bouteille, favorisCaviste, userCaviste })
   } else {

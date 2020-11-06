@@ -52,21 +52,25 @@ function MailreadC({ navigation, token, userstatus, message }) {
   if (userstatus == "Vigneron") {
     return (<MailreadV navigation={navigation} token={token} userstatus={userstatus} message={message} />)
   } else {
+    
+  return (
+    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
 
-    return (
-      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <Header 
+       leftComponent={<Icon
+        name="arrow-circle-o-left"
+        size={30}
+        color="#FFD15C"
+        buttonStyle={{ backgroundColor: '#FF9900' }}
+        onPress={() => {
+          navigation.navigate('Main');
+        }}/>}
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+    
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
 
-        <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-around" }}>
-          <Icon
-            name="arrow-circle-o-left"
-            size={20}
-            color="#FFD15C"
-            buttonStyle={{ backgroundColor: '#FF9900' }}
-            onPress={() => {
-              navigation.navigate('Main');
-            }} />
-          <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-        </View>
 
         <ScrollView style={{ flex: 1, marginTop: 15 }}>
           <ListItem
