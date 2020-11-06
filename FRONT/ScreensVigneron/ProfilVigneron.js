@@ -87,7 +87,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
       <View style={styles.container}>
 
       <Image source={require('../assets/monprofil.png')} 
-     style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
+       style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
                   justifyContent:"center", 
                   alignItems: 'center' }}>         
        </Image>
