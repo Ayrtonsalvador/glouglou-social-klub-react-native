@@ -9,7 +9,7 @@ import MailwriteV from '../ScreensVigneron/MailwriteV';
 
 function MailwriteC({ navigation, token, userstatus, message }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();
@@ -36,6 +36,10 @@ function MailwriteC({ navigation, token, userstatus, message }) {
     loadData()
   }, []);
 
+  if(message != null && ok){
+    setPalceholderTo(message)
+    setOk(false);
+  }
 
   if (userstatus == "Vigneron") {
     return (<MailwriteV navigation={navigation} token={token} userstatus={userstatus} />)

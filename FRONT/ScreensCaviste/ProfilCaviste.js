@@ -17,7 +17,7 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [nom, setNom] = useState()
   const [etablissement, setEtablissement] = useState()
@@ -105,9 +105,9 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           <ScrollView>
             <View style={styles.box1}>
 
-                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
-                    {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+                  {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
                   </View>
 

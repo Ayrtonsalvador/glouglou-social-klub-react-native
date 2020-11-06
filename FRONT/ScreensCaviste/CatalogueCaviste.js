@@ -9,7 +9,7 @@ import { withNavigationFocus } from 'react-navigation';
 
 import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
-function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
+function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessage, message }) {
 
   var IPecole = "172.17.1.159";
 
@@ -67,6 +67,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
   const handlePressMessage = () => {
     navigation.navigate('Write')
+    sendMessage(nomVi)
     setIsVisible(false);
   }
 
@@ -405,6 +406,14 @@ const styles = StyleSheet.create({
 
 var focusedAdd = withNavigationFocus(CatalogueCaviste)
 
+function mapDispatchToProps(dispatch) {
+  return {
+    sendMessage: function (message) {
+      dispatch({ type: 'addMessage', message: message })
+    }
+  }
+}
+
 function mapStateToProps(state) {
   // console.log("STATE CATALOGUE", state.token)
   return { token: state.token, userstatus: state.userstatus }
@@ -412,5 +421,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(focusedAdd);

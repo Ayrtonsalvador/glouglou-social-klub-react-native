@@ -12,7 +12,7 @@ import AddVigneron from '../ScreensVigneron/AddVigneron';
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -214,9 +214,9 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={() => {
-                      setWrite(true);
                       sendMessage(nomVi)
                       setIsVisible(false);
+                      navigation.navigate('Write')
                     }}>
                   </Icon>
                 </View>
@@ -338,7 +338,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    // fontFamily: "Gothic A1",
   },
 });
 
