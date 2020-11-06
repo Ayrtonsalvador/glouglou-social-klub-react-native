@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 function MailreadV({ navigation, userstatus, token, message}) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();

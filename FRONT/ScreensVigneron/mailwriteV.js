@@ -7,7 +7,7 @@ import userstatus from '../reducers/userstatus';
 
 function MailwriteV({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState(); 

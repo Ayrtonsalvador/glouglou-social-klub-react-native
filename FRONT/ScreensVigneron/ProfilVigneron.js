@@ -18,7 +18,7 @@ import {
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.153";
+  var IPecole = "172.17.1.159";
 
   const [nom, setNom] = useState()
   const [domaine, setDomaine] = useState()
@@ -100,10 +100,12 @@ function ProfilVigneron({ navigation, token, userstatus }) {
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                 {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+            
+                </View>
 
                 <TouchableOpacity>
                   <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
-                    onPress={pickImage} >Changer ma photo</Text>
+                   onPress={pickImage} >Changer ma photo</Text>
                 </TouchableOpacity>
 
                 <Input
@@ -214,7 +216,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 </TouchableOpacity>
 
               </View>
-            </View>
+            
           </ScrollView>
         </KeyboardAvoidingView>
       </View >
