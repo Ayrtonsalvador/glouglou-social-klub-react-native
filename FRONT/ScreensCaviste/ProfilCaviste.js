@@ -17,7 +17,7 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "192.168.1.22";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState()
   const [etablissement, setEtablissement] = useState()
@@ -53,14 +53,14 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           }
         }
 
-        if (etablissement == null || ville == null || region == null || desc == null) {
-          setEtablissement("Nom d'établissement")
-          setVille("Ville")
-          setRegion("Région")
-          setDesc("Parlez-nous de vous!")
-        } else {
+        // if (etablissement == null || ville == null || region == null || desc == null) {
+        //   setEtablissement("Nom d'établissement")
+        //   setVille("Ville")
+        //   setRegion("Région")
+        //   setDesc("Parlez-nous de vous!")
+        // } else {
           setDisabled(true)
-        }
+        // }
       }
 
       (async () => {
@@ -128,49 +128,54 @@ function ProfilCaviste({ navigation, token, userstatus }) {
                   <Input
                     containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={nom}
+                    placeholder="Nom"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setNom(val)
                     }}
+                    value={nom}
                   />
 
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={etablissement}
+                    placeholder="Etablissement"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setEtablissement(val)
                     }}
+                    value={etablissement}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={ville}
+                    placeholder="Ville"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setVille(val)
                     }}
+                    value={ville}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
                     inputStyle={{ marginLeft: 10 }}
-                    placeholder={region}
+                    placeholder="Région"
                     disabled={disabled}
                     onChangeText={(val) => {
                       setRegion(val)
                     }}
+                    value={region}
                   />
                   <Input
                     containerStyle={{ marginBottom: 15, width: '80%' }}
-                    placeholder={desc}
+                    placeholder="Description"
                     multiline={true}
                     disabled={disabled}
                     inputStyle={{ marginLeft: 10 }}
                     onChangeText={(val) => {
                       setDesc(val)
                     }}
+                    value={desc}
                   />
 
                   <Button onPress={async () => {
