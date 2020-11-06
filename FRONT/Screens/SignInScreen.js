@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
-  var IPecole = "192.168.1.22";
+  var IPecole = "172.17.1.46";
 
   const [signInEmail, setSignInEmail] = useState("")
   const [signInPassword, setSignInPassword] = useState("")
