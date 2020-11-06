@@ -36,8 +36,7 @@ function MailwriteV({ navigation, token, userstatus }) {
   if (send) {
   var MsgSend = newMsg.map((msg, i) => {
         return (
-          // <View>
-          // <Text style={{ marginBottom: 10, fontWeight: '500' }}>Envoyé à:</Text>
+         
           <ListItem
             key={i}
             title={nomCaviste}
@@ -57,17 +56,19 @@ function MailwriteV({ navigation, token, userstatus }) {
   return (
     <View style={{ flex: 1 }}>
 
-      <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-around" }}>
-        <Icon
-          name="arrow-circle-o-left"
-          size={20}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Main');
-          }} />
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View>
+<Header 
+       leftComponent={<Icon
+        name="arrow-circle-o-left"
+        size={30}
+        color="#FFD15C"
+        buttonStyle={{ backgroundColor: '#FF9900' }}
+        onPress={() => {
+          navigation.navigate('Main');
+        }}/>}
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
 
       <ScrollView style={{ flex: 1, marginTop: 20 }}>
       {MsgSend}
@@ -123,10 +124,6 @@ function MailwriteV({ navigation, token, userstatus }) {
               body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}token=${token}`
               })
             var body = await data.json()
-            // console.log("RESPONSE MAIL WRITE-V", body)
-            // console.log("Nom Caviste", nomCaviste)
-            // console.log("Nom Vigneron", nomVigneron)
-            // console.log("Texte envoyé", Texte)
           }} />
       </KeyboardAvoidingView>
     </View>

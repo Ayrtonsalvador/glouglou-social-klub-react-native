@@ -53,17 +53,19 @@ function MailreadV({ navigation, userstatus, token, message}) {
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
 
-      <View style={{ alignItems: "center", flexDirection: "row", justifyContent:"space-around"}}>
-      <Icon
+      <Header 
+       leftComponent={<Icon
         name="arrow-circle-o-left"
-        size={20}
+        size={30}
         color="#FFD15C"
         buttonStyle={{ backgroundColor: '#FF9900' }}
         onPress={() => {
           navigation.navigate('Main');
-        }}/>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View>
+        }}/>}
+          centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
+             containerStyle={{
+              backgroundColor: '#FFFFFF', height: 80}}
+             />
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem

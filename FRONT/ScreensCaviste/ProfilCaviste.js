@@ -96,28 +96,20 @@ function ProfilCaviste({ navigation, token, userstatus }) {
         <View style={styles.container}>
 
         <Image source={require('../assets/monprofil.png')} 
-        style={{ height : responsiveScreenHeight ( 15 ), 
-                  width : responsiveScreenWidth ( 40 ), 
+     style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
                   justifyContent:"center", 
-                  alignItems: 'center' }}></Image>
+                  alignItems: 'center' }}>         
+       </Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
-          {/* <KeyboardAvoidingView behavior="position" enabled> */}
+         
           <ScrollView>
             <View style={styles.box1}>
-              {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
-
-                {/* <View style={styles.box2}> */}
 
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                     {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
-                    {/* <Button
-                      icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                      rounded
-                      buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                      onPress={pickImage}/> */}
                   </View>
 
                   <TouchableOpacity>

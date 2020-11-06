@@ -78,13 +78,10 @@ function AddVigneron({ navigation, token, userstatus }) {
 
       <View style={styles.container}>
 
-        <Image source={require('../assets/macave.png')}
-          style={{
-            height: responsiveScreenHeight(15),
-            width: responsiveScreenWidth(40),
-            justifyContent: "center",
-            alignItems: 'center'
-          }}></Image>
+          <Image source={require('../assets/macave.png')} 
+        style={{ width: 120, height: 100, marginTop: -10,
+                  justifyContent:"center", 
+                  alignItems: 'center' }}></Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
 
