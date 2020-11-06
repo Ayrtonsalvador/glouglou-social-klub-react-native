@@ -20,7 +20,6 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [AOC, setAOC] = useState("AOC")
   const [domaine, setDomaine] = useState("Nom de domaine")
 
-  const [region, setRegion] = useState("Région")
   const [desc, setDesc] = useState("Description")
   const [couleur, setCouleur] = useState("Couleur")
 
@@ -39,6 +38,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
   const [colorText, setColorText] = useState('#FFD15C');
   const [colorIcon, setColorIcon] = useState('#C4C4C4');
 
+  const [state, setstate] = useState(false)
 
   useEffect(() => {
     async function loadData() {
@@ -52,20 +52,16 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
         // Catalogue
         var catalogue = response.catalogue;
         setlisteVin(catalogue);
-        console.log("CATALOGUE", catalogue)
-        // Version Juliette
-        // var catalogue = response.catalogue;
-        // setlisteVin([...listeVin, catalogue]);
+        // console.log("CATALOGUE", catalogue)
       } else {
         // ERREUR RECHERCHE
         setError(true)
       }}
     }
     loadData()
-  }, []);
+  }, [state]);
 
   const handlePressLike = () => {
-    console.log("ADD FAVORIS")
     setColorIcon('#DF2F2F');
   }
 
@@ -85,6 +81,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
           setAOC(vin.AOC);
           setCepage(vin.Cepage);
           setMillesime(vin.Millesime);
+          setDomaine(vin.IdVigneron.Domaine);
           setCouleur(vin.Couleur);
           setDesc(vin.Desc);
           setPhoto(vin.Photo);
@@ -167,8 +164,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
                       })
-                      var response = await data.json()
-                      console.log('AJOUT FAVORIS', response)
+
                     }}
                   >
                   </Icon>
@@ -247,15 +243,15 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
 
     // CATALOGUE CAVISTE
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: "center", alignItems:'center'}}>
 
-        <View>
+        <View style={{alignItems: 'stretch'}}>
           <Modal
             animationType="fade"
             transparent={true}
             visible={pickerVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+              setPickerVisible(false)
             }}
           >
             <View style={styles.centeredView}>
@@ -273,13 +269,13 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     })
 
                     var filtredata = await filtre.json()
-                    console.log(filtredata.catalogue)
+                   // console.log(filtredata.catalogue)
                     setlisteVin(filtredata.catalogue)
 
                   }}
                 >
                 </Button>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1}}>
                   <Picker
                     selectedValue={selectedValue}
                     style={{ height: 10, width: 150, color: '#FFFFFF' }}
@@ -291,6 +287,23 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused }) {
                     <Picker.Item label="LES BULLES" value="Bulles" />
                   </Picker>
                 </View>
+
+                <Button
+            onPress={() => {
+              setPickerVisible(false);
+              setstate(!state);
+            }}
+            title=''
+            buttonStyle={styles.cross}
+            icon={
+              <Icon
+                name='md-close-circle-outline'
+                size={30}
+                color= "#FFAE34"
+              />
+            }
+          >
+          </Button>
 
               </View>
             </View>
@@ -340,6 +353,9 @@ const styles = StyleSheet.create({
     marginTop: 0,
     elevation: 10
   },
+  cross: {
+    backgroundColor:"#FFFFFF"
+  },
   img: {
     width: 80,
     height: 80,
@@ -347,10 +363,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centeredView: {
-    flex: 1,
+
     padding: 0,
-    // marginTop: 20,
-    // justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
@@ -358,7 +372,8 @@ const styles = StyleSheet.create({
     width: 250,
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
-    padding: 30,
+    paddingHorizontal: 20,
+  
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -375,7 +390,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
     marginBottom: 5,
     width: 250,
-    backgroundColor: "#FFD15C",
+    backgroundColor: "#FFAE34",
   },
   textStyle: {
     color: "white",

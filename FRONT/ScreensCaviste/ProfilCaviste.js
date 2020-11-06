@@ -19,11 +19,11 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
   var IPecole = "172.17.1.159";
 
-  const [nom, setNom] = useState(null)
-  const [etablissement, setEtablissement] = useState(null)
-  const [ville, setVille] = useState(null)
-  const [region, setRegion] = useState(null)
-  const [desc, setDesc] = useState(null)
+  const [nom, setNom] = useState()
+  const [etablissement, setEtablissement] = useState()
+  const [ville, setVille] = useState()
+  const [region, setRegion] = useState()
+  const [desc, setDesc] = useState()
 
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState(null);
@@ -51,6 +51,8 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setVille("Ville")
           setRegion("Région")
           setDesc("Parlez-nous de vous!")
+        } else {
+          setDisabled(true)
         }
       }
 
@@ -93,22 +95,14 @@ function ProfilCaviste({ navigation, token, userstatus }) {
        </Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
-          {/* <KeyboardAvoidingView behavior="position" enabled> */}
+         
           <ScrollView>
             <View style={styles.box1}>
-              {/* <Image source={require('../assets/monprofil.png')} style={{ width: 120, height: 80, justifyContent:"center", alignItems: 'center',  }}></Image> */}
-
-                {/* <View style={styles.box2}> */}
 
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                     {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
 
-                    {/* <Button
-                      icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                      rounded
-                      buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                      onPress={pickImage}/> */}
                   </View>
 
                   <TouchableOpacity>

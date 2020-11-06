@@ -5,5 +5,5 @@ export default function (messagePress = '', action) {
          return action.message
     } else {
         return messagePress;
-    }
+    }    
 }

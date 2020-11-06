@@ -22,7 +22,6 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   const [cepage, setCepage] = useState("Cépage")
   const [millesime, setMillesime] = useState("Millesime")
 
-  const [popup, setPopup] = useState(false)
   const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,8 +47,9 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
           // CAVE VIDE
           setPopup(true)
         }
-      }}
-      
+      }
+    }
+
     loadData()
 
   }, [state]);
@@ -88,7 +88,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             style={{ alignItems: 'center', justifyContent: 'center' }}
           >
             <Image source={{ uri: vin.Photo }} style={{ margin: 10, width: 250, height: 250 }} />
-            
+
             <Text style={{ fontWeight: 'bold', margin: 10 }}>
               {vin.Nom}
             </Text>
@@ -125,21 +125,21 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
                   <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200 }} />
                 </View>
 
-                
-                  <Text style={{ fontWeight: 'bold', margin: 10 }}>
-                    {nom}
-                  </Text>
-                  <Text style={{ marginLeft: 10 }}>
+
+                <Text style={{ fontWeight: 'bold', margin: 10 }}>
+                  {nom}
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {millesime}
-                  </Text>
-                  <Text style={{ marginLeft: 10 }}>
+                </Text>
+                <Text style={{ marginLeft: 10 }}>
                   {AOC}
                 </Text>
-                  <Text style={{ marginLeft: 10, marginBottom: 15  }}>
-                    {cepage}
-                  </Text>
-                
-              
+                <Text style={{ marginLeft: 10, marginBottom: 15 }}>
+                  {cepage}
+                </Text>
+
+
 
                 <Text style={{ marginLeft: 10, color: '#9D2A29' }}>
                   Couleur
@@ -179,12 +179,12 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
   }
 
   // POPUP FAVORIS VIDE
-  if (popup) {
+  if (cardVin.length == 0 && userstatus == "Vigneron") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
         <View style={styles.popup}>
           <View style={{ alignItems: "center", backgroundColor: "#FFFFFF" }}>
-            < Image source={require('../assets/cavevide.png')} style={{ width: 120, height: 80 }}></Image>
+            < Image source={require('../assets/cavevide.png')} style={{ width: 300, height: 300 }}></Image>
           </View>
           <TouchableOpacity>
             <Text
@@ -244,7 +244,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    // fontFamily: "Gothic A1",
   },
 });
 

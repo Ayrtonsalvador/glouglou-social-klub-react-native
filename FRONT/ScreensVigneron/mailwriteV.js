@@ -10,12 +10,13 @@ function MailwriteV({ navigation, token, userstatus }) {
   var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
+  const [photo, setPhoto] = useState(); 
   const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [send, setSend] = useState(false);
-  const [newMsg, setNewMSg] = useState([]);
-  const [placeholderTo, setPalceholderTo] = useState("A:");
-  const [placeholderMsg, setPalceholderMsg] = useState("Votre message \n");
+  const [newMsg, setNewMsg] = useState([]);
+  const [placeholderTo, setPalceholderTo] = useState();
+  const [placeholderMsg, setPalceholderMsg] = useState();
 
   useEffect(() => {
     async function loadData() {
@@ -25,6 +26,7 @@ function MailwriteV({ navigation, token, userstatus }) {
 
       if (response.result == true) {
         setNomVigneron(response.Vigneron.Nom)
+        setPhoto(response.Vigneron.Photo)
         // console.log("NOM Vigneron", response.Vigneron.Nom)
       }
     }
@@ -34,35 +36,25 @@ function MailwriteV({ navigation, token, userstatus }) {
   if (send) {
   var MsgSend = newMsg.map((msg, i) => {
         return (
+         
           <ListItem
             key={i}
             title={nomCaviste}
-            subtitle={Texte}
+            subtitle={msg}
             style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
             leftAvatar={<Avatar
               rounded
-              source={require('../assets/GGSC.png')} >
+              source={{uri: photo}} >
             </Avatar>
             }
           />
+          // </View>
         )
       })
     }
 
   return (
     <View style={{ flex: 1 }}>
-
-      {/* <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-around" }}>
-        <Icon
-          name="arrow-circle-o-left"
-          size={20}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Main');
-          }} />
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View> */}
 
 <Header 
        leftComponent={<Icon
@@ -74,13 +66,6 @@ function MailwriteV({ navigation, token, userstatus }) {
           navigation.navigate('Main');
         }}/>}
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
-          // rightComponent={<Icon
-          //    name="pencil"
-          //    size={25}
-          //    color="#FFD15C"
-          //    buttonStyle={{ backgroundColor: '#FF9900' }}
-          //    onPress={() => {navigation.navigate('Main');}}>
-          //    </Icon>}
              containerStyle={{
               backgroundColor: '#FFFFFF', height: 80}}
              />
@@ -95,19 +80,21 @@ function MailwriteV({ navigation, token, userstatus }) {
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderTo}
+            placeholder="A :"
             onChangeText={(text) => {
               setNomCaviste(text);
             }}
+            value={placeholderTo}
           />
 
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderMsg}
+            placeholder={"Votre message \n"}
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
             }}
+            value={placeholderMsg}
           />
 
         </View>
@@ -129,16 +116,14 @@ function MailwriteV({ navigation, token, userstatus }) {
             setSend(true);
             setPalceholderTo("");
             setPalceholderMsg("");
+            setNewMsg([...newMsg, Texte])
 
             var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+              body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}token=${token}`
               })
             var body = await data.json()
-            console.log("RESPONSE MAIL WRITE-V", body)
-            console.log("Nom Caviste", nomCaviste)
-            console.log("Texte envoyé", Texte)
           }} />
       </KeyboardAvoidingView>
     </View>

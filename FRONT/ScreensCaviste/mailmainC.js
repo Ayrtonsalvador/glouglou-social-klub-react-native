@@ -19,12 +19,12 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
   const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-// Récupérer les messages reçus par le caviste
+  // Récupérer les messages reçus par le caviste
   useEffect(() => {
     async function loadData() {
       var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIL MAIN C", response)
+      console.log("RESPONSE MAIL MAIN C", response)
 
       if (response.result == true) {
         setListMessages(response.Caviste.MessagesR)
@@ -33,10 +33,10 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
     loadData()
   }, []);
 
-// OUVRIR MESSAGE RECU
-if(read){
-  (<MailreadC/>)
-}
+  // OUVRIR MESSAGE RECU
+  if (read) {
+    (<MailreadC />)
+  }
 
   var listMessagesItem = listMessages.map((msg, i) => {
 
@@ -47,36 +47,23 @@ if(read){
       bottomDivider={true}
       leftAvatar={
         <Avatar rounded
-          // source={require('../assets/vigneron.jpg')} 
-          />
+          source={{ uri: msg.Photo }}
+        />
       }
       onPress={async () => {
         setRead(true)
-        sendMessage({message: msg})
+        sendMessage({ message: msg })
         navigation.navigate('Read')
       }}>
     </ListItem>
   });
 
   if (userstatus == "Vigneron") {
-    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} message={message}/>)
+    return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} message={message} />)
   } else {
     return (
       <View style={{ flex: 1 }}>
 
-      {/* <Header>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-        <Icon
-          name="pencil"
-          size={25}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Write');
-          }} />
-      </View>
-      </Header> */}
 
           <Header 
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
@@ -102,14 +89,14 @@ if(read){
 }
 
 function mapStateToProps(state) {
-  return { token: state.token, userstatus: state.userstatus, message: state.message}
+  return { token: state.token, userstatus: state.userstatus, message: state.message }
 
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     sendMessage: function (message) {
-      dispatch({ type: 'addMessage', message: message})
+      dispatch({ type: 'addMessage', message: message })
     }
   }
 }

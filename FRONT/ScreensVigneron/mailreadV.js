@@ -9,23 +9,25 @@ function MailreadV({ navigation, userstatus, token, message}) {
   var IPecole = "172.17.1.159";
 
   const [Texte, setTexte] = useState();
-  const [texteSent, setTexteSent] = useState();
-  const [response, setResponse] = useState();
+  const [photo, setPhoto] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-  const [send, setSend] = useState();
+
+  // const [send, setSend] = useState();
   const [newMsg, setNewMsg] = useState([]); 
-  const [placeholderMsg, setPalceholderMsg] = useState("Répondre \n");
+  const [placeholderMsg, setPalceholderMsg] = useState();
 
     // Récupérer les messages reçus par le caviste
     useEffect(() => {
       async function loadData() {
         var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
         var response = await rawResponse.json();
-        console.log("RESPONSE MAIL READ V", response)
+        // console.log("RESPONSE MAIL READ V", response)
   
         if (response.result == true) {
           setNomVigneron(response.Vigneron.Nom)
+          setPhoto(response.Vigneron.Photo)
+          // console.log("NomVigneron", nomVigneron)
         }
       }
       loadData()
@@ -35,13 +37,13 @@ function MailreadV({ navigation, userstatus, token, message}) {
       return (
         <ListItem
           key={i}
-          title={nomCaviste}
+          title={nomVigneron}
           subtitle={msg}
           style={{ backgroundColor: '#DEDDDD', borderRadius: 15 }}
           bottomDivider={true}
           leftAvatar={<Avatar
             rounded
-            source={require('../assets/GGSC.png')} >
+            source={{uri: photo}} >
           </Avatar>
           }
         />
@@ -50,18 +52,6 @@ function MailreadV({ navigation, userstatus, token, message}) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-
-      {/* <View style={{ alignItems: "center", flexDirection: "row", justifyContent:"space-around"}}>
-      <Icon
-        name="arrow-circle-o-left"
-        size={20}
-        color="#FFD15C"
-        buttonStyle={{ backgroundColor: '#FF9900' }}
-        onPress={() => {
-          navigation.navigate('Main');
-        }}/>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-      </View> */}
 
       <Header 
        leftComponent={<Icon
@@ -73,24 +63,17 @@ function MailreadV({ navigation, userstatus, token, message}) {
           navigation.navigate('Main');
         }}/>}
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
-          // rightComponent={<Icon
-          //    name="pencil"
-          //    size={25}
-          //    color="#FFD15C"
-          //    buttonStyle={{ backgroundColor: '#FF9900' }}
-          //    onPress={() => {navigation.navigate('Main');}}>
-          //    </Icon>}
              containerStyle={{
               backgroundColor: '#FFFFFF', height: 80}}
              />
 
       <ScrollView style={{ flex: 1, marginTop: 15 }}>
       <ListItem
-        title={nomCaviste}
-        subtitle={Texte}
+        title={message.Nom}
+        subtitle={message.Texte}
         leftAvatar={
           <Avatar rounded
-            source={require('../assets/vigneron.jpg')} >
+            source={{uri: message.Photo}} >
           </Avatar>}
         bottomDivider={true}
       />
@@ -102,12 +85,13 @@ function MailreadV({ navigation, userstatus, token, message}) {
         <View style={{ flexDirection: "row" }}>
           <Input
             containerStyle={{ marginBottom: 5 }}
-            placeholder={placeholderMsg}
+            placeholder={"Répondre \n"}
             multiline={true}
             onChangeText={(text) => {
               setTexte(text);
-              setNomVigneron(message.Nom);
+              setNomCaviste(message.Nom);
             }}
+            value={placeholderMsg}
           />
         </View>
         <Button
@@ -127,13 +111,11 @@ function MailreadV({ navigation, userstatus, token, message}) {
               var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&token=${token}`
+                body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
                 })
               var body = await data.json()
-              console.log("RESPONSE MAIL WRITE V", body)
+              // console.log("RESPONSE MAIL WRITE V", body)
               setNewMsg([...newMsg, Texte])
-              console.log("NOM", nomCaviste)
-              console.log("TEXTE", Texte)
               setPalceholderMsg("")
               }}/>
       </KeyboardAvoidingView>
@@ -142,7 +124,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
 }
 
 function mapStateToProps(state) {
-  console.log("STATE MESSAGE", state.message.message)
+  console.log("STATE MESSAGE V", state.message.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message.message }
 }
 

@@ -13,27 +13,27 @@ function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
+  const [photo, setPhoto] = useState();
   const [nomCaviste, setNomCaviste] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-// Récupérer les messages reçus par le vigneron
-useEffect(() => {
-  async function loadData() {
-    var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
-    var response = await rawResponse.json();
-    // console.log("RESPONSE MAIL MAIN V", response)
+  // Récupérer les messages reçus par le vigneron
+  useEffect(() => {
+    async function loadData() {
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+      var response = await rawResponse.json();
+      // console.log("RESPONSE MAIL MAIN V", response)
 
-    if (response.result == true) {
-      setListMessages(response.Vigneron.MessagesR)
+      if (response.result == true) {
+        setListMessages(response.Vigneron.MessagesR)
+        setPhoto(response.Vigneron.MessagesR.Photo)
+      }
     }
-  }
-  loadData()
-}, []);
+    loadData()
+  }, []);
 
-// console.log("message", message)
-// OUVRIR MESSAGE RECU
-if(read){ (<MailreadV message={message}/>) }
+  if (read) { (<MailreadV message={message} />) }
 
 
   var listMessagesItem = listMessages.map((msg, i) => {
@@ -46,12 +46,12 @@ if(read){ (<MailreadV message={message}/>) }
       leftAvatar={
         <Avatar
           rounded
-          source={require('../assets/vigneron.jpg')}
+          source={{ uri: msg.Photo }}
         />
       }
       onPress={async () => {
         setRead(true)
-        sendMessage({message: msg})
+        sendMessage({ message: msg })
         navigation.navigate('Read')
       }}>
     </ListItem>
@@ -59,20 +59,6 @@ if(read){ (<MailreadV message={message}/>) }
 
   return (
     <View style={{ flex: 1 }}>
-
-      {/* <Header>
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
-        <Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 80 }}></Image>
-        <Icon
-          name="pencil"
-          size={25}
-          color="#FFD15C"
-          buttonStyle={{ backgroundColor: '#FF9900' }}
-          onPress={() => {
-            navigation.navigate('Write');
-          }} />
-      </View>
-      </Header> */}
 
       <Header 
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
@@ -95,16 +81,16 @@ if(read){ (<MailreadV message={message}/>) }
 }
 
 function mapDispatchToProps(dispatch) {
-  return { 
+  return {
     sendMessage: function (message) {
-      dispatch({ type: 'addMessage', message: message})
+      dispatch({ type: 'addMessage', message: message })
     }
   }
 }
 
 function mapStateToProps(state) {
   console.log("STATE V", state.message)
-  return { token: state.token, userstatus: state.userstatus,  message: state.message}
+  return { token: state.token, userstatus: state.userstatus, message: state.message }
 }
 
 
