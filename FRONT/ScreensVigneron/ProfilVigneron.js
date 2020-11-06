@@ -46,14 +46,13 @@ function ProfilVigneron({ navigation, token, userstatus }) {
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
 
-          if (image == null) {
-            setImage(`require('../assets/gris.png')`)
-          } else {
+          if (image != null) {
             setImage(response.user.Photo)
+          } else {
+            setImage(`require('../assets/gris.png')`)
           }
-             setDisabled(true)
-    
-      }
+          setDisabled(true)
+        }
 
         (async () => {
           const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -86,11 +85,13 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
       <View style={styles.container}>
 
-      <Image source={require('../assets/monprofil.png')} 
-       style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
-                  justifyContent:"center", 
-                  alignItems: 'center' }}>         
-       </Image>
+        <Image source={require('../assets/monprofil.png')}
+          style={{
+            width: 120, height: 100, marginTop: -10, marginBottom: -10,
+            justifyContent: "center",
+            alignItems: 'center'
+          }}>
+        </Image>
 
         <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
 
@@ -111,7 +112,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                   inputStyle={{ marginLeft: 10 }}
                   placeholder="Nom"
                   disabled={disabled}
-                  onChangeText={(val) => {setNom(val)}}
+                  onChangeText={(val) => { setNom(val) }}
                   value={nom}
                 />
                 <Input
@@ -213,25 +214,26 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                     style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
                 </TouchableOpacity>
 
+                {/* </View> */}
               </View>
-            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </View >
-    </View >
+      </View >
 
   )
 }
+}
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
+        container: {
+        alignItems: 'center',
     height: responsiveScreenHeight(90),
     width: responsiveScreenWidth(100),
     justifyContent: 'center',
   },
   box1: {
-    flex: 1,
+        flex: 1,
     alignItems: 'center',
     height: responsiveHeight(100),
     width: responsiveWidth(90),
@@ -240,15 +242,15 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log("STATE TOKEN", state.token)
+        console.log("STATE TOKEN", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeImg: function (selectedImg) {
-      dispatch({ type: 'addImg', selectedImg: selectedImg })
-    }
+        changeImg: function (selectedImg) {
+        dispatch({ type: 'addImg', selectedImg: selectedImg })
+      }
   }
 }
 

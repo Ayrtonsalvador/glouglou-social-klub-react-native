@@ -45,12 +45,11 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setDesc(response.user.Desc)
           setImage(response.user.Photo)
         
-        
-        if (image == null) {
-          setImage(`require('../assets/gris.png')`)
-          } else {
+          if (image != null) {
             setImage(response.user.Photo)
-          }
+          } else {
+            setImage(`require('../assets/gris.png')`)
+          }  setDisabled(true)
         }
 
         // if (etablissement == null || ville == null || region == null || desc == null) {
