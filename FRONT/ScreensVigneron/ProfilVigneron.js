@@ -32,31 +32,36 @@ function ProfilVigneron({ navigation, token, userstatus }) {
   useEffect(() => {
     async function loadData() {
 
-      if ( userstatus == "Vigneron") {
-     
-      var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
-      var response = await rawResponse.json();
-      console.log("GET INFOS VIGNERON", response)
+      if (userstatus == "Vigneron") {
 
-      if (response.result == true) {
-        setDisabled(false)
-        setImage(response.user.Photo)
-        setNom(response.user.Nom)
-        setDomaine(response.user.Domaine)
-        setVille(response.user.Ville)
-        setRegion(response.user.Region)
-        setDesc(response.user.Desc)
-      }
+        var rawResponse = await fetch(`http://${IPecole}:3000/info-v?token=${token}`);
+        var response = await rawResponse.json();
+        console.log("GET INFOS VIGNERON", response)
 
-      if (domaine == null || ville == null || region == null || desc == null) {
-        setDomaine("Nom de domaine")
-        setVille("Ville")
-        setRegion("Région")
-        setDesc("Parlez-nous de vous!")
-      }
-    }
+        if (response.result == true) {
+          setDisabled(false)
+          setNom(response.user.Nom)
+          setDomaine(response.user.Domaine)
+          setVille(response.user.Ville)
+          setRegion(response.user.Region)
+          setDesc(response.user.Desc)
 
-    (async () => {
+          if (image == null) {
+            setImage(`require('../assets/gris.png')`)
+            } else {
+              setImage(response.user.Photo)
+            }
+         
+        
+        if (domaine == null || ville == null || region == null || desc == null) {
+          setDomaine("Nom de domaine")
+          setVille("Ville")
+          setRegion("Région")
+          setDesc("Parlez-nous de vous!")
+        }
+       }}
+
+      (async () => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
         alert('Sorry, we need camera roll permissions to make this work!');
@@ -101,13 +106,6 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
                   {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
-
-                  {/* <Button
-                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                    rounded
-                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100, margin: 5 }}
-                    onPress={pickImage} /> */}
-                </View>
 
                 <TouchableOpacity>
                 <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
@@ -221,7 +219,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                     style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
                 </TouchableOpacity>
 
-              {/* </View> */}
+              </View>
               </View>
             </ScrollView>
         </KeyboardAvoidingView>

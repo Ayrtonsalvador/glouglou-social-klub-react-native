@@ -44,6 +44,13 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
           setImage(response.user.Photo)
+        
+        
+        if (image == null) {
+          setImage(`require('../assets/gris.png')`)
+          } else {
+            setImage(response.user.Photo)
+          }
         }
 
         if (etablissement == null || ville == null || region == null || desc == null) {
@@ -51,8 +58,8 @@ function ProfilCaviste({ navigation, token, userstatus }) {
           setVille("Ville")
           setRegion("Région")
           setDesc("Parlez-nous de vous!")
-        }
-      }
+        }}
+    
 
       (async () => {
         const { status } = await ImagePicker.requestCameraRollPermissionsAsync();

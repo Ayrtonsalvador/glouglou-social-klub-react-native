@@ -43,6 +43,11 @@ function AddVigneron({ navigation, token, userstatus }) {
 
   // Demander accès à la bibliothèque photo
   useEffect(() => {
+
+    if (image == null) {
+      setImage(`require('../assets/gris.png')`)
+      }
+    
     (async () => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
@@ -88,14 +93,10 @@ function AddVigneron({ navigation, token, userstatus }) {
                 
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  {/* <Button
-                    icon={{ name: 'plus', type: 'font-awesome', color: '#FFFFFF' }}
-                    rounded
-                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 100 }}
-                    onPress={pickImage} /> */}
-                  {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} 
-                  />}
-                  <Text style={{ color: '#AAAAAA', marginTop: 10 }}
+                
+                  {image && <Avatar size={100} source={{ uri: image }} style={{ width: 150, height: 150 }}></Avatar>}
+                
+                <Text style={{ color: '#AAAAAA', marginTop: 10 }}
                   onPress={pickImage}>Ajouter une photo</Text>
                 </View>
 
