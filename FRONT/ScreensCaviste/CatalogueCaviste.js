@@ -11,7 +11,7 @@ import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
 function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessage, message }) {
 
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")

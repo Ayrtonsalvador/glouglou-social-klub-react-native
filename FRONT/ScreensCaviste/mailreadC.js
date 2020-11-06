@@ -7,7 +7,7 @@ import MailreadV from '../ScreensVigneron/MailreadV';
 
 function MailreadC({ navigation, token, userstatus, message }) {
 
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();

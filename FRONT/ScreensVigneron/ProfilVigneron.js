@@ -18,7 +18,7 @@ import {
 
 function ProfilVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState()
   const [domaine, setDomaine] = useState()
@@ -26,7 +26,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
   const [region, setRegion] = useState()
   const [desc, setDesc] = useState()
 
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -39,19 +39,18 @@ function ProfilVigneron({ navigation, token, userstatus }) {
         console.log("GET INFOS VIGNERON", response)
 
         if (response.result == true) {
-          setDisabled(false)
+         
           setNom(response.user.Nom)
           setDomaine(response.user.Domaine)
           setVille(response.user.Ville)
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
 
-          if (image != null) {
+          if (response.user.Photo != null) {
             setImage(response.user.Photo)
           } else {
             setImage(`require('../assets/gris.png')`)
-          }  setDisabled(true)
-    
+          }  
       }
 
         (async () => {
@@ -98,7 +97,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
-                {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+                {image && <Avatar size={100} rounded source={{ uri: image }} title={nom} marginTop={20}></Avatar>}
             
                 </View>
 
@@ -143,6 +142,7 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                   onChangeText={(val) => {
                     setRegion(val)
                   }}
+                  value={region}
                 />
                 <Input
                   containerStyle={{ marginBottom: 15, width: '80%' }}
@@ -156,67 +156,72 @@ function ProfilVigneron({ navigation, token, userstatus }) {
                   value={desc}
                 />
 
-                <Button onPress={async () => {
-                  setDisabled(true)
-                  // création du form data qui formate les données
-                  if (userstatus == "Vigneron") {
-
-                    var data = new FormData();
-                    // envoie du files avatar
-                    data.append('avatar', {
-                      uri: image,
-                      type: 'image/jpeg',
-                      name: 'avatar.jpg',
-                    });
-                    // création objet userinfo
-                    var userinfos = {
-                      nom: nom,
-                      domaine: domaine,
-                      ville: ville,
-                      region: region,
-                      desc: desc,
-                      token: token
-                    };
-
-                    // envoie l'objet en string au serveur
-                    data.append('userinfos', JSON.stringify(userinfos));
-
-                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
-                      method: 'post',
-                      body: data
-                    })
-
-                    var response = await updateUser.json();
-                    console.log('responseFB', response)
-
-                  }
-                  navigation.navigate('Catalogue');
-                }}
-
-                  disabled={disabled}
-                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
-                  title="OK"
-                />
-
-                <TouchableOpacity>
-                  <Icon
-                    style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                  ></Icon>
-                  <Text
-                    // onPress={() => setDisabled(false)}
-                    style={{ color: '#AAAAAA' }}>Changer mes paramètres</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                  <Text onPress={() => {
-                    navigation.navigate('SignIn');
-                  }}
-                    style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
-                </TouchableOpacity>
-
               </View>
-            
+
+
+              <View style={{alignItems:"center", bottom:0}}>
+
+<TouchableOpacity>
+    <Icon
+      style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+    ></Icon>
+    <Text
+       onPress={() => setDisabled(false)}
+      style={{ color: '#AAAAAA' }}>Changer mes paramètres</Text>
+  </TouchableOpacity>
+
+<Button onPress={async () => {
+    setDisabled(true)
+    // création du form data qui formate les données
+    if (userstatus == "Vigneron") {
+
+      var data = new FormData();
+      // envoie du files avatar
+      data.append('avatar', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'avatar.jpg',
+      });
+      // création objet userinfo
+      var userinfos = {
+        nom: nom,
+        domaine: domaine,
+        ville: ville,
+        region: region,
+        desc: desc,
+        token: token
+      };
+
+      // envoie l'objet en string au serveur
+      data.append('userinfos', JSON.stringify(userinfos));
+
+      var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
+        method: 'post',
+        body: data
+      })
+
+      var response = await updateUser.json();
+      console.log('responseFB', response)
+
+    }
+  }}
+
+    disabled={disabled}
+    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15, width: 40, height: 40, marginTop : 5}}
+    title="OK"
+  />
+
+  <TouchableOpacity>
+    <Text onPress={() => {
+      navigation.navigate('SignIn');
+    }}
+      style={{ color: '#9D2A29', marginTop : 5}}>Déconnexion</Text>
+  </TouchableOpacity>
+  </View>
+
           </ScrollView>
+
+
         </KeyboardAvoidingView>
       </View >
     </View >

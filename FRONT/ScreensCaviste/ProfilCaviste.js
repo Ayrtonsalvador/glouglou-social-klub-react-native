@@ -17,7 +17,7 @@ import {
 
 function ProfilCaviste({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState()
   const [etablissement, setEtablissement] = useState()
@@ -25,7 +25,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
   const [region, setRegion] = useState()
   const [desc, setDesc] = useState()
 
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -38,28 +38,19 @@ function ProfilCaviste({ navigation, token, userstatus }) {
         console.log("GET INFOS CAVISTE", response)
 
         if (response.result == true) {
+        
           setNom(response.user.Nom)
           setEtablissement(response.user.Etablissement)
           setVille(response.user.Ville)
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
-          setImage(response.user.Photo)
-        
-          if (image != null) {
+
+          if (response.user.Photo != null) {
             setImage(response.user.Photo)
           } else {
             setImage(`require('../assets/gris.png')`)
-          }  setDisabled(true)
+          }
         }
-
-        // if (etablissement == null || ville == null || region == null || desc == null) {
-        //   setEtablissement("Nom d'établissement")
-        //   setVille("Ville")
-        //   setRegion("Région")
-        //   setDesc("Parlez-nous de vous!")
-        // } else {
-          setDisabled(true)
-        // }
       }
 
       (async () => {
@@ -94,139 +85,147 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
         <View style={styles.container}>
 
-        <Image source={require('../assets/monprofil.png')} 
-     style={{ width: 120, height: 100, marginTop: -10, marginBottom: -10, 
-                  justifyContent:"center", 
-                  alignItems: 'center' }}>         
-       </Image>
+          <Image source={require('../assets/monprofil.png')}
+            style={{
+              width: 120, height: 100, marginTop: -10, marginBottom: -10,
+              justifyContent: "center",
+              alignItems: 'center'
+            }}>
+          </Image>
 
-        <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   >
-         
-          <ScrollView>
-            <View style={styles.box1}>
+          <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }} behavior="padding" enabled   >
+
+            <ScrollView>
+              <View style={styles.box1}>
 
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
-                  {image && <Avatar size={100} rounded source={{ uri: image }} title={nom}></Avatar>}
+                  {image && <Avatar size={100} rounded source={{ uri: image }} title={nom} marginTop={20}></Avatar>}
 
-                  </View>
-
-                  <TouchableOpacity>
-                    <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
-                        onPress={pickImage}>Changer ma photo</Text>
-                  </TouchableOpacity>
-
-                  <Input
-                    containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
-                    inputStyle={{ marginLeft: 10 }}
-                    placeholder="Nom"
-                    disabled={disabled}
-                    onChangeText={(val) => {
-                      setNom(val)
-                    }}
-                    value={nom}
-                  />
-
-                  <Input
-                    containerStyle={{ marginBottom: 15, width: '80%' }}
-                    inputStyle={{ marginLeft: 10 }}
-                    placeholder="Etablissement"
-                    disabled={disabled}
-                    onChangeText={(val) => {
-                      setEtablissement(val)
-                    }}
-                    value={etablissement}
-                  />
-                  <Input
-                    containerStyle={{ marginBottom: 15, width: '80%' }}
-                    inputStyle={{ marginLeft: 10 }}
-                    placeholder="Ville"
-                    disabled={disabled}
-                    onChangeText={(val) => {
-                      setVille(val)
-                    }}
-                    value={ville}
-                  />
-                  <Input
-                    containerStyle={{ marginBottom: 15, width: '80%' }}
-                    inputStyle={{ marginLeft: 10 }}
-                    placeholder="Région"
-                    disabled={disabled}
-                    onChangeText={(val) => {
-                      setRegion(val)
-                    }}
-                    value={region}
-                  />
-                  <Input
-                    containerStyle={{ marginBottom: 15, width: '80%' }}
-                    placeholder="Description"
-                    multiline={true}
-                    disabled={disabled}
-                    inputStyle={{ marginLeft: 10 }}
-                    onChangeText={(val) => {
-                      setDesc(val)
-                    }}
-                    value={desc}
-                  />
-
-                  <Button onPress={async () => {
-                    setDisabled(true)
-                    navigation.navigate('Catalogue');
-
-                    var data = new FormData();
-                    // envoie du files avatar
-                    data.append('avatar', {
-                      uri: image,
-                      type: 'image/jpeg',
-                      name: 'avatar.jpg',
-                    });
-                    // création objet userinfo
-                    var userinfos = {
-                      nom: nom,
-                      etablissement: etablissement,
-                      ville: ville,
-                      region: region,
-                      desc: desc,
-                      token: token
-                    };
-
-                    // envoie l'objet en string au serveur
-                    data.append('userinfos', JSON.stringify(userinfos));
-                
-                    var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
-                      method: 'post',
-                      body: data
-                    })
-
-                    var response = await updateUser.json();
-                    console.log('responseFB', response)
-                  }
-                  }
-
-                    disabled={disabled}
-                    buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15 }}
-                    title="OK"
-                  />
-
-                  <TouchableOpacity>
-                    <Icon
-                      style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-                    ></Icon>
-                    <Text
-                      style={{ color: '#AAAAAA' }}
-                      >Changer mes paramètres</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity>
-                    <Text onPress={() => {
-                           navigation.navigate('SignIn');
-                      }}
-                      style={{ color: '#9D2A29', marginTop: 10 }}>Déconnexion</Text>
-                  </TouchableOpacity>
-
-                {/* </View> */}
                 </View>
-              </ScrollView>
+
+                <TouchableOpacity>
+                  <Text style={{ color: '#FFAE34', marginTop: 10, fontSize: 18 }}
+                    onPress={pickImage}>Changer ma photo</Text>
+                </TouchableOpacity>
+
+                <Input
+                  containerStyle={{ marginTop: 25, marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder="Nom"
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setNom(val)
+                  }}
+                  value={nom}
+                />
+
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder="Etablissement"
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setEtablissement(val)
+                  }}
+                  value={etablissement}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder="Ville"
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setVille(val)
+                  }}
+                  value={ville}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  inputStyle={{ marginLeft: 10 }}
+                  placeholder="Région"
+                  disabled={disabled}
+                  onChangeText={(val) => {
+                    setRegion(val)
+                  }}
+                  value={region}
+                />
+                <Input
+                  containerStyle={{ marginBottom: 15, width: '80%' }}
+                  placeholder="Description"
+                  multiline={true}
+                  disabled={disabled}
+                  inputStyle={{ marginLeft: 10 }}
+                  onChangeText={(val) => {
+                    setDesc(val)
+                  }}
+                  value={desc}
+                />
+              </View>
+
+              <View style={{ alignItems: "center", bottom: 0 }}>
+
+<TouchableOpacity>
+  <Icon
+    style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+  ></Icon>
+  <Text
+  onPress={() => setDisabled(false)}
+    style={{ color: '#AAAAAA' }}
+  >Changer mes paramètres</Text>
+</TouchableOpacity>
+
+
+<Button onPress={async () => {
+  setDisabled(true)
+
+  var data = new FormData();
+  // envoie du files avatar
+  data.append('avatar', {
+    uri: image,
+    type: 'image/jpeg',
+    name: 'avatar.jpg',
+  });
+  // création objet userinfo
+  var userinfos = {
+    nom: nom,
+    etablissement: etablissement,
+    ville: ville,
+    region: region,
+    desc: desc,
+    token: token
+  };
+
+  // envoie l'objet en string au serveur
+  data.append('userinfos', JSON.stringify(userinfos));
+
+  var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
+    method: 'post',
+    body: data
+  })
+
+  var response = await updateUser.json();
+  console.log('responseFB', response)
+}
+}
+
+  disabled={disabled}
+  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15, marginTop: 5 }}
+  title="OK"
+/>
+
+<TouchableOpacity>
+  <Text onPress={() => {
+    navigation.navigate('SignIn');
+  }}
+    style={{ color: '#9D2A29', marginTop: 5 }}>Déconnexion</Text>
+</TouchableOpacity>
+</View>
+            </ScrollView>
+
+
+
+
           </KeyboardAvoidingView>
         </View>
       </View>
@@ -238,16 +237,16 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    height : responsiveScreenHeight ( 90 ) , 
-    width : responsiveScreenWidth ( 100 ),
+    height: responsiveScreenHeight(90),
+    width: responsiveScreenWidth(100),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
     alignItems: 'center',
-    height : responsiveHeight ( 100 ) , 
-    width : responsiveWidth ( 90 ),
+    height: responsiveHeight(100),
+    width: responsiveWidth(90),
     justifyContent: 'center',
     // fontFamily: "Gothic A1",
   },

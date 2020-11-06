@@ -19,14 +19,14 @@ import {
 
 function AddVigneron({ navigation, token, userstatus }) {
 
-  var IPecole = "172.17.1.159";
+  var IPecole = "172.17.1.153";
 
-  const [NomRef, setNomRef] = useState(null);
-  const [Couleur, setCouleur] = useState(null);
-  const [Cepage, setCepage] = useState(null);
-  const [Millesime, setMillesime] = useState(null);
-  const [Appellation, setAppellation] = useState(null);
-  const [Desc, setDesc] = useState(null);
+  const [NomRef, setNomRef] = useState();
+  const [Couleur, setCouleur] = useState();
+  const [Cepage, setCepage] = useState();
+  const [Millesime, setMillesime] = useState();
+  const [Appellation, setAppellation] = useState();
+  const [Desc, setDesc] = useState();
 
   const [image, setImage] = useState(null);
   const [disabled, setDisabled] = useState(false);
@@ -67,10 +67,6 @@ function AddVigneron({ navigation, token, userstatus }) {
       setImage(result.uri);
     }
   };
-
-  // const updateClick = () => {
-  //   navigation.navigate('CaveVigneron');
-  // }
 
   return (
 
@@ -146,7 +142,6 @@ function AddVigneron({ navigation, token, userstatus }) {
                 placeholder="Description"
                 onChangeText={(text) => setDesc(text)}
                 value={Desc}
-
               />
 
               <Text>{ListError}</Text>
