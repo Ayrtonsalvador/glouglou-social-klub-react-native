@@ -40,14 +40,17 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
         if (response.result == true) {
           setDisabled(false)
-          setImage(response.user.Photo)
           setNom(response.user.Nom)
           setDomaine(response.user.Domaine)
           setVille(response.user.Ville)
           setRegion(response.user.Region)
           setDesc(response.user.Desc)
-        }
 
+          if (image == null) {
+            setImage(`require('../assets/gris.png')`)
+            }
+          }
+        
         if (domaine == null || ville == null || region == null || desc == null) {
           setDomaine("Nom de domaine")
           setVille("Ville")
@@ -79,13 +82,6 @@ function ProfilVigneron({ navigation, token, userstatus }) {
       console.log(image)
     }
   };
-
-  if (image == null) {
-    var uri = `require('../assets/gris.png')`
-  } else {
-    uri = { uri: image }
-  }
-
 
   return (
 

@@ -43,6 +43,7 @@ function AddVigneron({ navigation, token, userstatus }) {
 
   // Demander accès à la bibliothèque photo
   useEffect(() => {
+    
     (async () => {
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status !== 'granted') {
