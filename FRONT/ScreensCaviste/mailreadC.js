@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import { Button, ListItem, Input, Text, Header, Avatar, BadgedAvatar } from 'react-native-elements';
+import { Button, ListItem, Input, Header, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailreadV from '../ScreensVigneron/MailreadV';
@@ -13,16 +13,13 @@ function MailreadC({ navigation, token, userstatus, message }) {
   const [photo, setPhoto] = useState();
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
-
   const [newMsg, setNewMsg] = useState([]);
   const [placeholderMsg, setPalceholderMsg] = useState();
 
-  // Récupérer les messages reçus par le caviste
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-read/${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIL READ C", response)
 
       if (response.result == true) {
         setNomCaviste(response.Caviste.Nom)
@@ -32,6 +29,8 @@ function MailreadC({ navigation, token, userstatus, message }) {
     loadData()
   }, []);
 
+
+  // MAP MESSAGE 
   var MsgSend = newMsg.map((msg, i) => {
     return (
       <ListItem
@@ -49,27 +48,30 @@ function MailreadC({ navigation, token, userstatus, message }) {
     )
   })
 
+  //REDIRECTON SCREN VIGNERON
   if (userstatus == "Vigneron") {
     return (<MailreadV navigation={navigation} token={token} userstatus={userstatus} message={message} />)
   } else {
-    
-  return (
-    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
 
-      <Header 
-       leftComponent={<Icon
-        name="arrow-circle-o-left"
-        size={30}
-        color="#FFD15C"
-        buttonStyle={{ backgroundColor: '#FF9900' }}
-        onPress={() => {
-          navigation.navigate('Main');
-        }}/>}
+  // AFFICHAGE MESSAGE CAVISITE
+    return (
+      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+
+        <Header
+          leftComponent={<Icon
+            name="arrow-circle-o-left"
+            size={30}
+            color="#FFD15C"
+            buttonStyle={{ backgroundColor: '#FF9900' }}
+            onPress={() => {
+              navigation.navigate('Main');
+            }} />}
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
-    
-             containerStyle={{
-              backgroundColor: '#FFFFFF', height: 80}}
-             />
+
+          containerStyle={{
+            backgroundColor: '#FFFFFF', height: 80
+          }}
+        />
 
 
         <ScrollView style={{ flex: 1, marginTop: 15 }}>
@@ -119,7 +121,6 @@ function MailreadC({ navigation, token, userstatus, message }) {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
               })
-              var body = await data.json()
               setNewMsg([...newMsg, Texte])
               setPalceholderMsg("")
             }} />
@@ -131,7 +132,6 @@ function MailreadC({ navigation, token, userstatus, message }) {
 
 
 function mapStateToProps(state) {
-  // console.log("MESSAGE STATE", state.message.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message.message }
 }
 

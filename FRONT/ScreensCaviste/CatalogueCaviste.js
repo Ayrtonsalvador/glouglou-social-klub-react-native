@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from "react-native";
-import { Button, Card, Badge, Overlay, Avatar } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, Modal } from "react-native";
+import { Button, Card, Overlay, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -43,20 +43,18 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
   useEffect(() => {
     async function loadData() {
 
-      if ( userstatus == "Caviste") {
+      if (userstatus == "Caviste") {
 
-      var rawResponse = await fetch(`http://${IPecole}:3000/catalogue?token=${token}`);
-      var response = await rawResponse.json();
+        var rawResponse = await fetch(`http://${IPecole}:3000/catalogue/${token}`);
+        var response = await rawResponse.json();
 
-      if (response.result == true) {
-        // Catalogue
-        var catalogue = response.catalogue;
-        setlisteVin(catalogue);
-        // console.log("CATALOGUE", catalogue)
-      } else {
-        // ERREUR RECHERCHE
-        setError(true)
-      }}
+        if (response.result == true) {
+          var catalogue = response.catalogue;
+          setlisteVin(catalogue);
+        } else {
+          setError(true)
+        }
+      }
     }
     loadData()
   }, [state]);
@@ -71,7 +69,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
     setIsVisible(false);
   }
 
-  //  MAP VIN ALL
+  //  MAP CATALOGUE
   const cardVin = listeVin.map((vin, i) => {
     return (
       <TouchableOpacity
@@ -119,9 +117,8 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
     )
   })
 
-  // MODAL AFFICHAGE VIN
+  // MODAL AFFICHAGE PRODUIT
   if (isVisible) {
-
     return (
       <View>
         <Overlay
@@ -139,12 +136,12 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                 >
                   <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200, borderRadius: 5 }} />
                 </View>
-              
+
                 <Text style={{ fontWeight: 'bold', margin: 10 }}>
-                    {nom}
+                  {nom}
                 </Text>
                 <Text style={{ marginLeft: 10 }}>
-                    {millesime}
+                  {millesime}
                 </Text>
                 <Text style={{ marginLeft: 10 }}>
                   {AOC}
@@ -211,8 +208,8 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                     size={30}
                     color={colorText}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                   onPress={() => { 
-                     handlePressMessage();
+                    onPress={() => {
+                      handlePressMessage();
                     }}>
                   </Icon>
                 </View>
@@ -237,16 +234,16 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
     );
   }
 
-
+  // REDIRECTION SCREEN VIGNERON
   if (userstatus == "Vigneron") {
     return (<CaveVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
 
     // CATALOGUE CAVISTE
     return (
-      <View style={{flex: 1, justifyContent: "center", alignItems:'center'}}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: 'center' }}>
 
-        <View style={{alignItems: 'stretch'}}>
+        <View style={{ alignItems: 'stretch' }}>
           <Modal
             animationType="fade"
             transparent={true}
@@ -270,13 +267,12 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                     })
 
                     var filtredata = await filtre.json()
-                   // console.log(filtredata.catalogue)
                     setlisteVin(filtredata.catalogue)
 
                   }}
                 >
                 </Button>
-                <View style={{ flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <Picker
                     selectedValue={selectedValue}
                     style={{ height: 10, width: 150, color: '#FFFFFF' }}
@@ -290,21 +286,21 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                 </View>
 
                 <Button
-            onPress={() => {
-              setPickerVisible(false);
-              setstate(!state);
-            }}
-            title=''
-            buttonStyle={styles.cross}
-            icon={
-              <Icon
-                name='md-close-circle-outline'
-                size={30}
-                color= "#FFAE34"
-              />
-            }
-          >
-          </Button>
+                  onPress={() => {
+                    setPickerVisible(false);
+                    setstate(!state);
+                  }}
+                  title=''
+                  buttonStyle={styles.cross}
+                  icon={
+                    <Icon
+                      name='md-close-circle-outline'
+                      size={30}
+                      color="#FFAE34"
+                    />
+                  }
+                >
+                </Button>
 
               </View>
             </View>
@@ -355,7 +351,7 @@ const styles = StyleSheet.create({
     elevation: 10
   },
   cross: {
-    backgroundColor:"#FFFFFF"
+    backgroundColor: "#FFFFFF"
   },
   img: {
     width: 80,
@@ -374,7 +370,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
     paddingHorizontal: 20,
-  
+
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -415,7 +411,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  // console.log("STATE CATALOGUE", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 

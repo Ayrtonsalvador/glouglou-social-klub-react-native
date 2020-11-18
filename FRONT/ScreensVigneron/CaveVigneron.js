@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, SafeAreaView, KeyboardAvoidingView, TouchableOpacity } from "react-native";
-import { ListItem, Input, Header, Card, Overlay } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { Card, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -13,21 +12,15 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState()
-  const [domaine, setDomaine] = useState()
-  const [ville, setVille] = useState()
-  const [region, setRegion] = useState()
   const [desc, setDesc] = useState()
   const [couleur, setCouleur] = useState()
   const [AOC, setAOC] = useState()
   const [cepage, setCepage] = useState()
   const [millesime, setMillesime] = useState()
 
-  const [disabled, setDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const [listeVin, setlisteVin] = useState([])
-  const [listeModal, setlisteModal] = useState([])
-  const [getIndex, setGetIndex] = useState()
   const [state, setState] = useState(false)
 
   useEffect(() => {
@@ -36,32 +29,18 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
       if (userstatus == "Vigneron") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/macave?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/macave/${token}`);
         var response = await rawResponse.json();
-        console.log("GET INFOS BOUTEILLE", response.cave)
-        // console.log("CAVE", response.cave);
         if (response.result == true) {
           var cave = response.cave
           setlisteVin(cave)
         } else {
-          // CAVE VIDE
           setPopup(true)
         }
       }
     }
-
     loadData()
-
   }, [state]);
-
-  if (isFocused && !state) {
-    console.log('FOCUSED');
-    setState(true)
-  }
-  if (!isFocused && state) {
-    console.log('IS NOT FOCUSED');
-    setState(false)
-  }
 
   // SUPPRIMER UNE REF
   var handleDeleteRef = async (nom) => {
@@ -69,7 +48,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
     setState(!state);
   }
 
-  // Map Vins
+  // MAP BOUTEILLES CAVE
   const cardVin = listeVin.map((vin, i) => {
     return (
       <TouchableOpacity
@@ -126,7 +105,6 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
                   <Image source={{ uri: photo }} style={{ margin: 10, width: 200, height: 200 }} />
                 </View>
 
-
                 <Text style={{ fontWeight: 'bold', margin: 10 }}>
                   {nom}
                 </Text>
@@ -139,8 +117,6 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
                 <Text style={{ marginLeft: 10, marginBottom: 15 }}>
                   {cepage}
                 </Text>
-
-
 
                 <Text style={{ marginLeft: 10, color: '#9D2A29' }}>
                   Couleur
@@ -166,7 +142,6 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)
-              // console.log("DELETED FRONT", nom)
             }}
             style={{ marginTop: 15, alignItems: 'center', justifyContent: 'center' }}
           >
@@ -179,7 +154,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
     )
   }
 
-  // POPUP FAVORIS VIDE
+  // AFFICHAGE FAVORIS VIDE
   if (cardVin.length == 0 && userstatus == "Vigneron") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
@@ -200,7 +175,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
     );
   }
 
-  // Cave vigneron
+  // CAVE VIGNERON
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Image source={require('../assets/macave.png')} style={{ width: 120, height: 80 }}></Image>
@@ -251,7 +226,6 @@ const styles = StyleSheet.create({
 var focusedAdd = withNavigationFocus(CaveVigneron)
 
 function mapStateToProps(state) {
-  // console.log("TOKEN CAVE", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 

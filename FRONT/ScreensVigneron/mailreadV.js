@@ -13,21 +13,17 @@ function MailreadV({ navigation, userstatus, token, message}) {
   const [nomVigneron, setNomVigneron] = useState();
   const [nomCaviste, setNomCaviste] = useState();
 
-  // const [send, setSend] = useState();
   const [newMsg, setNewMsg] = useState([]); 
   const [placeholderMsg, setPalceholderMsg] = useState();
 
-    // Récupérer les messages reçus par le caviste
     useEffect(() => {
       async function loadData() {
-        var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v/${token}`);
         var response = await rawResponse.json();
-        // console.log("RESPONSE MAIL READ V", response)
   
         if (response.result == true) {
           setNomVigneron(response.Vigneron.Nom)
           setPhoto(response.Vigneron.Photo)
-          // console.log("NomVigneron", nomVigneron)
         }
       }
       loadData()
@@ -113,8 +109,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
                 })
-              var body = await data.json()
-              // console.log("RESPONSE MAIL WRITE V", body)
+
               setNewMsg([...newMsg, Texte])
               setPalceholderMsg("")
               }}/>
@@ -124,7 +119,6 @@ function MailreadV({ navigation, userstatus, token, message}) {
 }
 
 function mapStateToProps(state) {
-  console.log("STATE MESSAGE V", state.message.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message.message }
 }
 

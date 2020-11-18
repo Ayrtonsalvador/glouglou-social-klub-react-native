@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
+import { View, ScrollView,  Image } from 'react-native';
+import { ListItem,  Header, Avatar, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import userstatus from '../reducers/userstatus';
+
 import MailreadV from './MailreadV';
 
 function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message }) {
@@ -18,12 +18,10 @@ function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message
   const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-  // Récupérer les messages reçus par le vigneron
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v/${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE MAIL MAIN V", response)
 
       if (response.result == true) {
         setListMessages(response.Vigneron.MessagesR)
@@ -33,8 +31,9 @@ function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message
     loadData()
   }, []);
 
-  if (read) { (<MailreadV message={message} />) }
-
+  
+  if (read) 
+  { (<MailreadV message={message} />) }
 
   var listMessagesItem = listMessages.map((msg, i) => {
 
@@ -89,10 +88,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  console.log("STATE V", state.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message }
 }
-
 
 export default connect(
   mapStateToProps,

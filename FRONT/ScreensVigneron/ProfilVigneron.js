@@ -172,17 +172,15 @@ function ProfilVigneron({ navigation, token, userstatus }) {
 
 <Button onPress={async () => {
     setDisabled(true)
-    // création du form data qui formate les données
     if (userstatus == "Vigneron") {
 
       var data = new FormData();
-      // envoie du files avatar
       data.append('avatar', {
         uri: image,
         type: 'image/jpeg',
         name: 'avatar.jpg',
       });
-      // création objet userinfo
+
       var userinfos = {
         nom: nom,
         domaine: domaine,
@@ -192,16 +190,12 @@ function ProfilVigneron({ navigation, token, userstatus }) {
         token: token
       };
 
-      // envoie l'objet en string au serveur
       data.append('userinfos', JSON.stringify(userinfos));
 
       var updateUser = await fetch(`http://${IPecole}:3000/info-update-v`, {
         method: 'post',
         body: data
       })
-
-      var response = await updateUser.json();
-      console.log('responseFB', response)
 
     }
   }}

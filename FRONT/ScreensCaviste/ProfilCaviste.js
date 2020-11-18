@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
-import { Button, Input, Header, Avatar, Icon } from 'react-native-elements';
+import { Button, Input, Avatar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -9,10 +9,8 @@ import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
-  responsiveScreenFontSize
 } from "react-native-responsive-dimensions";
 
 function ProfilCaviste({ navigation, token, userstatus }) {
@@ -33,12 +31,11 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
       if (userstatus == "Caviste") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/info-c?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/info-c/${token}`);
         var response = await rawResponse.json();
-        console.log("GET INFOS CAVISTE", response)
 
         if (response.result == true) {
-        
+
           setNom(response.user.Nom)
           setEtablissement(response.user.Etablissement)
           setVille(response.user.Ville)
@@ -63,7 +60,6 @@ function ProfilCaviste({ navigation, token, userstatus }) {
     loadData()
   }, []);
 
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -76,15 +72,15 @@ function ProfilCaviste({ navigation, token, userstatus }) {
     }
   };
 
+  // REDIRECTION SCREEN VIGNERON
   if (userstatus == "Vigneron") {
     return (<ProfilVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
     return (
 
+      // AFFICHAGE PROFIL CAVISTE
       <View style={{ flex: 1 }}>
-
         <View style={styles.container}>
-
           <Image source={require('../assets/monprofil.png')}
             style={{
               width: 120, height: 100, marginTop: -10, marginBottom: -10,
@@ -165,66 +161,59 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
               <View style={{ alignItems: "center", bottom: 0 }}>
 
-<TouchableOpacity>
-  <Icon
-    style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
-  ></Icon>
-  <Text
-  onPress={() => setDisabled(false)}
-    style={{ color: '#AAAAAA' }}
-  >Changer mes paramètres</Text>
-</TouchableOpacity>
+                <TouchableOpacity>
+                  <Icon
+                    style={{ name: 'cog', type: 'font-awesome', color: '#AAAAAA' }}
+                  ></Icon>
+                  <Text
+                    onPress={() => setDisabled(false)}
+                    style={{ color: '#AAAAAA' }}
+                  >Changer mes paramètres</Text>
+                </TouchableOpacity>
 
+                <Button onPress={async () => {
+                  setDisabled(true)
 
-<Button onPress={async () => {
-  setDisabled(true)
+                  var data = new FormData();
+                  data.append('avatar', {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: 'avatar.jpg',
+                  });
 
-  var data = new FormData();
-  // envoie du files avatar
-  data.append('avatar', {
-    uri: image,
-    type: 'image/jpeg',
-    name: 'avatar.jpg',
-  });
-  // création objet userinfo
-  var userinfos = {
-    nom: nom,
-    etablissement: etablissement,
-    ville: ville,
-    region: region,
-    desc: desc,
-    token: token
-  };
+                  var userinfos = {
+                    nom: nom,
+                    etablissement: etablissement,
+                    ville: ville,
+                    region: region,
+                    desc: desc,
+                    token: token
+                  };
 
-  // envoie l'objet en string au serveur
-  data.append('userinfos', JSON.stringify(userinfos));
+                  data.append('userinfos', JSON.stringify(userinfos));
 
-  var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
-    method: 'post',
-    body: data
-  })
+                  var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
+                    method: 'post',
+                    body: data
+                  })
 
-  var response = await updateUser.json();
-  console.log('responseFB', response)
-}
-}
+                  var response = await updateUser.json();
+                }
+                }
 
-  disabled={disabled}
-  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15, marginTop: 5 }}
-  title="OK"
-/>
+                  disabled={disabled}
+                  buttonStyle={{ backgroundColor: '#FFAE34', borderRadius: 15, marginTop: 5 }}
+                  title="OK"
+                />
 
-<TouchableOpacity>
-  <Text onPress={() => {
-    navigation.navigate('SignIn');
-  }}
-    style={{ color: '#9D2A29', marginTop: 5 }}>Déconnexion</Text>
-</TouchableOpacity>
-</View>
+                <TouchableOpacity>
+                  <Text onPress={() => {
+                    navigation.navigate('SignIn');
+                  }}
+                    style={{ color: '#9D2A29', marginTop: 5 }}>Déconnexion</Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
-
-
-
 
           </KeyboardAvoidingView>
         </View>
@@ -240,7 +229,6 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(90),
     width: responsiveScreenWidth(100),
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box1: {
     flex: 1,
@@ -248,7 +236,6 @@ const styles = StyleSheet.create({
     height: responsiveHeight(100),
     width: responsiveWidth(90),
     justifyContent: 'center',
-    // fontFamily: "Gothic A1",
   },
   box2: {
     width: 350,
@@ -259,7 +246,6 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log("STATE TOKEN", state.token)
   return { token: state.token, userstatus: state.userstatus }
 }
 

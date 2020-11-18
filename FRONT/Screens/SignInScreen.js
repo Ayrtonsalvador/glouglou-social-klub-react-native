@@ -5,6 +5,7 @@ import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
+
 function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
 
   var IPecole = "172.17.1.153";
@@ -74,7 +75,6 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                       body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
                     })
                     var response = await rawResponse.json()
-                    console.log("RESPONSE SIGNIN", response)
 
                     if (response.result == true && response.status == "Vigneron") {
                       onSubmitUserstatus(response.status);

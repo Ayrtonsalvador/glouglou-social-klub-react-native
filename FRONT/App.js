@@ -1,30 +1,16 @@
-import React, { useState } from 'react';
-
-console.disableYellowBox = true;
-
-import { connect } from 'react-redux';
+import React from 'react';
 
 // Screens Communs
 import FirstScreen from './Screens/FirstScreen';
 import SignInScreen from './Screens/SignInScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 
-// Screens Cavistes
 import CatalogueCaviste from './ScreensCaviste/CatalogueCaviste';
 import FavoriteCaviste from './ScreensCaviste/FavoriteCaviste';
 import MailmainC from './ScreensCaviste/MailmainC';
 import MailwriteC from './ScreensCaviste/MailwriteC';
 import MailreadC from './ScreensCaviste/MailreadC';
 import ProfilCaviste from './ScreensCaviste/ProfilCaviste';
-
-// Screens Vignerons
-import AddVigneron from './ScreensVigneron/AddVigneron';
-import MailboxVigneron from './ScreensVigneron/MailmainV';
-import CaveVigneron from './ScreensVigneron/CaveVigneron';
-import MailmainV from './ScreensVigneron/MailmainV';
-import MailwriteV from './ScreensVigneron/MailwriteV';
-import MailreadV from './ScreensVigneron/MailreadV';
-import ProfilVigneron from './ScreensVigneron/ProfilVigneron';
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -91,6 +77,7 @@ var StackNavigator = createStackNavigator({
 
   BottomNavigator: BottomNavigator,
 },
+
   { headerMode: 'none' }
 );
 

@@ -20,14 +20,12 @@ function MailwriteV({ navigation, token, userstatus }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v/${token}`);
       var response = await rawResponse.json();
-      console.log("RESPONSE WRITE V", response)
 
       if (response.result == true) {
         setNomVigneron(response.Vigneron.Nom)
         setPhoto(response.Vigneron.Photo)
-        // console.log("NOM Vigneron", response.Vigneron.Nom)
       }
     }
     loadData()
@@ -48,7 +46,6 @@ function MailwriteV({ navigation, token, userstatus }) {
             </Avatar>
             }
           />
-          // </View>
         )
       })
     }
@@ -131,7 +128,6 @@ function MailwriteV({ navigation, token, userstatus }) {
 }
 
 function mapStateToProps(state) {
-  console.log("state", state.token)
   return { token: state.token, userstatus: state.userstatus }
 
 }

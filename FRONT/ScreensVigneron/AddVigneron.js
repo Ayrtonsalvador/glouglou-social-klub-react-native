@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, TouchableOpacity, Text, SafeAreaView } from "react-native";
-import { Button, Input, Header, Avatar } from 'react-native-elements';
+import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, Text } from "react-native";
+import { Button, Input, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
-import { set } from 'react-native-reanimated';
-import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
-  responsiveScreenFontSize
 } from "react-native-responsive-dimensions";
 
 function AddVigneron({ navigation, token, userstatus }) {
@@ -155,7 +151,6 @@ function AddVigneron({ navigation, token, userstatus }) {
                 onPress={async () => {
 
                   navigation.navigate('Catalogue');
-                  // setstate(!state)
                   var data = new FormData();
 
                   data.append('avatar', {
@@ -180,15 +175,7 @@ function AddVigneron({ navigation, token, userstatus }) {
                     method: 'post',
                     body: data
                   })
-                  var response = await newbottle.json();
                   setCouleur('')
-                  // console.log("FB", response)
-                  // if (response.result == true) {
-
-                  // } 
-                  // else if (response.result == false) {
-                  //   setError(response.error);
-                  // }
                 }}
 
               />

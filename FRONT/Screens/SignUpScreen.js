@@ -52,7 +52,6 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
         </View>
       </View>
     )
-    //   POPUP CONFIRMATION INSCRIPTION
 
     //   FORMULAIRE INSCRIPTION
   } else {
@@ -137,7 +136,6 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                       body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Vigneron`
                     })
                     var response = await data.json()
-                    // console.log('Sign-up-vigneron', response)
 
                     if (response.result == true) {
                       setIsVisible(true);
@@ -166,7 +164,6 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
                       body: `usernameFromFront=${signUpUsername}&emailFromFront=${signUpEmail}&telFromFront=${signUpTel}&passwordFromFront=${signUpPassword}&statusFromFront=Caviste`
                     })
                     var response = await data.json()
-                    // console.log('Sign-up-caviste', response)
 
                     if (response.result == true) {
                       setIsVisible(true);
@@ -200,7 +197,7 @@ function SignUpScreen({ navigation, onSubmitUserstatus, addToken }) {
     );
   }
 }
-//   FORMULAIRE INSCRIPTION
+
 
 const styles = StyleSheet.create({
   container: {
@@ -211,8 +208,6 @@ const styles = StyleSheet.create({
     marginTop: 35
   },
   box: {
-    // width: '80%',
-    // height: '70%',
     width: 300,
     height: 580,
     backgroundColor: '#FFFFFF',
@@ -228,8 +223,6 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   popup: {
-    // width: '70%',
-    // height: '50%',
     width: 250,
     height: 300,
     backgroundColor: '#FFFFFF',

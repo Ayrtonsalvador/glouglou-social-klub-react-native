@@ -23,14 +23,12 @@ function MailwriteC({ navigation, token, userstatus, message }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write/${token}`);
       var response = await rawResponse.json();
-      // console.log("RESPONSE WRITE C", response)
 
       if (response.result == true) {
         setNomCaviste(response.Caviste.Nom)
         setPhoto(response.Caviste.Photo)
-        // console.log("NOM Cav", response.Caviste.Nom)
       }
     }
     loadData()
@@ -48,8 +46,6 @@ function MailwriteC({ navigation, token, userstatus, message }) {
 
     var MsgSend = newMsg.map((msg, i) => {
       return (
-        // <View>
-        // <Text style={{ marginBottom: 10, fontWeight: '500' }}>Envoyé à:</Text>
         <ListItem
           title={nomVigneron}
           subtitle={msg}
@@ -60,13 +56,11 @@ function MailwriteC({ navigation, token, userstatus, message }) {
           </Avatar>
           }
         />
-        // </View>
       )
     })
 
     return (
       <View style={{ flex: 1 }}>
-
 
 <Header 
        leftComponent={<Icon
@@ -134,11 +128,7 @@ function MailwriteC({ navigation, token, userstatus, message }) {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`
               })
-              var body = await data.json()
-              // console.log("RESPONSE MAIL WRITE-V", body)
-              // console.log("Nom Caviste", nomCaviste)
-              // console.log("Nom Caviste", nomVigneron)
-              // console.log("Texte envoyé", Texte)
+
             }} />
         </KeyboardAvoidingView>
       </View>
@@ -147,9 +137,7 @@ function MailwriteC({ navigation, token, userstatus, message }) {
 }
 
 function mapStateToProps(state) {
-  console.log("STATE WRITE C", state.message)
   return { token: state.token, userstatus: state.userstatus, message: state.message }
-
 }
 
 export default connect(

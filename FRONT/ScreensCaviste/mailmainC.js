@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
+import { View, ScrollView, Image } from 'react-native';
+import { ListItem,  Header, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
@@ -12,19 +12,12 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
   var IPecole = "172.17.1.153";
 
   const [listMessages, setListMessages] = useState([]);
-
-  const [Nom, setNom] = useState();
-  const [Texte, setTexte] = useState();
-  const [nomCaviste, setNomCaviste] = useState();
-  const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
-  // Récupérer les messages reçus par le caviste
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main?token=${token}`);
+      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main/${token}`);
       var response = await rawResponse.json();
-      console.log("RESPONSE MAIL MAIN C", response)
 
       if (response.result == true) {
         setListMessages(response.Caviste.MessagesR)
@@ -33,11 +26,12 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
     loadData()
   }, []);
 
-  // OUVRIR MESSAGE RECU
+  // OUVRIR MESSAGE
   if (read) {
     (<MailreadC />)
   }
 
+  // MAP MESSAGES RECU
   var listMessagesItem = listMessages.map((msg, i) => {
 
     return <ListItem
@@ -58,28 +52,28 @@ function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
     </ListItem>
   });
 
+
+  // REDIRECTION SCREEN VIGNERON
   if (userstatus == "Vigneron") {
     return (<MailmainV navigation={navigation} token={token} userstatus={userstatus} message={message} />)
   } else {
+
+    // MESSAGES CAVISTE
     return (
       <View style={{ flex: 1 }}>
-
-
-          <Header 
+        <Header
           centerComponent={<Image source={require('../assets/mescontacts.png')} style={{ width: 120, height: 100, marginTop: -20 }}></Image>}
           rightComponent={<Icon
-             name="pencil"
-             size={25}
-             color="#FFD15C"
-             buttonStyle={{ backgroundColor: '#FF9900' }}
-             onPress={() => {navigation.navigate('Write');}}>
-             </Icon>}
-             containerStyle={{
-              backgroundColor: '#FFFFFF', height: 80}}
-             />
-
-           
-
+            name="pencil"
+            size={25}
+            color="#FFD15C"
+            buttonStyle={{ backgroundColor: '#FF9900' }}
+            onPress={() => { navigation.navigate('Write'); }}>
+          </Icon>}
+          containerStyle={{
+            backgroundColor: '#FFFFFF', height: 80
+          }}
+        />
         <ScrollView style={{ flex: 1 }}>
           {listMessagesItem}
         </ScrollView>

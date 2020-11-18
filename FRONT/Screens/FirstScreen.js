@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
-import { AppRegistry, StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
-import { Button, Input } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Button } from 'react-native-elements';
+
 import Carousel from "react-native-carousel-control";
 
 import {
-  responsiveHeight,
-  responsiveWidth,
-  responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
-  responsiveScreenFontSize
 } from "react-native-responsive-dimensions";
-
-import { connect } from 'react-redux';
-import { color } from 'react-native-reanimated';
 
 function FirstScreen({ navigation }) {
 
@@ -132,8 +125,6 @@ const styles = StyleSheet.create({
     color: "#FFAE34",
     fontSize: 18,
     padding: 5,
-
-    // fontFamily: "GothicA1-Bold",
   },
 
   buttons: {

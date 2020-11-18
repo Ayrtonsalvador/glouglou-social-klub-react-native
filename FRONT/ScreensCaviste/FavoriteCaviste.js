@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Picker, TouchableHighlight, Modal } from 'react-native';
-import { Button, Card, Badge, Overlay, Avatar } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Card, Overlay, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { withNavigationFocus } from 'react-navigation';
 
 import AddVigneron from '../ScreensVigneron/AddVigneron';
-// import MailwriteC from './MailwriteC';
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
 
@@ -42,13 +41,12 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
 
       if (userstatus == "Caviste") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/favoris?token=${token}`);
+        var rawResponse = await fetch(`http://${IPecole}:3000/favoris/${token}`);
         var response = await rawResponse.json();
 
         if (response.result == true) {
           var favoris = response.favCaviste.Favoris;
           setlisteVin(favoris);
-          console.log('FAVORIS', favoris);
         }
       }
     }
@@ -164,7 +162,6 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
                         method: 'DELETE'
                       });
                       var response = await rawResponse.json();
-                      console.log("FAVORIS", response.Favoris);
                       handleDeleteLike(nom)
                       setIsVisible(false);
                       setState(!state);
@@ -228,7 +225,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
     )
   }
 
-  // POPUP FAVORIS VIDE
+  // AFFICHAGE FAVORIS VIDE
   if (cardVin.length == 0 && userstatus == "Caviste") {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FCDF23' }}>
@@ -249,6 +246,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
     );
   }
 
+  // REDIRECTION SCREEN VIGNERON
   if (userstatus == "Vigneron") {
     return (<AddVigneron navigation={navigation} token={token} userstatus={userstatus} />)
   } else {
