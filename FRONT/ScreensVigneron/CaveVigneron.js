@@ -3,12 +3,10 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Card, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-
 import { withNavigationFocus } from 'react-navigation';
+import URL from '../URL'
 
 function CaveVigneron({ navigation, token, userstatus, isFocused }) {
-
-  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState()
@@ -29,7 +27,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
 
       if (userstatus == "Vigneron") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/macave/${token}`);
+        var rawResponse = await fetch(`${URL}/macave/${token}`);
         var response = await rawResponse.json();
         if (response.result == true) {
           var cave = response.cave
@@ -138,7 +136,7 @@ function CaveVigneron({ navigation, token, userstatus, isFocused }) {
             onPress={async () => {
               setIsVisible(false);
               setState(true);
-              await fetch(`http://${IPecole}:3000/delete-ref/${nom}`, {
+              await fetch(`${URL}/delete-ref/${nom}`, {
                 method: 'DELETE'
               });
               handleDeleteRef(nom)

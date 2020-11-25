@@ -1,0 +1,1 @@
+module.exports = "https://glouglousc-nativ.herokuapp.com/"

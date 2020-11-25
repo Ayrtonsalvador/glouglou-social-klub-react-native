@@ -4,14 +4,12 @@ import { Button, Card, Overlay, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import { withNavigationFocus } from 'react-navigation';
-
 import CaveVigneron from '../ScreensVigneron/CaveVigneron';
 
-function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessage, message }) {
+import URL from '../URL'
 
-  var IPecole = "172.17.1.153";
+function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessage, message }) {
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -45,7 +43,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
 
       if (userstatus == "Caviste") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/catalogue/${token}`);
+        var rawResponse = await fetch(`${URL}/catalogue/${token}`);
         var response = await rawResponse.json();
 
         if (response.result == true) {
@@ -157,7 +155,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
                       handlePressLike();
-                      var data = await fetch(`http://${IPecole}:3000/add-favoris`, {
+                      var data = await fetch(`${URL}/add-favoris`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: `NomFF=${nom}&CouleurFF=${couleur}&MillesimeFF=${millesime}&CepageFF=${cepage}&DescFF=${desc}&AOCFF=${AOC}&NomViFF=${nomVi}&RegionViFF=${regionVi}&DescViFF=${descVi}&IdFF=${id}&PhotoFF=${photo}&PhotoViFF=${photoVi}&tokenFF=${token}`
@@ -260,7 +258,7 @@ function CatalogueCaviste({ userstatus, navigation, token, isFocused, sendMessag
                   onPress={async () => {
                     setPickerVisible(!pickerVisible);
 
-                    var filtre = await fetch(`http://${IPecole}:3000/filtre`, {
+                    var filtre = await fetch(`${URL}/filtre`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `filtreFF=${selectedValue}`

@@ -3,10 +3,9 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import URL from '../URL'
 
 function MailreadV({ navigation, userstatus, token, message}) {
-
-  var IPecole = "172.17.1.153";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();
@@ -18,7 +17,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
 
     useEffect(() => {
       async function loadData() {
-        var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v/${token}`);
+        var rawResponse = await fetch(`${URL}/mailbox-read-v/${token}`);
         var response = await rawResponse.json();
   
         if (response.result == true) {
@@ -104,7 +103,7 @@ function MailreadV({ navigation, userstatus, token, message}) {
             type="solid"
          
             onPress={async () => {
-              var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
+              var data = await fetch(`${URL}/mailbox-write-v`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}&token=${token}`

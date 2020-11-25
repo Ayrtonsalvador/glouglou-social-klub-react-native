@@ -3,24 +3,20 @@ import { View, ScrollView,  Image } from 'react-native';
 import { ListItem,  Header, Avatar, } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-
 import MailreadV from './MailreadV';
+import URL from '../URL'
 
 function MailmainV({ navigation, pseudo, token, userstatus, sendMessage, message }) {
-
-  var IPecole = "172.17.1.153";
 
   const [listMessages, setListMessages] = useState([]);
   const [Nom, setNom] = useState();
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();
-  const [nomCaviste, setNomCaviste] = useState();
-  const [nomVigneron, setNomVigneron] = useState();
   const [read, setRead] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main-v/${token}`);
+      var rawResponse = await fetch(`${URL}/mailbox-main-v/${token}`);
       var response = await rawResponse.json();
 
       if (response.result == true) {

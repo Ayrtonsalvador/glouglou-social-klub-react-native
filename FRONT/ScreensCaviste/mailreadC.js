@@ -4,10 +4,9 @@ import { Button, ListItem, Input, Header, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import MailreadV from '../ScreensVigneron/MailreadV';
+import URL from '../URL'
 
 function MailreadC({ navigation, token, userstatus, message }) {
-
-  var IPecole = "172.17.1.153";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState();
@@ -18,7 +17,7 @@ function MailreadC({ navigation, token, userstatus, message }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-read/${token}`);
+      var rawResponse = await fetch(`${URL}/mailbox-read/${token}`);
       var response = await rawResponse.json();
 
       if (response.result == true) {

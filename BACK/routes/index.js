@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -10,7 +9,7 @@ var SHA256 = require('crypto-js/sha256')
 var encBase64 = require('crypto-js/enc-base64')
 
 var cloudinary = require('cloudinary').v2;
-  cloudinary.config({
+cloudinary.config({
   cloud_name: 'dxszylkun',
   api_key: '891548583882368',
   api_secret: 'SdK_HfGZf2o1VJzYwuRn96pJkLY'
@@ -39,7 +38,6 @@ router.post('/sign-up', async function (req, res, next) {
   ) {
     error.push('veuillez compléter les champs vides !')
   }
-
 
   // SIGNUP CAVISTES
   const dataCaviste = await CavisteModel.findOne({
@@ -70,7 +68,6 @@ router.post('/sign-up', async function (req, res, next) {
       token = saveCaviste.token
     }
   }
-
 
   // SIGNUP VIGNERONS
   const dataVigneron = await VigneronModel.findOne({
@@ -142,7 +139,6 @@ router.post('/sign-in', async function (req, res, next) {
       }
     }
 
-
     // SIGN-IN VIGNERONS
     const userVigneron = await VigneronModel.findOne({
       Email: req.body.emailFromFront,
@@ -163,7 +159,6 @@ router.post('/sign-in', async function (req, res, next) {
   }
   res.json({ result, error, token, status })
 });
-
 
 // --------------- INFOS VIGNERON ---------------- \\
 router.get('/info-v/:token', async function (req, res, next) {
@@ -363,11 +358,11 @@ router.get('/macave/:token', async function (req, res, next) {
 
 router.post('/AddVin', async function (req, res, next) {
 
-  var error = [];
+  var result = false
   var bottleinfosFB = JSON.parse(req.body.bottleinfos)
-  var image = req.files.avatar
+  var saveBouteille = {}
 
-  if (image.size == 0) {
+  if (!req.files) {
 
     const vigneronID = await VigneronModel.findOne({ token: bottleinfosFB.token })
 
@@ -383,11 +378,11 @@ router.post('/AddVin', async function (req, res, next) {
     })
 
     saveBouteille = await newBouteille.save()
-
-    res.json({ result: true, error })
+    result = true
 
   } else {
 
+    var image = req.files.avatar
     var imgpath = './tmp/' + uniqid() + '.jpg'
     var resultCopy = await image.mv(imgpath);
 
@@ -414,16 +409,15 @@ router.post('/AddVin', async function (req, res, next) {
     })
 
     saveBouteille = await newBouteille.save()
+    result = true
 
-    res.json({ result: true, saveBouteille })
   }
-
+  res.json({ result, saveBouteille })
 });
 
 router.delete('/delete-ref/:Nom', async function (req, res, next) {
 
   var result = false
-
   var suppr = await BouteilleModel.deleteOne({ Nom: req.params.Nom })
   if (suppr.deletedCount > 0) {
     result = true
@@ -477,6 +471,8 @@ router.get('/favoris/:token', async function (req, res, next) {
 
 router.post('/add-favoris', async function (req, res, next) {
 
+  result = false;
+
   const userCaviste = await CavisteModel.findOne({
     token: req.body.tokenFF
   })
@@ -485,34 +481,36 @@ router.post('/add-favoris', async function (req, res, next) {
     id: req.body.IdFF
   })
 
-  var favorisCaviste = await CavisteModel.updateOne(
-    { token: req.body.tokenFF }, {
-    $push: {
-      Favoris:
-      {
-        Nom: req.body.NomFF,
-        Couleur: req.body.CouleurFF,
-        Millesime: req.body.MillesimeFF,
-        Cepage: req.body.CepageFF,
-        Desc: req.body.DescFF,
-        AOC: req.body.AOCFF,
-        Photo: req.body.PhotoFF,
-        NomVi: req.body.NomViFF,
-        RegionVi: req.body.RegionViFF,
-        DescVi: req.body.DescViFF,
-        PhotoVi: req.body.PhotoViFF,
-      },
-    }
-  })
-
-  if (favorisCaviste != null) {
-    res.json({ result: true, bouteille, favorisCaviste, userCaviste })
-  } else {
-    res.json({ result: false })
+  if (bouteille) {
+    var favorisCaviste = await CavisteModel.updateOne(
+      { token: req.body.tokenFF }, {
+      $push: {
+        Favoris:
+        {
+          Nom: req.body.NomFF,
+          Couleur: req.body.CouleurFF,
+          Millesime: req.body.MillesimeFF,
+          Cepage: req.body.CepageFF,
+          Desc: req.body.DescFF,
+          AOC: req.body.AOCFF,
+          Photo: req.body.PhotoFF,
+          NomVi: req.body.NomViFF,
+          RegionVi: req.body.RegionViFF,
+          DescVi: req.body.DescViFF,
+          PhotoVi: req.body.PhotoViFF,
+        },
+      }
+    })
+    result = true
   }
+
+  res.json({ result, bouteille, favorisCaviste, userCaviste })
+
 })
 
 router.delete('/delete-favoris/:Nom/:Token', async function (req, res, next) {
+
+  result = false;
 
   const userCaviste = await CavisteModel.findOne({
     token: req.params.Token
@@ -526,11 +524,11 @@ router.delete('/delete-favoris/:Nom/:Token', async function (req, res, next) {
     token: req.params.Token
   }, { Favoris: neFa })
 
-  const user = await CavisteModel.findOne({
-    token: req.params.Token
-  })
+  if (updateCaviste) {
+    result = true
+  }
 
-  res.json({ updateCaviste })
+  res.json({ result, updateCaviste })
 });
 
 
@@ -554,18 +552,6 @@ router.get('/mailbox-read/:token', async function (req, res, next) {
 
   res.json({ msgClicked })
 
-});
-
-router.get('/mailbox-write/:token', async function (req, res, next) {
-
-  var Caviste = await CavisteModel.findOne(
-    { token: req.params.token })
-
-  if (Caviste != null) {
-    res.json({ Caviste, result: true })
-  } else {
-    res.json({ result: false })
-  }
 });
 
 router.post('/mailbox-write', async function (req, res, next) {
@@ -607,18 +593,6 @@ router.post('/mailbox-write', async function (req, res, next) {
 router.get('/mailbox-main-v/:token', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
-    { token: req.query.token })
-
-  if (Vigneron != null) {
-    res.json({ Vigneron, result: true })
-  } else {
-    res.json({ result: false })
-  }
-});
-
-router.get('/mailbox-read-v/:token', async function (req, res, next) {
-
-  var Vigneron = await VigneronModel.findOne(
     { token: req.params.token })
 
   if (Vigneron != null) {
@@ -628,7 +602,7 @@ router.get('/mailbox-read-v/:token', async function (req, res, next) {
   }
 });
 
-router.get('/mailbox-write-v/:token', async function (req, res, next) {
+router.get('/mailbox-read-v/:token', async function (req, res, next) {
 
   var Vigneron = await VigneronModel.findOne(
     { token: req.params.token })

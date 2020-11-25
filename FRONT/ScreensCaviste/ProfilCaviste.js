@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from "react-native";
 import { Button, Input, Avatar, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-
 import * as ImagePicker from 'expo-image-picker';
 import ProfilVigneron from '../ScreensVigneron/ProfilVigneron';
+import URL from '../URL'
 
 import {
   responsiveHeight,
@@ -14,8 +14,6 @@ import {
 } from "react-native-responsive-dimensions";
 
 function ProfilCaviste({ navigation, token, userstatus }) {
-
-  var IPecole = "172.17.1.153";
 
   const [nom, setNom] = useState()
   const [etablissement, setEtablissement] = useState()
@@ -31,7 +29,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
       if (userstatus == "Caviste") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/info-c/${token}`);
+        var rawResponse = await fetch(`${URL}/info-c/${token}`);
         var response = await rawResponse.json();
 
         if (response.result == true) {
@@ -192,7 +190,7 @@ function ProfilCaviste({ navigation, token, userstatus }) {
 
                   data.append('userinfos', JSON.stringify(userinfos));
 
-                  var updateUser = await fetch(`http://${IPecole}:3000/info-update-c`, {
+                  var updateUser = await fetch(`${URL}/info-update-c`, {
                     method: 'post',
                     body: data
                   })

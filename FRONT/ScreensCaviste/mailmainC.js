@@ -6,17 +6,16 @@ import { connect } from 'react-redux';
 
 import MailmainV from '../ScreensVigneron/MailmainV';
 import MailreadC from './MailreadC';
+import URL from '../URL'
 
 function MailmainC({ navigation, token, userstatus, sendMessage, message }) {
-
-  var IPecole = "172.17.1.153";
 
   const [listMessages, setListMessages] = useState([]);
   const [read, setRead] = useState(false);
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-main/${token}`);
+      var rawResponse = await fetch(`${URL}/mailbox-main/${token}`);
       var response = await rawResponse.json();
 
       if (response.result == true) {

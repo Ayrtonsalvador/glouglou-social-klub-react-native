@@ -3,19 +3,16 @@ import { StyleSheet, View, Image, KeyboardAvoidingView, ScrollView, Text } from 
 import { Button, Input, Avatar } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
-
 import * as ImagePicker from 'expo-image-picker';
-
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from "react-native-responsive-dimensions";
+import URL from '../URL'
 
 function AddVigneron({ navigation, token, userstatus }) {
-
-  var IPecole = "172.17.1.153";
 
   const [NomRef, setNomRef] = useState();
   const [Couleur, setCouleur] = useState();
@@ -153,11 +150,13 @@ function AddVigneron({ navigation, token, userstatus }) {
                   navigation.navigate('Catalogue');
                   var data = new FormData();
 
+                  if (image !== null) {
                   data.append('avatar', {
                     uri: image,
                     type: 'image/jpeg',
                     name: 'avatar.jpg',
                   });
+                }
 
                   var bottleinfos = {
                     NomRef: NomRef,
@@ -171,7 +170,7 @@ function AddVigneron({ navigation, token, userstatus }) {
 
                   data.append('bottleinfos', JSON.stringify(bottleinfos));
 
-                  var newbottle = await fetch(`http://${IPecole}:3000/AddVin`, {
+                  var newbottle = await fetch(`${URL}/AddVin`, {
                     method: 'post',
                     body: data
                   })

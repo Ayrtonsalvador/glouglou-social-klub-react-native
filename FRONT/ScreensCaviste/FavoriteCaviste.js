@@ -4,14 +4,11 @@ import { Card, Overlay, Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-
 import { withNavigationFocus } from 'react-navigation';
-
 import AddVigneron from '../ScreensVigneron/AddVigneron';
+import URL from '../URL'
 
 function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage, message }) {
-
-  var IPecole = "172.17.1.153";
 
   const [photo, setPhoto] = useState(null)
   const [nom, setNom] = useState("Nom")
@@ -41,7 +38,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
 
       if (userstatus == "Caviste") {
 
-        var rawResponse = await fetch(`http://${IPecole}:3000/favoris/${token}`);
+        var rawResponse = await fetch(`${URL}/favoris/${token}`);
         var response = await rawResponse.json();
 
         if (response.result == true) {
@@ -158,7 +155,7 @@ function FavoriteCaviste({ navigation, token, userstatus, isFocused, sendMessage
                     style={{ alignItems: 'center', justifyContent: 'center' }}
                     onPress={async () => {
 
-                      var rawResponse = await fetch(`http://${IPecole}:3000/delete-favoris/${nom}/${token}`, {
+                      var rawResponse = await fetch(`${URL}/delete-favoris/${nom}/${token}`, {
                         method: 'DELETE'
                       });
                       var response = await rawResponse.json();

@@ -3,11 +3,9 @@ import { View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
 import { Button, ListItem, Input, Text, Header, Avatar, Accessory, BadgedAvatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import userstatus from '../reducers/userstatus';
+import URL from '../URL'
 
 function MailwriteV({ navigation, token, userstatus }) {
-
-  var IPecole = "172.17.1.153";
 
   const [Texte, setTexte] = useState();
   const [photo, setPhoto] = useState(); 
@@ -20,7 +18,7 @@ function MailwriteV({ navigation, token, userstatus }) {
 
   useEffect(() => {
     async function loadData() {
-      var rawResponse = await fetch(`http://${IPecole}:3000/mailbox-write-v/${token}`);
+      var rawResponse = await fetch(`${URL}/mailbox-main-v/${token}`);
       var response = await rawResponse.json();
 
       if (response.result == true) {
@@ -115,7 +113,7 @@ function MailwriteV({ navigation, token, userstatus }) {
             setPalceholderMsg("");
             setNewMsg([...newMsg, Texte])
 
-            var data = await fetch(`http://${IPecole}:3000/mailbox-write-v`, {
+            var data = await fetch(`${URL}/mailbox-write-v`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: `Texte=${Texte}&NomCaviste=${nomCaviste}&NomVigneron=${nomVigneron}&PhotoFF=${photo}token=${token}`
@@ -129,7 +127,6 @@ function MailwriteV({ navigation, token, userstatus }) {
 
 function mapStateToProps(state) {
   return { token: state.token, userstatus: state.userstatus }
-
 }
 
 export default connect(

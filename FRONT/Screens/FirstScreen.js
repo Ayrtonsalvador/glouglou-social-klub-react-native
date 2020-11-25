@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-
 import { Button } from 'react-native-elements';
-
 import Carousel from "react-native-carousel-control";
 
 import {
@@ -11,35 +9,6 @@ import {
 } from "react-native-responsive-dimensions";
 
 function FirstScreen({ navigation }) {
-
-  const pagination = () => {
-    const [activeSlide, setActiveSlide] = useState(0);
-
-    return (
-      <Pagination
-        dotsLength={3}
-        activeDotIndex={activeSlide}
-        containerStyle={{ backgroundColor: '#FFFFFF' }}
-        dotColor={'#FFD15C'}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 8,
-          backgroundColor: '#FFFFFF'
-        }}
-        inactiveDotStyle={{
-          width: 8,
-          height: 8,
-          borderRadius: 5,
-          marginHorizontal: 8,
-          backgroundColor: '#FFF2A0'
-        }}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
-    );
-  }
 
   return (
 
@@ -62,25 +31,19 @@ function FirstScreen({ navigation }) {
 
             <Text style={styles.text}>BOIRE BIEN, BOIRE MIEUX</Text>
             <Text style={{ width: 200, padding: 5}}>GlouGlou Social Club réunit les amateurs de vins et met en relation les producteurs indépendants et les cavistes.</Text>
-            {pagination}
-
           </View>
 
           <View style={styles.box2}>
             <Text style={styles.text}>CÔTÉ VIGNERONS</Text>
             <Text style={{ width: 200, padding: 5, justifyContent: "justify"}}>Nous participons au développement des producteurs indépendants grâce à notre catalogue de références à disposition des cavistes.</Text>
-            {pagination}
           </View>
 
           <View style={styles.box2}>
             <Text style={styles.text}>CÔTÉ CAVISTES</Text>
             <Text style={{ width: 200, padding: 5 }}>Nous aidons les restaurateurs à étoffer leur carte grâce à une présélection de références de petits producteurs.</Text>
-            {pagination}
           </View>
 
         </Carousel>
-
-
       </View>
 
       <View style={styles.buttons}>

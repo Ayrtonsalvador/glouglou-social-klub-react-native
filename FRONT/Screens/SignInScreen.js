@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, ScrollView } from 'react-native';
-
 import { Button, Input, Header } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import { connect } from 'react-redux';
+import URL from '../URL'
 
 function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
-
-  var IPecole = "172.17.1.153";
 
   const [signInEmail, setSignInEmail] = useState("")
   const [signInPassword, setSignInPassword] = useState("")
@@ -69,7 +66,7 @@ function SignInScreen({ navigation, onSubmitUserstatus, addToken }) {
                 <Button
                   onPress={async () => {
 
-                    var rawResponse = await fetch(`http://${IPecole}:3000/sign-in`, {
+                    var rawResponse = await fetch(`${URL}/sign-in`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
